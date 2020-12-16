@@ -1,7 +1,26 @@
 .SingleTile {
     border: 1px solid #ccc;
-    display: block;
-    font-size: 1.4em;
-    padding: 0px 30px;;
+    font-size: 110%;
+    width: 5%;
+    float: left;
+    padding: 0px 4%;
+    color: grey;
+    margin: 10px 2%;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    
+}
 
+.SingleTile:hover {
+    cursor: pointer;
+}
+
+.Selected ,.SingleTile:active {
+    background-color: blue;
+    color: white
+}
+
+.Home, .Away, .Draw {
+    width: inherit;
+    height: inherit;
 }

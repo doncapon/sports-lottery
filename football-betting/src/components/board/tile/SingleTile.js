@@ -5,21 +5,33 @@ import classes from './SingleTile.module.css';
 class SingleTile extends Component {
     render(){
         let side = null;
-    
+        const classesFul = [];
+        const style = [classes.SingleTile];
+        if(this.props.selected){
+            classesFul.push(classes.Selected);
+            style.push(classes.Selected);
+
+        }
         switch ( this.props.type ) {
             case ( 'home' ):
-                side = <div className={classes.Home}>1</div>;
+                classesFul.push(classes.Home);
+                side = <div className = {classesFul.join(' ')}
+                >1</div>;
                 break;
             case ( 'draw' ):
-                side = <div className={classes.Draw}>X</div>;
+                classesFul.push(classes.Draw);
+                side = <div className = {classesFul.join(' ')}>X</div>;
             break;
             case ( 'away' ):
-                side = <div className={classes.Away}>2</div>;
+                classesFul.push(classes.Away);
+                side = <div className = {classesFul.join(' ')}>2</div>;
                 break;
             default:
-                side = <div className={classes.Home}>1</div>;
+                side = <div className = {classesFul.join(' ')}>1</div>;
         }
-        return <div className = {classes.SingleTile}> 
+     
+        return <div className = {style.join(' ')} 
+         onClick = {this.props.clicked} selected = {this.props.selected}> 
             {side}
         </div>
             

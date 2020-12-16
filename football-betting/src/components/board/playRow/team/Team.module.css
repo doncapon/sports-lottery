@@ -1,21 +1,32 @@
 .Team {
-    width : 60%;
-    display:  flex;
+    width : 50%;
+    display: inline-block;
+    font-size:  100%;
+    text-align: left;
     float: left;
-    padding: 7px 0px;
+    background:#ccc;
+    margin: 3px 10px;
+    padding: 1%;
+    
+
 }
 
 .Team1 {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-right: 10px;
+    
+    float: left;
+    
 }
 
 .Team2 { 
-    padding-left: 20px;
+    float: left;
 }
 
 .Vs {
     color : grey;
+    float: left;
+    padding-right: 5px;
+
 }
 
 
@@ -24,7 +35,6 @@
 }
 
  .Team:nth-child(odd){
-    background:#ccc;
 }
 
 
