@@ -1,0 +1,13 @@
+.PlayRow {
+    width:  70%;
+    margin: 0px auto;
+    display: block;
+    /* overflow: scroll; */
+    text-align: left;
+    float: left;
+    font-weight: bold;
+    font-size: 1rem;
+    border:  2px solid #ccc;
+    min-width: 130px;
+
+}

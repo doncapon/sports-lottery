@@ -1,13 +1,15 @@
 .Board {
-    width:  60%;
-    margin: auto;
+    width:  55%;
+    margin: 0px;
+    margin-left: 50px;
+    display: block;
     /* overflow: scroll; */
-    text-align: center;
+    text-align: left;
     font-weight: bold;
     font-size: 1rem;
-    border:  2px solid #ccc;
-    min-width: 230px;
-    
+    /* border:  2px solid #ccc; */
+    /* box-sizing: border-box; */
+
 }
 
 @media (min-width: 500px) and (min-height: 400px) {
@@ -19,7 +21,7 @@
 
 @media (min-width: 500px) and (min-height: 401px) {
     .Burger {
-        width: 450px;
+        width: 250px;
         height: 400px;
     }
 }

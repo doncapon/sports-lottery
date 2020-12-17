@@ -4,7 +4,6 @@
     color: white;
     outline: none;
     cursor: pointer;
-    font: inherit;
     padding: 10px;
     margin: 10px;
     font-weight: bold;
@@ -17,8 +16,9 @@
 }
 
 .Button:disabled {
-    color: #ccc;
+    color: #white;
     cursor: not-allowed;
+    background-color: grey;
 }
 
 .Success {
@@ -31,7 +31,8 @@
 
 .Primary {
     
-    color: #174994;
-    font-size: 140%;
+    color: white;
+    font-size: 100%;
+    background-color : green
 
 }
