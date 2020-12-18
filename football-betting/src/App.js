@@ -1,11 +1,15 @@
 import  classes from './App.module.css';
-import Board from './components/board/Board';
+import Board from './containers/Board/Board';
+import { Route, Switch } from "react-router-dom";
 
 function App() {
   return (
     <div className={classes.App}>
       <h1>Bet scoccer</h1>
-      <Board />
+      <Switch>
+        <Route path= "/" component ={Board} />
+      </Switch>
+    
     </div>
   );
 }
