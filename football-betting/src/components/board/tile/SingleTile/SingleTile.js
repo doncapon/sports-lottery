@@ -12,7 +12,6 @@ class SingleTile extends Component {
         if(this.props.selected){
             majorClass.push(classes.Selected);
         }
-
         switch ( this.props.type ) {
             case ( 'home' ):
                 classesFul.push(classes.Home);
