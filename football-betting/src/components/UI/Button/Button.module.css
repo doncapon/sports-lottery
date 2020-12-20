@@ -22,11 +22,15 @@
 }
 
 .Success {
-    color: #5C9210;
+    color: white;
+    font-size: 80%;
+    background-color : blue
 }
 
 .Danger {
-    color: #944317;
+    color: white;
+    font-size: 80%;
+    background-color : red
 }
 
 .Primary {

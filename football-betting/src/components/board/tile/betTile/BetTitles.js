@@ -1,38 +1,39 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import classes from './OrderTilee.module.css';
+import classes from './BetTile.module.css';
 
-class OrderTiles extends Component {
-    render(){
+class BetTiles extends Component {
+     render(){
         let side = null;
         const classesFul = [];
         const majorClass = [];
-        majorClass.push(classes.OrderTiles);
+        majorClass.push(classes.BetTiles);
 
         if(this.props.selected){
             majorClass.push(classes.Selected);
         }
-
+        let child = null;
         switch ( this.props.type ) {
             case ( 'home' ):
                 classesFul.push(classes.Home);
-                side = <div className = {classesFul.join(' ')}
-                >1</div>;
+              child = '1';
                 break;
             case ( 'draw' ):
                 classesFul.push(classes.Draw);
-                side = <div 
-                className = {classesFul.join(' ')}>X</div>;
+                child = 'X';
             break;
             case ( 'away' ):
                 classesFul.push(classes.Away);
-                side = <div
-                className = {classesFul.join(' ')}>2</div>;
+                child = '2';
                 break;
             default:
-                side = <div className = {classesFul.join(' ')}>1</div>;
+                child = '2';
+            
+                classesFul.push(classes.Home);
+                break;
         }
-     
+        side = <div className = {classesFul.join(' ')} selected = {this.props.selected}
+        >{child}</div>;
         return <div onClick = {this.props.clicked} 
          className= {majorClass.join(' ')}>     
             {side}
@@ -43,8 +44,9 @@ class OrderTiles extends Component {
 
 }
 
-OrderTiles.propTypes ={
+BetTiles.propTypes ={
     type: PropTypes.string.isRequired
 };
 
-export default OrderTiles;
+
+export default BetTiles;

@@ -1,7 +1,7 @@
 export {
-    toggleTile
+    toggleTile, ableToSend
 } from './board';
 
 export {
 
-} from './orders';
+} from './betSlip';

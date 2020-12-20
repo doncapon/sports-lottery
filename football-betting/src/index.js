@@ -8,13 +8,13 @@ import { Provider } from "react-redux";
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import boardReducer from "./store/reducers/board";
-import orderReducer from "./store/reducers/orders";
+import betSlipReducer from "./store/reducers/betSlip";
 
 
 const composeEnhancers = process.env.NODE_ENV === "development" ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
 const rootReducer = combineReducers({
   board: boardReducer,
-  order: orderReducer
+  betSlip: betSlipReducer
 });
 
 const store = createStore(rootReducer, composeEnhancers(
