@@ -6,10 +6,14 @@ import Order from '../Order/Order';
 import { Route } from "react-router";
 import {connect}  from "react-redux";
 import * as actions from '../../store/actions/index';
+import Auxy from '../../hoc/Auxy/Auxy';
 
 class Board extends Component {
  
-  
+    state = {
+        totalPrice : 0,
+        allRowsValid: false
+    }
     ResetBoard = ()=>{
         let updatedeams = this.state.teams;
         for(let team of updatedeams){
@@ -31,24 +35,37 @@ class Board extends Component {
         }
         this.ResetBoard();
     }
-    
+     clickMe = ()=>{
+         
+     }
 
     render (){
            
         return <div className = {classes.Board}>
-             <PlayRow  clicked = {this.props.onToggleTile} 
-             teams = { this.props.teams }
-             />
+            <Auxy>
+                <div style={{float: 'left' ,display: 'block',padding: 'auto',margin: 'auto', borderRight: '10px solid grey' , marginRight: '10px'}}>
+                    <PlayRow  clicked = {this.props.onToggleTile} 
+                    teams = { this.props.teams }
+                    />
+                </div>
+                <div>
+                    <Route path= '/orders'  component= {Order} />
+                        
+                                    </div>
+            </Auxy>
+
             <div style={{display:'block',float: 'left', width: '150%',fontSize: '1.4em'}}>
              { this.props.totalPrice > 0 ? <p >Total : {this.props.totalPrice} 
              <span style={{color: 'green'}}>Naira</span></p>  : null }
-            
+
+            <div style = {{clear: 'right', paddingLeft: '50px'}}>
             <Button btnType= "Primary" disabled = { !this.props.allRowsValid}
             clicked = {this.AddToBetSlip}
             >ADD TO BETSLIP</Button>
-             </div>
-                <Route path= '/orders'  component= {Order} />
             </div>
+
+             </div>
+        </div>
         
     }
 }

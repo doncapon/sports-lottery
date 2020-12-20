@@ -1,17 +1,17 @@
 import * as actionTypes from './actionTypes';
 
 
-export const  toggleTile =  (key, index) =>{
+export const  toggleTile =  (rowIndex, sideIndex) =>{
     return dispatch=> {
-        dispatch (reverseTitle(key, index));
+        dispatch (reverseTitle(rowIndex, sideIndex));
     };
 }
-export const reverseTitle = (key, index)=>{
+export const reverseTitle = (rowIndex, sideIndex)=>{
     return {
         type: actionTypes.REVERSE_TITLE,
-        side: key,
-        index : index
-    }
+        rowIndex: rowIndex,
+        sideIndex : sideIndex
+    };
 }
 
 

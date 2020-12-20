@@ -3,38 +3,29 @@
     font-size:  100%;
     text-align: left;
     float: left;
-    height: 40px;
     background:#ccc;
     margin: 2px 10px;
     padding: 2px;
     padding-left: 1%;
     min-width: 125px;
+    font-weight: unset;
 }
 
-.Team1 {
+.TeamInner {
     padding-right: 10px;
+    background: #ccc;
    
     float: left;
     
 }
 
-.Team2 { 
-    float: left;
-}
-
-.Vs {
-    color : grey;
-    float: left;
-    padding-right: 5px;
+.Team  .TeamInner >  span {
+    color :grey;
+    padding: 5px;
 
 }
 
 
-.Team:nth-child(even){
-    background:#fff;
-}
 
- .Team:nth-child(odd){
-}
 
 

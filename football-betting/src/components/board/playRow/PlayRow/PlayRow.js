@@ -10,16 +10,25 @@ const PlayRow = (props) =>{
 
     board = props.teams.map( (team , k) => {
         return (<div key={k}>
-
             <Team team1 = {team.team1} team2 = {team.team2}  />
-            <div style ={{width: '110%', minWidth: '250px' } }>
-                <SingleTile key = {'home' + k}  type = 'home' selected = { props.teams[k]['home']}
-                clicked = {()=>props.clicked("home" , k) } >1</SingleTile>
-                <SingleTile key = {'draw' + k}   type = 'draw' selected = { props.teams[k]['draw']}
-                clicked = {()=>props.clicked("draw"  , k) } >X</SingleTile>
-                <SingleTile  key = {'away' + k}  type = 'away'selected = {props.teams[k]['away']}
-                clicked = {()=>props.clicked("away" , k) } >2</SingleTile>
-            </div>
+                <div style ={{width: '110%', minWidth: '250px' } }>
+                    {
+                            team.sides.map((side, i)=>{
+                            let  tile = null;
+                                if( i === 0){
+                                    tile = 'home';
+                                }else if( i === 1){
+                                    tile = 'draw';
+                                }else{
+                                    tile = 'away';
+                                }
+                    
+                                return    <SingleTile key = { tile+ i}  type = {tile}  selected = { side.selected}
+                                clicked = {()=>props.clicked(k , i ) } />
+
+                              })
+                    }
+                </div>
             </div>
         );
         
@@ -27,9 +36,8 @@ const PlayRow = (props) =>{
 
     return (
         <div className = {classes.PlayRow}>
-            {
-            board
-        }
+            {board}
+
         </div>
     );
 }

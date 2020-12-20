@@ -8,112 +8,96 @@ const initialStte = {
         {
             team1 : 'Manchester United',
             team2: 'Watford FC' ,
-            home: false,
-            draw : false,
-            away: false,
             rowValid: false,
-            rowAmount: 0
+            rowAmount: 0,
+            sides : [   {selected :  false}, {selected :  false },{selected :   false}]
+
         }, 
         
         {
-             team1 : 'Chelsea',
-             team2: 'Arsenal',
-             home: false,
-             draw : false,
-             away: false,
-             rowValid: false,
-             rowAmount: 0
+            team1 : 'Chelsea',
+            team2: 'Arsenal',
+            rowValid: false,
+            rowAmount: 0,
+            sides : [   {selected :  false}, {selected :  false },{selected :   false}]
+
         },
         {
             team1 : 'Real Madrid', 
             team2: 'Barcelona',
-            home: false,
-            draw : false,
-            away: false,
             rowValid: false,
-            rowAmount: 0
+            rowAmount: 0,
+            sides : [   {selected :  false}, {selected :  false },{selected :   false}]
+
         },
 
         {
             team1 : 'Leicester city', 
             team2: 'Manchester city', 
-            home: false,
-            draw : false,
-            away: false,
             rowValid: false,
-            rowAmount: 0
+            rowAmount: 0,
+            sides : [   {selected :  false}, {selected :  false },{selected :   false}]
+
         },
         {
             team1 : 'Wolverhampton wonderers', 
-            team2: 'Stoke city',     
-            home: false,
-            draw : false,
-            away: false,
+            team2: 'Stoke city', 
             rowValid: false,
-            rowAmount: 0
+            rowAmount: 0,
+            sides : [   {selected :  false}, {selected :  false },{selected :   false}]
+
         },
         {
             team1 : 'Liverpool', 
             team2: 'Newcastle United',
-            home: false,
-            draw : false,
-            away: false,
             rowValid: false,
-            rowAmount: 0
+            rowAmount: 0,
+            sides : [   {selected :  false}, {selected :  false },{selected :   false}]
+
         },
         {
             team1 : 'Watford', 
             team2: 'Burnley FC',     
-            home: false,
-            draw : false,
-            away: false,
             rowValid: false,
-            rowAmount: 0
+            rowAmount: 0,
+            sides : [   {selected :  false}, {selected :  false },{selected :   false}]
+
         },
         {
             team1 : 'Everton', 
             team2: 'Tottenham HotSpur',   
-            home: false,
-            draw : false,
-            away: false,
-        rowValid: false,
-            rowAmount: 0
+            rowValid: false,
+            rowAmount: 0,
+            sides : [   {selected :  false}, {selected :  false },{selected :   false}]
+
         },
         {
             team1 : 'Birmingham City', 
             team2: 'Fulham', 
-            home: false,
-            draw : false,
-            away: false,
             rowValid: false,
-            rowAmount: 0
+            rowAmount: 0,
+            sides : [   {selected :  false}, {selected :  false },{selected :   false}]
         },
         {
             team1 : 'Crystal Palace', 
             team2: 'HuddersField',     
-            home: false,
-            draw : false,
-            away: false,
             rowValid: false,
-            rowAmount: 0
+            rowAmount: 0,
+            sides : [  {selected :   false}, {selected :  false },{selected :   false}]
         },
         {
             team1 : 'West Bromich Abion', 
             team2: 'WestHam United',     
-            home: false,
-            draw : false,
-            away: false,
             rowValid: false,
-            rowAmount: 0
+            rowAmount: 0,
+            sides : [ {selected : false}, {selected : false }, {selected : false}]
         },
         {
             team1 : 'Southhampton', 
             team2: 'BrentFord',     
-            home: false,
-            draw : false,
-            away: false,
             rowValid: false,
-            rowAmount: 0
+            rowAmount: 0,
+            sides : [ {selected :   false},{selected : false },{selected :  false}]
         },
     ],
     totalPrice : 0,
@@ -121,24 +105,21 @@ const initialStte = {
 };
 
 const reverseTitle = (state , action) =>{
-    const updatedTeams = state.teams;
-    const updatedSides = !updatedTeams[action.index][action.side];
+    const updatedTeams = [...state.teams];
+    const updatedTeamRow = updatedTeams[action.rowIndex];
+    const updatedSide = [...updatedTeamRow.sides]
 
-    updatedTeams[action.index][action.side] = updatedSides;;
-
+    updatedSide[action.sideIndex].selected = !updatedSide[action.sideIndex].selected;
         // increasing the amount per click
-    if(updatedSides){
-        updatedTeams[action.index].rowAmount += 1;
-    }else{
-        updatedTeams[action.index].rowAmount -= 1;
-    }
-    
-
-    updatedTeams[action.index].rowValid  =  
-    (updatedTeams[action.index]['home'] ||
-    updatedTeams[action.index]['draw'] ||
-    updatedTeams[action.index]['away']) ;
-
+            if(updatedSide[action.sideIndex]){
+                updatedTeamRow.rowAmount += 1;
+            }else{
+                updatedTeamRow.rowAmount -= 1;
+            }
+    updatedTeamRow.rowValid  =  
+    (updatedSide[0] ||
+    updatedSide[1] ||
+    updatedSide[2]) ;
 
     //Checking alll rows are valid
     let updatedAllRow = state.allRowsValid;
@@ -161,11 +142,17 @@ const reverseTitle = (state , action) =>{
         totalAmout = totalAmout * team.rowAmount;
     } 
     updatedTotalPrice = totalAmout;
+    updatedTeams[action.rowIndex] = updatedTeamRow;
 
+    
      return updateObject(state , {
         teams : updatedTeams,
+        [action.rowIndex] : updatedTeamRow,
+        ...updatedTeams[action.rowIndex],
         allRowsValid : updatedAllRow,
-        totalPrice : updatedTotalPrice
+        totalPrice : updatedTotalPrice,
+        
+
     });
 }
 

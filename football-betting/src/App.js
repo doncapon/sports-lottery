@@ -5,7 +5,7 @@ import { Route, Switch } from "react-router-dom";
 function App() {
   return (
     <div className={classes.App}>
-      <h1>Bet scoccer</h1>
+      <h1>Bet<span>Soka</span></h1>
       <Switch>
         <Route path= "/" component ={Board} />
       </Switch>

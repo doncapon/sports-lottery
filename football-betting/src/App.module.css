@@ -5,3 +5,9 @@
 h1 {
   margin-left: 60px;
 }
+
+h1> span {
+  color: blue;
+  font-style: italic;
+
+}

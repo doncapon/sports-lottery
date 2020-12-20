@@ -4,10 +4,11 @@
     display: block;
     /* overflow: scroll; */
     text-align: left;
-    float: left;
+    /* clear: right; */
     font-weight: bold;
     font-size: 1rem;
     border:  2px solid #ccc;
     min-width: 130px;
-
+    overflow: hidden;
+    float: left;
 }

@@ -1,13 +1,13 @@
 .Board {
-    width:  55%;
+    width:  65%;
     margin: 0px;
     margin-left: 50px;
     display: block;
-    /* overflow: scroll; */
+    overflow: hidden;
     text-align: left;
     font-weight: bold;
     font-size: 1rem;
-    /* border:  2px solid #ccc; */
+    border:  2px solid #ccc;
     /* box-sizing: border-box; */
 
 }

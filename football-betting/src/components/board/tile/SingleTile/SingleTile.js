@@ -12,26 +12,28 @@ class SingleTile extends Component {
         if(this.props.selected){
             majorClass.push(classes.Selected);
         }
+        let child = null;
         switch ( this.props.type ) {
             case ( 'home' ):
                 classesFul.push(classes.Home);
-                side = <div className = {classesFul.join(' ')}
-                >1</div>;
+              child = '1';
                 break;
             case ( 'draw' ):
                 classesFul.push(classes.Draw);
-                side = <div 
-                className = {classesFul.join(' ')}>X</div>;
+                child = 'X';
             break;
             case ( 'away' ):
                 classesFul.push(classes.Away);
-                side = <div
-                className = {classesFul.join(' ')}>2</div>;
+                child = '2';
                 break;
             default:
-                side = <div className = {classesFul.join(' ')}>1</div>;
+                child = '2';
+            
+                classesFul.push(classes.Home);
+                break;
         }
-     
+        side = <div className = {classesFul.join(' ')} selected = {this.props.selected}
+        >{child}</div>;
         return <div onClick = {this.props.clicked} 
          className= {majorClass.join(' ')}>     
             {side}
