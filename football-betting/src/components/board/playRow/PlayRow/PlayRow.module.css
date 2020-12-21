@@ -3,12 +3,15 @@
     text-align: left;
     font-weight: bold;
     font-size: 1rem;
-    border:  2px solid #ccc;
-    overflow: hidden;
+    border:  6px solid lightgrey;
     float: left;
 }
 
 
 .RowChild>div:nth-child(odd) {
     background: blue;
+    padding: 0px;
 }
+
+    
+   

@@ -1,20 +1,17 @@
 .Team {
     
-    font-size:  100%;
+    font-size:  90%;
     text-align: left;
     float: left;
-    background:white;
-    padding: 2px;
-    padding-left: 1%;
+    padding: 2px 0px 2px;
     font-weight: unset;
 }
 
 .TeamInner {
     padding-right: 10px;
-    background: white;
-   
-    float: left;
     
+    max-width: 150px;
+    float: left;
 }
 
 .Team  .TeamInner >  span {
@@ -26,6 +23,11 @@ color :grey;
 
 .TeamInner:nth-child(odd){
     background-color: skyblue;
+}
+
+.Away {
+    margin: 0px 40px 0px 0px;
+
 }
 
 

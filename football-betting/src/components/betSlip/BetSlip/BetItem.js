@@ -6,9 +6,11 @@ import classes from './BetItem.module.css';
 const BetItem =props =>{
     const betrows =  props.teams.map( (team , k) => {
         return (<div key={k} className= 'row' >
-                <div  className = {'col-lg-12 '}  style = {{margin : '0'}} >
+                
+                <div  className = {'col-lg-12 '}  style = {{marginTop : '7px'}} >
+                <span style = {{float: 'left', 
+                        fontWeight: 'bold'}}>{k+1}.</span>
                     {
-                        
                             team.sides.map((side, i)=>{
                             let  tile = null;
                                 if( i === 0){

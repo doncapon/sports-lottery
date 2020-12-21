@@ -32,7 +32,8 @@ class SingleTile extends Component {
                 classesFul.push(classes.Home);
                 break;
         }
-        side = <div className = {classesFul.join(' ')} selected = {this.props.selected}
+        side = <div className = {classesFul.join(' ')}
+         selected = {this.props.selected}
         >{child}</div>;
         return <div onClick = {this.props.clicked} 
          className= {majorClass.join(' ')}>     

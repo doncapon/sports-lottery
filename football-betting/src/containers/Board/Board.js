@@ -39,14 +39,14 @@ class Board extends Component {
     render (){
            
         return <div className = {'container' + classes.Board}
-         style= {{border: '10px solid lightgrey' , background: 'e00f'
+         style= {{background: 'e00f'
           , width: '80%' , margin: 'auto'}
          
          }>
   
             <div className= 'row' style= {{marginBottom: '50px'}}>
           
-                <div className= 'col-lg-5 col-md-5 offset-' style = {{background:
+                <div className= 'col-lg-6  col-md-6 col-sm-11 col-sm-5 offset-' style = {{background:
                   'white' ,
                     padding: '64px 30px 0px 20px', marginLeft: '15px'}}>
                     
@@ -57,14 +57,15 @@ class Board extends Component {
                     </div>
                 </div>
 
-                <div className = 'col-lg-5 col-md-5 ' style={{margin : ' 30px 60px 0px 60px'}} >
+                <div className = 'col-lg-4 col-md-4  col-md-3 ' style={{margin : ' 30px 0px 0px 60px'}} >
                     <div className = 'row'>
-                        {(this.props.betSlip.length > 0 )?  <div className= 'offset-9'>
-                           <div className= 'row'> <span  style={{color: 'red', marginRight: '2px'}}>EMPTY: </span> 
+                        {(this.props.betSlip.length > 0 )?  <div className= 'offset-8'>
+                           <div className= 'row'> <span  style={{color: 'red', marginRight: '2px', 
+                                fontWeight: 'bold'}}>EMPTY: </span> 
                            <Button size= 'sm' variant='outline-danger' ><Trash /></Button> </div></div>: null }
                     </div>
                     <div className= 'row'>
-                        <div className= 'col-md-12' style = {{float: 'left'}}>
+                        <div className= 'col-md-12 col-md-3 ' style = {{float: 'left'}}>
                             <div><Betslip betSlip = {this.props.betSlip}  add = {this.props.onAbleTosend} /></div>
                         </div>
                     </div>
