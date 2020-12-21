@@ -5,9 +5,10 @@ import classes from './BetItem.module.css';
 
 const BetItem =props =>{
     const betrows =  props.teams.map( (team , k) => {
-        return (<div key={k}>
-                <div  className = {classes.BetItemInner} >
+        return (<div key={k} className= 'row' >
+                <div  className = {'col-lg-12 '}  style = {{margin : '0'}} >
                     {
+                        
                             team.sides.map((side, i)=>{
                             let  tile = null;
                                 if( i === 0){
@@ -18,7 +19,9 @@ const BetItem =props =>{
                                     tile = 'away';
                                 }
                     
-                                return    <BetTiles key = { tile+ i}  type = {tile}  selected = { side.selected} />
+                                return   <div className= 'col-lg-12' > 
+                                            <BetTiles key = { tile+ i}  type = {tile}  selected = { side.selected} />
+                                        </div>
 
                               })
                     }
@@ -30,7 +33,7 @@ const BetItem =props =>{
 
     return  (
      
-          <div className={classes.BetItem} style = {{border: '1px solid grey'}} >
+          <div className={classes.BetItem}  >
               {betrows}
           </div>  
     )

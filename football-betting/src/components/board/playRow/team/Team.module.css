@@ -1,19 +1,17 @@
 .Team {
-    width : 50%;
+    
     font-size:  100%;
     text-align: left;
     float: left;
-    background:#ccc;
-    margin: 2px 10px;
+    background:white;
     padding: 2px;
     padding-left: 1%;
-    min-width: 125px;
     font-weight: unset;
 }
 
 .TeamInner {
     padding-right: 10px;
-    background: #ccc;
+    background: white;
    
     float: left;
     
@@ -26,6 +24,9 @@ color :grey;
 }
 
 
+.TeamInner:nth-child(odd){
+    background-color: skyblue;
+}
 
 
 

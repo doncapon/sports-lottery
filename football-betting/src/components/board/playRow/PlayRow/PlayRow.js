@@ -9,9 +9,12 @@ const PlayRow = (props) =>{
     let board = [];
 
     board = props.teams.map( (team , k) => {
-        return (<div key={k}>
+        return (<div className= 'row' key={k}>
+            <div className= {'col-lg-8  col-md-4' + classes.Team} >
             <Team team1 = {team.team1} team2 = {team.team2}  />
-                <div style ={{width: '110%', minWidth: '250px' } }>
+            </div>
+            <div className={'col-lg-4 ' + classes.RowChild} >
+                <div style ={{width: '300px' } }>
                     {
                             team.sides.map((side, i)=>{
                             let  tile = null;
@@ -29,6 +32,7 @@ const PlayRow = (props) =>{
                               })
                     }
                 </div>
+            </div>
             </div>
         );
         

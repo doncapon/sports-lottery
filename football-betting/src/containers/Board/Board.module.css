@@ -1,34 +1,8 @@
 .Board {
-    width:  65%;
-    margin: 0px;
-    margin-left: 50px;
-    display: block;
-    overflow: hidden;
-    text-align: left;
+    text-align: center;
     font-weight: bold;
     font-size: 1rem;
     border:  2px solid #ccc;
     /* box-sizing: border-box; */
 
-}
-
-@media (min-width: 500px) and (min-height: 400px) {
-    .Burger {
-        width: 350px;
-        height: 300px;
-    }
-}
-
-@media (min-width: 500px) and (min-height: 401px) {
-    .Burger {
-        width: 250px;
-        height: 400px;
-    }
-}
-
-@media (min-width: 1000px) and (min-height: 700px) {
-    .Burger {
-        width: 700px;
-        height: 600px;
-    }
 }

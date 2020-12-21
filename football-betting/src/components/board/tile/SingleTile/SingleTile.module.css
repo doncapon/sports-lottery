@@ -8,8 +8,9 @@
     box-sizing: border-box;
     border: 1px solid rgb(138, 91, 91);
     text-align: center;
-    height: 40px; 
-    margin-right: 2%;
+    height: 30px; 
+    margin: 0 7px 0px 0;
+    
 }
 
 .SingleTile:hover {
@@ -17,7 +18,7 @@
 }
 
 .Selected ,.SingleTile:active {
-    background-color: blue;
+    background-color: skyblue;
     color: white
 }
 
