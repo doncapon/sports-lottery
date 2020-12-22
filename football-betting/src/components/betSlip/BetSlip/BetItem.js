@@ -21,8 +21,8 @@ const BetItem =props =>{
                                     tile = 'away';
                                 }
                     
-                                return   <div className= 'col-lg-12' > 
-                                            <BetTiles key = { tile+ i}  type = {tile}  selected = { side.selected} />
+                                return   <div className= 'col-lg-12' key = { tile+ i} > 
+                                            <BetTiles  type = {tile}  selected = { side.selected} />
                                         </div>
 
                               })

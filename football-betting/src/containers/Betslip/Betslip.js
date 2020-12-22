@@ -16,7 +16,7 @@ class BetSlip extends Component{
                             marginBottom: '10px' ,
                             float: 'left',
                             marginRight: '2px',
-                            background: 'yellow'}}>
+                            background: 'yellow'}} key  = {ind}>
                                 
                             <div className = 'row'>
                                 <div className = 'col-lg-12  '>

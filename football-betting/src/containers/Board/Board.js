@@ -70,9 +70,10 @@ class Board extends Component {
                         </div>
                     </div>
                     <div className= 'row'>
-                        <div>
-                            { this.props.betSlip.updatedTotalPrice > 0 ? <p >Total : {this.props.totalPrice} 
-                            <span style={{color: 'green'}}>Naira</span></p>  : null }
+                        <div  style = {{fontSize: '1.3em', marginLeft: '10px'}}>
+                            {console.log(this.props.grandTotalPrice)}
+                            { this.props.grandTotalPrice > 0 ? <p style ={{fontWeight: 'bold'}} >Total Price:<span style={{fontSize: '1.4em',color: 'white' , fontWeight: 'bold'}}> {this.props.totalPrice} </span>
+                            <span style={{color: 'green', fontWeight: 'bold'}}>Naira</span></p>  : null }
                         </div>
                         <div className='offset-8' style={{marginTop: '10px'}}>
                             {this.props.allRowsValid? <Button variant= "success" 
@@ -95,7 +96,8 @@ const mapStateToProps = state =>{
         teams : state.board.teams,
         allRowsValid : state.board.allRowsValid,
         totalPrice: state.board.totalPrice,
-        betSlip : state.board.betSlip
+        betSlip : state.board.betSlip,
+        grandTotalPrice: state.board.grandTotalPrice
     };
 };
 

@@ -101,6 +101,7 @@ const initialStte = {
         },
     ],
     totalPrice : 0,
+    grandTotalPrice : 0,
     allRowsValid: false,
     betSlip : [],
     isAlreadySent: false
@@ -153,16 +154,27 @@ const reverseTitle = (state , action) =>{
 
     //Handling betSlip
     const  updatedSlip = [...state.betSlip];
+    let updatedGrandTotal = state.grandTotalPrice ;
     if(isvalid){
         if(!updatedAllreadySend){
-            updatedSlip.push(Object.assign({}, {teams :  updatedTeams}, {allRowsValid : updatedAllRow}, {grandTotalPrice: updatedTotalPrice }));
+            updatedSlip.push(Object.assign({}, {teams :  updatedTeams},
+                 {allRowsValid : updatedAllRow},
+                 ));
             updatedAllreadySend = true;
-        }
-        for(let betrows of updatedSlip){
-            betrows.grandTotalPrice  += updatedTotalPrice;
+            
+            
         }
 
     }
+
+
+    if(updatedSide[action.sideIndex].selected){
+        updatedGrandTotal  += updatedTotalPrice;
+    }else{
+        updatedGrandTotal  -= state.totalPrice;
+    }
+    
+
      return updateObject(state , {
         teams : updatedTeams,
         [action.rowIndex] : updatedTeamRow,
@@ -170,7 +182,8 @@ const reverseTitle = (state , action) =>{
         allRowsValid : updatedAllRow,
         totalPrice : updatedTotalPrice,
         betSlip : updatedSlip,
-        isAlreadySent : updatedAllreadySend
+        isAlreadySent : updatedAllreadySend,
+        grandTotalPrice : updatedGrandTotal,
 
     });
 }
