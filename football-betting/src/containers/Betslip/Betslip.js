@@ -20,7 +20,7 @@ class BetSlip extends Component{
                                 
                             <div className = 'row'>
                                 <div className = 'col-lg-12  '>
-                                <span style={{fontWeight: 'bold'}}>ROW_{ind+1}</span>
+                                <span style={{fontWeight: 'bold'}}>SLIP_{ind+1}</span>
                                     <BetItem key = {ind} teams = {slip.teams} />
                                 </div>
                             </div>

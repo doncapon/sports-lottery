@@ -17,6 +17,10 @@ const PlayRow = (props) =>{
             <div className={'col-lg-4 col-md-4 col-md-5 col-sm-5 col-sm-1 ' 
                             + classes.RowChild} >
                 <div style ={{width: '140px' , margin: '7px 20px 0px '} }>
+                <span style={{float: 'left',
+                 fontWeight: 'bold', marginRight: '3px' ,
+                 color: 'black'
+                 }}>{k+1} . </span>
                     {
                             team.sides.map((side, i)=>{
                             let  tile = null;
