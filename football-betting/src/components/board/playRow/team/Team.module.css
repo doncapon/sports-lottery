@@ -3,21 +3,26 @@
     font-size:  90%;
     text-align: left;
     float: left;
-    padding: 2px 0px 2px;
     font-weight: unset;
 }
 
 .TeamInner {
-    padding-right: 10px;
-    
-    max-width: 150px;
     float: left;
 }
+.Team  .TeamInner >  p {
 
-.Team  .TeamInner >  span {
-color :grey;
-    padding: 5px;
+    float: left;
+    }
 
+.Vs {
+    color :grey;
+    padding: 0px 6px;
+}
+
+
+
+ .Team  .TeamInner> span{
+    float: right;
 }
 
 
@@ -25,10 +30,6 @@ color :grey;
     background-color: skyblue;
 }
 
-.Away {
-    margin: 0px 40px 0px 0px;
-
-}
 
 
 

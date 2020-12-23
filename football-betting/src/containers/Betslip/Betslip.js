@@ -9,7 +9,8 @@ class BetSlip extends Component{
 
     render(){
         let betSlip = null;
-        betSlip = this.props.betSlip.map((slip, ind) =>{
+        if(this.props.betSlip.length > 0) {
+            betSlip = this.props.betSlip.map((slip, ind) =>{
                 return <div  style = {{ padding : '15 0px' ,
                             borderRight : '2px solid grey', 
                             borderBottom : '4px solid grey', 
@@ -21,7 +22,7 @@ class BetSlip extends Component{
                             <div className = 'row'>
                                 <div className = 'col-lg-12  '>
                                 <span style={{fontWeight: 'bold'}}>SLIP_{ind+1}</span>
-                                    <BetItem key = {ind} teams = {slip.teams} />
+                                    <BetItem key = {ind} sides = {slip} />
                                 </div>
                             </div>
                             <div className= 'row'>
@@ -34,7 +35,7 @@ class BetSlip extends Component{
                                 </div>
                             </div>
                         </div> 
-            });   
+            });   }
         
         return (
             <div  className= { classes.BetSlip}   >

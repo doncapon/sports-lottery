@@ -1,16 +1,39 @@
 import * as actionTypes from './actionTypes';
 
 
-export const  toggleTile =  (rowIndex, sideIndex, payload) =>{
-    return dispatch=> {
-        dispatch (reverseTitle(rowIndex, sideIndex));
+export const updateBetSlip = (betIndex, sides) =>{
+    return { 
+        type : actionTypes.UPDATE_BETSLIP,
+        betIndex : betIndex,
+        sides : sides
+    }
+}
+
+export const removeBetSlip = (slipId) =>{
+    return {
+        type: actionTypes.REMOVE_BETSLIP,
+        slipId : slipId
     };
 }
-export const reverseTitle = (rowIndex, sideIndex)=>{
+export const  toggleTile =  (betIndex, rowIndex,  sideIndex, sides) =>{
+    return dispatch=> {
+        //dispatch (reverseTitle(betIndex,rowIndex,  sideIndex));
+        // dispatch(updateBetSlip(sides))
+        // dispatch (resetTeams());
+    };
+}
+
+export const resetTeams = ()=>{
+    return  {
+        type: actionTypes.RESET_TEAMS
+    }
+}
+export const reverseTitle = (betIndex,sideRow, sideIndex)=>{
     return {
         type: actionTypes.REVERSE_TITLE,
-        rowIndex: rowIndex,
-        sideIndex : sideIndex
+        betIndex : betIndex,
+        rowIndex: sideRow,
+        sideIndex: sideIndex
     };
 }
 
@@ -18,13 +41,6 @@ export const ableToSend = ()=>{
     return {
         type : actionTypes.ABLE_TO_SEND,
     }
-}
-
-export const AddToBetSlip= (payload)=>{
-    return {
-        type : actionTypes.ADD_TO_BETsSLIP,
-        betItems : payload
-    };
 }
 
 

@@ -83,116 +83,72 @@ const initialStte = {
             team2: 'HuddersField',     
             rowValid: false,
             rowAmount: 0,
-            sides : [  {selected :   false}, {selected :  false },{selected :   false}]
         },
         {
             team1 : 'West Bromich Abion', 
             team2: 'WestHam United',     
             rowValid: false,
-            rowAmount: 0,
-            sides : [ {selected : false}, {selected : false }, {selected : false}]
+            rowAmount: 0
         },
         {
             team1 : 'Southhampton', 
             team2: 'BrentFord',     
             rowValid: false,
-            rowAmount: 0,
-            sides : [ {selected :   false},{selected : false },{selected :  false}]
-        },
+            rowAmount: 0
+        }
+    ]
+    ,
+    betSlip : [
+             [
+    
+                [ {selected : false}, {selected : false}, {selected : false} ],
+                [ {selected : false}, {selected : false}, {selected : false} ],
+                [ {selected : false}, {selected : false}, {selected : false} ]
+             ]
     ],
-    totalPrice : 0,
-    grandTotalPrice : 0,
-    allRowsValid: false,
-    betSlip : [],
-    isAlreadySent: false
+
+    isAlreadySent: false,
 };
 
-
-
-
-
 const reverseTitle = (state , action) =>{
-    const updatedTeams = [...state.teams];
-    const updatedTeamRow = updatedTeams[action.rowIndex];
-    const updatedSide = [...updatedTeamRow.sides]
-    let updatedAllreadySend = state.isAlreadySent;
-    updatedSide[action.sideIndex].selected = !updatedSide[action.sideIndex].selected;
-        // increasing the amount per click
-            if(updatedSide[action.sideIndex].selected){
-                updatedTeamRow.rowAmount += 1;
-            }else{
-                updatedTeamRow.rowAmount -= 1;
-            }
-    updatedTeamRow.rowValid  =  
-    (updatedSide[0] ||
-    updatedSide[1] ||
-    updatedSide[2]) ;
-
-    //Checking alll rows are valid
-    let updatedAllRow = state.allRowsValid;
-    let isvalid = true;
-    for(let team of updatedTeams){
-        if(!team.rowValid){
-            isvalid = false;
-        }
-    }
-    updatedAllRow = isvalid;
-
-    updatedTeams[action.rowIndex] = updatedTeamRow;
-
-    //Calculating total price
-    let updatedTotalPrice = state.totalPrice;
-    let totalAmout = 0;
-    if( isvalid){
-        totalAmout =  25;
-    }
-
-    for(let team of updatedTeams){
-            totalAmout = totalAmout * team.rowAmount;
-    } 
-    updatedTotalPrice = totalAmout;
-
-    //Handling betSlip
-    const  updatedSlip = [...state.betSlip];
-    let updatedGrandTotal = state.grandTotalPrice ;
-    if(isvalid){
-        if(!updatedAllreadySend){
-            updatedSlip.push(Object.assign({}, {teams :  updatedTeams},
-                 {allRowsValid : updatedAllRow},
-                 ));
-            updatedAllreadySend = true;
-            
-            
-        }
-
-    }
-
-
-    if(updatedSide[action.sideIndex].selected){
-        updatedGrandTotal  += updatedTotalPrice;
-    }else{
-        updatedGrandTotal  -= state.totalPrice;
-    }
+    const updatedBetSlip = [state.betSlip][action.betIndex];
+    const updatedBetSlipRow= [updatedBetSlip[action.rowIndex]];
+    let selectSide = updatedBetSlipRow[action.sideIndex];
+    
+     
+    selectSide = !selectSide; 
     
 
-     return updateObject(state , {
-        teams : updatedTeams,
-        [action.rowIndex] : updatedTeamRow,
-        ...updatedTeams[action.rowIndex],
-        allRowsValid : updatedAllRow,
-        totalPrice : updatedTotalPrice,
-        betSlip : updatedSlip,
-        isAlreadySent : updatedAllreadySend,
-        grandTotalPrice : updatedGrandTotal,
-
-    });
+    return updateObject(state,{ ...state.betSlip, ...updatedBetSlip,...updatedBetSlipRow, ...selectSide
+            });
 }
+
+const updateBetSlip = (state, action) =>{
+     
+    let updatedBetSlip = [...state.betSlip];
+
+    updatedBetSlip =  [action.sides]
+    // Object.assign([], array, {2: newItem});
+    updatedBetSlip =  Object.assign([], updatedBetSlip, { [action.betIndex] : action.sides});
+    console.log(updatedBetSlip[action.betIndex])
+    return updateObject (state, {betSlip :  updatedBetSlip});
+    
+}
+
+const removeBetSlip = (state, action) =>{
+    const updateSlip = [...state.betSlip];
+    updateSlip.filter((slip)=>{
+        return  slip.index !== action.slipId
+    } );
+    return updateObject (state, ...updateSlip);
+}
+
 
 
 const ableToSend = (state, action) =>{
     return updateObject (state , {
         isAlreadySent : false
-    })
+    });
 }
 
 const reducer = (state = initialStte, action) =>{
@@ -201,11 +157,14 @@ const reducer = (state = initialStte, action) =>{
             return reverseTitle(state, action);
         case actionTypes.ABLE_TO_SEND:
             return ableToSend(state, action);
+        case actionTypes.UPDATE_BETSLIP:
+            return updateBetSlip(state, action);
+        case actionTypes.REMOVE_BETSLIP:
+            return removeBetSlip(state, action);
        default: 
        return state;
     }
 }
-
 
 
 export default reducer;
