@@ -4,11 +4,18 @@ import BetTiles from "../../board/tile/betTile/BetTitles";
 import classes from './BetItem.module.css';
 
 const BetItem =props =>{
-    const betrows =  props.teams.map( (team , k) => {
-        return (<div key={k}>
-                <div  className = {classes.BetItemInner} >
+    let betrows = null;
+    if(props.sides.length > 0 ){
+        
+            betrows =  props.sides.map( (side , k) => {
+        return (<div key={k} className= 'row' >
+                
+                <div  className = {'col-lg-12 '}  style = {{marginTop : '7px'}} >
+                <span style = {{float: 'left', 
+                        fontWeight: 'bold'}}>{k+1}.</span>
                     {
-                            team.sides.map((side, i)=>{
+                            side.map((side, i)=>{
+
                             let  tile = null;
                                 if( i === 0){
                                     tile = 'home';
@@ -18,19 +25,22 @@ const BetItem =props =>{
                                     tile = 'away';
                                 }
                     
-                                return    <BetTiles key = { tile+ i}  type = {tile}  selected = { side.selected} />
+                                return   <div className= 'col-lg-12' key = { tile+ i} > 
+                                            <BetTiles  type = {tile}  selected = { side.selected} />
+                                        </div>
 
                               })
                     }
                 </div>
-            </div>
-        );
+            </div> 
+        ); 
         
     });
+    }
 
     return  (
      
-          <div className={classes.BetItem} style = {{border: '1px solid grey'}} >
+          <div className={classes.BetItem}  >
               {betrows}
           </div>  
     )

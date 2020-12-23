@@ -1,18 +1,17 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import classes from './BetTile.module.css';
+import classes from './BetTitles.module.css';
 
 class BetTiles extends Component {
      render(){
         let side = null;
         const classesFul = [];
-        const majorClass = [];
-        majorClass.push(classes.BetTiles);
 
-        if(this.props.selected){
-            majorClass.push(classes.Selected);
-        }
+        classesFul.push(classes.BetTiles);
         let child = null;
+        if(this.props.selected){
+            classesFul.push(classes.Selected);
+        }
         switch ( this.props.type ) {
             case ( 'home' ):
                 classesFul.push(classes.Home);
@@ -32,10 +31,12 @@ class BetTiles extends Component {
                 classesFul.push(classes.Home);
                 break;
         }
-        side = <div className = {classesFul.join(' ')} selected = {this.props.selected}
+     
+
+        side = <div  className = {classesFul.join(' ')  } 
+            onClick = {this.props.clicked}  selected = {this.props.selected}
         >{child}</div>;
-        return <div onClick = {this.props.clicked} 
-         className= {majorClass.join(' ')}>     
+        return <div >     
             {side}
             </div>
 

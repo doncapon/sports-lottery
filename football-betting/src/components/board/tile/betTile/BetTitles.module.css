@@ -1,0 +1,27 @@
+.BetTiles {
+    font-size: 80%;
+    float: left;
+    color: grey;
+    box-sizing: border-box;
+    border: 1px solid rgb(138, 91, 91);
+    text-align: center;
+
+}
+
+.Home, .Away, .Draw {
+    width: 15px;
+    background : lightgrey;
+    margin: 5px  4px 15px 0px;
+    padding: 5px 0px;
+    
+}
+
+.Selected  {
+    background-color: blue;
+    color: white
+}
+
+
+
+
+

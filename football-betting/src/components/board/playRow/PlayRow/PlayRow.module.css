@@ -1,14 +1,17 @@
 .PlayRow {
-    width:  70%;
-    margin: 0px auto;
-    display: block;
-    /* overflow: scroll; */
+    
     text-align: left;
-    /* clear: right; */
     font-weight: bold;
     font-size: 1rem;
-    border:  2px solid #ccc;
-    min-width: 130px;
-    overflow: hidden;
     float: left;
+    margin-left: 30px;
+    margin-bottom: 20px;
 }
+
+
+.RowChild>div:nth-child(odd) {
+    padding: 0px;
+}
+
+    
+   

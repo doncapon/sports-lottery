@@ -1,19 +1,9 @@
 .BetItem {
-    display: inline-block;
     width: 100px;
+    float: left;
 }
 
 
-
-.BetItemInner {
-    display: inline-block;
-    width: 100px;
-    padding: 10px;
-}
-
-.BetItemInner:nth-child(3n + 1) {
-    clear:  right;
-}
 
 
 
