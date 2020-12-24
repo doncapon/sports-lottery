@@ -9,8 +9,9 @@ class BetSlip extends Component{
 
     render(){
         let betSlip = null;
-        if(this.props.betSlip.length > 0) {
-            betSlip = this.props.betSlip.map((slip, ind) =>{
+        
+        if(this.props.slips.length > 0) {
+            betSlip = this.props.slips.map((slip, ind) =>{
                 return <div  style = {{ padding : '15 0px' ,
                             borderRight : '2px solid grey', 
                             borderBottom : '4px solid grey', 
@@ -30,8 +31,10 @@ class BetSlip extends Component{
                                 <div  style ={{ margin: '0px 30px' , 
                                         paddingBottom: '10px'
                                         } }>
-                                    <Button onClick ={this.props.add} size = 'sm' variant = "success" ><Plus size= "18" /> 
+                                    <Button onClick ={()=>this.props.toggleAdding(true, { index: ind , value: [...slip]})   }
+                                    size = 'sm' variant = "success" ><Plus size= "18" /> 
                                      </Button> <Button variant = "primary" size='sm' ><Trash /></Button>
+                                     <Button variant = "outline-success" size='sm' ><Trash /></Button>
                                 </div>
                             </div>
                         </div> 
