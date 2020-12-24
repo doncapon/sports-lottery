@@ -98,7 +98,7 @@ const initialStte = {
         }
     ]
     ,
-    betSlip : [
+    slips : [
              [
     
                 [ {selected : false}, {selected : false}, {selected : false} ],
@@ -106,49 +106,83 @@ const initialStte = {
                 [ {selected : false}, {selected : false}, {selected : false} ]
              ]
     ],
+    games:
+        [
+            [ {selected : false}, {selected : false}, {selected : false} ],
+            [ {selected : false}, {selected : false}, {selected : false} ],
+            [ {selected : false}, {selected : false}, {selected : false} ]
+        ],
 
+    sides : [
+        {selected : false}, {selected : false}, {selected : false}
+    ],
+    changingSlip: {
+         index: 0,
+         value: null   
+    },
     isAlreadySent: false,
+    adding: false
 };
 
+const toggleSelectedTile = (state, action) =>{
+     
+    let updatedSlips = [...state.slips];
+    let updatedSlip = [...updatedSlips[action.slipIndex]];
+    let updatedGames =[...updatedSlip[action.gameIndex]];
+    let updatedSide = updatedGames[action.sideIndex];
+
+    updatedSide.selected = !updatedSide.selected
+
+    return updateObject (state, {slip : updatedSlip, games :updatedGames,
+                        sides : updatedSide}
+                        );
+}
+
+const addRowToBetSlip = (state, action) =>{
+    
+    const updatedSlip = [...state.slips];
+    const index = action.slipIndex;
+    Object.assign([] , updatedSlip, {index: action.slip})
+    
+    return updateObject(state, { betSlip : updatedSlip })
+}
+const settAdding= (state, action) =>{
+    let updatedSlips = [...state.slips];
+    const updatedChangingSlip = action.changingSlip;
+    updatedSlips.splice(updatedChangingSlip.index,0, updatedChangingSlip.value)
+
+    return updateObject(state, { 
+        slips: updatedSlips,
+         adding: action.adding,
+         changingSlip: updatedChangingSlip});
+}
+
 const reverseTitle = (state , action) =>{
-    const updatedBetSlip = [state.betSlip][action.betIndex];
-    const updatedBetSlipRow= [updatedBetSlip[action.rowIndex]];
-    let selectSide = updatedBetSlipRow[action.sideIndex];
+    // const updatedSlips = [...[state.betSlip][action.betIndex]];
+    // const updatedSlipsRow= [...[updatedSlips[action.rowIndex]]];
+    // let selectSide = updatedSlipsRow[action.sideIndex];
     
-     
-    selectSide = !selectSide; 
-    
+    // selectSide = !selectSide; 
 
-    return updateObject(state,{ ...state.betSlip, ...updatedBetSlip,...updatedBetSlipRow, ...selectSide
-            });
+    // return updateObject(state,{ ...state.betSlip, updatedSlips, updatedSlipsRow, ...selectSide
+    //         });
 }
 
-const updateBetSlip = (state, action) =>{
-     
-    let updatedBetSlip = [...state.betSlip];
 
-    updatedBetSlip =  [action.sides]
-    // Object.assign([], array, {2: newItem});
-    updatedBetSlip =  Object.assign([], updatedBetSlip, { [action.betIndex] : action.sides});
-    console.log(updatedBetSlip[action.betIndex])
-    return updateObject (state, {betSlip :  updatedBetSlip});
-    
-}
-
-const removeBetSlip = (state, action) =>{
-    const updateSlip = [...state.betSlip];
-    updateSlip.filter((slip)=>{
-        return  slip.index !== action.slipId
-    } );
-    return updateObject (state, ...updateSlip);
+const removeRowFromBetSlip = (state, action) =>{
+    // const updateSlip = [...state.betSlip];
+    // updateSlip.filter((slip)=>{
+    //     return  slip.index !== action.slipId
+    // } );
+    // return updateObject (state, ...updateSlip);
 }
 
 
 
 const ableToSend = (state, action) =>{
-    return updateObject (state , {
-        isAlreadySent : false
-    });
+    // return updateObject (state , {
+    //     isAlreadySent : false
+    // });
 }
 
 const reducer = (state = initialStte, action) =>{
@@ -157,10 +191,14 @@ const reducer = (state = initialStte, action) =>{
             return reverseTitle(state, action);
         case actionTypes.ABLE_TO_SEND:
             return ableToSend(state, action);
-        case actionTypes.UPDATE_BETSLIP:
-            return updateBetSlip(state, action);
-        case actionTypes.REMOVE_BETSLIP:
-            return removeBetSlip(state, action);
+        case actionTypes.TOGGLE_SELECTED_TILE:
+            return toggleSelectedTile(state, action);
+        case actionTypes.REMOVE_ROW_FROM_BETSLIP:
+            return removeRowFromBetSlip(state, action);
+        case actionTypes.ADD_ROW_TO_BETSLIP:
+            return addRowToBetSlip(state, action);
+        case actionTypes.SET_ADDING:
+            return settAdding(state, action);
        default: 
        return state;
     }

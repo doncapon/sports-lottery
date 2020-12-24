@@ -1,39 +1,18 @@
-import { render } from '@testing-library/react';
-import React,{ Component } from 'react';
+import React from 'react';
 import SingleTile from  '../../tile/SingleTile/SingleTile';
 import Team from "../team/team";
 import classes from './PlayRow.module.css';
-// import Auxy from '../../../../hoc/Auxy/Auxy';
 
-class  PlayRow extends Component{
-    state = {
-        sides :  [
-    
-                [ {selected : false}, {selected : false}, {selected : false} ],
-                [ {selected : false}, {selected : false}, {selected : false} ],
-                [ {selected : false}, {selected : false}, {selected : false} ],
-            
-        ]   
-    }
-    switchside= (betrow, row , column)=>{
-        var updatedState = [...this.state.sides];
-        updatedState[row][column].selected = !updatedState[row][column].selected ;
-
-        this.setState({sides: updatedState});
-        this.props.clicked(betrow, updatedState);
-
-    }
-
-    componentDidMount(){
-        
-    }
-    
-
-        
-        render(){ 
-            
+const  PlayRow = (props)=>{
+    const HandlerAdd = (slipIndex, gameIndex, sideIndex) =>{
+        props.toggleSelectedTile(slipIndex, gameIndex , sideIndex)
+        if(props.adding) {
+            const newSlip = [...props.changingSlip.value]
+            props.addSlip(props.changingSlip.index, newSlip );
+        }
+    }  
     let board = [];
-    board = this.props.teams.map( (team , k) => 
+    board = props.teams.map( (team , k) => 
     {
         return (<div className= 'row'  style = {{marginBottom: '10px' , paddingRight: '30px'}} key={k}>
                <div className = 'col-lg-12' >
@@ -49,13 +28,14 @@ class  PlayRow extends Component{
                         <div style ={{width: '140px' , margin: '0px 20px 20px ' ,
                          paddingBottom : '20px'} }>
                             {
-                                this.state.sides[k].map((side, i)=>
+                                
+                                props.slips[props.slips.length - 1][k].map((side, i)=>
                                 {
-
                                    let  tile = null;
 
                                     if( i === 0){
                                         tile = 'home';
+
                                 }else if( i === 1){
                                         tile = 'draw';
                                     }else{
@@ -63,7 +43,7 @@ class  PlayRow extends Component{
                                     }
                                     return    <SingleTile key = { tile+ i}  type = {tile} 
                                      selected = { side.selected}
-                                    clicked = {()=>this.switchside(this.props.betrow.length-1,k,i)} />
+                                    clicked = {()=>HandlerAdd(props.slips.length-1 ,k,i)} />
 
                                 })
                             }
@@ -90,6 +70,6 @@ class  PlayRow extends Component{
 
     }
  
-}
+
 
 export default PlayRow

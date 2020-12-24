@@ -23,7 +23,7 @@ class Board extends Component {
     //     }
     // }
 
-    // AddToBetSlip =()=>{
+    // AddToslips =()=>{
     //     const updatedOrder = [];
     //     let buildOrder = {};
     //     if(this.state.allRowsValid){
@@ -50,16 +50,18 @@ class Board extends Component {
                 <div className= 'col-lg-6  col-md-6 col-sm-11 col-sm-5 offset-' style = {{background:
                   'white' ,
                     padding: '64px 0px 0px 0px', marginLeft: '15px' , boxSizing: 'border-box'}}>
-                    
                     <div>
-                        <PlayRow  clicked = {this.props.onaBdBetSlip} 
-                        teams = { this.props.teams } sides = {this.props.sides} betrow = {this.props.betSlip}
+                        <PlayRow  toggleSelectedTile = {this.props.ontoggleSelectedTile} adding = {this.props.adding}
+                        teams = { this.props.teams } games = {this.props.games}  sides = {this.props.sides} slips = {this.props.slips}
+                        toggleAdding = {this.props.onSetAdding} addSlip = {this.props.onAddRowToslips} 
+                        changingSlip = {this.props.changingSlip}
+                        
                         />
                     </div>
                 </div>
                 <div className = 'col-lg-4 col-md-4  col-md-3 ' style={{margin : ' 30px 0px 0px 60px'}} >
                     <div className = 'row'>
-                        {(this.props.betSlip.length > 0 )?  <div className= 'offset-8'>
+                        {(this.props.slips.length > 0 )?  <div className= 'offset-8'>
                            <div className= 'row'> <span  style={{color: 'red', marginRight: '2px', 
                                 fontWeight: 'bold'}}>EMPTY: </span> 
                            <Button size= 'sm' variant='outline-danger' ><Trash /></Button> </div></div>: null }
@@ -67,9 +69,12 @@ class Board extends Component {
                     <div className= 'row'>
                         <div className= 'col-md-12 col-md-3 ' style = {{float: 'left'}}>
                         
-                            <div><Betslip betSlip = {this.props.betSlip}  add = {this.props.onAbleTosend} /></div>
+                            <div><Betslip slips = {this.props.slips} 
+                                    toggleAdding = {this.props.onSetAdding} 
+                            /></div>
                         </div>
                     </div>
+                    
                     <div className= 'row'>
                         <div  style = {{fontSize: '1.3em', marginLeft: '10px'}}>
                             { this.props.grandTotalPrice > 0 ? <p style ={{fontWeight: 'bold'}} >Total Price:<span style={{fontSize: '1.4em',color: 'white' , fontWeight: 'bold'}}> {this.props.totalPrice} </span>
@@ -77,7 +82,7 @@ class Board extends Component {
                         </div>
                         <div className='offset-8' style={{marginTop: '10px'}}>
                             {this.props.allRowsValid? <Button variant= "success" 
-                                clicked = {this.AddToBetSlip} 
+                                clicked = {this.AddToslips} 
                             >CHECKOUT</Button>  : null }
                         </div>
                         
@@ -96,16 +101,21 @@ const mapStateToProps = state =>{
         teams : state.teams,
         allRowsValid : state.allRowsValid,
         totalPrice: state.totalPrice,
-        betSlip : state.betSlip,
+        slips : state.slips,
+        games: state.games,
         grandTotalPrice: state.grandTotalPrice,
-        sides: state.sides
+        sides: state.sides,
+        adding: state.adding,
+        changingSlip: state.changingSlip
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onaBdBetSlip : (betIndex, sides) => dispatch ( actions.updateBetSlip(betIndex, sides)),
+        ontoggleSelectedTile : (slipIndex , gameIndex, sideIndex) => dispatch ( actions.toggleSelectedTile(slipIndex, gameIndex, sideIndex)),
         onAbleTosend : () => dispatch ( actions.ableToSend()),
+        onAddRowToslips : (betIndex, betSide) => dispatch ( actions.addRowToBetSlip(betIndex, betSide)),
+        onSetAdding : (val , changingSlip) => dispatch(actions.settAdding(val, changingSlip))
     };
 };
 
