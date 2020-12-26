@@ -1,7 +1,6 @@
 export {
-    toggleTile,
-     ableToSend,
      toggleSelectedTile,
+     setAdding,
      addRowToBetSlip,
-     settAdding
+     ableToSend,
 } from './board';
