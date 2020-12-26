@@ -4,32 +4,34 @@ import Team from "../team/team";
 import classes from './PlayRow.module.css';
 
 const  PlayRow = (props)=>{
-    const HandlerAdd = (slipIndex, gameIndex, sideIndex) =>{
-        props.toggleSelectedTile(slipIndex, gameIndex , sideIndex)
-        if(props.adding) {
-            const newSlip = [...props.changingSlip.value]
-            props.addSlip(props.changingSlip.index, newSlip );
-        }
+    const HandlerAdd = (slipIndex, gameIndex, sideIndex , side) =>{
+        props.toggleSelectedTile(slipIndex, gameIndex , sideIndex, side)
+       
     }  
     let board = [];
-    board = props.teams.map( (team , k) => 
-    {
+    const index = props.slips.length;
+    const slipId = 'slip' +index;
+    const gameId = "game";
+    const games = props.slips[index - 1][slipId].games;
+    
+    board = games.map( ( game, k) => 
+    {     
         return (<div className= 'row'  style = {{marginBottom: '10px' , paddingRight: '30px'}} key={k}>
                <div className = 'col-lg-12' >
                    <div className= 'row '   style= {{background : 'skyblue', padding: '10px 0px 0px',
                             margin: '0px'
                         }}>
                     <div className= {'col-lg-7 ' + classes.Team} >
-                        <Team team1 = {team.team1} team2 = {team.team2} row = {k+1}  />
+                        <Team team1 = {game[gameId + (k+1)].team1} team2 = {game[gameId + (k+1)].team2} row = {k+1}  />
                     </div>
+                    
 
                     <div className={'col-lg-1 ' 
                             + classes.RowChild} >
                         <div style ={{width: '140px' , margin: '0px 20px 20px ' ,
                          paddingBottom : '20px'} }>
                             {
-                                
-                                props.slips[props.slips.length - 1][k].map((side, i)=>
+                                game[gameId + (k+1)].sides.map((side, i)=>
                                 {
                                    let  tile = null;
 
@@ -43,7 +45,7 @@ const  PlayRow = (props)=>{
                                     }
                                     return    <SingleTile key = { tile+ i}  type = {tile} 
                                      selected = { side.selected}
-                                    clicked = {()=>HandlerAdd(props.slips.length-1 ,k,i)} />
+                                    clicked = {()=>HandlerAdd(props.slips.length-1 ,k,i, side.selected )} />
 
                                 })
                             }
@@ -51,14 +53,14 @@ const  PlayRow = (props)=>{
                     </div>     
                     <div>
                
-                    </div>
+                    </div>  
                     </div>     
-                        
+                    </div>  
             </div>
           
             
-            </div>
-        );
+                    
+        ); 
         
     });        
             return (

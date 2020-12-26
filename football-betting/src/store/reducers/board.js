@@ -1,171 +1,174 @@
 import * as actionTypes from "../actions/actionTypes";
+import produce from 'immer';
+import _ from "lodash";
+// import {updateObject} from '../../shared/utility';
 
-import { updateObject  } from "../../shared/utility";
+
 
 const initialStte = {
 
-    teams : [
-        // {
-        //     team1 : 'Manchester United',
-        //     team2: 'Watford FC' ,
-        //     rowValid: false,
-        //     rowAmount: 0,
-        //     sides : [   {selected :  false}, {selected :  false },{selected :   false}]
-
-        // }, 
-        
-        // {
-        //     team1 : 'Chelsea',
-        //     team2: 'Arsenal',
-        //     rowValid: false,
-        //     rowAmount: 0,
-        //     sides : [   {selected :  false}, {selected :  false },{selected :   false}]
-
-        // },
-        // {
-        //     team1 : 'Real Madrid', 
-        //     team2: 'Barcelona',
-        //     rowValid: false,
-        //     rowAmount: 0,
-        //     sides : [   {selected :  false}, {selected :  false },{selected :   false}]
-
-        // },
-
-        // {
-        //     team1 : 'Leicester city', 
-        //     team2: 'Manchester city', 
-        //     rowValid: false,
-        //     rowAmount: 0,
-        //     sides : [   {selected :  false}, {selected :  false },{selected :   false}]
-
-        // },
-        // {
-        //     team1 : 'Wolverhampton wonderers', 
-        //     team2: 'Stoke city', 
-        //     rowValid: false,
-        //     rowAmount: 0,
-        //     sides : [   {selected :  false}, {selected :  false },{selected :   false}]
-
-        // },
-        // {
-        //     team1 : 'Liverpool', 
-        //     team2: 'Newcastle United',
-        //     rowValid: false,
-        //     rowAmount: 0,
-        //     sides : [   {selected :  false}, {selected :  false },{selected :   false}]
-
-        // },
-        // {
-        //     team1 : 'Watford', 
-        //     team2: 'Burnley FC',     
-        //     rowValid: false,
-        //     rowAmount: 0,
-        //     sides : [   {selected :  false}, {selected :  false },{selected :   false}]
-
-        // },
-        // {
-        //     team1 : 'Everton', 
-        //     team2: 'Tottenham HotSpur',   
-        //     rowValid: false,
-        //     rowAmount: 0,
-        //     sides : [   {selected :  false}, {selected :  false },{selected :   false}]
-
-        // },
-        // {
-        //     team1 : 'Birmingham City', 
-        //     team2: 'Fulham', 
-        //     rowValid: false,
-        //     rowAmount: 0,
-        //     sides : [   {selected :  false}, {selected :  false },{selected :   false}]
-        // },
-        {
-            team1 : 'Crystal Palace', 
-            team2: 'HuddersField',     
-            rowValid: false,
-            rowAmount: 0,
-        },
-        {
-            team1 : 'West Bromich Abion', 
-            team2: 'WestHam United',     
-            rowValid: false,
-            rowAmount: 0
-        },
-        {
-            team1 : 'Southhampton', 
-            team2: 'BrentFord',     
-            rowValid: false,
-            rowAmount: 0
-        }
-    ]
-    ,
     slips : [
-             [
-    
-                [ {selected : false}, {selected : false}, {selected : false} ],
-                [ {selected : false}, {selected : false}, {selected : false} ],
-                [ {selected : false}, {selected : false}, {selected : false} ]
-             ]
+             {
+                "slip1":  { 
+                            id:  "slip1",
+                            price: 0,
+                            games: [
+                                {
+                                    "game1": {
+                                            id: "game1",
+                                            team1 : 'Manchester United',
+                                            team2: 'Watford FC' ,
+                                            isValid: false,
+                                            amount: 0,
+                                            sides: [ {selected : false}, {selected : false}, {selected : false} ],
+                                    }
+                                },
+                                {
+                                    "game2": {
+                                            id: "game2",
+                                            team1 : 'Chelsea',
+                                            team2: 'Arsenal',  
+                                            isValid: false,
+                                            amount: 0,     
+                                            sides: [ {selected : false}, {selected : false}, {selected : false} ],
+                                    }
+                                },
+                                {
+                                    "game3": { id: "game3",
+                                            team1 : 'Real Madrid', 
+                                            team2: 'Barcelona',
+                                            isValid: false,
+                                            amount: 0,
+                                            sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                    }
+                                },
+                                // {
+                                //     "game4": { id: "game4",
+                                //             team1 : 'Leicester city', 
+                                //             team2: 'Manchester city', 
+                                //             isValid: false,
+                                //             amount: 0,
+                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                //     }
+                                // },
+                                // {
+                                //     "game5": { id: "game5",
+                                //             team1 : 'Wolverhampton wonderers', 
+                                //             team2: 'Stoke city', 
+                                //             isValid: false,
+                                //             amount: 0,
+                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                //     }
+                                // },
+                                // {
+                                //     "game6": { id: "game6",
+                                //             team1 : 'Liverpool', 
+                                //             team2: 'Newcastle United',
+                                //             isValid: false,
+                                //             amount: 0,
+                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                //     }
+                                // },
+                                // {
+                                //     "game7": { id: "game7",
+                                //             team1 : 'Watford', 
+                                //             team2: 'Burnley FC',  
+                                //             isValid: false,
+                                //             amount: 0,
+                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                //     }
+                                // },
+                                // {
+                                //     "game8": { id: "game8",
+                                //             team1 : 'Everton', 
+                                //             team2: 'Tottenham HotSpur',  
+                                //             isValid: false,
+                                //             amount: 0, 
+                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                //     }
+                                // },
+                                // {
+                                //     "game9": { id: "game9",
+                                //             team1 : 'Crystal Palace', 
+                                //             team2: 'HuddersField',  
+                                //             isValid: false,
+                                //             amount: 0,
+                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                //     }
+                                // },
+                                // {
+                                //     "game10": { id: "game10",
+                                //             team1 : 'West Bromich Abion', 
+                                //             team2: 'WestHam United',  
+                                //             isValid: false,
+                                //             amount: 0,
+                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                //     }
+                                // },
+                                // {
+                                //     "game11": { id: "game11",
+                                //             team1 : 'Espanol', 
+                                //             team2: 'Getafe', 
+                                //             isValid: false,
+                                //             amount: 0,
+                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                //     }
+                                // },
+                                // {
+                                //     "game12": { id: "game12",
+                                //             team1 : 'Southhampton', 
+                                //             team2: 'BrentFord',
+                                //             isValid: false,
+                                //             amount: 0,
+                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                //     }
+                                // }
+                            ]   
+                    }
+            }
     ],
-    games:
-        [
-            [ {selected : false}, {selected : false}, {selected : false} ],
-            [ {selected : false}, {selected : false}, {selected : false} ],
-            [ {selected : false}, {selected : false}, {selected : false} ]
-        ],
-
-    sides : [
-        {selected : false}, {selected : false}, {selected : false}
-    ],
-    changingSlip: {
-         index: 0,
-         value: null   
-    },
-    isAlreadySent: false,
+    totalPrice: 1,
     adding: false
 };
 
-const toggleSelectedTile = (state, action) =>{
-     
-    let updatedSlips = [...state.slips];
-    let updatedSlip = [...updatedSlips[action.slipIndex]];
-    let updatedGames =[...updatedSlip[action.gameIndex]];
-    let updatedSide = updatedGames[action.sideIndex];
-
-    updatedSide.selected = !updatedSide.selected
-
-    return updateObject (state, {slip : updatedSlip, games :updatedGames,
-                        sides : updatedSide}
-                        );
-}
-
 const addRowToBetSlip = (state, action) =>{
+   
     
-    const updatedSlip = [...state.slips];
-    const index = action.slipIndex;
-    Object.assign([] , updatedSlip, {index: action.slip})
+    return produce( state, draft =>{
+        const oldId = "slip" + ( action.position + 1);
+        const newId =  "slip" + (draft.slips.length + 1)
+        console.log(newId);
+        let clonedSlips = _.cloneDeep(draft.slips);
+        let updatedSlip =  _.cloneDeep(clonedSlips[action.position]);
+        let clonedUpdatedSlip = _.cloneDeep(updatedSlip[oldId]);
+        let newslip = _.cloneDeep(clonedUpdatedSlip);
+            newslip.id = newId;
+        
+        draft.slips.splice (draft.slips.length ,0, {[newId] : newslip});
+    });
+
     
-    return updateObject(state, { betSlip : updatedSlip })
 }
-const settAdding= (state, action) =>{
-    let updatedSlips = [...state.slips];
-    const updatedChangingSlip = action.changingSlip;
-    updatedSlips.splice(updatedChangingSlip.index,0, updatedChangingSlip.value)
 
-    return updateObject(state, { 
-        slips: updatedSlips,
-         adding: action.adding,
-         changingSlip: updatedChangingSlip});
+
+const toggleSelectedTile = (state, action) =>{   
+    return produce (state, draft =>{
+        draft.slips[action.slipIndex]["slip" + (action.slipIndex + 1)]
+        .games[action.gameIndex]['game' + (action.gameIndex+ 1)]
+        .sides[action.sideIndex].selected = !action.side;
+    });
 }
 
-const reverseTitle = (state , action) =>{
-    // const updatedSlips = [...[state.betSlip][action.betIndex]];
-    // const updatedSlipsRow= [...[updatedSlips[action.rowIndex]]];
-    // let selectSide = updatedSlipsRow[action.sideIndex];
-    
-    // selectSide = !selectSide; 
 
-    // return updateObject(state,{ ...state.betSlip, updatedSlips, updatedSlipsRow, ...selectSide
-    //         });
+const setAdding= (state, action) =>{
+    // let updatedSlips = [...state.slips];
+    // const updatedChangingSlip = action.changingSlip;
+    // updatedSlips.splice(updatedChangingSlip.index,0, updatedChangingSlip.value)
+
+    return produce(state, draft => { 
+         draft.adding =  action.adding
+         draft.changingSlip = action.changingSlip 
+        });
 }
 
 
@@ -187,8 +190,6 @@ const ableToSend = (state, action) =>{
 
 const reducer = (state = initialStte, action) =>{
     switch (action.type){
-        case actionTypes.REVERSE_TITLE:
-            return reverseTitle(state, action);
         case actionTypes.ABLE_TO_SEND:
             return ableToSend(state, action);
         case actionTypes.TOGGLE_SELECTED_TILE:
@@ -198,7 +199,7 @@ const reducer = (state = initialStte, action) =>{
         case actionTypes.ADD_ROW_TO_BETSLIP:
             return addRowToBetSlip(state, action);
         case actionTypes.SET_ADDING:
-            return settAdding(state, action);
+            return setAdding(state, action);
        default: 
        return state;
     }

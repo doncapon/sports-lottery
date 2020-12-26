@@ -5,16 +5,18 @@ import classes from './BetItem.module.css';
 
 const BetItem =props =>{
     let betrows = null;
-    if(props.sides.length > 0 ){
+    let gameId = "game";
+    
+    if(props.games.length > 0 ){
         
-            betrows =  props.sides.map( (side , k) => {
+            betrows =  props.games.map( (game , k) => {
         return (<div key={k} className= 'row' >
                 
                 <div  className = {'col-lg-12 '}  style = {{marginTop : '7px'}} >
                 <span style = {{float: 'left', 
                         fontWeight: 'bold'}}>{k+1}.</span>
                     {
-                            side.map((side, i)=>{
+                            game[gameId + (k+1)].sides.map((side, i)=>{
 
                             let  tile = null;
                                 if( i === 0){

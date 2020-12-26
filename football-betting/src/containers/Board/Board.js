@@ -46,15 +46,14 @@ class Board extends Component {
          }>
   
             <div className= 'row' style= {{marginBottom: '50px'}}>
-          
+          {}
                 <div className= 'col-lg-6  col-md-6 col-sm-11 col-sm-5 offset-' style = {{background:
                   'white' ,
                     padding: '64px 0px 0px 0px', marginLeft: '15px' , boxSizing: 'border-box'}}>
                     <div>
-                        <PlayRow  toggleSelectedTile = {this.props.ontoggleSelectedTile} adding = {this.props.adding}
+                        <PlayRow  toggleSelectedTile = {this.props.ontoggleSelectedTile} 
                         teams = { this.props.teams } games = {this.props.games}  sides = {this.props.sides} slips = {this.props.slips}
-                        toggleAdding = {this.props.onSetAdding} addSlip = {this.props.onAddRowToslips} 
-                        changingSlip = {this.props.changingSlip}
+                        setAdding = {this.props.onSetAdding}
                         
                         />
                     </div>
@@ -68,9 +67,8 @@ class Board extends Component {
                     </div>
                     <div className= 'row'>
                         <div className= 'col-md-12 col-md-3 ' style = {{float: 'left'}}>
-                        
-                            <div><Betslip slips = {this.props.slips} 
-                                    toggleAdding = {this.props.onSetAdding} 
+                            <div><Betslip slips = {this.props.slips}  setAdding = {this.props.onSetAdding} 
+                             addSlip = {this.props.onAddRowToslips} 
                             /></div>
                         </div>
                     </div>
@@ -98,24 +96,20 @@ class Board extends Component {
 
 const mapStateToProps = state =>{
     return {
-        teams : state.teams,
-        allRowsValid : state.allRowsValid,
-        totalPrice: state.totalPrice,
         slips : state.slips,
-        games: state.games,
-        grandTotalPrice: state.grandTotalPrice,
-        sides: state.sides,
         adding: state.adding,
-        changingSlip: state.changingSlip
+        totalPrice: state.totalPrice,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        ontoggleSelectedTile : (slipIndex , gameIndex, sideIndex) => dispatch ( actions.toggleSelectedTile(slipIndex, gameIndex, sideIndex)),
-        onAbleTosend : () => dispatch ( actions.ableToSend()),
-        onAddRowToslips : (betIndex, betSide) => dispatch ( actions.addRowToBetSlip(betIndex, betSide)),
-        onSetAdding : (val , changingSlip) => dispatch(actions.settAdding(val, changingSlip))
+        ontoggleSelectedTile : ( slipIndex , gameIndex, sideIndex, side) =>
+         dispatch ( actions.toggleSelectedTile( slipIndex, gameIndex, sideIndex, side)),
+
+         onAddRowToslips : (postion) => dispatch ( actions.addRowToBetSlip(postion)),
+         onAbleTosend : () => dispatch ( actions.ableToSend()),
+        onSetAdding : (val) => dispatch(actions.setAdding(val))
     };
 };
 
