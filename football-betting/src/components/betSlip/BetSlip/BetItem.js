@@ -5,7 +5,7 @@ import classes from './BetItem.module.css';
 
 const BetItem =props =>{
     let betrows = null;
-    let gameId = "game";
+    let gameId = "game_";
     
     if(props.games.length > 0 ){
         

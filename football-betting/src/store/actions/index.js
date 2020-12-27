@@ -1,6 +1,8 @@
 export {
      toggleSelectedTile,
-     setAdding,
      addRowToBetSlip,
-     ableToSend,
+     removeRowFromBetSlip,
+     disableDeleteButton,
+     isPurchasable,
+     disableAddButtons
 } from './board';
