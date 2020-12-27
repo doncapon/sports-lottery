@@ -13,7 +13,7 @@
     background : lightgrey;
     margin: 5px  4px 15px 0px;
     padding: 5px 0px;
-    
+    caret-color: transparent;
 }
 
 .Selected  {

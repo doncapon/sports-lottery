@@ -6,16 +6,16 @@ import classes from './PlayRow.module.css';
 const  PlayRow = (props)=>{
     const HandlerAdd = (slipIndex, gameIndex, sideIndex , side) =>{
         props.toggleSelectedTile(slipIndex, gameIndex , sideIndex, side)
-       
+        props.isPurchasable(slipIndex);
+        props.setDisableAdd();
     }  
     let board = [];
     const index = props.slips.length;
-    const slipId = 'slip' +index;
-    const gameId = "game";
+    const slipId = 'slip_' +index;
+    const gameId = "game_";
     const games = props.slips[index - 1][slipId].games;
-    
     board = games.map( ( game, k) => 
-    {     
+    {
         return (<div className= 'row'  style = {{marginBottom: '10px' , paddingRight: '30px'}} key={k}>
                <div className = 'col-lg-12' >
                    <div className= 'row '   style= {{background : 'skyblue', padding: '10px 0px 0px',

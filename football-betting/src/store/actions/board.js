@@ -1,5 +1,13 @@
 import * as actionTypes from './actionTypes';
 
+
+export const isPurchasable = (index)=>{
+    return {
+        type: actionTypes.IS_PURCHASABLE,
+        slipIndex: index
+    }
+}
+
 export const toggleSelectedTile = (slipIndex, gameIndex,sideIndex, side) =>{
     return { 
         type : actionTypes.TOGGLE_SELECTED_TILE,
@@ -7,15 +15,7 @@ export const toggleSelectedTile = (slipIndex, gameIndex,sideIndex, side) =>{
         gameIndex : gameIndex,
         sideIndex : sideIndex,
         side: side
-    }
-}
-
-
-export const setAdding = (adding)=>{
-    return {
-        type: actionTypes.SET_ADDING,
-        adding: adding,
-    }
+    };
 }
 
 export const addRowToBetSlip = (position) =>{
@@ -26,24 +26,22 @@ export const addRowToBetSlip = (position) =>{
 }
 
 
-export const removeRowFromBetSlip = (slipId) =>{
+export const removeRowFromBetSlip = (deleteId) =>{
     return {
         type: actionTypes.REMOVE_ROW_FROM_BETSLIP,
-        slipId : slipId
+        deleteId : deleteId
     };
 }
 
-export const resetTeams = ()=>{
-    return  {
-        type: actionTypes.RESET_TEAMS
-    }
-}
-
-
-export const ableToSend = ()=>{
+export const disableDeleteButton = (index) =>{
     return {
-        type : actionTypes.ABLE_TO_SEND,
+        type: actionTypes.DISABLE_REMOVE_SLIP_BUTTON,
     }
 }
 
 
+export const disableAddButtons = (index) =>{
+    return {
+        type: actionTypes.DISABLE_ADD_BUTTONS,
+    }
+}

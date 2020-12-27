@@ -8,35 +8,6 @@ import Betslip from "../Betslip/Betslip";
 import { Trash} from "react-bootstrap-icons";
 
 class Board extends Component {
- 
-    // state = {
-    //     totalPrice : 0,
-    //     allRowsValid: false
-    // }; 
-
-    // ResetBoard = ()=>{
-    //     let updatedeams = this.state.teams;
-    //     for(let team of updatedeams){
-    //         for(let side in team.sides){
-    //             team.sides[side].selected = false;
-    //         }
-    //     }
-    // }
-
-    // AddToslips =()=>{
-    //     const updatedOrder = [];
-    //     let buildOrder = {};
-    //     if(this.state.allRowsValid){
-    //         buildOrder.teams = [...this.props.teams];
-    //         buildOrder.totalPrice = this.state.totalPrice
-    //     updatedOrder.push(buildOrder);
-    //     this.props.history.push("/orders" , updatedOrder);
-
-    //     }
-    //     this.ResetBoard();
-    // }
-
-
     render (){
            
         return <div className = {'container ' + classes.Board}
@@ -52,9 +23,9 @@ class Board extends Component {
                     padding: '64px 0px 0px 0px', marginLeft: '15px' , boxSizing: 'border-box'}}>
                     <div>
                         <PlayRow  toggleSelectedTile = {this.props.ontoggleSelectedTile} 
-                        teams = { this.props.teams } games = {this.props.games}  sides = {this.props.sides} slips = {this.props.slips}
-                        setAdding = {this.props.onSetAdding}
-                        
+                        teams = { this.props.teams } games = {this.props.games}  sides = {
+                            this.props.sides} slips = {this.props.slips}
+                         isPurchasable= {this.props.onIsPurchasing} setDisableAdd = {this.props.onDisableAddButton }
                         />
                     </div>
                 </div>
@@ -67,9 +38,11 @@ class Board extends Component {
                     </div>
                     <div className= 'row'>
                         <div className= 'col-md-12 col-md-3 ' style = {{float: 'left'}}>
-                            <div><Betslip slips = {this.props.slips}  setAdding = {this.props.onSetAdding} 
-                             addSlip = {this.props.onAddRowToslips} 
-                            /></div>
+                            <div><Betslip slips = {this.props.slips}  addSlip = {this.props.onAddRowToslips}
+                             disableRemovedBtn = {this.props.onDisableDeleteButton}
+                              removeSlipSingle  = { this.props.onRemoveRowFromBetSlip }
+                               disableAdd= {this.props.disableAdd}
+                              /></div>
                         </div>
                     </div>
                     
@@ -97,7 +70,7 @@ class Board extends Component {
 const mapStateToProps = state =>{
     return {
         slips : state.slips,
-        adding: state.adding,
+        disableAdd: state.disableAdd,
         totalPrice: state.totalPrice,
     };
 };
@@ -105,11 +78,12 @@ const mapStateToProps = state =>{
 const mapDispatchToProps = dispatch => {
     return {
         ontoggleSelectedTile : ( slipIndex , gameIndex, sideIndex, side) =>
-         dispatch ( actions.toggleSelectedTile( slipIndex, gameIndex, sideIndex, side)),
-
+                             dispatch ( actions.toggleSelectedTile( slipIndex, gameIndex, sideIndex, side)),
          onAddRowToslips : (postion) => dispatch ( actions.addRowToBetSlip(postion)),
-         onAbleTosend : () => dispatch ( actions.ableToSend()),
-        onSetAdding : (val) => dispatch(actions.setAdding(val))
+         onRemoveRowFromBetSlip: (deleteId) => dispatch(actions.removeRowFromBetSlip(deleteId)),
+         onDisableDeleteButton : () => dispatch(actions.disableDeleteButton()),
+         onIsPurchasing : (index) => dispatch(actions.isPurchasable(index)),
+         onDisableAddButton : () => dispatch(actions.disableAddButtons())
     };
 };
 
