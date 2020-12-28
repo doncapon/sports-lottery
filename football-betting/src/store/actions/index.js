@@ -2,7 +2,7 @@ export {
      toggleSelectedTile,
      addRowToBetSlip,
      removeRowFromBetSlip,
-     disableDeleteButton,
      isPurchasable,
-     disableAddButtons
+     disableAddButtons,
+     setPlayingIndex
 } from './board';

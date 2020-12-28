@@ -7,18 +7,20 @@ import classes from './BetSlip.module.css';
 
 class BetSlip extends Component{
 
-    AddSlipToBet=(changingSlipIndex, slip)=>{
-            if(this.props.disableAdd) {
-                this.props.addSlip(changingSlipIndex);
-            }
-        this.props.disableRemovedBtn();
-
+    AddSlipToBet=(changingSlipIndex, playingIndex)=>{
+    
+        this.props.addSlip(changingSlipIndex);
+        this.settingEditingIndex(playingIndex)
     };
 
     removeSlipFromBetting = (slipId)=>{
         this.props.removeSlipSingle(slipId)
-        this.props.disabledBtn();
+        // this.props.disabledBtn();
 
+    }
+
+    settingEditingIndex =(editedSlipIndex) =>{
+        this.props.setPlayingIndex(editedSlipIndex);
     }
 
     render(){
@@ -32,7 +34,7 @@ class BetSlip extends Component{
                             float: 'left',
                             marginRight: '2px',
                             background: 'yellow'}} key  = {ind}>
-                                                            <div className = 'row'>
+                            <div className = 'row'>
                                 <div className = 'col-lg-12  '>
                                 <span style={{fontWeight: 'bold'}}>SLIP_{ind+1}</span>
                                     <BetItem key = {ind} games = {slip[slip.id].games} />
@@ -45,11 +47,13 @@ class BetSlip extends Component{
                                         } }>
                                    
                                      <Button variant = "outline-success" size='sm' 
-                                     onClick = {this.hello}><ArrowRight  /> </Button>
+                                     onClick = {()=>this.settingEditingIndex(ind)}><ArrowRight  /> </Button>
 
-                                     <Button onClick ={()=>this.AddSlipToBet(ind, slip) }  
-                                    size = 'sm' variant = "success" ><Plus size= "15" 
-                                        disabled = {this.props.disableAdd }
+                                     <Button onClick ={()=>this.AddSlipToBet(ind, this.props.slips.length) }  
+                                    size = 'sm' variant = "success"
+                                    disabled = {!this.props.disableAdd }
+                                    > 
+                                        <Plus size= "15" 
                                     /> </Button>
 
                                      <Button variant = "primary" size='sm' disabled = {slip.disableDelete}

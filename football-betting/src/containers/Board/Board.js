@@ -1,4 +1,4 @@
-import { Component, React } from "react";
+import  React , {Component } from "react";
 import classes from './Board.module.css';
 import Button from "react-bootstrap/Button";
 import PlayRow from "../../components/board/playRow/PlayRow/PlayRow.js";
@@ -9,7 +9,6 @@ import { Trash} from "react-bootstrap-icons";
 
 class Board extends Component {
     render (){
-           
         return <div className = {'container ' + classes.Board}
          style= {{background: 'e00f'
           , width: '80%' , margin: 'auto'}
@@ -23,10 +22,11 @@ class Board extends Component {
                     padding: '64px 0px 0px 0px', marginLeft: '15px' , boxSizing: 'border-box'}}>
                     <div>
                         <PlayRow  toggleSelectedTile = {this.props.ontoggleSelectedTile} 
-                        teams = { this.props.teams } games = {this.props.games}  sides = {
-                            this.props.sides} slips = {this.props.slips}
-                         isPurchasable= {this.props.onIsPurchasing} setDisableAdd = {this.props.onDisableAddButton }
+                         slips = {this.props.slips} 
+                         isPurchasable= {this.props.onIsPurchasing} setDisableAdd
+                          = {this.props.onDisableAddButton } playingIndex = {this.props.playingIndex }
                         />
+                        
                     </div>
                 </div>
                 <div className = 'col-lg-4 col-md-4  col-md-3 ' style={{margin : ' 30px 0px 0px 60px'}} >
@@ -39,9 +39,8 @@ class Board extends Component {
                     <div className= 'row'>
                         <div className= 'col-md-12 col-md-3 ' style = {{float: 'left'}}>
                             <div><Betslip slips = {this.props.slips}  addSlip = {this.props.onAddRowToslips}
-                             disableRemovedBtn = {this.props.onDisableDeleteButton}
                               removeSlipSingle  = { this.props.onRemoveRowFromBetSlip }
-                               disableAdd= {this.props.disableAdd}
+                               disableAdd= {this.props.disableAdd} setPlayingIndex = {this.props.onSetPlayingIndex}
                               /></div>
                         </div>
                     </div>
@@ -70,6 +69,7 @@ class Board extends Component {
 const mapStateToProps = state =>{
     return {
         slips : state.slips,
+        playingIndex : state.playingIndex,
         disableAdd: state.disableAdd,
         totalPrice: state.totalPrice,
     };
@@ -81,9 +81,9 @@ const mapDispatchToProps = dispatch => {
                              dispatch ( actions.toggleSelectedTile( slipIndex, gameIndex, sideIndex, side)),
          onAddRowToslips : (postion) => dispatch ( actions.addRowToBetSlip(postion)),
          onRemoveRowFromBetSlip: (deleteId) => dispatch(actions.removeRowFromBetSlip(deleteId)),
-         onDisableDeleteButton : () => dispatch(actions.disableDeleteButton()),
          onIsPurchasing : (index) => dispatch(actions.isPurchasable(index)),
-         onDisableAddButton : () => dispatch(actions.disableAddButtons())
+         onDisableAddButton : () => dispatch(actions.disableAddButtons()),
+         onSetPlayingIndex : (position) => dispatch(actions.setPlayingIndex(position)),
     };
 };
 

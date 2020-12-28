@@ -1,21 +1,34 @@
-import React from 'react';
+import React ,{ useState} from 'react';
 import SingleTile from  '../../tile/SingleTile/SingleTile';
 import Team from "../team/team";
 import classes from './PlayRow.module.css';
 
-const  PlayRow = (props)=>{
-    const HandlerAdd = (slipIndex, gameIndex, sideIndex , side) =>{
-        props.toggleSelectedTile(slipIndex, gameIndex , sideIndex, side)
+const PlayRow = (props) =>{
+     const [currentSlip,setCurrentSlip] = useState(props.slips[props.playingIndex]);
+    const [playingIndex,setPlayingIndex] = useState(0);
+  
+   const  updatecurrentSlip = () =>{
+            let updatedSlip = props.slips[playingIndex];
+            setCurrentSlip(updatedSlip);
+        
+    }
+   const  HandlerAdd = (slipIndex, gameIndex, sideIndex , side) =>{
+        props.toggleSelectedTile(slipIndex, gameIndex , sideIndex, side);
+
         props.isPurchasable(slipIndex);
         props.setDisableAdd();
+
+        setPlayingIndex(props.playingIndex);
+        updatecurrentSlip();
+
     }  
+
     let board = [];
-    const index = props.slips.length;
-    const slipId = 'slip_' +index;
+    const slipId = 'slip_' +(props.playingIndex +1);
     const gameId = "game_";
-    const games = props.slips[index - 1][slipId].games;
-    board = games.map( ( game, k) => 
+    board = currentSlip[slipId].games.map( ( game, k) => 
     {
+
         return (<div className= 'row'  style = {{marginBottom: '10px' , paddingRight: '30px'}} key={k}>
                <div className = 'col-lg-12' >
                    <div className= 'row '   style= {{background : 'skyblue', padding: '10px 0px 0px',
@@ -43,6 +56,7 @@ const  PlayRow = (props)=>{
                                     }else{
                                         tile = 'away';
                                     }
+
                                     return    <SingleTile key = { tile+ i}  type = {tile} 
                                      selected = { side.selected}
                                     clicked = {()=>HandlerAdd(props.slips.length-1 ,k,i, side.selected )} />
@@ -70,8 +84,8 @@ const  PlayRow = (props)=>{
             </div>
         );
 
-    }
+    
  
-
+}
 
 export default PlayRow

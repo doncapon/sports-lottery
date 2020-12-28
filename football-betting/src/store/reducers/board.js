@@ -135,9 +135,17 @@ const initialStte = {
                     }
             }
     ],
+    playingIndex: 0,
     totalPrice: 1,
     disableAdd : false
 };
+
+const setPlayingIndex = (state, action)=>{
+    produce(state, draft =>{
+        draft.playingIndex = action.position;
+    })
+}
+
 
 const sideIsValid=(sides)=>{
     for(let side of sides){
@@ -153,7 +161,7 @@ const isPurchasable=(state, action)=>{
        return produce(state, draft=>{
         let isValid = true;
 
-        const slip = draft.slips[action.slipIndex]["slip_" + (action.slipIndex + 1)];
+        const slip = state.slips[action.slipIndex]["slip_" + (action.slipIndex + 1)];
         for(let i = 0 ; i < slip.games.length; i++){
             const isPurse = sideIsValid(slip.games[i]["game_"+ (i+1)].sides);
             if(!isPurse){
@@ -169,30 +177,15 @@ const isPurchasable=(state, action)=>{
 const disableAddButtons = (state, action)=>{
     return produce(state, draft =>{
             let isValid = true;
-            for(let i = 0 ; i < draft.slips.length; i++){
+            for(let i = 0 ; i < state.slips.length; i++){
                 if( !draft.slips[i].purchasable){
                     isValid = false;
                     break;
                 }
             }
-         console.log(isValid);
         draft.disableAdd = isValid
     })
 }
-
-const disableDeleteButton = (state, action)=>{
-    return produce(state, draft =>{
-       
-        if(draft.slips.length  <=1){
-            draft.slips[0].disableDelete = true;
-        }else{
-            draft.slips.map((slip, ind) =>{
-                return slip.disableDelete =  false;
-            })
-        }
-    })
-}
-
 
 const addRowToBetSlip = (state, action) =>{
     return produce( state, draft =>{
@@ -236,12 +229,12 @@ const reducer = (state = initialStte, action) =>{
             return addRowToBetSlip(state, action);
         case actionTypes.REMOVE_ROW_FROM_BETSLIP:
             return removeRowFromBetSlip(state, action);
-        case actionTypes.DISABLE_REMOVE_SLIP_BUTTON:
-            return disableDeleteButton(state, action);
         case actionTypes.DISABLE_ADD_BUTTONS:
             return disableAddButtons(state,action);
         case actionTypes.IS_PURCHASABLE:
             return isPurchasable(state, action);
+        case actionTypes.SET_PLAYING_INDEX:
+            return setPlayingIndex(state, action);
        default: 
        return state;
     }
