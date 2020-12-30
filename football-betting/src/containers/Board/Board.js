@@ -9,45 +9,45 @@ import { Trash} from "react-bootstrap-icons";
 
 class Board extends Component {
     render (){
-        return <div className = {'container ' + classes.Board}
-         style= {{background: 'e00f'
-          , width: '80%' , margin: 'auto'}
+        return <div className = {'container-fluid ' + classes.Board}
+         style= {{  margin: 'auto'}
          
          }>
   
-            <div className= 'row' style= {{marginBottom: '50px'}}>
-          {}
-                <div className= 'col-lg-6  col-md-6 col-sm-11 col-sm-5 offset-' style = {{background:
-                  'white' ,
-                    padding: '64px 0px 0px 0px', marginLeft: '15px' , boxSizing: 'border-box'}}>
-                    <div>
+            <div className= 'row  justify-content-center' style= {{ margin: '25px auto'}}>
+          
+                <div className= ' col-lg-5 col-md-8  col-md-4 col-sm-12 col-sm-6' style = 
+                {{background: 'white' , paddingTop: '64px', minWidth: '25%' }}>
+                    <div className ='row' >
                         <PlayRow  toggleSelectedTile = {this.props.ontoggleSelectedTile} 
-                         slips = {this.props.slips} 
-                         isPurchasable= {this.props.onIsPurchasing} setDisableAdd
-                          = {this.props.onDisableAddButton } playingIndex = {this.props.playingIndex }
+                         slips = {this.props.slips} checkPurchasable= {this.props.onIsPurchasing} setDisableAddButtons
+                          = {this.props.onDisableAddButtons } playingGames = {this.props.playingGames }
+                             editIndex={this.props.editIndex}
                         />
                         
                     </div>
                 </div>
-                <div className = 'col-lg-4 col-md-4  col-md-3 ' style={{margin : ' 30px 0px 0px 60px'}} >
-                    <div className = 'row'>
-                        {(this.props.slips.length > 0 )?  <div className= 'offset-8'>
-                           <div className= 'row'> <span  style={{color: 'red', marginRight: '2px', 
-                                fontWeight: 'bold'}}>EMPTY: </span> 
-                           <Button size= 'sm' variant='outline-danger' ><Trash /></Button> </div></div>: null }
+                <div className = 'col-lg-5 col-md-8 col-md-4 col-sm-12 col-sm6' 
+                style={{ background:'#c6f5f3', minWidth: '25%'}} >
+                    <div className = 'row' >
+                        {(this.props.slips.length > 0 )?  <div className= 'offset-9'  style={{paddingTop: '5px'}}>
+                           <div className= 'row'> <span  style={{color: 'red',  
+                                fontWeight: 'bold', }}>EMPTY<span style={{color: 'salmon' ,marginLeft: '4px', fontWeight: 'bold'}}>?</span> </span> 
+                           <Button style={{marginLeft: '4px'}} size= 'sm' variant='outline-danger' ><Trash /></Button> </div></div>: null }
                     </div>
-                    <div className= 'row'>
-                        <div className= 'col-md-12 col-md-3 ' style = {{float: 'left'}}>
-                            <div><Betslip slips = {this.props.slips}  addSlip = {this.props.onAddRowToslips}
+                    <div className= 'row' style= {{margin: 'auto'}}>
+                        <div className= 'col-md-11 col-md-5 '>
+                            <div><Betslip slips = {this.props.slips}  setAdding = {this.props.onSetAdding}
                               removeSlipSingle  = { this.props.onRemoveRowFromBetSlip }
-                               disableAdd= {this.props.disableAdd} setPlayingIndex = {this.props.onSetPlayingIndex}
+                               disableAdd= {this.props.disableAdd} setEditIndex = {this.props.onSetEditIndex}
+                               addBetSlip = {this.props.onAddRowToslips} editIndex={this.props.editIndex}
                               /></div>
                         </div>
                     </div>
-                    
-                    <div className= 'row'>
-                        <div  style = {{fontSize: '1.3em', marginLeft: '10px'}}>
-                            { this.props.grandTotalPrice > 0 ? <p style ={{fontWeight: 'bold'}} >Total Price:<span style={{fontSize: '1.4em',color: 'white' , fontWeight: 'bold'}}> {this.props.totalPrice} </span>
+                    <div className= 'row' >
+                        <div  style = {{fontSize: '1.3em',}}>
+                            { this.props.grandTotalPrice > 0 ? <p style ={{fontWeight: 'bold'}} >Total Price:<span 
+                            style={{fontSize: '1.4em',color: 'white' , fontWeight: 'bold'}}> {this.props.totalPrice} </span>
                             <span style={{color: 'green', fontWeight: 'bold'}}>Naira</span></p>  : null }
                         </div>
                         <div className='offset-8' style={{marginTop: '10px'}}>
@@ -69,21 +69,22 @@ class Board extends Component {
 const mapStateToProps = state =>{
     return {
         slips : state.slips,
-        playingIndex : state.playingIndex,
+        playingGames : state.playingGames,
         disableAdd: state.disableAdd,
         totalPrice: state.totalPrice,
+        editIndex : state.editIndex
     };
 };
-
 const mapDispatchToProps = dispatch => {
     return {
-        ontoggleSelectedTile : ( slipIndex , gameIndex, sideIndex, side) =>
+        ontoggleSelectedTile : (slipIndex, gameIndex, sideIndex, side) =>
                              dispatch ( actions.toggleSelectedTile( slipIndex, gameIndex, sideIndex, side)),
          onAddRowToslips : (postion) => dispatch ( actions.addRowToBetSlip(postion)),
          onRemoveRowFromBetSlip: (deleteId) => dispatch(actions.removeRowFromBetSlip(deleteId)),
-         onIsPurchasing : (index) => dispatch(actions.isPurchasable(index)),
-         onDisableAddButton : () => dispatch(actions.disableAddButtons()),
-         onSetPlayingIndex : (position) => dispatch(actions.setPlayingIndex(position)),
+         onIsPurchasing : (index) => dispatch(actions.checkPurchasable(index)),
+         onDisableAddButtons : () => dispatch(actions.disableAddButtons()),
+         onSetAdding : (slipIndex, isAdded) => dispatch(actions.setAdding(slipIndex,isAdded)),
+         onSetEditIndex : (index) => dispatch(actions.setEditIndex(index)),
     };
 };
 

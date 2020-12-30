@@ -33,12 +33,13 @@ class BetTiles extends Component {
         }
      
 
-        side = <div  className = {classesFul.join(' ')  } 
+        side = <div  className = { 'col-md-5 col-smd-4 col-md-3 ' + classesFul.join(' ') } 
+         style= {{float: 'left', textAlign: 'center'}}
             onClick = {this.props.clicked}  selected = {this.props.selected}
         >{child}</div>;
-        return <div >     
-            {side}
-            </div>
+        return < >     
+                {side}
+            </>
 
             
     }

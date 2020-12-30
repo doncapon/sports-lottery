@@ -4,10 +4,12 @@
 
 h1 {
   margin-left: 60px;
+  color: white;
+  text-align: left;
 }
 
 h1> span {
-  color: blue;
+  color: skyblue;
   font-style: italic;
 
 }

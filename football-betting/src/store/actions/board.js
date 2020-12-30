@@ -1,8 +1,24 @@
 import * as actionTypes from './actionTypes';
 
-export const isPurchasable = (index)=>{
+
+export const setEditIndex= (index)=>{
     return {
-        type: actionTypes.IS_PURCHASABLE,
+        type: actionTypes.SET_EDITING_INDEX,
+        position: index
+    }
+}
+
+export const setAdding=(slipIndex,isAdded)=>{
+    return {
+        type: actionTypes.SET_ADDING,
+        slipIndex: slipIndex,
+        isAdded: isAdded
+    }
+}
+
+export const checkPurchasable = (index)=>{
+    return {
+        type: actionTypes.CHECK_PURCHASABLE,
         slipIndex: index
     }
 }
@@ -10,18 +26,11 @@ export const isPurchasable = (index)=>{
 export const toggleSelectedTile = (slipIndex, gameIndex,sideIndex, side) =>{
     return { 
         type : actionTypes.TOGGLE_SELECTED_TILE,
-        slipIndex : slipIndex,
+        slipIndex: slipIndex,
         gameIndex : gameIndex,
         sideIndex : sideIndex,
         side: side
     };
-}
-
-export const setPlayingIndex = (position) =>{
-    return{
-        type: actionTypes.SET_PLAYING_INDEX,
-        position: position
-    }
 }
 
 export const addRowToBetSlip = (position) =>{

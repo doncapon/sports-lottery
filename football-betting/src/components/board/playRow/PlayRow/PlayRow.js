@@ -1,38 +1,24 @@
-import React ,{ useState} from 'react';
+import React from 'react';
 import SingleTile from  '../../tile/SingleTile/SingleTile';
 import Team from "../team/team";
 import classes from './PlayRow.module.css';
 
 const PlayRow = (props) =>{
-     const [currentSlip,setCurrentSlip] = useState(props.slips[props.playingIndex]);
-    const [playingIndex,setPlayingIndex] = useState(0);
-  
-   const  updatecurrentSlip = () =>{
-            let updatedSlip = props.slips[playingIndex];
-            setCurrentSlip(updatedSlip);
-        
-    }
+
    const  HandlerAdd = (slipIndex, gameIndex, sideIndex , side) =>{
-        props.toggleSelectedTile(slipIndex, gameIndex , sideIndex, side);
-
-        props.isPurchasable(slipIndex);
-        props.setDisableAdd();
-
-        setPlayingIndex(props.playingIndex);
-        updatecurrentSlip();
-
+        props.toggleSelectedTile( slipIndex, gameIndex , sideIndex, side);
+        props.checkPurchasable(slipIndex)
+        props.setDisableAddButtons();
     }  
 
     let board = [];
-    const slipId = 'slip_' +(props.playingIndex +1);
-    const gameId = "game_";
-    board = currentSlip[slipId].games.map( ( game, k) => 
-    {
 
-        return (<div className= 'row'  style = {{marginBottom: '10px' , paddingRight: '30px'}} key={k}>
-               <div className = 'col-lg-12' >
-                   <div className= 'row '   style= {{background : 'skyblue', padding: '10px 0px 0px',
-                            margin: '0px'
+    const gameId = "game_";
+    board = props.slips[props.editIndex]["slip_" + (props.editIndex + 1)].games.map( ( game, k) => 
+    {
+        return (<div className= 'row'  style = {{marginBottom: '10px'}} key={k}>
+               <div className = 'col-lg-12'  >
+                   <div className= 'row '   style= {{ background : 'skyblue', padding: '10px 0px 0px',
                         }}>
                     <div className= {'col-lg-7 ' + classes.Team} >
                         <Team team1 = {game[gameId + (k+1)].team1} team2 = {game[gameId + (k+1)].team2} row = {k+1}  />
@@ -41,7 +27,7 @@ const PlayRow = (props) =>{
 
                     <div className={'col-lg-1 ' 
                             + classes.RowChild} >
-                        <div style ={{width: '140px' , margin: '0px 20px 20px ' ,
+                        <div style ={{width: '140px' , margin: '0px 0px 20px ' ,
                          paddingBottom : '20px'} }>
                             {
                                 game[gameId + (k+1)].sides.map((side, i)=>
@@ -86,6 +72,6 @@ const PlayRow = (props) =>{
 
     
  
-}
+};
 
 export default PlayRow

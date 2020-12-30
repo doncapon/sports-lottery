@@ -1,4 +1,15 @@
 .BetSlip {
-    display: inline;
+    display: '';
     caret-color: transparent;
+
 }
+
+.Edit { 
+    border: green 5px solid;
+}
+
+Button {
+    margin-left: 15px;
+}
+
+
