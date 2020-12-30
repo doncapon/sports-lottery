@@ -3,23 +3,22 @@ import SingleTile from  '../../tile/SingleTile/SingleTile';
 import Team from "../team/team";
 import classes from './PlayRow.module.css';
 
-const  PlayRow = (props)=>{
-    const HandlerAdd = (slipIndex, gameIndex, sideIndex , side) =>{
-        props.toggleSelectedTile(slipIndex, gameIndex , sideIndex, side)
-        props.isPurchasable(slipIndex);
-        props.setDisableAdd();
+const PlayRow = (props) =>{
+
+   const  HandlerAdd = (slipIndex, gameIndex, sideIndex , side) =>{
+        props.toggleSelectedTile( slipIndex, gameIndex , sideIndex, side);
+        props.checkPurchasable(slipIndex)
+        props.setDisableAddButtons();
     }  
+
     let board = [];
-    const index = props.slips.length;
-    const slipId = 'slip_' +index;
+
     const gameId = "game_";
-    const games = props.slips[index - 1][slipId].games;
-    board = games.map( ( game, k) => 
+    board = props.slips[props.editIndex]["slip_" + (props.editIndex + 1)].games.map( ( game, k) => 
     {
-        return (<div className= 'row'  style = {{marginBottom: '10px' , paddingRight: '30px'}} key={k}>
-               <div className = 'col-lg-12' >
-                   <div className= 'row '   style= {{background : 'skyblue', padding: '10px 0px 0px',
-                            margin: '0px'
+        return (<div className= 'row'  style = {{marginBottom: '10px'}} key={k}>
+               <div className = 'col-lg-12'  >
+                   <div className= 'row '   style= {{ background : 'skyblue', padding: '10px 0px 0px',
                         }}>
                     <div className= {'col-lg-7 ' + classes.Team} >
                         <Team team1 = {game[gameId + (k+1)].team1} team2 = {game[gameId + (k+1)].team2} row = {k+1}  />
@@ -28,7 +27,7 @@ const  PlayRow = (props)=>{
 
                     <div className={'col-lg-1 ' 
                             + classes.RowChild} >
-                        <div style ={{width: '140px' , margin: '0px 20px 20px ' ,
+                        <div style ={{width: '140px' , margin: '0px 0px 20px ' ,
                          paddingBottom : '20px'} }>
                             {
                                 game[gameId + (k+1)].sides.map((side, i)=>
@@ -43,6 +42,7 @@ const  PlayRow = (props)=>{
                                     }else{
                                         tile = 'away';
                                     }
+
                                     return    <SingleTile key = { tile+ i}  type = {tile} 
                                      selected = { side.selected}
                                     clicked = {()=>HandlerAdd(props.slips.length-1 ,k,i, side.selected )} />
@@ -70,8 +70,8 @@ const  PlayRow = (props)=>{
             </div>
         );
 
-    }
+    
  
-
+};
 
 export default PlayRow
