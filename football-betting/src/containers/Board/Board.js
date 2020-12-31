@@ -16,8 +16,8 @@ class Board extends Component {
   
             <div className= 'row  justify-content-center' style= {{ margin: '25px auto'}}>
           
-                <div className= ' col-lg-5 col-md-8  col-md-4 col-sm-12 col-sm-6' style = 
-                {{background: 'white' , paddingTop: '64px', minWidth: '25%' }}>
+                <div className= ' col-lg-6 col-lg-5 col-md-8  col-md-4 col-sm-12 col-sm-6' style = 
+                {{background: 'white' , paddingTop: '84px', minWidth: '25%' }}>
                     <div className ='row' >
                         <PlayRow  toggleSelectedTile = {this.props.ontoggleSelectedTile} 
                          slips = {this.props.slips} checkPurchasable= {this.props.onIsPurchasing} setDisableAddButtons
@@ -27,25 +27,23 @@ class Board extends Component {
                         
                     </div>
                 </div>
-                <div className = 'col-lg-5 col-md-8 col-md-4 col-sm-12 col-sm6' 
+                <div className = 'col-lg-5 col-lg-4 col-md-8 col-md-4 col-sm-12 col-sm-6' 
                 style={{ background:'#c6f5f3', minWidth: '25%'}} >
-                    <div className = 'row' >
-                        {(this.props.slips.length > 0 )?  <div className= 'offset-9'  style={{paddingTop: '5px'}}>
+     {(this.props.slips.length > 0 )?  <div className= 'offset-9'  style={{paddingTop: '5px'}}>
                            <div className= 'row'> <span  style={{color: 'red',  
                                 fontWeight: 'bold', }}>EMPTY<span style={{color: 'salmon' ,marginLeft: '4px', fontWeight: 'bold'}}>?</span> </span> 
                            <Button style={{marginLeft: '4px'}} size= 'sm' variant='outline-danger' ><Trash /></Button> </div></div>: null }
-                    </div>
                     <div className= 'row' style= {{margin: 'auto'}}>
-                        <div className= 'col-md-11 col-md-5 '>
-                            <div><Betslip slips = {this.props.slips}  setAdding = {this.props.onSetAdding}
+                        <div className= 'col-md-12 col-md-5 '>
+                            <Betslip slips = {this.props.slips}  setAdding = {this.props.onSetAdding}
                               removeSlipSingle  = { this.props.onRemoveRowFromBetSlip }
                                disableAdd= {this.props.disableAdd} setEditIndex = {this.props.onSetEditIndex}
                                addBetSlip = {this.props.onAddRowToslips} editIndex={this.props.editIndex}
-                              /></div>
+                              />
                         </div>
                     </div>
                     <div className= 'row' >
-                        <div  style = {{fontSize: '1.3em',}}>
+                        <div className='col-md-4' style = {{fontSize: '1.3em',}}>
                             { this.props.grandTotalPrice > 0 ? <p style ={{fontWeight: 'bold'}} >Total Price:<span 
                             style={{fontSize: '1.4em',color: 'white' , fontWeight: 'bold'}}> {this.props.totalPrice} </span>
                             <span style={{color: 'green', fontWeight: 'bold'}}>Naira</span></p>  : null }

@@ -1,77 +1,86 @@
-import React from 'react';
-import SingleTile from  '../../tile/SingleTile/SingleTile';
+import React from "react";
+import SingleTile from "../../tile/SingleTile/SingleTile";
 import Team from "../team/team";
-import classes from './PlayRow.module.css';
+import classes from "./PlayRow.module.css";
 
-const PlayRow = (props) =>{
+const PlayRow = (props) => {
+  const HandlerAdd = (slipIndex, gameIndex, sideIndex, side) => {
+    props.toggleSelectedTile(slipIndex, gameIndex, sideIndex, side);
+    props.checkPurchasable(slipIndex);
+    props.setDisableAddButtons();
+  };
 
-   const  HandlerAdd = (slipIndex, gameIndex, sideIndex , side) =>{
-        props.toggleSelectedTile( slipIndex, gameIndex , sideIndex, side);
-        props.checkPurchasable(slipIndex)
-        props.setDisableAddButtons();
-    }  
+  let board = [];
 
-    let board = [];
+  const gameId = "game_";
+  board = props.slips[props.editIndex][
+    "slip_" + (props.editIndex + 1)
+  ].games.map((game, k) => {
+    return (
+      <div className={"col-lg-10 offset-1 " + classes.PlayRow} style={{padding: '1%'}} key={k}>
+        <div className="row " style={{ background: "skyblue", padding: '0%' }}>
+          <div className={"col-lg-7 " + classes.Team}>
+            <Team
+              team1={game[gameId + (k + 1)].team1}
+              team2={game[gameId + (k + 1)].team2}
+              row={k + 1}
+            />
+          </div>
 
-    const gameId = "game_";
-    board = props.slips[props.editIndex]["slip_" + (props.editIndex + 1)].games.map( ( game, k) => 
-    {
-        return (<div className= 'row'  style = {{marginBottom: '10px'}} key={k}>
-               <div className = 'col-lg-12'  >
-                   <div className= 'row '   style= {{ background : 'skyblue', padding: '10px 0px 0px',
-                        }}>
-                    <div className= {'col-lg-7 ' + classes.Team} >
-                        <Team team1 = {game[gameId + (k+1)].team1} team2 = {game[gameId + (k+1)].team2} row = {k+1}  />
-                    </div>
-                    
-
-                    <div className={'col-lg-1 ' 
-                            + classes.RowChild} >
-                        <div style ={{width: '140px' , margin: '0px 0px 20px ' ,
-                         paddingBottom : '20px'} }>
-                            {
-                                game[gameId + (k+1)].sides.map((side, i)=>
-                                {
-                                   let  tile = null;
-
-                                    if( i === 0){
-                                        tile = 'home';
-
-                                }else if( i === 1){
-                                        tile = 'draw';
-                                    }else{
-                                        tile = 'away';
-                                    }
-
-                                    return    <SingleTile key = { tile+ i}  type = {tile} 
-                                     selected = { side.selected}
-                                    clicked = {()=>HandlerAdd(props.slips.length-1 ,k,i, side.selected )} />
-
-                                })
-                            }
-                    </div>
-                    </div>     
-                    <div>
-               
-                    </div>  
-                    </div>     
-                    </div>  
-            </div>
-          
-            
-                    
-        ); 
-        
-    });        
-            return (
-            <div className = {classes.PlayRow}>
-                {board}
-
-            </div>
-        );
-
-    
- 
+          <div className={"col-lg-4 " + classes.RowChild}>
+            {
+              <div className="row">
+                <div className="col-md-3 offset-1 ">
+                  <SingleTile
+                    type={"home"}
+                    selected={game[gameId + (k + 1)].sides[0].selected}
+                    clicked={() =>
+                      HandlerAdd(
+                        props.slips.length - 1,
+                        k,
+                        0,
+                        game[gameId + (k + 1)].sides[0].selected
+                      )
+                    }
+                  />
+                </div>
+                <div className="col-md-3 offset-1">
+                  <SingleTile
+                    type={"draw"}
+                    selected={game[gameId + (k + 1)].sides[1].selected}
+                    clicked={() =>
+                      HandlerAdd(
+                        props.slips.length - 1,
+                        k,
+                        1,
+                        game[gameId + (k + 1)].sides[1].selected
+                      )
+                    }
+                  />
+                </div>
+                <div className="col-md-3 offset-1">
+                  <SingleTile
+                    type={"away"}
+                    selected={game[gameId + (k + 1)].sides[2].selected}
+                    clicked={() =>
+                      HandlerAdd(
+                        props.slips.length - 1,
+                        k,
+                        2,
+                        game[gameId + (k + 1)].sides[2].selected
+                      )
+                    }
+                  />
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+        <div></div>
+      </div>
+    );
+  });
+  return <>{board}</>;
 };
 
-export default PlayRow
+export default PlayRow;

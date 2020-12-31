@@ -1,34 +1,16 @@
-.Team {
+.TeamRow{
+    padding:  1% 5% 0%;
     
-    font-size:  90%;
+    font-size: 120%;
     text-align: left;
-    float: left;
     font-weight: unset;
 }
 
-.TeamInner {
-    float: left;
-}
-.Team  .TeamInner >  p {
 
-    float: left;
-    }
-
-.Vs {
-    color :grey;
-    padding: 0px 6px;
+.TeamRow .RowNumber{
+    font-size: 90%;
 }
 
-
-
- .Team  .TeamInner> span{
-    float: right;
-}
-
-
-.TeamInner:nth-child(odd){
-    background-color: skyblue;
-}
 
 
 

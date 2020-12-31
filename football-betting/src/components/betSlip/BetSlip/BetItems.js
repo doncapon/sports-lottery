@@ -1,8 +1,8 @@
 import { React } from "react";
-import BetTiles from "../../board/tile/betTile/BetTitles";
-import classes from "./BetItem.module.css";
+import BetTile from "../../board/tile/betTile/BetTitle";
+import classes from "./BetItems.module.css";
 
-const BetItem = (props) => {
+const BetItems = (props) => {
   let betrows = null;
   let gameId = "game_";
 
@@ -10,32 +10,32 @@ const BetItem = (props) => {
     betrows = props.games.map((game, k) => {
       return (
         <div
-          className={"col-md-10  " + classes.BetItem}
+          className={"col-lg-12 " + classes.BetItems}
           key={k}
           style={{
-            float: "left",
+            float: "left", marginBottom: '15%'
           }}
         >
           <div className="row">
-            <div className="col-md-1  ">
-              <span style={{ float: "left", fontWeight: "bold" }}>
+            <div className="col-sm-2  ">
+              <span style={{ float: "left", fontWeight: "bold" , marginBottom: '2%'}}>
                 {k + 1}.
               </span>
             </div>
-            <div className="col-md-3 ">
-              <BetTiles
+            <div className="col-sm-2  ">
+              <BetTile
                 type={"home"}
                 selected={game[gameId + (k + 1)].sides[0].selected}
               />
             </div>
-            <div className="col-md-3 ">
-              <BetTiles
+            <div className="col-sm-2 offset-1 ">
+              <BetTile
                 type={"draw"}
                 selected={game[gameId + (k + 1)].sides[1].selected}
               />
             </div>
-            <div className="col-md-3 ">
-              <BetTiles
+            <div className="col-sm-1 offset-1">
+              <BetTile
                 type={"away"}
                 selected={game[gameId + (k + 1)].sides[2].selected}
               />
@@ -53,4 +53,4 @@ const BetItem = (props) => {
   );
 };
 
-export default BetItem;
+export default BetItems;
