@@ -183,8 +183,6 @@ const setEditIndex = (state, action) =>{
             editIndex : action.position,
             playingSlip: state.slips[action.position]
         }
-
-        
 }
 
 const setAdding=(state, action) =>{
@@ -202,7 +200,7 @@ const addRowToBetSlip = (state, action) =>{
         let clonedUpdatedSlip = _.cloneDeep(updatedSlip[oldId]);
         let newslip = _.cloneDeep(clonedUpdatedSlip);
         
-        draft.slips.splice (draft.slips.length ,0, { id: newId,adding: false, [newId] : newslip});
+        draft.slips.splice (draft.slips.length ,0, { id: newId, adding: false, [newId] : newslip});
 
     });
 }

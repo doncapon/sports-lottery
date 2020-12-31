@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import BetItems from "../../components/betSlip/BetSlip/BetItems";
 import Button from "react-bootstrap/Button";
 import {
@@ -9,19 +9,14 @@ import {
 import classes from "./BetSlip.module.css";
 import "./BetSlip.module.css";
 import Pagination from "../../components/UI/Pagination/Pagination";
-import _ from 'lodash';
 
-class BetSlip extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      activePage: 1,
-      totalSlips : 12,
-      displaySlips: 3,
-    };
-  }
+const BetSlip = (props) =>{
 
-  handlePageChange = (event) => {
+  const [activePage, setActivePage] = useState(1);
+  const [totalSlips, setTotalSlips] = useState(12);
+  const [displaySlips, setDisplaySlips] = useState(3);
+
+  const handlePageChange = (event) => {
     let newTag = event.target.innerHTML;
     let k = 1;
     switch(newTag){
@@ -31,35 +26,40 @@ class BetSlip extends Component {
       case '4 - 6':
         k=2;
         break;
-        case '7 - 9':
+      case '7 - 9':
         k=3;
         break;
-        case '10 - 12':
+      case '10 - 12':
         k=4;
         break;
-        default: 
+      default: 
         k =1;
-      break;
+         break;
     }
   
-    this.setState({ activePage: k });
+    setActivePage(k);
   };
-  AddBetToTslip = (slipIndex, lastindex) => {
-    this.setState({ activePage: Math.floor((this.props.slips.length/this.state.displaySlips)) +1});
+  const AddBetToTslip = (slipIndex, lastindex) => {
 
-    this.props.setAdding(slipIndex, true);
-    this.props.addBetSlip(slipIndex);
-    this.props.setEditIndex(lastindex);
+    props.setAdding(slipIndex, true);
+    props.addBetSlip(slipIndex);
+    props.setEditIndex(props.slips.length);
+    setActivePage(Math.floor((props.slips.length/displaySlips)) +1);
   };
-  RemoveBetFromSlip = (oldIndex, newIndex) => {
-    this.props.removeSlipSingle(oldIndex);
-    this.props.setEditIndex(this.props.slips.length - 2);
+
+  const setEditIndex= (ind)=>{
+    if(ind !== props.editIndex){
+      props.setEditIndex(ind);
+    }
+  }
+  const RemoveBetFromSlip = (oldIndex) => {
+    props.removeSlipSingle(oldIndex);
+    props.setEditIndex(props.slips.length-1);
   };
-  render() {
     let betSlip = null;
 
-    if (this.props.slips.length > 0) {
-      betSlip = this.props.slips.map((slip, ind) => {
+    if (props.slips.length > 0) {
+      betSlip = props.slips.map((slip, ind) => {
         return (
           <div
             className={
@@ -70,23 +70,23 @@ class BetSlip extends Component {
           >
 
             <div className='row'>
-             
 
-            <div className={ this.props.editIndex === ind ? classes.Edit : null}
+            <div className={ props.editIndex === ind ? classes.Edit : null}
                style={{
               borderRadius: "5%",
               background: "#f7f4bc",
               margin: '0 5% 10%',
             }}
-              onClick={()=>this.props.setEditIndex(ind)}
+           
             >
+              {console.log(props.editIndex)}
             <div className="row">
               <div className="col-md-12 ">
                 <div style={{ fontWeight: "bold", marginBottom: '2%' }}>Slip {ind + 1}</div>
               </div>
             </div>
 
-            <div className="row">
+            <div className="row"    onClick={()=>setEditIndex(ind)}>
               <div className="col-sm-12">
                 <BetItems key={ind} games={slip[slip.id].games} />
               </div>
@@ -97,7 +97,7 @@ class BetSlip extends Component {
                 <Button
                   size="md"
                   variant="outline-info"
-                  onClick={()=>this.props.setEditIndex(ind)}
+                 onClick={()=>setEditIndex(ind)}
                 >
                   <ArrowUpRightCircleFill />
                 </Button>
@@ -106,12 +106,12 @@ class BetSlip extends Component {
               <div className="col-sm-3 ">
                 <Button
                   onClick={() =>
-                    this.AddBetToTslip(ind, this.props.slips.length)
+                    AddBetToTslip(ind, props.slips.length)
                   }
                   size="md"
                   variant="info"
                   disabled={
-                    this.props.disableAdd || this.props.slips.length > this.state.totalSlips -1
+                    props.disableAdd || props.slips.length > totalSlips -1
                   }
                 >
                   <PlusSquare size="15" />
@@ -122,7 +122,7 @@ class BetSlip extends Component {
                   variant="primary"
                   size="md"
                   disabled={slip.disableDelete}
-                  onClick={() => this.RemoveBetFromSlip(slip.id)}
+                  onClick={() => RemoveBetFromSlip(slip.id)}
                 >
                   <Trash2Fill />
                 </Button>
@@ -137,19 +137,17 @@ class BetSlip extends Component {
 
     let shownSlips = [];
 
-    let rest = this.props.slips.length % (this.state.totalSlips/this.state.displaySlips);
-    let start = ((this.state.activePage-1)) * this.state.displaySlips;  
-    let end = start+rest + 1;
-    let newBetSlip = _.cloneDeep(betSlip);
-     shownSlips = newBetSlip.slice( start ,end);
-     console.log(shownSlips, this.state.activePage, start, end);
+    let start = ((activePage-1)) * displaySlips;  
+    let end = start+ displaySlips;
+    let newBetSlip = betSlip;
+     shownSlips = newBetSlip.slice( start ,end );
     return (<>
       <div className={"row " + classes.BetSlip}>
         <div className="col-md-9">
-        <Pagination activePage = {this.state.activePage}  
-        usedPages = {this.props.slips.length}
-        clicked = {(e)=>this.handlePageChange(e)}
-        show= {this.state.displaySlips} totalPages = {this.state.totalSlips} />
+        <Pagination activePage = {activePage}  
+        usedPages = {props.slips.length}
+        clicked = {(e)=>handlePageChange(e)}
+        show= {displaySlips} totalPages = {totalSlips} />
         </div>
         </div>
           <div className="row ">
@@ -160,6 +158,6 @@ class BetSlip extends Component {
         </>
     );
   }
-}
+
 
 export default BetSlip;
