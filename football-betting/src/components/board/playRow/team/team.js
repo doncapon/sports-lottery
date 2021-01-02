@@ -3,10 +3,11 @@ import classes from "./Team.module.css";
 
 const Team = (props) => {
   return (
-    <div className={"row justify-content-center"}>
+    <div className={"row"}>
       <div className={"col-lg-12 " + classes.TeamRow}>
-        <div className="row"  style= {{display: 'inline', paddingLeft: '10%'}}>
-          <span>{props.row} {props.team1}  <span style={{color: 'grey'}}>vs</span>   {props.team2} </span> 
+        <div className="row"  style= {{display: 'flex'}}>
+            <div style={{float: 'left'}} className= 'col-sm-1'>{props.row}</div>
+            <div style={{textAlign: 'left'}} className= 'col-md-10' >{props.team1} <span  style={{color: 'grey'}}>vs</span>  {props.team2} </div>
         
         </div>
       </div>

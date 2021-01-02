@@ -1,9 +1,9 @@
 .TeamRow{
-    padding:  1% 5% 0%;
     
-    font-size: 120%;
+    font-size: 100%;
     text-align: left;
     font-weight: unset;
+    display: inline;
 }
 
 

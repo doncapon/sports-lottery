@@ -16,6 +16,18 @@ export const setAdding=(slipIndex,isAdded)=>{
     }
 }
 
+export const setRemoving=(slipIndex,isRemoved)=>{
+    return {
+        type: actionTypes.SET_REMOVING,
+        slipIndex: slipIndex - 1,
+        removing: isRemoved
+    }
+}
+export const setPurchaseAll= ()=>{
+    return{
+        type: actionTypes.PURCHASE_ALL
+    }
+}
 export const checkPurchasable = (index)=>{
     return {
         type: actionTypes.CHECK_PURCHASABLE,
@@ -46,10 +58,4 @@ export const removeRowFromBetSlip = (deleteId) =>{
         type: actionTypes.REMOVE_ROW_FROM_BETSLIP,
         deleteId : deleteId
     };
-}
-
-export const disableAddButtons = (index) =>{
-    return {
-        type: actionTypes.DISABLE_ADD_BUTTONS,
-    }
 }

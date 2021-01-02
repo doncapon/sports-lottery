@@ -7,12 +7,13 @@ const PlayRow = (props) => {
   const HandlerAdd = (slipIndex, gameIndex, sideIndex, side) => {
     props.toggleSelectedTile(slipIndex, gameIndex, sideIndex, side);
     props.checkPurchasable(slipIndex);
-    props.setDisableAddButtons();
+    props.setPurchaseAll();
   };
 
   let board = [];
 
   const gameId = "game_";
+
   board = props.slips[props.editIndex][
     "slip_" + (props.editIndex + 1)
   ].games.map((game, k) => {
@@ -26,17 +27,16 @@ const PlayRow = (props) => {
               row={k + 1}
             />
           </div>
-
           <div className={"col-lg-4 " + classes.RowChild}>
             {
-              <div className="row">
-                <div className="col-md-3 offset-1 ">
+              <div className="row" >
+                <div className="col-md-3 offset-1 " >
                   <SingleTile
                     type={"home"}
                     selected={game[gameId + (k + 1)].sides[0].selected}
                     clicked={() =>
                       HandlerAdd(
-                        props.slips.length - 1,
+                        props.editIndex,
                         k,
                         0,
                         game[gameId + (k + 1)].sides[0].selected
@@ -50,7 +50,7 @@ const PlayRow = (props) => {
                     selected={game[gameId + (k + 1)].sides[1].selected}
                     clicked={() =>
                       HandlerAdd(
-                        props.slips.length - 1,
+                        props.editIndex,
                         k,
                         1,
                         game[gameId + (k + 1)].sides[1].selected
@@ -64,7 +64,7 @@ const PlayRow = (props) => {
                     selected={game[gameId + (k + 1)].sides[2].selected}
                     clicked={() =>
                       HandlerAdd(
-                        props.slips.length - 1,
+                        props.editIndex,
                         k,
                         2,
                         game[gameId + (k + 1)].sides[2].selected

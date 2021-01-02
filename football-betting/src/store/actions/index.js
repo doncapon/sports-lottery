@@ -3,7 +3,8 @@ export {
      addRowToBetSlip,
      removeRowFromBetSlip,
      checkPurchasable,
-     disableAddButtons,
      setAdding,
-     setEditIndex
+     setEditIndex,
+     setPurchaseAll,
+     setRemoving,
 } from './board';

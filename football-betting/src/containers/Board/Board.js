@@ -20,8 +20,8 @@ class Board extends Component {
                 {{background: 'white' , paddingTop: '84px', minWidth: '25%' }}>
                     <div className ='row' >
                         <PlayRow  toggleSelectedTile = {this.props.ontoggleSelectedTile} 
-                         slips = {this.props.slips} checkPurchasable= {this.props.onIsPurchasing} setDisableAddButtons
-                          = {this.props.onDisableAddButtons } playingGames = {this.props.playingGames }
+                         slips = {this.props.slips} checkPurchasable= {this.props.onIsPurchasing} 
+                          setPurchaseAll = {this.props.onSetPurchaseAll } playingGames = {this.props.playingGames }
                              editIndex={this.props.editIndex}
                         />
                         
@@ -29,15 +29,18 @@ class Board extends Component {
                 </div>
                 <div className = 'col-lg-5 col-lg-4 col-md-8 col-md-4 col-sm-12 col-sm-6' 
                 style={{ background:'#c6f5f3', minWidth: '25%'}} >
-     {(this.props.slips.length > 0 )?  <div className= 'offset-9'  style={{paddingTop: '5px'}}>
-                           <div className= 'row'> <span  style={{color: 'red',  
-                                fontWeight: 'bold', }}>EMPTY<span style={{color: 'salmon' ,marginLeft: '4px', fontWeight: 'bold'}}>?</span> </span> 
-                           <Button style={{marginLeft: '4px'}} size= 'sm' variant='outline-danger' ><Trash /></Button> </div></div>: null }
+     {(this.props.slips.length > 0 )?  <div  className='row'  style={{paddingTop: '5px'}}>
+                           <div className= 'offset-9'> <span  style={{color: 'red',  
+                                fontWeight: 'bold', }}>EMPTY<span style={{color: 'black', fontWeight: 'bold', marginRight: '4px'}}>?</span> </span> 
+                                <Button size= 'sm' variant='outline-danger' ><Trash /></Button> </div>
+                           </div>: null }
                     <div className= 'row' style= {{margin: 'auto'}}>
                         <div className= 'col-md-12 col-md-5 '>
                             <Betslip slips = {this.props.slips}  setAdding = {this.props.onSetAdding}
+                            setRemoving = {this.props.onSetRemoving}
+                            setPurchaseAll = {this.props.onSetPurchaseAll }
                               removeSlipSingle  = { this.props.onRemoveRowFromBetSlip }
-                               disableAdd= {this.props.disableAdd} setEditIndex = {this.props.onSetEditIndex}
+                               purchaseAll= {this.props.purchaseAll} setEditIndex = {this.props.onSetEditIndex}
                                addBetSlip = {this.props.onAddRowToslips} editIndex={this.props.editIndex}
                               />
                         </div>
@@ -68,9 +71,9 @@ const mapStateToProps = state =>{
     return {
         slips : state.slips,
         playingGames : state.playingGames,
-        disableAdd: state.disableAdd,
         totalPrice: state.totalPrice,
-        editIndex : state.editIndex
+        editIndex : state.editIndex,
+        purchaseAll: state.purchaseAll,
     };
 };
 const mapDispatchToProps = dispatch => {
@@ -80,9 +83,10 @@ const mapDispatchToProps = dispatch => {
          onAddRowToslips : (postion) => dispatch ( actions.addRowToBetSlip(postion)),
          onRemoveRowFromBetSlip: (deleteId) => dispatch(actions.removeRowFromBetSlip(deleteId)),
          onIsPurchasing : (index) => dispatch(actions.checkPurchasable(index)),
-         onDisableAddButtons : () => dispatch(actions.disableAddButtons()),
          onSetAdding : (slipIndex, isAdded) => dispatch(actions.setAdding(slipIndex,isAdded)),
+         onSetRemoving : (slipIndex, isRemoved) => dispatch(actions.setRemoving(slipIndex,isRemoved)),
          onSetEditIndex : (index) => dispatch(actions.setEditIndex(index)),
+         onSetPurchaseAll : () => dispatch(actions.setPurchaseAll()),
     };
 };
 

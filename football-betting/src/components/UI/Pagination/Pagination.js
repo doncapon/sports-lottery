@@ -1,18 +1,23 @@
 import React  from "react";
 import classes  from "./Pagination.module.css";
 
-const Pagination = (props) =>{
+const Pagination = React.memo( (props) =>{
     let navItems = [];
-    let end = 3 ;
+    let end = 3;
     let start = 1;
     let classesFul = []
     let rows = Math.floor((props.usedPages-1)/ props.show)+1;
+    let activePage = props.activePage;
+
      for(let i = 1 ; i <= rows ; i++){
-    classesFul.push(' col-md-3');
-    classesFul.push(classes.NavItem );
-        if (i === props.activePage){
+        classesFul.push(' col-md-3');
+        classesFul.push(classes.NavItem );
+  
+
+        if (i === activePage){
             classesFul.push( classes.Edit);
         }
+     
         navItems.push(<div className={ classesFul.join(' ') }
          onClick= {props.clicked} key={i}>
              {start} - {end} 
@@ -21,12 +26,11 @@ const Pagination = (props) =>{
         end += props.show;
         classesFul= []; 
     }
+    console.log(activePage);
     return (<div className = {'row ' + classes.NavItems}>
-        
             {navItems}
-        
     </div>);
-}
+});
 
 
 export default Pagination;

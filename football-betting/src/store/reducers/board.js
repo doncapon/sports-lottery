@@ -11,6 +11,7 @@ const initialStte = {
                 price: 0,
                 editing: true,
                 adding: false,
+                removing: false,
                 "slip_1":  { 
                             games: [
                                 {
@@ -137,40 +138,40 @@ const initialStte = {
                     }
             }
     ],
-    playingGames: {},
     editIndex : 0,
     totalPrice: 1,
-    disableAdd : true
+    purchaseAll: false,
 };
 
 const removeRowFromBetSlip = (state, action) =>{
     return produce(state, draft=>{
         if(draft.slips.length > 1){
-            const clonedSlips = _.cloneDeep(draft.slips);            
-            const filteredSlips = clonedSlips.filter((slip) =>{
-                return  slip.id !== action.deleteId;
-            });
-            for(let i = 0 ; i < filteredSlips.length; i++ ){
-                let indexStr = filteredSlips[i].id.split('_')[1];
-                let index = parseInt(indexStr);
-                let slipId = "slip_";
-                if((index - i) > 1){
-                    slipId += (i+1);
-                    filteredSlips[i].id = slipId;
+            const clonedSlips = _.cloneDeep(draft.slips);
+            let len = clonedSlips.length;
+            let remainderLen = len- action.deleteId -1;
+            clonedSlips.splice(action.deleteId, 1) ;
+            let newId = "slip_";
+            let oldId = "slip_"
+            for(let i = 0 ; i < remainderLen; i++ ){
+                    let k = i + action.deleteId;
+                    newId += (k+1);
+                    oldId += (k + 2);
+                    clonedSlips[k].id = newId;
+                    clonedSlips[k][newId] = clonedSlips[k][oldId];
+                    delete(clonedSlips[k][oldId]);
+                    newId = 'slip_';
+                    oldId = "slip_" ;
+            }
+                draft.slips = _.cloneDeep(clonedSlips);
+        }else{
+            const games = _.cloneDeep(state.slips[0]["slip_1"].games);
 
+            for(let i = 0; i < games.length; i++){
+                for(let k = 0 ; k < games[i]["game_" + (i+1)].sides.length; k++){
+                    delete(games[i]["game_" + (i+1)].sides[k].selected)
                 }
             }
-
-                draft.slips = _.cloneDeep(filteredSlips);
-        }else{
-            const games = draft.slips[0]["slip_1"].games;
-            games.map((game ,i) => {
-                    let sides = game["game_" + (i+1)].sides;
-                    return sides.map(side => {
-                        return side.selected = false;
-                    });
-            });
-
+       
             draft.slips[0]["slip_1"].games = games;
             draft.slips[0].purchasable = false
         }
@@ -181,8 +182,9 @@ const removeRowFromBetSlip = (state, action) =>{
 const setEditIndex = (state, action) =>{
         return { ...state,
             editIndex : action.position,
-            playingSlip: state.slips[action.position]
         }
+
+        
 }
 
 const setAdding=(state, action) =>{
@@ -191,8 +193,17 @@ const setAdding=(state, action) =>{
     })
 }
 
+const setRemoving=(state, action) =>{
+    return produce(state, draft =>{
+    
+        draft.slips[action.slipIndex].removing = action.removing
+    })
+}
+
 const addRowToBetSlip = (state, action) =>{
     return produce( state, draft =>{
+
+        
         const oldId = "slip_" + ( action.position + 1);
         const newId =  "slip_" + (draft.slips.length + 1);
         let clonedSlips = _.cloneDeep(draft.slips);
@@ -200,7 +211,7 @@ const addRowToBetSlip = (state, action) =>{
         let clonedUpdatedSlip = _.cloneDeep(updatedSlip[oldId]);
         let newslip = _.cloneDeep(clonedUpdatedSlip);
         
-        draft.slips.splice (draft.slips.length ,0, { id: newId, adding: false, [newId] : newslip});
+        draft.slips.splice (draft.slips.length ,0, { id: newId,adding: false,removing: false, [newId] : newslip});
 
     });
 }
@@ -219,33 +230,45 @@ const sideIsValid=(sides)=>{
 const checkPurchasable=(state, action)=>{
      
        return produce(state, draft=>{
-        let disable = false;
+        let purchasable = true;
 
         const slip = state.slips[action.slipIndex]["slip_" + (action.slipIndex + 1)];
         for(let i = 0 ; i < slip.games.length; i++){
             const isPurse = sideIsValid(slip.games[i]["game_"+ (i+1)].sides);
-            if(!isPurse && !disable){
-                disable = true;
+            if(!isPurse){
+                purchasable = false;
+                break;
             }
         }
-           draft.slips[action.slipIndex].purchasable = disable
+           draft.slips[action.slipIndex].purchasable = purchasable
        });
 }
 
 
-const disableAddButtons = (state, action)=>{
+
+const setPurchaseAll = (state, action)=>{
     return produce(state, draft =>{
-            let isValid = true;
-            for(let i = 0 ; i < state.slips.length; i++){
-                if( !draft.slips[i].purchasable){
-                    isValid = false;
-                    break;
+        let purchase = true;
+        for(let i = 0 ; i < state.slips.length; i++){
+            let purchasable = true;
+            const slip = state.slips[i]["slip_" + (i + 1)];
+                for(let k = 0 ; k < slip.games.length; k++){
+                    const isPurse = sideIsValid(slip.games[k]["game_"+ (k+1)].sides);
+                    if(!isPurse){
+                        purchasable = false;
+                        break;
+                    }
                 }
+
+            if( !purchasable){
+                purchase = false;
+                break;
             }
-        draft.disableAdd = isValid
+        }
+        draft.purchaseAll = purchase;
+
     })
 }
-
 
 
 
@@ -263,16 +286,18 @@ const reducer = (state = initialStte, action) =>{
             return setEditIndex(state , action);
         case actionTypes.SET_ADDING:
             return setAdding(state, action);
+        case actionTypes.SET_REMOVING:
+            return setRemoving(state, action);
         case actionTypes.TOGGLE_SELECTED_TILE:
             return toggleSelectedTile(state, action);
         case actionTypes.ADD_ROW_TO_BETSLIP:
             return addRowToBetSlip(state, action);
         case actionTypes.REMOVE_ROW_FROM_BETSLIP:
             return removeRowFromBetSlip(state, action);
-        case actionTypes.DISABLE_ADD_BUTTONS:
-            return disableAddButtons(state,action);
         case actionTypes.CHECK_PURCHASABLE:
             return checkPurchasable(state, action);
+        case actionTypes.PURCHASE_ALL:
+            return setPurchaseAll(state, action);
        default: 
             return state;
     }

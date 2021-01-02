@@ -10,11 +10,13 @@ import classes from "./BetSlip.module.css";
 import "./BetSlip.module.css";
 import Pagination from "../../components/UI/Pagination/Pagination";
 
-const BetSlip = (props) =>{
+const BetSlip = React.memo((props) =>{
 
-  const [activePage, setActivePage] = useState(1);
-  const [totalSlips, setTotalSlips] = useState(12);
-  const [displaySlips, setDisplaySlips] = useState(3);
+  let [activePage, setActivePage] = useState(1);
+  let [startPage, setStartPage] = useState(0);
+  let [endPage, setEndPage] = useState(3);
+  const totalSlips = useState(12)[0];
+  const displaySlips = useState(3)[0];
 
   const handlePageChange = (event) => {
     let newTag = event.target.innerHTML;
@@ -36,28 +38,70 @@ const BetSlip = (props) =>{
         k =1;
          break;
     }
+    let start = (k-1) * displaySlips;
+    let end = start + displaySlips;
+
+    setStartPage(start);
+    setEndPage(end); 
   
     setActivePage(k);
   };
-  const AddBetToTslip = (slipIndex, lastindex) => {
+  const ActivePageRemoveHandler = ()=>{
+    for(let i = 0 ; i < props.slips.length; i++)
+    console.log(i, props.slips[i].removing);
 
-    props.setAdding(slipIndex, true);
-    props.addBetSlip(slipIndex);
-    props.setEditIndex(props.slips.length);
-    setActivePage(Math.floor((props.slips.length/displaySlips)) +1);
-  };
+    let rest =props.slips.length - 1;
+     if(rest===  3|| rest=== 6 || 
+     rest === 7 ||
+     rest === 12
+     ){
+    console.log("I am heer");
 
-  const setEditIndex= (ind)=>{
-    if(ind !== props.editIndex){
-      props.setEditIndex(ind);
+                setStartPage(startPage - displaySlips);
+                setEndPage(endPage - displaySlips); 
+                setActivePage(activePage - 1 )        
     }
   }
+
+  const ActivePageAddHandler = ()=>{
+    let rest =props.slips.length;
+     if(rest===3 || 
+     rest=== 6 || 
+     rest === 9 
+     ){
+                setStartPage(startPage + displaySlips);
+                setEndPage(endPage +  displaySlips); 
+                setActivePage(activePage + 1 )        
+    }
+  }
+  
+  const AddBetToTslip = (slipIndex, lastindex) => {
+      props.setAdding(slipIndex, true);
+      props.addBetSlip(slipIndex);
+  
+      setEditIndex(lastindex);
+  
+      setActivePage(Math.floor((props.slips.length/displaySlips)) +1);
+      props.setPurchaseAll();
+      
+      ActivePageAddHandler();
+    
+  };
+  const setEditIndex= (ind)=>{
+      props.setEditIndex(ind);
+  }
   const RemoveBetFromSlip = (oldIndex) => {
+    if(oldIndex>0)
+    props.setRemoving(oldIndex, true);
+
     props.removeSlipSingle(oldIndex);
-    props.setEditIndex(props.slips.length-1);
+    if(props.slips.length>1)
+    setEditIndex(props.slips.length-2);
+    props.setPurchaseAll();
+
+    ActivePageRemoveHandler();
   };
     let betSlip = null;
-
     if (props.slips.length > 0) {
       betSlip = props.slips.map((slip, ind) => {
         return (
@@ -77,9 +121,7 @@ const BetSlip = (props) =>{
               background: "#f7f4bc",
               margin: '0 5% 10%',
             }}
-           
             >
-              {console.log(props.editIndex)}
             <div className="row">
               <div className="col-md-12 ">
                 <div style={{ fontWeight: "bold", marginBottom: '2%' }}>Slip {ind + 1}</div>
@@ -91,8 +133,7 @@ const BetSlip = (props) =>{
                 <BetItems key={ind} games={slip[slip.id].games} />
               </div>
             </div>
-
-            <div className={"row " + classes.Buttons}>
+            <div className={"row " + classes.Buttons} style={{marginBottom: '10%'}}>
               <div className="col-sm-3 offset-1">
                 <Button
                   size="md"
@@ -103,28 +144,28 @@ const BetSlip = (props) =>{
                 </Button>
               </div>
 
+              <div className="col-sm-3">
+                <Button
+                  variant="info"
+                  size="md"
+                  disabled={slip.disableDelete}
+                  onClick={() => RemoveBetFromSlip(ind)}
+                >
+                  <Trash2Fill />
+                </Button>
+              </div>
               <div className="col-sm-3 ">
                 <Button
                   onClick={() =>
                     AddBetToTslip(ind, props.slips.length)
                   }
                   size="md"
-                  variant="info"
+                  variant="primary"
                   disabled={
-                    props.disableAdd || props.slips.length > totalSlips -1
+                    !props.purchaseAll || props.slips.length > totalSlips -1
                   }
                 >
                   <PlusSquare size="15" />
-                </Button>
-              </div>
-              <div className="col-sm-3">
-                <Button
-                  variant="primary"
-                  size="md"
-                  disabled={slip.disableDelete}
-                  onClick={() => RemoveBetFromSlip(slip.id)}
-                >
-                  <Trash2Fill />
                 </Button>
               </div>
               </div>
@@ -136,17 +177,16 @@ const BetSlip = (props) =>{
     }
 
     let shownSlips = [];
-
-    let start = ((activePage-1)) * displaySlips;  
-    let end = start+ displaySlips;
     let newBetSlip = betSlip;
-     shownSlips = newBetSlip.slice( start ,end );
+    shownSlips = newBetSlip.slice(startPage,endPage);
+
     return (<>
       <div className={"row " + classes.BetSlip}>
         <div className="col-md-9">
         <Pagination activePage = {activePage}  
         usedPages = {props.slips.length}
         clicked = {(e)=>handlePageChange(e)}
+        previousCheck = {props.slips[props.slips.length-1].removing}
         show= {displaySlips} totalPages = {totalSlips} />
         </div>
         </div>
@@ -157,7 +197,9 @@ const BetSlip = (props) =>{
           </div>
         </>
     );
+  }, (prev, next) =>{
+    return  prev.activePage !== next.activePage
   }
-
+)
 
 export default BetSlip;
