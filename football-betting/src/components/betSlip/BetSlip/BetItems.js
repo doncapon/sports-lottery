@@ -13,28 +13,28 @@ const BetItems = (props) => {
           className={"col-lg-12 " + classes.BetItems}
           key={k}
           style={{
-            float: "left", marginBottom: '15%'
+            float: "left", marginBottom: '10%'
           }}
         >
-          <div className="row">
+          <div className="row" style= {{marginLeft: '0.1vw'}}>
             <div className="col-sm-2  ">
               <span style={{ float: "left", fontWeight: "bold" , marginBottom: '2%'}}>
                 {k + 1}.
               </span>
             </div>
-            <div className="col-sm-2  ">
+            <div className="col-sm-2 ">
               <BetTile
                 type={"home"}
                 selected={game[gameId + (k + 1)].sides[0].selected}
               />
             </div>
-            <div className="col-sm-2 offset-1 ">
+            <div className="col-sm-2 ">
               <BetTile
                 type={"draw"}
                 selected={game[gameId + (k + 1)].sides[1].selected}
               />
             </div>
-            <div className="col-sm-1 offset-1">
+            <div className="col-sm-2 ">
               <BetTile
                 type={"away"}
                 selected={game[gameId + (k + 1)].sides[2].selected}

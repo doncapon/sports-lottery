@@ -9,6 +9,8 @@ import {
 import classes from "./BetSlip.module.css";
 import "./BetSlip.module.css";
 import Pagination from "../../components/UI/Pagination/Pagination";
+import { Trash} from "react-bootstrap-icons";
+
 
 const BetSlip = React.memo((props) =>{
 
@@ -47,16 +49,11 @@ const BetSlip = React.memo((props) =>{
     setActivePage(k);
   };
   const ActivePageRemoveHandler = ()=>{
-    for(let i = 0 ; i < props.slips.length; i++)
-    console.log(i, props.slips[i].removing);
-
     let rest =props.slips.length - 1;
      if(rest===  3|| rest=== 6 || 
      rest === 7 ||
      rest === 12
      ){
-    console.log("I am heer");
-
                 setStartPage(startPage - displaySlips);
                 setEndPage(endPage - displaySlips); 
                 setActivePage(activePage - 1 )        
@@ -74,7 +71,13 @@ const BetSlip = React.memo((props) =>{
                 setActivePage(activePage + 1 )        
     }
   }
-  
+ const  HandleDeleteAllFromSlip=()=>{
+    props.deleteAndResetAll();
+    props.setEditIndex(0)
+
+    setStartPage(0);
+    setEndPage(3);
+}
   const AddBetToTslip = (slipIndex, lastindex) => {
       props.setAdding(slipIndex, true);
       props.addBetSlip(slipIndex);
@@ -129,7 +132,7 @@ const BetSlip = React.memo((props) =>{
             </div>
 
             <div className="row"    onClick={()=>setEditIndex(ind)}>
-              <div className="col-sm-12">
+              <div className="col-sm-12" >
                 <BetItems key={ind} games={slip[slip.id].games} />
               </div>
             </div>
@@ -181,6 +184,12 @@ const BetSlip = React.memo((props) =>{
     shownSlips = newBetSlip.slice(startPage,endPage);
 
     return (<>
+      {(props.slips.length > 0 )?  <div  className='row'  style={{paddingTop: '5px'}}>
+                                    <   div className= 'offset-9'> <span  style={{color: 'red',  
+                                            fontWeight: 'bold', }}>EMPTY<span style={{color: 'black', fontWeight: 'bold', marginRight: '4px'}}>?</span> </span> 
+                                            <Button onClick = {HandleDeleteAllFromSlip} size= 'sm' variant='outline-danger' ><Trash /></Button>
+                                        </div>
+                                    </div>: null }
       <div className={"row " + classes.BetSlip}>
         <div className="col-md-9">
         <Pagination activePage = {activePage}  

@@ -7,4 +7,5 @@ export {
      setEditIndex,
      setPurchaseAll,
      setRemoving,
+     deleteAndResetAll
 } from './board';

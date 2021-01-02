@@ -5,19 +5,19 @@ import PlayRow from "../../components/board/playRow/PlayRow/PlayRow.js";
 import { connect }  from "react-redux";
 import * as actions from '../../store/actions/index';
 import Betslip from "../Betslip/Betslip";
-import { Trash} from "react-bootstrap-icons";
 
 class Board extends Component {
+
     render (){
         return <div className = {'container-fluid ' + classes.Board}
          style= {{  margin: 'auto'}
          
          }>
   
-            <div className= 'row  justify-content-center' style= {{ margin: '25px auto'}}>
+            <div className= 'row  justify-content-center' style= {{ margin: '1% 0'}}>
           
                 <div className= ' col-lg-6 col-lg-5 col-md-8  col-md-4 col-sm-12 col-sm-6' style = 
-                {{background: 'white' , paddingTop: '84px', minWidth: '25%' }}>
+                {{background: 'white' , paddingTop: '110px', minWidth: '25%' }}>
                     <div className ='row' >
                         <PlayRow  toggleSelectedTile = {this.props.ontoggleSelectedTile} 
                          slips = {this.props.slips} checkPurchasable= {this.props.onIsPurchasing} 
@@ -29,16 +29,13 @@ class Board extends Component {
                 </div>
                 <div className = 'col-lg-5 col-lg-4 col-md-8 col-md-4 col-sm-12 col-sm-6' 
                 style={{ background:'#c6f5f3', minWidth: '25%'}} >
-     {(this.props.slips.length > 0 )?  <div  className='row'  style={{paddingTop: '5px'}}>
-                           <div className= 'offset-9'> <span  style={{color: 'red',  
-                                fontWeight: 'bold', }}>EMPTY<span style={{color: 'black', fontWeight: 'bold', marginRight: '4px'}}>?</span> </span> 
-                                <Button size= 'sm' variant='outline-danger' ><Trash /></Button> </div>
-                           </div>: null }
+
                     <div className= 'row' style= {{margin: 'auto'}}>
                         <div className= 'col-md-12 col-md-5 '>
                             <Betslip slips = {this.props.slips}  setAdding = {this.props.onSetAdding}
                             setRemoving = {this.props.onSetRemoving}
                             setPurchaseAll = {this.props.onSetPurchaseAll }
+                            deleteAndResetAll = {  this.props.onDeleteAndResetAll}
                               removeSlipSingle  = { this.props.onRemoveRowFromBetSlip }
                                purchaseAll= {this.props.purchaseAll} setEditIndex = {this.props.onSetEditIndex}
                                addBetSlip = {this.props.onAddRowToslips} editIndex={this.props.editIndex}
@@ -87,6 +84,7 @@ const mapDispatchToProps = dispatch => {
          onSetRemoving : (slipIndex, isRemoved) => dispatch(actions.setRemoving(slipIndex,isRemoved)),
          onSetEditIndex : (index) => dispatch(actions.setEditIndex(index)),
          onSetPurchaseAll : () => dispatch(actions.setPurchaseAll()),
+         onDeleteAndResetAll : () => dispatch(actions.deleteAndResetAll()),
     };
 };
 

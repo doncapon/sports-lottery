@@ -35,6 +35,12 @@ export const checkPurchasable = (index)=>{
     }
 }
 
+export const deleteAndResetAll = ()=>{
+    return {
+        type: actionTypes.DELETE_AND_RESET_ALL
+    }
+}
+
 export const toggleSelectedTile = (slipIndex, gameIndex,sideIndex, side) =>{
     return { 
         type : actionTypes.TOGGLE_SELECTED_TILE,

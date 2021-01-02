@@ -31,9 +31,9 @@ class BetTile extends Component {
                 break;
         }
      
-        return ( <div  className = {'row  '+ classesFul.join(' ') } 
+        return ( <div  className = {'row  '+ classesFul.join(' ')  } style={{width: '2vw'}} 
         onClick = {this.props.clicked}  selected = {this.props.selected} >
-            <div className= 'col-sm-1'>  { child}</div></div>);
+            <div className= 'col-sm-1' style={{fontSize: '2vv'}}>  { child}</div></div>);
         
 
             

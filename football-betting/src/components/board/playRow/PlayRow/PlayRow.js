@@ -18,9 +18,9 @@ const PlayRow = (props) => {
     "slip_" + (props.editIndex + 1)
   ].games.map((game, k) => {
     return (
-      <div className={"col-lg-10 offset-1 " + classes.PlayRow} style={{padding: '1%'}} key={k}>
+      <div className={"col-lg-12 col-lg-7 " + classes.PlayRow} style={{marginBottom: '1%'}} key={k}>
         <div className="row " style={{ background: "skyblue", padding: '0%' }}>
-          <div className={"col-lg-7 " + classes.Team}>
+          <div className={"col-lg-7 " + classes.Team}  style= {{padding: '1% 0'}}>
             <Team
               team1={game[gameId + (k + 1)].team1}
               team2={game[gameId + (k + 1)].team2}
@@ -29,7 +29,7 @@ const PlayRow = (props) => {
           </div>
           <div className={"col-lg-4 " + classes.RowChild}>
             {
-              <div className="row" >
+              <div className="row"  style={{paddingTop: '2%'}} >
                 <div className="col-md-3 offset-1 " >
                   <SingleTile
                     type={"home"}

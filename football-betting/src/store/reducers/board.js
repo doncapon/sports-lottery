@@ -34,106 +34,106 @@ const initialStte = {
                                             sides: [ {selected : false}, {selected : false}, {selected : false} ],
                                     }
                                 },
-                                // {
-                                //     id: "game_3",
-                                //     "game_3": { 
-                                //             team1 : 'Real Madrid', 
-                                //             team2: 'Barcelona',
-                                //             isValid: false,
-                                //             amount: 0,
-                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
-                                //     }
-                                // },
-                                // {
-                                //     id: "game_4",
-                                //     "game_4": { 
-                                //             team1 : 'Leicester city', 
-                                //             team2: 'Manchester city', 
-                                //             isValid: false,
-                                //             amount: 0,
-                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
-                                //     }
-                                // },
-                                // {
-                                //     id: "game_5",
-                                //     "game_5": { 
-                                //             team1 : 'Wolverhampton wonderers', 
-                                //             team2: 'Stoke city', 
-                                //             isValid: false,
-                                //             amount: 0,
-                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
-                                //     }
-                                // },
-                                // {
-                                //     id: "game_6",
-                                //     "game_6": { 
-                                //             team1 : 'Liverpool', 
-                                //             team2: 'Newcastle United',
-                                //             isValid: false,
-                                //             amount: 0,
-                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
-                                //     }
-                                // },
-                                // {
-                                //     id: "game_7",
-                                //     "game_7": { 
-                                //             team1 : 'Watford', 
-                                //             team2: 'Burnley FC',  
-                                //             isValid: false,
-                                //             amount: 0,
-                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
-                                //     }
-                                // },
-                                // {
-                                //     id: "game_8",
-                                //     "game_8": { 
-                                //             team1 : 'Everton', 
-                                //             team2: 'Tottenham HotSpur',  
-                                //             isValid: false,
-                                //             amount: 0, 
-                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
-                                //     }
-                                // },
-                                // {
-                                //     id: "game_9",
-                                //     "game_9": {
-                                //             team1 : 'Crystal Palace', 
-                                //             team2: 'HuddersField',  
-                                //             isValid: false,
-                                //             amount: 0,
-                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
-                                //     }
-                                // },
-                                // {
-                                //     id: "game_10",
-                                //     "game_10": {
-                                //             team1 : 'West Bromich Abion', 
-                                //             team2: 'WestHam United',  
-                                //             isValid: false,
-                                //             amount: 0,
-                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
-                                //     }
-                                // },
-                                // {
-                                //     id: "game_11",
-                                //     "game_11": { 
-                                //             team1 : 'Espanol', 
-                                //             team2: 'Getafe', 
-                                //             isValid: false,
-                                //             amount: 0,
-                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
-                                //     }
-                                // },
-                                // {
-                                //     id: "game_12",
-                                //     "game_12": {
-                                //             team1 : 'Southhampton', 
-                                //             team2: 'BrentFord',
-                                //             isValid: false,
-                                //             amount: 0,
-                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
-                                //     }
-                                // }
+                                {
+                                    id: "game_3",
+                                    "game_3": { 
+                                            team1 : 'Real Madrid', 
+                                            team2: 'Barcelona',
+                                            isValid: false,
+                                            amount: 0,
+                                            sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                    }
+                                },
+                                {
+                                    id: "game_4",
+                                    "game_4": { 
+                                            team1 : 'Leicester city', 
+                                            team2: 'Manchester city', 
+                                            isValid: false,
+                                            amount: 0,
+                                            sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                    }
+                                },
+                                {
+                                    id: "game_5",
+                                    "game_5": { 
+                                            team1 : 'Wolverhampton wonderers', 
+                                            team2: 'Stoke city', 
+                                            isValid: false,
+                                            amount: 0,
+                                            sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                    }
+                                },
+                                {
+                                    id: "game_6",
+                                    "game_6": { 
+                                            team1 : 'Liverpool', 
+                                            team2: 'Newcastle United',
+                                            isValid: false,
+                                            amount: 0,
+                                            sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                    }
+                                },
+                                {
+                                    id: "game_7",
+                                    "game_7": { 
+                                            team1 : 'Watford', 
+                                            team2: 'Burnley FC',  
+                                            isValid: false,
+                                            amount: 0,
+                                            sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                    }
+                                },
+                                {
+                                    id: "game_8",
+                                    "game_8": { 
+                                            team1 : 'Everton', 
+                                            team2: 'Tottenham HotSpur',  
+                                            isValid: false,
+                                            amount: 0, 
+                                            sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                    }
+                                },
+                                {
+                                    id: "game_9",
+                                    "game_9": {
+                                            team1 : 'Crystal Palace', 
+                                            team2: 'HuddersField',  
+                                            isValid: false,
+                                            amount: 0,
+                                            sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                    }
+                                },
+                                {
+                                    id: "game_10",
+                                    "game_10": {
+                                            team1 : 'West Bromich Abion', 
+                                            team2: 'WestHam United',  
+                                            isValid: false,
+                                            amount: 0,
+                                            sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                    }
+                                },
+                                {
+                                    id: "game_11",
+                                    "game_11": { 
+                                            team1 : 'Espanol', 
+                                            team2: 'Getafe', 
+                                            isValid: false,
+                                            amount: 0,
+                                            sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                    }
+                                },
+                                {
+                                    id: "game_12",
+                                    "game_12": {
+                                            team1 : 'Southhampton', 
+                                            team2: 'BrentFord',
+                                            isValid: false,
+                                            amount: 0,
+                                            sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                    }
+                                }
                             ]   
                     }
             }
@@ -142,6 +142,33 @@ const initialStte = {
     totalPrice: 1,
     purchaseAll: false,
 };
+
+const deleteAndResetAll = (state, action)=>{
+    return produce(state, draft => {
+        const clonedSlips = _.cloneDeep(state.slips);
+        if(state.slips.length>1){
+
+            clonedSlips.splice(1, state.slips.length) ;
+        }
+
+        if(clonedSlips.length <=1){
+        const games = _.cloneDeep(clonedSlips[0]["slip_1"].games);
+        const  side = {selected : false};
+        const len = 3;
+        for(let i = 0; i < games.length; i++){
+            for(let k = 0 ; k < len; k++){
+                games[i]["game_" + (i+1)].sides.push(side);
+            }
+            games[i]["game_" + (i+1)].sides.splice(0,3);
+        }
+    
+        clonedSlips[0]["slip_1"].games = games;
+        clonedSlips[0].purchasable = false
+
+        }
+        draft.slips = _.cloneDeep(clonedSlips);
+    })
+}
 
 const removeRowFromBetSlip = (state, action) =>{
     return produce(state, draft=>{
@@ -165,15 +192,19 @@ const removeRowFromBetSlip = (state, action) =>{
                 draft.slips = _.cloneDeep(clonedSlips);
         }else{
             const games = _.cloneDeep(state.slips[0]["slip_1"].games);
+            if(state.slips.length <= 1){
 
-            for(let i = 0; i < games.length; i++){
-                for(let k = 0 ; k < games[i]["game_" + (i+1)].sides.length; k++){
-                    delete(games[i]["game_" + (i+1)].sides[k].selected)
+                const  side = {selected : false};
+                const len = 3;
+                for(let i = 0; i < games.length; i++){
+                    for(let k = 0 ; k < len; k++){
+                        games[i]["game_" + (i+1)].sides.push(side);
+                    }
+                    games[i]["game_" + (i+1)].sides.splice(0,3);
                 }
+                draft.slips[0]["slip_1"].games = games;
+                draft.slips[0].purchasable = false
             }
-       
-            draft.slips[0]["slip_1"].games = games;
-            draft.slips[0].purchasable = false
         }
    });
    
@@ -181,10 +212,8 @@ const removeRowFromBetSlip = (state, action) =>{
 
 const setEditIndex = (state, action) =>{
         return { ...state,
-            editIndex : action.position,
-        }
-
-        
+            editIndex : action.position
+        }  
 }
 
 const setAdding=(state, action) =>{
@@ -298,6 +327,8 @@ const reducer = (state = initialStte, action) =>{
             return checkPurchasable(state, action);
         case actionTypes.PURCHASE_ALL:
             return setPurchaseAll(state, action);
+        case actionTypes.DELETE_AND_RESET_ALL:
+            return deleteAndResetAll(state, action);
        default: 
             return state;
     }

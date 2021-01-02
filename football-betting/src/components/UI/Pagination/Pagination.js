@@ -26,7 +26,6 @@ const Pagination = React.memo( (props) =>{
         end += props.show;
         classesFul= []; 
     }
-    console.log(activePage);
     return (<div className = {'row ' + classes.NavItems}>
             {navItems}
     </div>);

@@ -3,7 +3,9 @@
     margin-bottom: 5px;
     margin-left: 1%;
 }
-
+.NavItems:hover {
+cursor: pointer;
+}
 .NavItem {
     border-radius: 3px;
     padding: 2%;
