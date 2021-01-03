@@ -81,10 +81,16 @@ const BetSlip = React.memo(
       props.setPurchaseAll();
       ActivePageAddHandler();
       props.setTotalPrice();
-    };
+    }
+
+    const addEmptySlip =()=>{
+      props.addEmptySlip();
+      props.setPurchaseAll();
+
+    }
     const setEditIndex = (ind) => {
       props.setEditIndex(ind);
-    };
+    }
     const RemoveBetFromSlip = (oldIndex) => {
       if (oldIndex > 0) props.setRemoving(oldIndex, true);
 
@@ -209,6 +215,7 @@ const BetSlip = React.memo(
             <Button
               style={{ fontSize: '1.5vw'}}
               variant= 'secondary'
+              onClick = {addEmptySlip}
               disabled = {!props.purchaseAll}
              >ADD NEW ROW TO BETSLIP</Button>
           </div>
