@@ -3,7 +3,11 @@ export {
      addRowToBetSlip,
      removeRowFromBetSlip,
      checkPurchasable,
-     disableAddButtons,
      setAdding,
-     setEditIndex
+     setEditIndex,
+     setPurchaseAll,
+     setRemoving,
+     deleteAndResetAll,
+     claculateOverAllPrice,
+     calculateGrandTtoalPriceOfAllSlips
 } from './board';

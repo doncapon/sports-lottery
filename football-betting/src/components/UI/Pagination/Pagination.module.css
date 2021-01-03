@@ -1,0 +1,20 @@
+.NavItems {
+    font-size: 1.2em;
+    margin-bottom: 5px;
+    margin-left: 1%;
+}
+.NavItems:hover {
+cursor: pointer;
+}
+.NavItem {
+    border-radius: 3px;
+    padding: 2%;
+    border: 1px solid black;
+
+}
+
+.Edit{
+    background: skyblue;
+    border: 3px solid black;
+
+}

@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import classes from './BetTitles.module.css';
+import classes from './BetTitle.module.css';
 
-class BetTiles extends Component {
+class BetTile extends Component {
      render(){
-        let side = null;
         const classesFul = [];
 
-        classesFul.push(classes.BetTiles);
+        classesFul.push(classes.BetTile);
         let child = null;
         if(this.props.selected){
             classesFul.push(classes.Selected);
@@ -32,23 +31,19 @@ class BetTiles extends Component {
                 break;
         }
      
-
-        side = <div  className = { 'col-md-5 col-smd-4 col-md-3 ' + classesFul.join(' ') } 
-         style= {{float: 'left', textAlign: 'center'}}
-            onClick = {this.props.clicked}  selected = {this.props.selected}
-        >{child}</div>;
-        return < >     
-                {side}
-            </>
+        return ( <div  className = {'row  '+ classesFul.join(' ')  } style={{width: '2vw'}} 
+        onClick = {this.props.clicked}  selected = {this.props.selected} >
+            <div className= 'col-sm-1' style={{fontSize: '2vv'}}>  { child}</div></div>);
+        
 
             
     }
 
 }
 
-BetTiles.propTypes ={
+BetTile.propTypes ={
     type: PropTypes.string.isRequired
 };
 
 
-export default BetTiles;
+export default BetTile;
