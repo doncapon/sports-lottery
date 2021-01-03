@@ -9,5 +9,6 @@ export {
      setRemoving,
      deleteAndResetAll,
      claculateOverAllPrice,
-     calculateGrandTtoalPriceOfAllSlips
+     calculateGrandTtoalPriceOfAllSlips,
+     addEmptySlip
 } from './board';

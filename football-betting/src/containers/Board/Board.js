@@ -39,6 +39,7 @@ class Board extends Component {
                             setPurchaseAll = {this.props.onSetPurchaseAll }
                             setTotalPrice = {this.props.onSetTotalPrice}
                             deleteAndResetAll = {  this.props.onDeleteAndResetAll}
+                            addEmptySlip = {this.props.onAddEmptySlip}
                               removeSlipSingle  = { this.props.onRemoveRowFromBetSlip }
                                purchaseAll= {this.props.purchaseAll} setEditIndex = {this.props.onSetEditIndex}
                                addBetSlip = {this.props.onAddRowToslips} editIndex={this.props.editIndex}
@@ -47,7 +48,7 @@ class Board extends Component {
                         </div>
                     </div>
                     <div className= 'row ' >
-                        <div className='col-md-12' style = {{fontSize: '1.6vw',  float:'left'}}>
+                        <div className='col-md-12' style = {{fontSize: '1.6vw', float:'left'}}>
                             { (this.props.purchaseAll&& this.props.totalPrice > 0) ? <p style ={{fontWeight: 'bold' }} >
                                 <span style={{marginRight: '1vw'}}>Total Price:</span><span 
                             style={{fontSize: '1.6vw',color: 'blue' , fontWeight: 'bold'}}>
@@ -57,8 +58,9 @@ class Board extends Component {
                         </div>
                     </div>
                     <div className = 'row'>
-                        <div className='offset-6'  style={{marginTop: '0' , marginBottom: "2vh"}}>
-                            {this.props.purchaseAll? <Button variant= "success"  style={{padding: '1vw 2vw'}}
+                        <div className='offset-5'  style={{marginTop: '0' , marginBottom: "2vh"}}>
+                            {this.props.purchaseAll? <Button variant= "success"  style={{padding: '0.5vw 2vw',
+                             fontWeight: 'bold', fontSize: '4.5vh'}}
                                 clicked = {this.AddToslips} 
                             >CHECKOUT</Button>  : null }
                         </div>
@@ -95,6 +97,7 @@ const mapDispatchToProps = dispatch => {
          onSetPurchaseAll : () => dispatch(actions.setPurchaseAll()),
          onSetTotalPrice : () => dispatch(actions.calculateGrandTtoalPriceOfAllSlips()),
          onDeleteAndResetAll : () => dispatch(actions.deleteAndResetAll()),
+         onAddEmptySlip : () => dispatch(actions.addEmptySlip()),
          onClaculateOverAllPrice : (slip, game, side)=>dispatch(actions.claculateOverAllPrice(slip, game, side))
     };
 };

@@ -9,6 +9,14 @@ export const claculateOverAllPrice = (slipIndex, gameIndex, sideIndex)=>{
 }
 
 
+export const addEmptySlip = () =>{
+    return { 
+        type : actionTypes.ADD_EMPTY_SLIP,
+        
+    };
+}
+
+
 export const calculateSlipPrice = (slipIndex, gameIndex,sideIndex) =>{
     return { 
         type : actionTypes.CALCULATE_SLIP_PRICE,
