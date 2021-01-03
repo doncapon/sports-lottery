@@ -46,7 +46,16 @@ const BetSlip = React.memo(
       setEndPage(end);
 
       setActivePage(k);
-    };
+    }
+    const addEmptySlip =()=>{
+      props.addEmptySlip();
+      setEditIndex(props.slips.length);
+
+      props.setPurchaseAll();
+      ActivePageAddHandler();
+      props.setTotalPrice();
+    }
+
     const ActivePageRemoveHandler = () => {
       let rest = props.slips.length - 1;
       if (rest === 3 || rest === 6 || rest === 7 || rest === 12) {
@@ -71,7 +80,7 @@ const BetSlip = React.memo(
       setStartPage(0);
       setEndPage(3);
     };
-    const AddBetToTslip = (slipIndex, lastindex) => {
+    const copyBetSlip = (slipIndex, lastindex) => {
       props.setAdding(slipIndex, true);
       props.addBetSlip(slipIndex);
 
@@ -83,11 +92,6 @@ const BetSlip = React.memo(
       props.setTotalPrice();
     }
 
-    const addEmptySlip =()=>{
-      props.addEmptySlip();
-      props.setPurchaseAll();
-
-    }
     const setEditIndex = (ind) => {
       props.setEditIndex(ind);
     }
@@ -145,7 +149,7 @@ const BetSlip = React.memo(
                   <div className="row">
                     <div className="col-sm-3 ">
                       <Button
-                        onClick={() => AddBetToTslip(ind, props.slips.length)}
+                        onClick={() => copyBetSlip(ind, props.slips.length)}
                         size="lg"
                         variant="outline-primary"
                         disabled={

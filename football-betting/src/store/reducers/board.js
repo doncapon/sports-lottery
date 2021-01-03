@@ -8,8 +8,7 @@ const initialStte = {
              {
                 id:  "slip_1",
                 purchasable: false,
-                price: 0,
-                editing: true,
+                slipPrice: 0,
                 adding: false,
                 removing: false,
                 "slip_1":  { 
@@ -144,6 +143,42 @@ const initialStte = {
     basePrice: 25,
 };
 
+const checkPurchasable=(state, action)=>{
+     
+    return produce(state, draft=>{
+     let purchasable = true;
+
+     const slip = state.slips[action.slipIndex]["slip_" + (action.slipIndex + 1)];
+     for(let i = 0 ; i < slip.games.length; i++){
+         const isPurse = sideIsValid(slip.games[i]["game_"+ (i+1)].sides);
+         if(!isPurse){
+             purchasable = false;
+             break;
+         }
+     }
+        draft.slips[action.slipIndex].purchasable = purchasable;
+    });
+}
+
+const copyBetslip = (state, action) =>{
+    return produce( state, draft =>{
+
+        
+        const oldId = "slip_" + ( action.position + 1);
+        const newId =  "slip_" + (draft.slips.length + 1);
+        let clonedSlips = _.cloneDeep(draft.slips);
+        let updatedSlip =  _.cloneDeep(clonedSlips[action.position]);
+        let clonedUpdatedSlip = _.cloneDeep(updatedSlip[oldId]);
+        let newslip = _.cloneDeep(clonedUpdatedSlip);
+        
+        draft.slips.splice (draft.slips.length ,0, { id: newId, purchasable: true,
+             slipPrice: state.slips[action.position].slipPrice, adding: false,
+             removing: false, [newId] : newslip});
+    
+    });
+}
+
+
 const addEmptySlip= (state, action)=>{
     return produce(state, draft =>{
         const clonedSlips = _.cloneDeep(state.slips);
@@ -159,8 +194,13 @@ const addEmptySlip= (state, action)=>{
             games[i]["game_" + (i+1)].sides.push(side);
         }
         games[i]["game_" + (i+1)].sides.splice(0,3);
+        games[i].amount = 0;
     }
-    clonedSlip.purchasable = false
+    clonedSlip.purchasable = false;
+    clonedSlip.adding= false;
+    clonedSlip.removing= false;
+    clonedSlip.slipPrice = 0;
+    clonedSlip.id = newId;
     clonedSlip[newId] = clonedSlip[oldId];
     delete[clonedSlip[oldId]];
 
@@ -213,13 +253,12 @@ const calculateSlipPrice = (state, action) =>{
         let game = draft.slips[action.slipIndex]["slip_" + (action.slipIndex + 1)]
         .games[action.gameIndex];
         
-        let totalPrice = state.slips[action.slipIndex].price;
-        let purchasable = state.purchaseAll;
-        if(purchasable && totalPrice === 0){
-            totalPrice = draft.basePrice;
+        let totalPrice = _.cloneDeep(state.slips[action.slipIndex].slipPrice);
+        let purchasable = state.slips[action.slipIndex].purchasable;
+        if(purchasable && totalPrice === 0  && state.purchaseAll){
+            totalPrice = state.basePrice;
         }
-
-          
+        
         if(side){
             game.amount += 1;
         }else{
@@ -228,21 +267,26 @@ const calculateSlipPrice = (state, action) =>{
 
         if(purchasable && totalPrice > 0)
         {
+
             if(side){
-                if(game.amount === 2){
-                    totalPrice *=2;
+        if(game.amount === 2){
+                    totalPrice *= 2;
                 }else if(game.amount ===3){
                     totalPrice *= 1.5;
+
                 }
             }else{
-                if(game.amount === 1){
+        if(game.amount === 1){
                     totalPrice /=2;
                 }else if(game.amount ===2){
+
                     totalPrice /= 1.5;
+                }else{
+                    totalPrice = 0;
                 }
             }
         }
-        draft.slips[action.slipIndex].price = totalPrice;
+         draft.slips[action.slipIndex].slipPrice = totalPrice;
     });
 }
 
@@ -251,7 +295,7 @@ const calculateGrandTtoalPriceOfAllSlips = (state, action) =>{
         let slips = state.slips;
         let totalPrice =0;
         slips.forEach((slip, i ) =>{
-            totalPrice += slip.price;
+            totalPrice += slip.slipPrice;
         });
     
         draft.totalPrice = totalPrice;
@@ -316,23 +360,6 @@ const setRemoving=(state, action) =>{
     })
 }
 
-const addRowToBetSlip = (state, action) =>{
-    return produce( state, draft =>{
-
-        
-        const oldId = "slip_" + ( action.position + 1);
-        const newId =  "slip_" + (draft.slips.length + 1);
-        let clonedSlips = _.cloneDeep(draft.slips);
-        let updatedSlip =  _.cloneDeep(clonedSlips[action.position]);
-        let clonedUpdatedSlip = _.cloneDeep(updatedSlip[oldId]);
-        let newslip = _.cloneDeep(clonedUpdatedSlip);
-        
-        draft.slips.splice (draft.slips.length ,0, { id: newId, purchasable: true,price: state.slips[action.position].price, adding: false,removing: false, [newId] : newslip});
-        console.log(state.slips);
-    
-    });
-}
-
 const sideIsValid=(sides)=>{
     let allValid = false;
     for(let side of sides){
@@ -343,25 +370,6 @@ const sideIsValid=(sides)=>{
     }
     return allValid;
 }
-
-const checkPurchasable=(state, action)=>{
-     
-       return produce(state, draft=>{
-        let purchasable = true;
-
-        const slip = state.slips[action.slipIndex]["slip_" + (action.slipIndex + 1)];
-        for(let i = 0 ; i < slip.games.length; i++){
-            const isPurse = sideIsValid(slip.games[i]["game_"+ (i+1)].sides);
-            if(!isPurse){
-                purchasable = false;
-                break;
-            }
-        }
-           draft.slips[action.slipIndex].purchasable = purchasable
-       });
-}
-
-
 
 const setPurchaseAll = (state, action)=>{
     return produce(state, draft =>{
@@ -400,8 +408,8 @@ const reducer = (state = initialStte, action) =>{
             return setRemoving(state, action);
         case actionTypes.TOGGLE_SELECTED_TILE:
             return toggleSelectedTile(state, action);
-        case actionTypes.ADD_ROW_TO_BETSLIP:
-            return addRowToBetSlip(state, action);
+        case actionTypes.COPY_BETSLIP:
+            return copyBetslip(state, action);
         case actionTypes.REMOVE_ROW_FROM_BETSLIP:
             return removeRowFromBetSlip(state, action);
         case actionTypes.CHECK_PURCHASABLE:

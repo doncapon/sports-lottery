@@ -22,19 +22,19 @@ const BetItems = (props) => {
                 {k + 1}.
               </span>
             </div>
-            <div className="col-sm-2 ">
+            <div className="col-sm-2 " style={{ marginLeft: '0.2vw'}}>
               <BetTile
                 type={"home"}
                 selected={game[gameId + (k + 1)].sides[0].selected}
               />
             </div>
-            <div className="col-sm-2 ">
+            <div className="col-sm-2" style={{ marginLeft: '0.5vw'}}>
               <BetTile
                 type={"draw"}
                 selected={game[gameId + (k + 1)].sides[1].selected}
               />
             </div>
-            <div className="col-sm-2 ">
+            <div className="col-sm-2 " style={{ marginLeft: '0.5vw'}}> 
               <BetTile
                 type={"away"}
                 selected={game[gameId + (k + 1)].sides[2].selected}

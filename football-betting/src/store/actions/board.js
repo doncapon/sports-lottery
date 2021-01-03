@@ -1,7 +1,7 @@
 import * as actionTypes from './actionTypes';
 
 
-export const claculateOverAllPrice = (slipIndex, gameIndex, sideIndex)=>{
+export const calculateOverAllPrice = (slipIndex, gameIndex, sideIndex)=>{
     return dispatch =>{
         dispatch(calculateSlipPrice(slipIndex, gameIndex, sideIndex));
         dispatch(calculateGrandTtoalPriceOfAllSlips(slipIndex));
@@ -22,7 +22,7 @@ export const calculateSlipPrice = (slipIndex, gameIndex,sideIndex) =>{
         type : actionTypes.CALCULATE_SLIP_PRICE,
         slipIndex: slipIndex,
         gameIndex : gameIndex,
-        sideIndex : sideIndex,
+        sideIndex : sideIndex
         
     };
 }
@@ -87,9 +87,9 @@ export const toggleSelectedTile = (slipIndex, gameIndex,sideIndex, side) =>{
     };
 }
 
-export const addRowToBetSlip = (position) =>{
+export const copyBetslip = (position) =>{
     return { 
-        type: actionTypes.ADD_ROW_TO_BETSLIP,
+        type: actionTypes.COPY_BETSLIP,
         position: position
     };
 }
