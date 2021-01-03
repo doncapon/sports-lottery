@@ -1,14 +1,18 @@
 .NavItems {
     font-size: 1.2em;
-    margin-bottom: 5px;
-    margin-left: 1%;
+    margin-bottom: 1.4vw;
 }
 .NavItems:hover {
-cursor: pointer;
+    cursor: pointer;
+}
+.NavItem:hover {
+    cursor: pointer;
+    background: skyblue;
+
 }
 .NavItem {
     border-radius: 3px;
-    padding: 2%;
+    padding: 0.5vw;
     border: 1px solid black;
 
 }

@@ -10,7 +10,7 @@ const Pagination = React.memo( (props) =>{
     let activePage = props.activePage;
 
      for(let i = 1 ; i <= rows ; i++){
-        classesFul.push(' col-md-3');
+        classesFul.push(' col-md-2');
         classesFul.push(classes.NavItem );
   
 
