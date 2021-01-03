@@ -9,6 +9,7 @@ const PlayRow = (props) => {
     props.checkPurchasable(slipIndex);
     props.setPurchaseAll();
     props.calculateTotalPrice(slipIndex,gameIndex, sideIndex);
+    props.checkPurchasable(slipIndex);
   };
 
   let board = [];

@@ -18,12 +18,12 @@ class Board extends Component {
             <div className= 'row  justify-content-center' style= {{ margin: '1% 0'}}>
           
                 <div className= ' col-lg-6 col-lg-5 col-md-8  col-md-4 col-sm-12 col-sm-6' style = 
-                {{background: 'white' , paddingTop: '110px', minWidth: '25%' }}>
+                {{background: 'white' , paddingTop: '26.5vh', minWidth: '25%' }}>
                     <div className ='row' >
                         <PlayRow  toggleSelectedTile = {this.props.ontoggleSelectedTile} 
                          slips = {this.props.slips} checkPurchasable= {this.props.onIsPurchasing} 
                           setPurchaseAll = {this.props.onSetPurchaseAll } playingGames = {this.props.playingGames }
-                             editIndex={this.props.editIndex}
+                            editIndex={this.props.editIndex}
                              calculateTotalPrice = { this.props.onClaculateOverAllPrice}
                         />
                         
@@ -35,7 +35,7 @@ class Board extends Component {
                     <div className= 'row' style= {{margin: 'auto'}}>
                         <div className= 'col-md-12 col-md-5 '>
                             <Betslip slips = {this.props.slips}  setAdding = {this.props.onSetAdding}
-                            setRemoving = {this.props.onSetRemoving}
+                            setRemoving = {this.props.onSetRemoving} 
                             setPurchaseAll = {this.props.onSetPurchaseAll }
                             setTotalPrice = {this.props.onSetTotalPrice}
                             deleteAndResetAll = {  this.props.onDeleteAndResetAll}
@@ -48,7 +48,8 @@ class Board extends Component {
                     </div>
                     <div className= 'row ' >
                         <div className='col-md-12' style = {{fontSize: '1.6vw',  float:'left'}}>
-                            { (this.props.purchaseAll&& this.props.totalPrice > 0) ? <p style ={{fontWeight: 'bold' }} ><span style={{marginRight: '1vw'}}>Total Price:</span><span 
+                            { (this.props.purchaseAll&& this.props.totalPrice > 0) ? <p style ={{fontWeight: 'bold' }} >
+                                <span style={{marginRight: '1vw'}}>Total Price:</span><span 
                             style={{fontSize: '1.6vw',color: 'blue' , fontWeight: 'bold'}}>
                                 <NumberFormat value={ this.props.totalPrice}  displayType={'text'} thousandSeparator={true} prefix={'₦'} />
                                 </span>
@@ -90,6 +91,7 @@ const mapDispatchToProps = dispatch => {
          onSetAdding : (slipIndex, isAdded) => dispatch(actions.setAdding(slipIndex,isAdded)),
          onSetRemoving : (slipIndex, isRemoved) => dispatch(actions.setRemoving(slipIndex,isRemoved)),
          onSetEditIndex : (index) => dispatch(actions.setEditIndex(index)),
+         onCheckPurchasable : (index) => dispatch(actions.checkPurchasable(index)),
          onSetPurchaseAll : () => dispatch(actions.setPurchaseAll()),
          onSetTotalPrice : () => dispatch(actions.calculateGrandTtoalPriceOfAllSlips()),
          onDeleteAndResetAll : () => dispatch(actions.deleteAndResetAll()),

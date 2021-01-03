@@ -5,7 +5,6 @@ export const claculateOverAllPrice = (slipIndex, gameIndex, sideIndex)=>{
     return dispatch =>{
         dispatch(calculateSlipPrice(slipIndex, gameIndex, sideIndex));
         dispatch(calculateGrandTtoalPriceOfAllSlips(slipIndex));
-        dispatch(checkPurchasable(slipIndex));
     }
 }
 
