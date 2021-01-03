@@ -88,6 +88,7 @@ const BetSlip = React.memo((props) =>{
       props.setPurchaseAll();
       
       ActivePageAddHandler();
+      props.setTotalPrice();
     
   };
   const setEditIndex= (ind)=>{
@@ -139,7 +140,7 @@ const BetSlip = React.memo((props) =>{
             <div className={"row " + classes.Buttons} style={{marginBottom: '10%'}}>
               <div className="col-sm-3 offset-1">
                 <Button
-                  size="md"
+                  size="sm"
                   variant="outline-info"
                  onClick={()=>setEditIndex(ind)}
                 >
@@ -150,7 +151,7 @@ const BetSlip = React.memo((props) =>{
               <div className="col-sm-3">
                 <Button
                   variant="info"
-                  size="md"
+                  size="sm"
                   disabled={slip.disableDelete}
                   onClick={() => RemoveBetFromSlip(ind)}
                 >
@@ -162,7 +163,7 @@ const BetSlip = React.memo((props) =>{
                   onClick={() =>
                     AddBetToTslip(ind, props.slips.length)
                   }
-                  size="md"
+                  size="sm"
                   variant="primary"
                   disabled={
                     !props.purchaseAll || props.slips.length > totalSlips -1

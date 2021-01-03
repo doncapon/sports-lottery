@@ -1,6 +1,35 @@
 import * as actionTypes from './actionTypes';
 
 
+export const claculateOverAllPrice = (slipIndex, gameIndex, sideIndex)=>{
+    return dispatch =>{
+        dispatch(calculateSlipPrice(slipIndex, gameIndex, sideIndex));
+        dispatch(calculateGrandTtoalPriceOfAllSlips(slipIndex));
+        dispatch(checkPurchasable(slipIndex));
+    }
+}
+
+
+export const calculateSlipPrice = (slipIndex, gameIndex,sideIndex) =>{
+    return { 
+        type : actionTypes.CALCULATE_SLIP_PRICE,
+        slipIndex: slipIndex,
+        gameIndex : gameIndex,
+        sideIndex : sideIndex,
+        
+    };
+}
+
+
+export const calculateGrandTtoalPriceOfAllSlips = (slipIndex) =>{
+    return { 
+        type : actionTypes.CALCULAT_GRAND_tOTAL,
+        slipIndex: slipIndex,
+        
+    };
+}
+
+
 export const setEditIndex= (index)=>{
     return {
         type: actionTypes.SET_EDITING_INDEX,

@@ -16,121 +16,121 @@ const initialStte = {
                             games: [
                                 {
                                     id: "game_1",
+                                    amount: 0,
                                     "game_1": {
                                             team1 : 'Manchester United',
                                             team2: 'Watford FC' ,
                                             isValid: false,
-                                            amount: 0,
                                             sides: [ {selected : false}, {selected : false}, {selected : false} ],
                                     }
                                 },
                                 {
                                     id: "game_2",
+                                    amount: 0,     
                                     "game_2": {
                                             team1 : 'Chelsea',
                                             team2: 'Arsenal',  
                                             isValid: false,
-                                            amount: 0,     
                                             sides: [ {selected : false}, {selected : false}, {selected : false} ],
                                     }
                                 },
                                 {
                                     id: "game_3",
+                                    amount: 0,
                                     "game_3": { 
                                             team1 : 'Real Madrid', 
                                             team2: 'Barcelona',
                                             isValid: false,
-                                            amount: 0,
                                             sides: [{selected : false}, {selected : false}, {selected : false} ]
                                     }
                                 },
                                 {
                                     id: "game_4",
+                                    amount: 0,
                                     "game_4": { 
                                             team1 : 'Leicester city', 
                                             team2: 'Manchester city', 
                                             isValid: false,
-                                            amount: 0,
                                             sides: [{selected : false}, {selected : false}, {selected : false} ]
                                     }
                                 },
                                 {
                                     id: "game_5",
+                                    amount: 0,
                                     "game_5": { 
                                             team1 : 'Wolverhampton wonderers', 
                                             team2: 'Stoke city', 
                                             isValid: false,
-                                            amount: 0,
                                             sides: [{selected : false}, {selected : false}, {selected : false} ]
                                     }
                                 },
                                 {
                                     id: "game_6",
+                                    amount: 0,
                                     "game_6": { 
                                             team1 : 'Liverpool', 
                                             team2: 'Newcastle United',
                                             isValid: false,
-                                            amount: 0,
                                             sides: [{selected : false}, {selected : false}, {selected : false} ]
                                     }
                                 },
                                 {
                                     id: "game_7",
+                                    amount: 0,
                                     "game_7": { 
                                             team1 : 'Watford', 
                                             team2: 'Burnley FC',  
                                             isValid: false,
-                                            amount: 0,
                                             sides: [{selected : false}, {selected : false}, {selected : false} ]
                                     }
                                 },
                                 {
                                     id: "game_8",
+                                    amount: 0, 
                                     "game_8": { 
                                             team1 : 'Everton', 
                                             team2: 'Tottenham HotSpur',  
                                             isValid: false,
-                                            amount: 0, 
                                             sides: [{selected : false}, {selected : false}, {selected : false} ]
                                     }
                                 },
                                 {
                                     id: "game_9",
+                                    amount: 0,
                                     "game_9": {
                                             team1 : 'Crystal Palace', 
                                             team2: 'HuddersField',  
                                             isValid: false,
-                                            amount: 0,
                                             sides: [{selected : false}, {selected : false}, {selected : false} ]
                                     }
                                 },
                                 {
                                     id: "game_10",
+                                    amount: 0,
                                     "game_10": {
                                             team1 : 'West Bromich Abion', 
                                             team2: 'WestHam United',  
                                             isValid: false,
-                                            amount: 0,
                                             sides: [{selected : false}, {selected : false}, {selected : false} ]
                                     }
                                 },
                                 {
                                     id: "game_11",
+                                    amount: 0,
                                     "game_11": { 
                                             team1 : 'Espanol', 
                                             team2: 'Getafe', 
                                             isValid: false,
-                                            amount: 0,
                                             sides: [{selected : false}, {selected : false}, {selected : false} ]
                                     }
                                 },
                                 {
                                     id: "game_12",
+                                    amount: 0,
                                     "game_12": {
                                             team1 : 'Southhampton', 
                                             team2: 'BrentFord',
                                             isValid: false,
-                                            amount: 0,
                                             sides: [{selected : false}, {selected : false}, {selected : false} ]
                                     }
                                 }
@@ -139,9 +139,72 @@ const initialStte = {
             }
     ],
     editIndex : 0,
-    totalPrice: 1,
+    totalPrice: 0,
     purchaseAll: false,
+    basePrice: 25,
 };
+
+const toggleSelectedTile = (state, action) =>{   
+    return produce (state, draft =>{
+        draft.slips[action.slipIndex]["slip_" + (action.slipIndex + 1)]
+        .games[action.gameIndex]['game_' + (action.gameIndex+ 1)]
+        .sides[action.sideIndex].selected = !action.side;
+    });
+}
+
+
+const calculateSlipPrice = (state, action) =>{
+    return produce (state, draft =>{
+        let side = draft.slips[action.slipIndex]["slip_" + (action.slipIndex + 1)]
+        .games[action.gameIndex]['game_' + (action.gameIndex+ 1)]
+        .sides[action.sideIndex].selected;
+        let game = draft.slips[action.slipIndex]["slip_" + (action.slipIndex + 1)]
+        .games[action.gameIndex];
+        
+        let totalPrice = state.slips[action.slipIndex].price;
+        let purchasable = state.purchaseAll;
+        if(purchasable && totalPrice === 0){
+            totalPrice = draft.basePrice;
+        }
+
+          
+        if(side){
+            game.amount += 1;
+        }else{
+            game.amount -= 1;
+        }
+
+        if(purchasable && totalPrice > 0)
+        {
+            if(side){
+                if(game.amount === 2){
+                    totalPrice *=2;
+                }else if(game.amount ===3){
+                    totalPrice *= 1.5;
+                }
+            }else{
+                if(game.amount === 1){
+                    totalPrice /=2;
+                }else if(game.amount ===2){
+                    totalPrice /= 1.5;
+                }
+            }
+        }
+        draft.slips[action.slipIndex].price = totalPrice;
+    });
+}
+
+const calculateGrandTtoalPriceOfAllSlips = (state, action) =>{
+    return produce(state, draft=>{
+        let slips = state.slips;
+        let totalPrice =0;
+        slips.forEach((slip, i ) =>{
+            totalPrice += slip.price;
+        });
+    
+        draft.totalPrice = totalPrice;
+    })
+}
 
 const deleteAndResetAll = (state, action)=>{
     return produce(state, draft => {
@@ -240,8 +303,9 @@ const addRowToBetSlip = (state, action) =>{
         let clonedUpdatedSlip = _.cloneDeep(updatedSlip[oldId]);
         let newslip = _.cloneDeep(clonedUpdatedSlip);
         
-        draft.slips.splice (draft.slips.length ,0, { id: newId,adding: false,removing: false, [newId] : newslip});
-
+        draft.slips.splice (draft.slips.length ,0, { id: newId, purchasable: true,price: state.slips[action.position].price, adding: false,removing: false, [newId] : newslip});
+        console.log(state.slips);
+    
     });
 }
 
@@ -300,15 +364,6 @@ const setPurchaseAll = (state, action)=>{
 }
 
 
-
-const toggleSelectedTile = (state, action) =>{   
-    return produce (state, draft =>{
-        draft.slips[action.slipIndex]["slip_" + (action.slipIndex + 1)]
-        .games[action.gameIndex]['game_' + (action.gameIndex+ 1)]
-        .sides[action.sideIndex].selected = !action.side;
-    });
-}
-
 const reducer = (state = initialStte, action) =>{
     switch (action.type){
         case actionTypes.SET_EDITING_INDEX:
@@ -329,6 +384,10 @@ const reducer = (state = initialStte, action) =>{
             return setPurchaseAll(state, action);
         case actionTypes.DELETE_AND_RESET_ALL:
             return deleteAndResetAll(state, action);
+        case actionTypes.CALCULATE_SLIP_PRICE:
+            return calculateSlipPrice(state, action);
+        case actionTypes.CALCULAT_GRAND_tOTAL:
+            return calculateGrandTtoalPriceOfAllSlips(state,action);
        default: 
             return state;
     }

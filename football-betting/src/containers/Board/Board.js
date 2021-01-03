@@ -5,6 +5,7 @@ import PlayRow from "../../components/board/playRow/PlayRow/PlayRow.js";
 import { connect }  from "react-redux";
 import * as actions from '../../store/actions/index';
 import Betslip from "../Betslip/Betslip";
+import NumberFormat from 'react-number-format';
 
 class Board extends Component {
 
@@ -23,6 +24,7 @@ class Board extends Component {
                          slips = {this.props.slips} checkPurchasable= {this.props.onIsPurchasing} 
                           setPurchaseAll = {this.props.onSetPurchaseAll } playingGames = {this.props.playingGames }
                              editIndex={this.props.editIndex}
+                             calculateTotalPrice = { this.props.onClaculateOverAllPrice}
                         />
                         
                     </div>
@@ -35,25 +37,30 @@ class Board extends Component {
                             <Betslip slips = {this.props.slips}  setAdding = {this.props.onSetAdding}
                             setRemoving = {this.props.onSetRemoving}
                             setPurchaseAll = {this.props.onSetPurchaseAll }
+                            setTotalPrice = {this.props.onSetTotalPrice}
                             deleteAndResetAll = {  this.props.onDeleteAndResetAll}
                               removeSlipSingle  = { this.props.onRemoveRowFromBetSlip }
                                purchaseAll= {this.props.purchaseAll} setEditIndex = {this.props.onSetEditIndex}
                                addBetSlip = {this.props.onAddRowToslips} editIndex={this.props.editIndex}
                               />
+                              
                         </div>
                     </div>
-                    <div className= 'row' >
-                        <div className='col-md-4' style = {{fontSize: '1.3em',}}>
-                            { this.props.grandTotalPrice > 0 ? <p style ={{fontWeight: 'bold'}} >Total Price:<span 
-                            style={{fontSize: '1.4em',color: 'white' , fontWeight: 'bold'}}> {this.props.totalPrice} </span>
-                            <span style={{color: 'green', fontWeight: 'bold'}}>Naira</span></p>  : null }
+                    <div className= 'row ' >
+                        <div className='col-md-12' style = {{fontSize: '1.6vw',  float:'left'}}>
+                            { (this.props.purchaseAll&& this.props.totalPrice > 0) ? <p style ={{fontWeight: 'bold' }} ><span style={{marginRight: '1vw'}}>Total Price:</span><span 
+                            style={{fontSize: '1.6vw',color: 'blue' , fontWeight: 'bold'}}>
+                                <NumberFormat value={ this.props.totalPrice}  displayType={'text'} thousandSeparator={true} prefix={'₦'} />
+                                </span>
+                            <span style={{color: 'green', fontWeight: 'bold' , marginLeft: '0.2vw'}}>NAIRA</span></p>  : null }
                         </div>
-                        <div className='offset-8' style={{marginTop: '10px'}}>
-                            {this.props.allRowsValid? <Button variant= "success" 
+                    </div>
+                    <div className = 'row'>
+                        <div className='offset-6'  style={{marginTop: '0' , marginBottom: "2vh"}}>
+                            {this.props.purchaseAll? <Button variant= "success"  style={{padding: '1vw 2vw'}}
                                 clicked = {this.AddToslips} 
                             >CHECKOUT</Button>  : null }
                         </div>
-                        
                     </div>
             
                 </div>
@@ -84,7 +91,9 @@ const mapDispatchToProps = dispatch => {
          onSetRemoving : (slipIndex, isRemoved) => dispatch(actions.setRemoving(slipIndex,isRemoved)),
          onSetEditIndex : (index) => dispatch(actions.setEditIndex(index)),
          onSetPurchaseAll : () => dispatch(actions.setPurchaseAll()),
+         onSetTotalPrice : () => dispatch(actions.calculateGrandTtoalPriceOfAllSlips()),
          onDeleteAndResetAll : () => dispatch(actions.deleteAndResetAll()),
+         onClaculateOverAllPrice : (slip, game, side)=>dispatch(actions.claculateOverAllPrice(slip, game, side))
     };
 };
 

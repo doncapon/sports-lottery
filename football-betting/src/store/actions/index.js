@@ -7,5 +7,7 @@ export {
      setEditIndex,
      setPurchaseAll,
      setRemoving,
-     deleteAndResetAll
+     deleteAndResetAll,
+     claculateOverAllPrice,
+     calculateGrandTtoalPriceOfAllSlips
 } from './board';

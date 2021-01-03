@@ -8,6 +8,7 @@ const PlayRow = (props) => {
     props.toggleSelectedTile(slipIndex, gameIndex, sideIndex, side);
     props.checkPurchasable(slipIndex);
     props.setPurchaseAll();
+    props.calculateTotalPrice(slipIndex,gameIndex, sideIndex);
   };
 
   let board = [];
