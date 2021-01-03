@@ -14,17 +14,16 @@ class Board extends Component {
          style= {{  margin: 'auto'}
          
          }>
-  
             <div className= 'row  justify-content-center' style= {{ margin: '1% 0'}}>
           
                 <div className= ' col-lg-6 col-lg-5 col-md-8  col-md-4 col-sm-12 col-sm-6' style = 
-                {{background: 'white' , paddingTop: '26.5vh', minWidth: '25%' }}>
+                {{background: 'white' , paddingTop: '28vh', minWidth: '25%' }}>
                     <div className ='row' >
                         <PlayRow  toggleSelectedTile = {this.props.ontoggleSelectedTile} 
                          slips = {this.props.slips} checkPurchasable= {this.props.onIsPurchasing} 
                           setPurchaseAll = {this.props.onSetPurchaseAll } playingGames = {this.props.playingGames }
                             editIndex={this.props.editIndex}
-                             calculateTotalPrice = { this.props.onClaculateOverAllPrice}
+                             calculateTotalPrice = { this.props.onCalculateOverAllPrice}
                         />
                         
                     </div>
@@ -37,6 +36,7 @@ class Board extends Component {
                             <Betslip slips = {this.props.slips}  setAdding = {this.props.onSetAdding}
                             setRemoving = {this.props.onSetRemoving} 
                             setPurchaseAll = {this.props.onSetPurchaseAll }
+                            checkPurchasable = {this.props.onCheckPurchasable}
                             setTotalPrice = {this.props.onSetTotalPrice}
                             deleteAndResetAll = {  this.props.onDeleteAndResetAll}
                             addEmptySlip = {this.props.onAddEmptySlip}
@@ -87,7 +87,7 @@ const mapDispatchToProps = dispatch => {
     return {
         ontoggleSelectedTile : (slipIndex, gameIndex, sideIndex, side) =>
                              dispatch ( actions.toggleSelectedTile( slipIndex, gameIndex, sideIndex, side)),
-         onAddRowToslips : (postion) => dispatch ( actions.addRowToBetSlip(postion)),
+         onAddRowToslips : (postion) => dispatch ( actions.copyBetslip(postion)),
          onRemoveRowFromBetSlip: (deleteId) => dispatch(actions.removeRowFromBetSlip(deleteId)),
          onIsPurchasing : (index) => dispatch(actions.checkPurchasable(index)),
          onSetAdding : (slipIndex, isAdded) => dispatch(actions.setAdding(slipIndex,isAdded)),
@@ -98,7 +98,7 @@ const mapDispatchToProps = dispatch => {
          onSetTotalPrice : () => dispatch(actions.calculateGrandTtoalPriceOfAllSlips()),
          onDeleteAndResetAll : () => dispatch(actions.deleteAndResetAll()),
          onAddEmptySlip : () => dispatch(actions.addEmptySlip()),
-         onClaculateOverAllPrice : (slip, game, side)=>dispatch(actions.claculateOverAllPrice(slip, game, side))
+         onCalculateOverAllPrice : (slip, game, side)=>dispatch(actions.calculateOverAllPrice(slip, game, side))
     };
 };
 

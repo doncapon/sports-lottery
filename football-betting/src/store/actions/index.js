@@ -1,6 +1,6 @@
 export {
      toggleSelectedTile,
-     addRowToBetSlip,
+     copyBetslip,
      removeRowFromBetSlip,
      checkPurchasable,
      setAdding,
@@ -8,7 +8,7 @@ export {
      setPurchaseAll,
      setRemoving,
      deleteAndResetAll,
-     claculateOverAllPrice,
+     calculateOverAllPrice,
      calculateGrandTtoalPriceOfAllSlips,
      addEmptySlip
 } from './board';
