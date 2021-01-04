@@ -1,4 +1,5 @@
 export {
+     setBoard,
      toggleSelectedTile,
      copyBetslip,
      removeRowFromBetSlip,

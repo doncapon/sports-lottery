@@ -10,31 +10,31 @@ const BetItems = (props) => {
     betrows = props.games.map((game, k) => {
       return (
         <div
-          className={"col-lg-12 " + classes.BetItems}
+          className={"col-md-12 " + classes.BetItems}
           key={k}
           style={{
             float: "left", marginBottom: '10%'
           }}
         >
-          <div className="row" style= {{marginLeft: '0.1vw'}}>
-            <div className="col-sm-2  ">
+          <div className="row" >
+            <div className="col-sm-1  ">
               <span style={{ float: "left", fontWeight: "bold" , marginBottom: '2%'}}>
                 {k + 1}.
               </span>
             </div>
-            <div className="col-sm-2 " style={{ marginLeft: '0.2vw'}}>
+            <div className="col-sm-1 " style={{ marginLeft: '0.1vw'}}>
               <BetTile
                 type={"home"}
                 selected={game[gameId + (k + 1)].sides[0].selected}
               />
             </div>
-            <div className="col-sm-2" style={{ marginLeft: '0.5vw'}}>
+            <div className="col-sm-1" style={{ marginLeft: '0.1vw'}}>
               <BetTile
                 type={"draw"}
                 selected={game[gameId + (k + 1)].sides[1].selected}
               />
             </div>
-            <div className="col-sm-2 " style={{ marginLeft: '0.5vw'}}> 
+            <div className="col-sm-1 " style={{ marginLeft: '0.1vw'}}> 
               <BetTile
                 type={"away"}
                 selected={game[gameId + (k + 1)].sides[2].selected}

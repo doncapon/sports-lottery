@@ -5,8 +5,7 @@ import Navs from './components/UI/Navbar/Navs'
 
 function App() {
   return (
-    <div className={classes.App}>
-      {/* <h1 style = {{marginLeft: '10%'}}>Bet<span>Soka</span></h1> */}
+    <div className={'container-fluid '+ classes.App}>
       <Navs />
       <Switch>
         <Route path= "/" component ={Board} />
