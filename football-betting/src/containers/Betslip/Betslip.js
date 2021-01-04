@@ -108,10 +108,10 @@ const BetSlip = React.memo(
     if (props.slips.length > 0) {
       betSlip = props.slips.map((slip, ind) => {
         return (
-          <div className={"col-md-4 "} key={ind}>
+          <div className={" col-sm-1  col-sm-4 col-sm-2 "} key={ind}>
             <div className="row">
               <div
-                className={props.editIndex === ind ? classes.Edit : null}
+                className={'    col-sm-2 ' +( props.editIndex === ind) ? classes.Edit : null}
                 style={{
                   borderRadius: "5%",
                   background: "#f7f4bc",
@@ -119,7 +119,7 @@ const BetSlip = React.memo(
                 }}
               >
                   <div className="row">
-                    <div className="col-md-12 ">
+                    <div className="col-sm-12 ">
                       <div style={{ fontWeight: "bold", marginBottom: "2%" }}>
                         Slip {ind + 1}
                       </div>
@@ -127,12 +127,12 @@ const BetSlip = React.memo(
                   </div>
 
                   <div className="row" onClick={() => setEditIndex(ind)}>
-                    <div className="col-sm-12">
+                    <div className="col-sm-12 ">
                       <BetItems key={ind} games={slip[slip.id].games} />
                     </div>
                   </div>
 
-                  <div className="offset-3"   style={{marginBottom: '2vh'}}>
+                  <div className="offset-3 col-sm-2 "   style={{marginBottom: '2vh'}}>
                   <div className={"row " + classes.Buttons}>
                     <div className="col-sm-3 ">
                       <Button
@@ -147,7 +147,7 @@ const BetSlip = React.memo(
                   </div>
 
                   <div className="row">
-                    <div className="col-sm-3 ">
+                    <div className="col-sm-3 col-sm-2 ">
                       <Button
                         onClick={() => copyBetSlip(ind, props.slips.length)}
                         size="lg"
@@ -163,7 +163,7 @@ const BetSlip = React.memo(
                   </div>
 
                   <div className="row">
-                    <div className="col-sm-3">
+                    <div className="col-sm-3 col-sm-2">
                       <Button
                         variant="outline-primary"
                         size="lg"

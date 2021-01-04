@@ -9,15 +9,16 @@ import NumberFormat from 'react-number-format';
 
 class Board extends Component {
 
+    componentDidMount(){
+        this.props.onSetBoard();
+    }
+
     render (){
-        return <div className = {'container-fluid ' + classes.Board}
-         style= {{  margin: 'auto'}
-         
-         }>
-            <div className= 'row  justify-content-center' style= {{ margin: '1% 0'}}>
+        return  (this.props.loading )? <div className= {'row  justify-content-center '+ classes.Board} 
+        style= {{ margin: '0% 0 1%'}}>
           
-                <div className= ' col-lg-6 col-lg-5 col-md-8  col-md-4 col-sm-12 col-sm-6' style = 
-                {{background: 'white' , paddingTop: '28vh', minWidth: '25%' }}>
+                <div className= {' col-lg-7 col-lg-5 col-lg-3  col-lg-1 '+
+                classes.BoardLeft}>
                     <div className ='row' >
                         <PlayRow  toggleSelectedTile = {this.props.ontoggleSelectedTile} 
                          slips = {this.props.slips} checkPurchasable= {this.props.onIsPurchasing} 
@@ -28,11 +29,11 @@ class Board extends Component {
                         
                     </div>
                 </div>
-                <div className = 'col-lg-5 col-lg-4 col-md-8 col-md-4 col-sm-12 col-sm-6' 
+                <div className = {'col-lg-5 col-md-12 ' + classes.BoardRight}  
                 style={{ background:'#c6f5f3', minWidth: '25%'}} >
 
-                    <div className= 'row' style= {{margin: 'auto'}}>
-                        <div className= 'col-md-12 col-md-5 '>
+                    <div className= 'row' >
+                        <div className= 'col-lg-11 offset-1 '>
                             <Betslip slips = {this.props.slips}  setAdding = {this.props.onSetAdding}
                             setRemoving = {this.props.onSetRemoving} 
                             setPurchaseAll = {this.props.onSetPurchaseAll }
@@ -69,7 +70,7 @@ class Board extends Component {
                 </div>
             </div>
 
-        </div>
+        : null
         
     }
 }
@@ -80,11 +81,13 @@ const mapStateToProps = state =>{
         playingGames : state.playingGames,
         totalPrice: state.totalPrice,
         editIndex : state.editIndex,
+        loading : state.loading,
         purchaseAll: state.purchaseAll,
     };
 };
 const mapDispatchToProps = dispatch => {
     return {
+        onSetBoard : ()=> dispatch (actions.setBoard()),
         ontoggleSelectedTile : (slipIndex, gameIndex, sideIndex, side) =>
                              dispatch ( actions.toggleSelectedTile( slipIndex, gameIndex, sideIndex, side)),
          onAddRowToslips : (postion) => dispatch ( actions.copyBetslip(postion)),

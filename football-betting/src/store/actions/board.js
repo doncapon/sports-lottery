@@ -1,5 +1,5 @@
 import * as actionTypes from './actionTypes';
-
+import axios from '../../axios-predictions';
 
 export const calculateOverAllPrice = (slipIndex, gameIndex, sideIndex)=>{
     return dispatch =>{
@@ -8,6 +8,30 @@ export const calculateOverAllPrice = (slipIndex, gameIndex, sideIndex)=>{
     }
 }
 
+export const setBoard=() =>{
+    return dispatch =>{
+        axios.get("predictions/157462" , {
+            headers: {
+                'x-rapidapi-key': '8275c582bamshd83a3179dd00459p19f0b2jsn94c889368579',
+                'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
+              }
+        })
+        .then(response =>{
+            // console.log(response);
+          dispatch(initializeBoard(response.data.api.predictions));
+
+        }).catch(error =>{
+
+        });
+    };
+}
+
+export const initializeBoard = (predictions) =>{
+    return { 
+        type : actionTypes.INITIALIZE_BOARD,
+        predictions: predictions
+    };
+}
 
 export const addEmptySlip = () =>{
     return { 
