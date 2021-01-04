@@ -1,28 +1,30 @@
 .SingleTile {
     border: 1px solid #ccc;
-    font-size: 110%;
-    width: 7%;
+    font-size: 90%;
     float: left;
-    /* padding:  0px  2.5% 1%  3.5% ; */
     color: grey;
-    box-sizing: border-box;
-    border: 1px solid rgb(138, 91, 91);
     text-align: center;
-    height: 40px; 
-    margin-right: 2%;
+    caret-color: transparent;
+    
+
+}
+
+
+
+.Side {
+    padding: 0% 50%;
+    background-color: white;
+    margin: 3% 0%;
 }
 
 .SingleTile:hover {
     cursor: pointer;
 }
 
-.Selected ,.SingleTile:active {
+.Selected {
     background-color: blue;
-    color: white
+    color: white;
 }
 
-.Home, .Away, .Draw {
-    width: 90%;
-    /* background-color: hotpink; */
-}
+
 

@@ -1,66 +1,74 @@
-import { Component, React } from "react";
+import  React , {Component } from "react";
 import classes from './Board.module.css';
-import Button from "../../components/UI/Button/Button";
+import Button from "react-bootstrap/Button";
 import PlayRow from "../../components/board/playRow/PlayRow/PlayRow.js";
 import { connect }  from "react-redux";
 import * as actions from '../../store/actions/index';
 import Betslip from "../Betslip/Betslip";
+import NumberFormat from 'react-number-format';
 
 class Board extends Component {
- 
-    // state = {
-    //     totalPrice : 0,
-    //     allRowsValid: false
-    // }; 
 
-    // ResetBoard = ()=>{
-    //     let updatedeams = this.state.teams;
-    //     for(let team of updatedeams){
-    //         for(let side in team.sides){
-    //             team.sides[side].selected = false;
-    //         }
-    //     }
-    // }
-
-    // AddToBetSlip =()=>{
-    //     const updatedOrder = [];
-    //     let buildOrder = {};
-    //     if(this.state.allRowsValid){
-    //         buildOrder.teams = [...this.props.teams];
-    //         buildOrder.totalPrice = this.state.totalPrice
-    //     updatedOrder.push(buildOrder);
-    //     this.props.history.push("/orders" , updatedOrder);
-
-    //     }
-    //     this.ResetBoard();
-    // }
- 
     render (){
-           
-        return <div className = {classes.Board}>
-            <div>
-                <div style={{float: 'left' ,display: 'block',padding: 'auto',margin: 'auto', marginTop: '55px', borderRight: '10px solid grey' , marginRight: '10px'}}>
-                    <PlayRow  clicked = {this.props.onToggleTile} 
-                    teams = { this.props.teams }
-                    />
+        return <div className = {'container-fluid ' + classes.Board}
+         style= {{  margin: 'auto'}
+         
+         }>
+            <div className= 'row  justify-content-center' style= {{ margin: '1% 0'}}>
+          
+                <div className= ' col-lg-6 col-lg-5 col-md-8  col-md-4 col-sm-12 col-sm-6' style = 
+                {{background: 'white' , paddingTop: '28vh', minWidth: '25%' }}>
+                    <div className ='row' >
+                        <PlayRow  toggleSelectedTile = {this.props.ontoggleSelectedTile} 
+                         slips = {this.props.slips} checkPurchasable= {this.props.onIsPurchasing} 
+                          setPurchaseAll = {this.props.onSetPurchaseAll } playingGames = {this.props.playingGames }
+                            editIndex={this.props.editIndex}
+                             calculateTotalPrice = { this.props.onCalculateOverAllPrice}
+                        />
+                        
+                    </div>
                 </div>
-                <div style = {{borderRight : '10px grey solid'}}>
-                    {(this.props.betSlip.length > 0 )?  <div style = {{ float: 'right'}}><Button btnType='Danger' >EMPTY</Button> </div>: null }
-                    <Betslip betSlip = {this.props.betSlip}  add = {this.props.onAbleTosend} />
+                <div className = 'col-lg-5 col-lg-4 col-md-8 col-md-4 col-sm-12 col-sm-6' 
+                style={{ background:'#c6f5f3', minWidth: '25%'}} >
+
+                    <div className= 'row' style= {{margin: 'auto'}}>
+                        <div className= 'col-md-12 col-md-5 '>
+                            <Betslip slips = {this.props.slips}  setAdding = {this.props.onSetAdding}
+                            setRemoving = {this.props.onSetRemoving} 
+                            setPurchaseAll = {this.props.onSetPurchaseAll }
+                            checkPurchasable = {this.props.onCheckPurchasable}
+                            setTotalPrice = {this.props.onSetTotalPrice}
+                            deleteAndResetAll = {  this.props.onDeleteAndResetAll}
+                            addEmptySlip = {this.props.onAddEmptySlip}
+                              removeSlipSingle  = { this.props.onRemoveRowFromBetSlip }
+                               purchaseAll= {this.props.purchaseAll} setEditIndex = {this.props.onSetEditIndex}
+                               addBetSlip = {this.props.onAddRowToslips} editIndex={this.props.editIndex}
+                              />
+                              
+                        </div>
+                    </div>
+                    <div className= 'row ' >
+                        <div className='col-md-12' style = {{fontSize: '1.6vw', float:'left'}}>
+                            { (this.props.purchaseAll&& this.props.totalPrice > 0) ? <p style ={{fontWeight: 'bold' }} >
+                                <span style={{marginRight: '1vw'}}>Total Price:</span><span 
+                            style={{fontSize: '1.6vw',color: 'blue' , fontWeight: 'bold'}}>
+                                <NumberFormat value={ this.props.totalPrice}  displayType={'text'} thousandSeparator={true} prefix={'₦'} />
+                                </span>
+                            <span style={{color: 'green', fontWeight: 'bold' , marginLeft: '0.2vw'}}>NAIRA</span></p>  : null }
+                        </div>
+                    </div>
+                    <div className = 'row'>
+                        <div className='offset-5'  style={{marginTop: '0' , marginBottom: "2vh"}}>
+                            {this.props.purchaseAll? <Button variant= "success"  style={{padding: '0.5vw 2vw',
+                             fontWeight: 'bold', fontSize: '4.5vh'}}
+                                clicked = {this.AddToslips} 
+                            >CHECKOUT</Button>  : null }
+                        </div>
+                    </div>
+            
                 </div>
             </div>
 
-            <div style={{display:'block',float: 'left', width: '150%',fontSize: '1.4em'}}>
-             { this.props.betSlip.updatedTotalPrice > 0 ? <p >Total : {this.props.totalPrice} 
-             <span style={{color: 'green'}}>Naira</span></p>  : null }
-
-            <div style = {{clear: 'right', paddingLeft: '50px'}}>
-            <Button btnType= "Primary" disabled = { !this.props.allRowsValid}
-            clicked = {this.AddToBetSlip}
-            >ADD TO BETSLIP</Button>
-            </div>
-
-             </div>
         </div>
         
     }
@@ -68,17 +76,29 @@ class Board extends Component {
 
 const mapStateToProps = state =>{
     return {
-        teams : state.board.teams,
-        allRowsValid : state.board.allRowsValid,
-        totalPrice: state.board.totalPrice,
-        betSlip : state.board.betSlip
+        slips : state.slips,
+        playingGames : state.playingGames,
+        totalPrice: state.totalPrice,
+        editIndex : state.editIndex,
+        purchaseAll: state.purchaseAll,
     };
 };
-
 const mapDispatchToProps = dispatch => {
     return {
-        onToggleTile : (key, index) => dispatch ( actions.toggleTile(key,index)),
-        onAbleTosend : () => dispatch ( actions.ableToSend())
+        ontoggleSelectedTile : (slipIndex, gameIndex, sideIndex, side) =>
+                             dispatch ( actions.toggleSelectedTile( slipIndex, gameIndex, sideIndex, side)),
+         onAddRowToslips : (postion) => dispatch ( actions.copyBetslip(postion)),
+         onRemoveRowFromBetSlip: (deleteId) => dispatch(actions.removeRowFromBetSlip(deleteId)),
+         onIsPurchasing : (index) => dispatch(actions.checkPurchasable(index)),
+         onSetAdding : (slipIndex, isAdded) => dispatch(actions.setAdding(slipIndex,isAdded)),
+         onSetRemoving : (slipIndex, isRemoved) => dispatch(actions.setRemoving(slipIndex,isRemoved)),
+         onSetEditIndex : (index) => dispatch(actions.setEditIndex(index)),
+         onCheckPurchasable : (index) => dispatch(actions.checkPurchasable(index)),
+         onSetPurchaseAll : () => dispatch(actions.setPurchaseAll()),
+         onSetTotalPrice : () => dispatch(actions.calculateGrandTtoalPriceOfAllSlips()),
+         onDeleteAndResetAll : () => dispatch(actions.deleteAndResetAll()),
+         onAddEmptySlip : () => dispatch(actions.addEmptySlip()),
+         onCalculateOverAllPrice : (slip, game, side)=>dispatch(actions.calculateOverAllPrice(slip, game, side))
     };
 };
 

@@ -1,0 +1,24 @@
+.NavItems {
+    font-size: 1.2em;
+    margin-bottom: 1.4vw;
+}
+.NavItems:hover {
+    cursor: pointer;
+}
+.NavItem:hover {
+    cursor: pointer;
+    background: skyblue;
+
+}
+.NavItem {
+    border-radius: 3px;
+    padding: 0.5vw;
+    border: 1px solid black;
+
+}
+
+.Edit{
+    background: skyblue;
+    border: 3px solid black;
+
+}

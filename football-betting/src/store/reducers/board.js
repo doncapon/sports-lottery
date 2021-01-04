@@ -1,198 +1,429 @@
 import * as actionTypes from "../actions/actionTypes";
-
-import { updateObject  } from "../../shared/utility";
+import produce from 'immer';
+import _ from "lodash";
 
 const initialStte = {
 
-    teams : [
-        // {
-        //     team1 : 'Manchester United',
-        //     team2: 'Watford FC' ,
-        //     rowValid: false,
-        //     rowAmount: 0,
-        //     sides : [   {selected :  false}, {selected :  false },{selected :   false}]
-
-        // }, 
-        
-        // {
-        //     team1 : 'Chelsea',
-        //     team2: 'Arsenal',
-        //     rowValid: false,
-        //     rowAmount: 0,
-        //     sides : [   {selected :  false}, {selected :  false },{selected :   false}]
-
-        // },
-        // {
-        //     team1 : 'Real Madrid', 
-        //     team2: 'Barcelona',
-        //     rowValid: false,
-        //     rowAmount: 0,
-        //     sides : [   {selected :  false}, {selected :  false },{selected :   false}]
-
-        // },
-
-        // {
-        //     team1 : 'Leicester city', 
-        //     team2: 'Manchester city', 
-        //     rowValid: false,
-        //     rowAmount: 0,
-        //     sides : [   {selected :  false}, {selected :  false },{selected :   false}]
-
-        // },
-        // {
-        //     team1 : 'Wolverhampton wonderers', 
-        //     team2: 'Stoke city', 
-        //     rowValid: false,
-        //     rowAmount: 0,
-        //     sides : [   {selected :  false}, {selected :  false },{selected :   false}]
-
-        // },
-        // {
-        //     team1 : 'Liverpool', 
-        //     team2: 'Newcastle United',
-        //     rowValid: false,
-        //     rowAmount: 0,
-        //     sides : [   {selected :  false}, {selected :  false },{selected :   false}]
-
-        // },
-        // {
-        //     team1 : 'Watford', 
-        //     team2: 'Burnley FC',     
-        //     rowValid: false,
-        //     rowAmount: 0,
-        //     sides : [   {selected :  false}, {selected :  false },{selected :   false}]
-
-        // },
-        // {
-        //     team1 : 'Everton', 
-        //     team2: 'Tottenham HotSpur',   
-        //     rowValid: false,
-        //     rowAmount: 0,
-        //     sides : [   {selected :  false}, {selected :  false },{selected :   false}]
-
-        // },
-        // {
-        //     team1 : 'Birmingham City', 
-        //     team2: 'Fulham', 
-        //     rowValid: false,
-        //     rowAmount: 0,
-        //     sides : [   {selected :  false}, {selected :  false },{selected :   false}]
-        // },
-        {
-            team1 : 'Crystal Palace', 
-            team2: 'HuddersField',     
-            rowValid: false,
-            rowAmount: 0,
-            sides : [  {selected :   false}, {selected :  false },{selected :   false}]
-        },
-        {
-            team1 : 'West Bromich Abion', 
-            team2: 'WestHam United',     
-            rowValid: false,
-            rowAmount: 0,
-            sides : [ {selected : false}, {selected : false }, {selected : false}]
-        },
-        {
-            team1 : 'Southhampton', 
-            team2: 'BrentFord',     
-            rowValid: false,
-            rowAmount: 0,
-            sides : [ {selected :   false},{selected : false },{selected :  false}]
-        },
+    slips : [
+             {
+                id:  "slip_1",
+                purchasable: false,
+                slipPrice: 0,
+                adding: false,
+                removing: false,
+                "slip_1":  { 
+                            games: [
+                                {
+                                    id: "game_1",
+                                    amount: 0,
+                                    "game_1": {
+                                            team1 : 'Manchester United',
+                                            team2: 'Watford FC' ,
+                                            isValid: false,
+                                            sides: [ {selected : false}, {selected : false}, {selected : false} ],
+                                    }
+                                },
+                                {
+                                    id: "game_2",
+                                    amount: 0,     
+                                    "game_2": {
+                                            team1 : 'Chelsea',
+                                            team2: 'Arsenal',  
+                                            isValid: false,
+                                            sides: [ {selected : false}, {selected : false}, {selected : false} ],
+                                    }
+                                },
+                                {
+                                    id: "game_3",
+                                    amount: 0,
+                                    "game_3": { 
+                                            team1 : 'Real Madrid', 
+                                            team2: 'Barcelona',
+                                            isValid: false,
+                                            sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                    }
+                                },
+                                // {
+                                //     id: "game_4",
+                                //     amount: 0,
+                                //     "game_4": { 
+                                //             team1 : 'Leicester city', 
+                                //             team2: 'Manchester city', 
+                                //             isValid: false,
+                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                //     }
+                                // },
+                                // {
+                                //     id: "game_5",
+                                //     amount: 0,
+                                //     "game_5": { 
+                                //             team1 : 'Wolverhampton wonderers', 
+                                //             team2: 'Stoke city', 
+                                //             isValid: false,
+                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                //     }
+                                // },
+                                // {
+                                //     id: "game_6",
+                                //     amount: 0,
+                                //     "game_6": { 
+                                //             team1 : 'Liverpool', 
+                                //             team2: 'Newcastle United',
+                                //             isValid: false,
+                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                //     }
+                                // },
+                                // {
+                                //     id: "game_7",
+                                //     amount: 0,
+                                //     "game_7": { 
+                                //             team1 : 'Watford', 
+                                //             team2: 'Burnley FC',  
+                                //             isValid: false,
+                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                //     }
+                                // },
+                                // {
+                                //     id: "game_8",
+                                //     amount: 0, 
+                                //     "game_8": { 
+                                //             team1 : 'Everton', 
+                                //             team2: 'Tottenham HotSpur',  
+                                //             isValid: false,
+                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                //     }
+                                // },
+                                // {
+                                //     id: "game_9",
+                                //     amount: 0,
+                                //     "game_9": {
+                                //             team1 : 'Crystal Palace', 
+                                //             team2: 'HuddersField',  
+                                //             isValid: false,
+                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                //     }
+                                // },
+                                // {
+                                //     id: "game_10",
+                                //     amount: 0,
+                                //     "game_10": {
+                                //             team1 : 'West Bromich Abion', 
+                                //             team2: 'WestHam United',  
+                                //             isValid: false,
+                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                //     }
+                                // },
+                                // {
+                                //     id: "game_11",
+                                //     amount: 0,
+                                //     "game_11": { 
+                                //             team1 : 'Espanol', 
+                                //             team2: 'Getafe', 
+                                //             isValid: false,
+                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                //     }
+                                // },
+                                // {
+                                //     id: "game_12",
+                                //     amount: 0,
+                                //     "game_12": {
+                                //             team1 : 'Southhampton', 
+                                //             team2: 'BrentFord',
+                                //             isValid: false,
+                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                //     }
+                                // }
+                            ]   
+                    }
+            }
     ],
-    totalPrice : 0,
-    allRowsValid: false,
-    betSlip : [],
-    isAlreadySent: false
+    editIndex : 0,
+    totalPrice: 0,
+    purchaseAll: false,
+    basePrice: 25,
 };
 
+const checkPurchasable=(state, action)=>{
+     
+    return produce(state, draft=>{
+     let purchasable = true;
 
+     const slip = state.slips[action.slipIndex]["slip_" + (action.slipIndex + 1)];
+     for(let i = 0 ; i < slip.games.length; i++){
+         const isPurse = sideIsValid(slip.games[i]["game_"+ (i+1)].sides);
+         if(!isPurse){
+             purchasable = false;
+             break;
+         }
+     }
+        draft.slips[action.slipIndex].purchasable = purchasable;
+    });
+}
 
+const copyBetslip = (state, action) =>{
+    return produce( state, draft =>{
 
-
-const reverseTitle = (state , action) =>{
-    const updatedTeams = [...state.teams];
-    const updatedTeamRow = updatedTeams[action.rowIndex];
-    const updatedSide = [...updatedTeamRow.sides]
-    let updatedAllreadySend = state.isAlreadySent;
-    updatedSide[action.sideIndex].selected = !updatedSide[action.sideIndex].selected;
-        // increasing the amount per click
-            if(updatedSide[action.sideIndex].selected){
-                updatedTeamRow.rowAmount += 1;
-            }else{
-                updatedTeamRow.rowAmount -= 1;
-            }
-    updatedTeamRow.rowValid  =  
-    (updatedSide[0] ||
-    updatedSide[1] ||
-    updatedSide[2]) ;
-
-    //Checking alll rows are valid
-    let updatedAllRow = state.allRowsValid;
-    let isvalid = true;
-    for(let team of updatedTeams){
-        if(!team.rowValid){
-            isvalid = false;
-        }
-    }
-    updatedAllRow = isvalid;
-
-    updatedTeams[action.rowIndex] = updatedTeamRow;
-
-    //Calculating total price
-    let updatedTotalPrice = state.totalPrice;
-    let totalAmout = 0;
-    if( isvalid){
-        totalAmout =  25;
-    }
-
-    for(let team of updatedTeams){
-            totalAmout = totalAmout * team.rowAmount;
-    } 
-    updatedTotalPrice = totalAmout;
-
-    //Handling betSlip
-    const  updatedSlip = [...state.betSlip];
-    if(isvalid){
-        if(!updatedAllreadySend){
-            updatedSlip.push(Object.assign({}, {teams :  updatedTeams}, {allRowsValid : updatedAllRow}, {grandTotalPrice: updatedTotalPrice }));
-            updatedAllreadySend = true;
-        }
-        for(let betrows of updatedSlip){
-            betrows.grandTotalPrice  += updatedTotalPrice;
-        }
-
-    }
-     return updateObject(state , {
-        teams : updatedTeams,
-        [action.rowIndex] : updatedTeamRow,
-        ...updatedTeams[action.rowIndex],
-        allRowsValid : updatedAllRow,
-        totalPrice : updatedTotalPrice,
-        betSlip : updatedSlip,
-        isAlreadySent : updatedAllreadySend
-
+        
+        const oldId = "slip_" + ( action.position + 1);
+        const newId =  "slip_" + (draft.slips.length + 1);
+        let clonedSlips = _.cloneDeep(draft.slips);
+        let updatedSlip =  _.cloneDeep(clonedSlips[action.position]);
+        let clonedUpdatedSlip = _.cloneDeep(updatedSlip[oldId]);
+        let newslip = _.cloneDeep(clonedUpdatedSlip);
+        
+        draft.slips.splice (draft.slips.length ,0, { id: newId, purchasable: true,
+             slipPrice: state.slips[action.position].slipPrice, adding: false,
+             removing: false, [newId] : newslip});
+    
     });
 }
 
 
-const ableToSend = (state, action) =>{
-    return updateObject (state , {
-        isAlreadySent : false
+const addEmptySlip= (state, action)=>{
+    return produce(state, draft =>{
+        const clonedSlips = _.cloneDeep(state.slips);
+    let lastLength = state.slips.length;
+    const clonedSlip = clonedSlips[lastLength-1];
+    let oldId = clonedSlip.id;
+    let newId = "slip_" + (parseInt((oldId.split('_')[1])) + 1);
+    const games =  clonedSlip["slip_"+ lastLength].games;
+    const  side = {selected : false};
+    const len = 3;
+    for(let i = 0; i < games.length; i++){
+        for(let k = 0 ; k < len; k++){
+            games[i]["game_" + (i+1)].sides.push(side);
+        }
+        games[i]["game_" + (i+1)].sides.splice(0,3);
+        games[i].amount = 0;
+    }
+    clonedSlip.purchasable = false;
+    clonedSlip.adding= false;
+    clonedSlip.removing= false;
+    clonedSlip.slipPrice = 0;
+    clonedSlip.id = newId;
+    clonedSlip[newId] = clonedSlip[oldId];
+    delete[clonedSlip[oldId]];
+
+    draft.slips.splice(lastLength, 1, clonedSlip);
+
+    });
+}
+
+const deleteAndResetAll = (state, action)=>{
+    return produce(state, draft => {
+        const clonedSlips = _.cloneDeep(state.slips);
+        if(state.slips.length>1){
+
+            clonedSlips.splice(1, state.slips.length) ;
+        }
+
+        if(clonedSlips.length <=1){
+        const games = _.cloneDeep(clonedSlips[0]["slip_1"].games);
+        const  side = {selected : false};
+        const len = 3;
+        for(let i = 0; i < games.length; i++){
+            for(let k = 0 ; k < len; k++){
+                games[i]["game_" + (i+1)].sides.push(side);
+            }
+            games[i]["game_" + (i+1)].sides.splice(0,3);
+        }
+    
+        clonedSlips[0]["slip_1"].games = games;
+        clonedSlips[0].purchasable = false
+
+        }
+        draft.slips = _.cloneDeep(clonedSlips);
     })
 }
 
-const reducer = (state = initialStte, action) =>{
-    switch (action.type){
-        case actionTypes.REVERSE_TITLE:
-            return reverseTitle(state, action);
-        case actionTypes.ABLE_TO_SEND:
-            return ableToSend(state, action);
-       default: 
-       return state;
-    }
+const toggleSelectedTile = (state, action) =>{   
+    return produce (state, draft =>{
+        draft.slips[action.slipIndex]["slip_" + (action.slipIndex + 1)]
+        .games[action.gameIndex]['game_' + (action.gameIndex+ 1)]
+        .sides[action.sideIndex].selected = !action.side;
+    });
 }
 
 
+const calculateSlipPrice = (state, action) =>{
+    return produce (state, draft =>{
+        let side = draft.slips[action.slipIndex]["slip_" + (action.slipIndex + 1)]
+        .games[action.gameIndex]['game_' + (action.gameIndex+ 1)]
+        .sides[action.sideIndex].selected;
+        let game = draft.slips[action.slipIndex]["slip_" + (action.slipIndex + 1)]
+        .games[action.gameIndex];
+        
+        let totalPrice = _.cloneDeep(state.slips[action.slipIndex].slipPrice);
+        let purchasable = state.slips[action.slipIndex].purchasable;
+        if(purchasable && totalPrice === 0  && state.purchaseAll){
+            totalPrice = state.basePrice;
+        }
+        
+        if(side){
+            game.amount += 1;
+        }else{
+            game.amount -= 1;
+        }
 
+        if(purchasable && totalPrice > 0)
+        {
+
+            if(side){
+        if(game.amount === 2){
+                    totalPrice *= 2;
+                }else if(game.amount ===3){
+                    totalPrice *= 1.5;
+
+                }
+            }else{
+        if(game.amount === 1){
+                    totalPrice /=2;
+                }else if(game.amount ===2){
+
+                    totalPrice /= 1.5;
+                }else{
+                    totalPrice = 0;
+                }
+            }
+        }
+         draft.slips[action.slipIndex].slipPrice = totalPrice;
+    });
+}
+
+const calculateGrandTtoalPriceOfAllSlips = (state, action) =>{
+    return produce(state, draft=>{
+        let slips = state.slips;
+        let totalPrice =0;
+        slips.forEach((slip, i ) =>{
+            totalPrice += slip.slipPrice;
+        });
+    
+        draft.totalPrice = totalPrice;
+    })
+}
+const removeRowFromBetSlip = (state, action) =>{
+    return produce(state, draft=>{
+        if(draft.slips.length > 1){
+            const clonedSlips = _.cloneDeep(draft.slips);
+            let len = clonedSlips.length;
+            let remainderLen = len- action.deleteId -1;
+            clonedSlips.splice(action.deleteId, 1) ;
+            let newId = "slip_";
+            let oldId = "slip_"
+            for(let i = 0 ; i < remainderLen; i++ ){
+                    let k = i + action.deleteId;
+                    newId += (k+1);
+                    oldId += (k + 2);
+                    clonedSlips[k].id = newId;
+                    clonedSlips[k][newId] = clonedSlips[k][oldId];
+                    delete(clonedSlips[k][oldId]);
+                    newId = 'slip_';
+                    oldId = "slip_" ;
+            }
+                draft.slips = _.cloneDeep(clonedSlips);
+        }else{
+            const games = _.cloneDeep(state.slips[0]["slip_1"].games);
+            if(state.slips.length <= 1){
+
+                const  side = {selected : false};
+                const len = 3;
+                for(let i = 0; i < games.length; i++){
+                    for(let k = 0 ; k < len; k++){
+                        games[i]["game_" + (i+1)].sides.push(side);
+                    }
+                    games[i]["game_" + (i+1)].sides.splice(0,3);
+                }
+                draft.slips[0]["slip_1"].games = games;
+                draft.slips[0].purchasable = false
+            }
+        }
+   });
+   
+}
+
+const setEditIndex = (state, action) =>{
+        return { ...state,
+            editIndex : action.position
+        }  
+}
+
+const setAdding=(state, action) =>{
+    return produce(state, draft =>{
+        draft.slips[action.slipIndex].adding = action.isAdded
+    })
+}
+
+const setRemoving=(state, action) =>{
+    return produce(state, draft =>{
+    
+        draft.slips[action.slipIndex].removing = action.removing
+    })
+}
+
+const sideIsValid=(sides)=>{
+    let allValid = false;
+    for(let side of sides){
+        if(side.selected === true){
+            allValid =  true;
+            break;
+        }
+    }
+    return allValid;
+}
+
+const setPurchaseAll = (state, action)=>{
+    return produce(state, draft =>{
+        let purchase = true;
+        for(let i = 0 ; i < state.slips.length; i++){
+            let purchasable = true;
+            const slip = state.slips[i]["slip_" + (i + 1)];
+                for(let k = 0 ; k < slip.games.length; k++){
+                    const isPurse = sideIsValid(slip.games[k]["game_"+ (k+1)].sides);
+                    if(!isPurse){
+                        purchasable = false;
+                        break;
+                    }
+                }
+
+            if( !purchasable){
+                purchase = false;
+                break;
+            }
+        }
+        draft.purchaseAll = purchase;
+
+    })
+}
+
+
+const reducer = (state = initialStte, action) =>{
+    switch (action.type){
+        case actionTypes.ADD_EMPTY_SLIP:
+            return addEmptySlip(state,action);
+        case actionTypes.SET_EDITING_INDEX:
+            return setEditIndex(state , action);
+        case actionTypes.SET_ADDING:
+            return setAdding(state, action);
+        case actionTypes.SET_REMOVING:
+            return setRemoving(state, action);
+        case actionTypes.TOGGLE_SELECTED_TILE:
+            return toggleSelectedTile(state, action);
+        case actionTypes.COPY_BETSLIP:
+            return copyBetslip(state, action);
+        case actionTypes.REMOVE_ROW_FROM_BETSLIP:
+            return removeRowFromBetSlip(state, action);
+        case actionTypes.CHECK_PURCHASABLE:
+            return checkPurchasable(state, action);
+        case actionTypes.PURCHASE_ALL:
+            return setPurchaseAll(state, action);
+        case actionTypes.DELETE_AND_RESET_ALL:
+            return deleteAndResetAll(state, action);
+        case actionTypes.CALCULATE_SLIP_PRICE:
+            return calculateSlipPrice(state, action);
+        case actionTypes.CALCULAT_GRAND_tOTAL:
+            return calculateGrandTtoalPriceOfAllSlips(state,action);
+       default: 
+            return state;
+    }
+}
 export default reducer;

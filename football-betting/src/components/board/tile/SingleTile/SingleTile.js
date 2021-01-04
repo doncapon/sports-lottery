@@ -7,35 +7,39 @@ class SingleTile extends Component {
         let side = null;
         const classesFul = [];
         const majorClass = [];
-        majorClass.push(classes.SingleTile);
+       
 
-        if(this.props.selected){
-            majorClass.push(classes.Selected);
-        }
+       
         let child = null;
         switch ( this.props.type ) {
             case ( 'home' ):
-                classesFul.push(classes.Home);
+                classesFul.push(classes.Side);
               child = '1';
                 break;
             case ( 'draw' ):
-                classesFul.push(classes.Draw);
+                classesFul.push(classes.Side);
                 child = 'X';
             break;
             case ( 'away' ):
-                classesFul.push(classes.Away);
+                classesFul.push(classes.Side);
                 child = '2';
                 break;
             default:
                 child = '2';
             
-                classesFul.push(classes.Home);
+                classesFul.push(classes.Side);
                 break;
         }
-        side = <div className = {classesFul.join(' ')} selected = {this.props.selected}
-        >{child}</div>;
-        return <div onClick = {this.props.clicked} 
-         className= {majorClass.join(' ')}>     
+        if(this.props.selected){
+            classesFul.push(classes.Selected);
+        }
+        majorClass.push(classes.SingleTile);
+        side = <div  onClick = {this.props.clicked} 
+        className= { 'col ' + majorClass.join(' ') + ' ' + classesFul.join(' ') }  
+         selected = {this.props.selected}
+        >{child}
+        </div>;
+        return <div className= 'row' >     
             {side}
             </div>
 
