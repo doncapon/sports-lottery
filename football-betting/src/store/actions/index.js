@@ -11,5 +11,6 @@ export {
      deleteAndResetAll,
      calculateOverAllPrice,
      calculateGrandTtoalPriceOfAllSlips,
-     addEmptySlip
+     addEmptySlip,
+     EmptyEditingISlip
 } from './board';

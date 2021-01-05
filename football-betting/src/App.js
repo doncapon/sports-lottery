@@ -1,4 +1,3 @@
-import  classes from './App.module.css';
 import Board from './containers/Board/Board';
 import { Route, Switch } from "react-router-dom";
 import Navs from './components/UI/Navbar/Navs'

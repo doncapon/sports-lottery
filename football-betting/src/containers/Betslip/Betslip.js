@@ -111,11 +111,11 @@ const BetSlip = React.memo(
           <div className={" col-4 "} key={ind}>
             <div className="row">
               <div
-                className={' col-12 ' +( props.editIndex === ind) ? classes.Edit : null}
+                className=  {( props.editIndex === ind) ? classes.Edit : null}
                 style={{
                   borderRadius: "5%",
                   background: "#f7f4bc",
-                  margin: "0 0% 5% 0",
+                  margin: "0 1% 5% 0",
                 }}
               >
                   <div className="row">
@@ -214,16 +214,15 @@ const BetSlip = React.memo(
         <div className={"row " + classes.BetSlip}>
           <div style={{marginBottom: '0.5vh'}}>
             <Button
-              style={{ fontSize: '0.9em'}}
               variant= 'secondary'
-              style={{width:'80vw', maxWidth : '350px'}}
+              style={{ fontSize: '0.9em' ,width:'80vw', maxWidth : '350px'}}
               onClick = {addEmptySlip}
               disabled = {!props.purchaseAll}
              >ADD NEW ROW TO BETSLIP</Button>
           </div>
           </div>
           <div className= 'row'>
-          <div className=" offset-1">
+          <div>
             <Pagination
               activePage={activePage}
               usedPages={props.slips.length}

@@ -1,6 +1,41 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios-predictions';
 
+
+export const EmptyEditingISlip =()=>{
+    return dispatch =>{
+        // dispatch(checkHasStartedPlaying());
+        dispatch(EmptyEditingIndexSlip());
+    }
+}
+export const toggleSelectedTile = (slipIndex, gameIndex,sideIndex, side) =>{
+    return dispatch => { 
+        dispatch(toggleSelectedTile2(slipIndex, gameIndex, sideIndex, side));
+        dispatch(checkHasStartedPlaying());
+    }
+}
+export const toggleSelectedTile2 = (slipIndex, gameIndex,sideIndex, side) =>{
+    return { 
+        type : actionTypes.TOGGLE_SELECTED_TILE,
+        slipIndex: slipIndex,
+        gameIndex : gameIndex,
+        sideIndex : sideIndex,
+        side: side
+    };
+}
+
+
+export const checkHasStartedPlaying =()=>{
+    return {
+        type : actionTypes.CHECK_HAS_STARED
+    }
+}
+
+export const EmptyEditingIndexSlip =()=>{
+    return {
+        type : actionTypes.EMPTY_EDITING_SLIP
+    }
+}
 export const calculateOverAllPrice = (slipIndex, gameIndex, sideIndex)=>{
     return dispatch =>{
         dispatch(calculateSlipPrice(slipIndex, gameIndex, sideIndex));
@@ -101,15 +136,7 @@ export const deleteAndResetAll = ()=>{
     }
 }
 
-export const toggleSelectedTile = (slipIndex, gameIndex,sideIndex, side) =>{
-    return { 
-        type : actionTypes.TOGGLE_SELECTED_TILE,
-        slipIndex: slipIndex,
-        gameIndex : gameIndex,
-        sideIndex : sideIndex,
-        side: side
-    };
-}
+
 
 export const copyBetslip = (position) =>{
     return { 

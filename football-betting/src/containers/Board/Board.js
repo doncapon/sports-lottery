@@ -6,6 +6,7 @@ import { connect }  from "react-redux";
 import * as actions from '../../store/actions/index';
 import Betslip from "../Betslip/Betslip";
 import NumberFormat from 'react-number-format';
+import TopBoard from "../../components/TopBoard/topBoard";
 
 class Board extends Component {
 
@@ -15,8 +16,11 @@ class Board extends Component {
 
     render (){
         return  (!this.props.loading )? <div className= {'row '+ classes.Board}>
-          
+              
                 <div className= {'col-12 col-lg-7 '+classes.BoardLeft}>
+                    <div className="row">   
+                        <TopBoard isStarted = {this.props.isStarted} clicked ={this.props.onEmptyEditingISlip} />
+                    </div>
                     <div className ='row ' >
                         <PlayRow  toggleSelectedTile = {this.props.ontoggleSelectedTile} 
                          slips = {this.props.slips} checkPurchasable= {this.props.onIsPurchasing} 
@@ -80,6 +84,7 @@ const mapStateToProps = state =>{
         editIndex : state.editIndex,
         loading : state.loading,
         purchaseAll: state.purchaseAll,
+        isStarted : state.isStarted
     };
 };
 const mapDispatchToProps = dispatch => {
@@ -98,6 +103,7 @@ const mapDispatchToProps = dispatch => {
          onSetTotalPrice : () => dispatch(actions.calculateGrandTtoalPriceOfAllSlips()),
          onDeleteAndResetAll : () => dispatch(actions.deleteAndResetAll()),
          onAddEmptySlip : () => dispatch(actions.addEmptySlip()),
+         onEmptyEditingISlip : () => dispatch(actions.EmptyEditingISlip()),
          onCalculateOverAllPrice : (slip, game, side)=>dispatch(actions.calculateOverAllPrice(slip, game, side))
     };
 };

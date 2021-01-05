@@ -1,6 +1,5 @@
 import { React } from "react";
 import BetTile from "../../board/tile/betTile/BetTitle";
-import classes from "./BetItems.module.css";
 
 const BetItems = (props) => {
   let betrows = null;
@@ -14,7 +13,7 @@ const BetItems = (props) => {
           key={k}
           style={{
             float: "left",
-            marginBottom: "10%",
+            marginBottom: "8%",
           }}
         >
           <div className="row">
