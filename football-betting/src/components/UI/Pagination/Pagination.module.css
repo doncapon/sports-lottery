@@ -1,6 +1,6 @@
 .NavItems {
     font-size: 1.2em;
-    margin-bottom: 1.4vw;
+    margin-bottom: 10px;
 }
 .NavItems:hover {
     cursor: pointer;
@@ -13,8 +13,7 @@
 .NavItem {
     border-radius: 3px;
     padding: 0.5vw;
-    border: 1px solid black;
-
+    border: 1px solid darkblue;
 }
 
 .Edit{

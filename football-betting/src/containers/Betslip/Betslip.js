@@ -108,35 +108,32 @@ const BetSlip = React.memo(
     if (props.slips.length > 0) {
       betSlip = props.slips.map((slip, ind) => {
         return (
-          <div className={" col-sm-1  col-sm-4 col-sm-2 "} key={ind}>
+          <div className={" col-4 "} key={ind}>
             <div className="row">
               <div
-                className={'    col-sm-2 ' +( props.editIndex === ind) ? classes.Edit : null}
+                className={' col-12 ' +( props.editIndex === ind) ? classes.Edit : null}
                 style={{
                   borderRadius: "5%",
                   background: "#f7f4bc",
-                  margin: "0 5% 10% 0",
+                  margin: "0 0% 5% 0",
                 }}
               >
                   <div className="row">
-                    <div className="col-sm-12 ">
-                      <div style={{ fontWeight: "bold", marginBottom: "2%" }}>
+                    <div className="col-12 ">
+                      <div style={{ fontWeight: "bold" }}>
                         Slip {ind + 1}
                       </div>
                     </div>
                   </div>
 
                   <div className="row" onClick={() => setEditIndex(ind)}>
-                    <div className="col-sm-12 ">
                       <BetItems key={ind} games={slip[slip.id].games} />
-                    </div>
                   </div>
 
-                  <div className="offset-3 col-sm-2 "   style={{marginBottom: '2vh'}}>
-                  <div className={"row " + classes.Buttons}>
-                    <div className="col-sm-3 ">
+                  <div className={"row  justify-content-center " + classes.Buttons}>
+                    <div className="col-2 ">
                       <Button
-                        size="lg"
+                        size="md"
                         disabled={!slip.purchasable}
                         variant="outline-primary"
                         onClick={() => setEditIndex(ind)}
@@ -146,11 +143,11 @@ const BetSlip = React.memo(
                     </div>
                   </div>
 
-                  <div className="row">
-                    <div className="col-sm-3 col-sm-2 ">
+                  <div className="row justify-content-center  ">
+                    <div className="col-2  ">
                       <Button
                         onClick={() => copyBetSlip(ind, props.slips.length)}
-                        size="lg"
+                        size="md"
                         variant="outline-primary"
                         disabled={
                           !props.purchaseAll ||
@@ -162,11 +159,11 @@ const BetSlip = React.memo(
                     </div>
                   </div>
 
-                  <div className="row">
-                    <div className="col-sm-3 col-sm-2">
+                  <div className="row justify-content-center">
+                    <div className="col-2 ">
                       <Button
                         variant="outline-primary"
-                        size="lg"
+                        size="md"
                         disabled={slip.disableDelete}
                         onClick={() => RemoveBetFromSlip(ind)}
                       >
@@ -177,7 +174,7 @@ const BetSlip = React.memo(
                 </div>
               </div>
             </div>
-          </div>
+          
         );
       });
     }
@@ -190,9 +187,9 @@ const BetSlip = React.memo(
       <>
         {props.slips.length > 0 ? (
           <div className="row" style={{ paddingTop: "5px" }}>
-            <div className="offset-9">
+            <div className="offset-6">
               {" "}
-              <span style={{ color: "red", fontWeight: "bold" }}>
+              <span style={{ color: "grey", fontWeight: "bold" }}>
                 EMPTY
                 <span
                   style={{
@@ -215,15 +212,18 @@ const BetSlip = React.memo(
           </div>
         ) : null}
         <div className={"row " + classes.BetSlip}>
-          <div style={{marginBottom: '2VH'}}>
+          <div style={{marginBottom: '0.5vh'}}>
             <Button
-              style={{ fontSize: '1.5vw'}}
+              style={{ fontSize: '0.9em'}}
               variant= 'secondary'
+              style={{width:'80vw', maxWidth : '350px'}}
               onClick = {addEmptySlip}
               disabled = {!props.purchaseAll}
              >ADD NEW ROW TO BETSLIP</Button>
           </div>
-          <div className="col-md-12">
+          </div>
+          <div className= 'row'>
+          <div className=" offset-1">
             <Pagination
               activePage={activePage}
               usedPages={props.slips.length}
@@ -235,7 +235,7 @@ const BetSlip = React.memo(
           </div>
         </div>
         <div className="row ">
-          <div className="col-lg-12  " style={{ float: "left" }}>
+          <div className="col-12  " style={{ float: "left" }}>
             <div className="row ">{shownSlips}</div>
           </div>
         </div>

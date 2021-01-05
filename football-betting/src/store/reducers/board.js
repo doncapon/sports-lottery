@@ -4,52 +4,46 @@ import _ from "lodash";
 
 const initialStte = {
 
-    slips: [],
-    editIndex : 0,
-    totalPrice: 0,
-    purchaseAll: false,
-    basePrice: 25,
-    loading: false,
-};
-
-//  {
-            //     id:  "slip_1",
-            //     purchasable: false,
-            //     slipPrice: 0,
-            //     adding: false,
-            //     removing: false,
-            //     "slip_1":  { 
-            //                 games: [
-            //                     {
-            //                         id: "game_1",
-            //                         amount: 0,
-            //                         "game_1": {
-            //                                 team1 : 'Manchester United',
-            //                                 team2: 'Watford FC' ,
-            //                                 isValid: false,
-            //                                 sides: [ {selected : false}, {selected : false}, {selected : false} ],
-            //                         }
-            //                     },
-            //                     {
-            //                         id: "game_2",
-            //                         amount: 0,     
-            //                         "game_2": {
-            //                                 team1 : 'Chelsea',
-            //                                 team2: 'Arsenal',  
-            //                                 isValid: false,
-            //                                 sides: [ {selected : false}, {selected : false}, {selected : false} ],
-            //                         }
-            //                     },
-            //                     {
-            //                         id: "game_3",
-            //                         amount: 0,
-            //                         "game_3": { 
-            //                                 team1 : 'Real Madrid', 
-            //                                 team2: 'Barcelona',
-            //                                 isValid: false,
-            //                                 sides: [{selected : false}, {selected : false}, {selected : false} ]
-            //                         }
-            //                     },
+    slips: [
+        
+ {
+                id:  "slip_1",
+                purchasable: false,
+                slipPrice: 0,
+                adding: false,
+                removing: false,
+                "slip_1":  { 
+                            games: [
+                                {
+                                    id: "game_1",
+                                    amount: 0,
+                                    "game_1": {
+                                            team1 : 'Manchester United',
+                                            team2: 'Watford FC' ,
+                                            isValid: false,
+                                            sides: [ {selected : false}, {selected : false}, {selected : false} ],
+                                    }
+                                },
+                                {
+                                    id: "game_2",
+                                    amount: 0,     
+                                    "game_2": {
+                                            team1 : 'Chelsea',
+                                            team2: 'Arsenal',  
+                                            isValid: false,
+                                            sides: [ {selected : false}, {selected : false}, {selected : false} ],
+                                    }
+                                },
+                                {
+                                    id: "game_3",
+                                    amount: 0,
+                                    "game_3": { 
+                                            team1 : 'Real Madrid', 
+                                            team2: 'Barcelona',
+                                            isValid: false,
+                                            sides: [{selected : false}, {selected : false}, {selected : false} ]
+                                    }
+                                },
                                 // {
                                 //     id: "game_4",
                                 //     amount: 0,
@@ -140,40 +134,46 @@ const initialStte = {
                                 //             sides: [{selected : false}, {selected : false}, {selected : false} ]
                                 //     }
                                 // }
-            //                 ]   
-            //         }
-            // }
-
+                            ]   
+                    }
+            }
+    ],
+    editIndex : 0,
+    totalPrice: 0,
+    purchaseAll: false,
+    basePrice: 25,
+    loading: false,
+};
 
 const iniialLizeBoard = (state, action ) =>{
     
-    return produce (state, draft =>{
+    // return produce (state, draft =>{
         
-        let slipId = "slip_";
-        let games1 = [];
-        let gameId = "game_";
+    //     let slipId = "slip_";
+    //     let games1 = [];
+    //     let gameId = "game_";
         
-        action.predictions.forEach((prediction , i)=> {
+    //     action.predictions.forEach((prediction , i)=> {
 
-            let game = {id : gameId + (i+1), amount: 0, [gameId + (i+1)] : 
-                { team1 : prediction.teams.home.team_name, 
-                    team2 : prediction.teams.away.team_name , isValid: false,
-                    sides: [ {selected : false}, {selected : false}, {selected : false} ],
-                }
-            };
-                games1.splice(i,i+1,game);
-        });
+    //         let game = {id : gameId + (i+1), amount: 0, [gameId + (i+1)] : 
+    //             { team1 : prediction.teams.home.team_name, 
+    //                 team2 : prediction.teams.away.team_name , isValid: false,
+    //                 sides: [ {selected : false}, {selected : false}, {selected : false} ],
+    //             }
+    //         };
+    //             games1.splice(i,i+1,game);
+    //     });
 
-        let slipInner = Object.assign({}, { games: games1});
-        let newSlip = Object.assign({}, { id: (slipId + 1) ,purchasable: false,
-            slipPrice: 0, adding: false, removing: false , [slipId +1]  : slipInner});
-        newSlip.games = Object.assign([], games1);
-        let newSlips = [Object.assign({}, newSlip )];
-        newSlips.splice(0,1, newSlip);
-        draft.slips = Object.assign([], newSlips);
-        draft.loading = true;
+    //     let slipInner = Object.assign({}, { games: games1});
+    //     let newSlip = Object.assign({}, { id: (slipId + 1) ,purchasable: false,
+    //         slipPrice: 0, adding: false, removing: false , [slipId +1]  : slipInner});
+    //     newSlip.games = Object.assign([], games1);
+    //     let newSlips = [Object.assign({}, newSlip )];
+    //     newSlips.splice(0,1, newSlip);
+    //     draft.slips = Object.assign([], newSlips);
+    //     draft.loading = true;
 
-    });
+    // });
 }
 
 

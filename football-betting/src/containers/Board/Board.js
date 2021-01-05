@@ -14,12 +14,10 @@ class Board extends Component {
     }
 
     render (){
-        return  (this.props.loading )? <div className= {'row  justify-content-center '+ classes.Board} 
-        style= {{ margin: '0% 0 1%'}}>
+        return  (!this.props.loading )? <div className= {'row '+ classes.Board}>
           
-                <div className= {' col-lg-7 col-lg-5 col-lg-3  col-lg-1 '+
-                classes.BoardLeft}>
-                    <div className ='row' >
+                <div className= {'col-12 col-lg-7 '+classes.BoardLeft}>
+                    <div className ='row ' >
                         <PlayRow  toggleSelectedTile = {this.props.ontoggleSelectedTile} 
                          slips = {this.props.slips} checkPurchasable= {this.props.onIsPurchasing} 
                           setPurchaseAll = {this.props.onSetPurchaseAll } playingGames = {this.props.playingGames }
@@ -29,11 +27,10 @@ class Board extends Component {
                         
                     </div>
                 </div>
-                <div className = {'col-lg-5 col-md-12 ' + classes.BoardRight}  
+            <div className ={'col-lg-5 '+ classes.BoardRight}  
                 style={{ background:'#c6f5f3', minWidth: '25%'}} >
-
                     <div className= 'row' >
-                        <div className= 'col-lg-11 offset-1 '>
+                        <div className= {'col-11  ' } style= {{marginLeft: '2.4vw'}}>
                             <Betslip slips = {this.props.slips}  setAdding = {this.props.onSetAdding}
                             setRemoving = {this.props.onSetRemoving} 
                             setPurchaseAll = {this.props.onSetPurchaseAll }
@@ -49,19 +46,19 @@ class Board extends Component {
                         </div>
                     </div>
                     <div className= 'row ' >
-                        <div className='col-md-12' style = {{fontSize: '1.6vw', float:'left'}}>
+                        <div className='col-md-7' style = {{fontSize: '1emm', float:'left'}}>
                             { (this.props.purchaseAll&& this.props.totalPrice > 0) ? <p style ={{fontWeight: 'bold' }} >
                                 <span style={{marginRight: '1vw'}}>Total Price:</span><span 
-                            style={{fontSize: '1.6vw',color: 'blue' , fontWeight: 'bold'}}>
+                            style={{fontSize: '1.2em',color: 'blue' , fontWeight: 'bold'}}>
                                 <NumberFormat value={ this.props.totalPrice}  displayType={'text'} thousandSeparator={true} prefix={'₦'} />
                                 </span>
                             <span style={{color: 'green', fontWeight: 'bold' , marginLeft: '0.2vw'}}>NAIRA</span></p>  : null }
                         </div>
                     </div>
                     <div className = 'row'>
-                        <div className='offset-5'  style={{marginTop: '0' , marginBottom: "2vh"}}>
+                        <div className='offset-5'  style={{marginTop: '0' , marginBottom: "0.2em"}}>
                             {this.props.purchaseAll? <Button variant= "success"  style={{padding: '0.5vw 2vw',
-                             fontWeight: 'bold', fontSize: '4.5vh'}}
+                             fontWeight: 'bold', fontSize: '1em'}}
                                 clicked = {this.AddToslips} 
                             >CHECKOUT</Button>  : null }
                         </div>
