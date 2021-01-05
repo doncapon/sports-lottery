@@ -10,10 +10,7 @@ const Pagination = React.memo( (props) =>{
     let activePage = props.activePage;
 
      for(let i = 1 ; i <= rows ; i++){
-        classesFul.push(' col-sm-2  col-sm-1');
         classesFul.push(classes.NavItem );
-  
-
         if (i === activePage){
             classesFul.push( classes.Edit);
         }

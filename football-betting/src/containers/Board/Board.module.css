@@ -2,6 +2,8 @@
     text-align: center;
     font-weight: bold;
     font-size: 1rem;
+    margin : auto;
+
 }
 
 
@@ -13,10 +15,12 @@
 
 @media (min-width: 981.1px) {
     .BoardLeft{
-        padding-top: 180px; 
+        padding-top: 100px; 
 
     }
 }
+
+
 
 
 
