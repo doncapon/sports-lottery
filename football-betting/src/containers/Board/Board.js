@@ -18,7 +18,7 @@ class Board extends Component {
         return  (!this.props.loading )? <div className= {'row '+ classes.Board}>
               
                 <div className= {'col-12 col-lg-7 '+classes.BoardLeft}>
-                    <div className="row">   
+                    <div className="row"   style={{background : '#eee'}}>   
                         <TopBoard isStarted = {this.props.isStarted} clicked ={this.props.onEmptyEditingISlip}
                                                 genrateSlip = {this.props.onGenrateSlip}
                         />
