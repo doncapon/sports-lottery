@@ -8,27 +8,46 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from "react-redux";
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware, compose, 
-  // combineReducers
+  combineReducers
 } from 'redux';
 import boardReducer from "./store/reducers/board";
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
+ 
+
+import { PersistGate } from 'redux-persist/es/integration/react';
+
+const persistConfig = {
+  key: 'root',
+  storage,
+  blacklist: ['exclude']
+}
+
+
 
 
 const composeEnhancers = process.env.NODE_ENV === "development" ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
-// const rootReducer = combineReducers({
-//   board: boardReducer,
-//   betSlip: betSlipReducer
-// });
+const rootReducer = combineReducers({
+  board: boardReducer,
+});
 
-const store = createStore(boardReducer, composeEnhancers(
-  applyMiddleware(thunk)
-));
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+let  store = createStore(persistedReducer, composeEnhancers(
+    applyMiddleware(thunk)));
+let persistor = persistStore(store);
+
+export { store, persistor };
+
 
 const app = (
 <Provider store = {store}> 
 <BrowserRouter>
-<React.StrictMode>
+<PersistGate 
+loading={null}
+      persistor={persistor}>
   <App />
-</React.StrictMode>
+</PersistGate>
 </BrowserRouter>
 </Provider>
 );
