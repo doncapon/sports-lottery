@@ -5,7 +5,7 @@ export const genrateSlip = (amount, ) =>{
     return dispatch =>{
         dispatch(EmptyEditingISlip());
         dispatch(genrateSlip2(amount));
-        
+
         dispatch(setPurchaseAll());
         dispatch(calculateGrandTtoalPriceOfAllSlips());
 
@@ -15,6 +15,13 @@ export const genrateSlip2 = (amount) =>{
     return {
         type: actionTypes.GENERATE_SLIP,
         amount: amount
+    }
+}
+
+export const toggleShowHistory = (gameIndex) =>{
+    return {
+        type: actionTypes.TOGGLE_SHOW_HISTORY,
+        gameIndex: gameIndex
     }
 }
 

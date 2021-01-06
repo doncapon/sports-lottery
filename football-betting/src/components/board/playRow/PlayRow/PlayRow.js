@@ -1,8 +1,9 @@
-import React from "react";
 import SingleTile from "../../tile/SingleTile/SingleTile";
 import Team from "../team/team";
 import classes from "./PlayRow.module.css";
-
+import Button from 'react-bootstrap/Button';
+import { ViewList } from "react-bootstrap-icons";
+import Modal from '../../../UI/Modal/Modal';
 const PlayRow = (props) => {
   const HandlerAdd = (slipIndex, gameIndex, sideIndex, side) => {
     props.toggleSelectedTile(slipIndex, gameIndex, sideIndex, side);
@@ -22,17 +23,17 @@ const PlayRow = (props) => {
     return (
       <div className={" col-12 " + classes.PlayRow} style={{marginBottom: '1%'}} key={k}>
         <div className="row " >
-          <div className={"col-7"}  >
+
+          <div className={"col-6"}  >
             <Team
               team1={game[gameId + (k + 1)].team1}
               team2={game[gameId + (k + 1)].team2}
               row={k + 1}
             />
           </div>
-
           <div className='col-5  ' >
             {
-              <div className="row" >
+               <div className="row" >
                 <div className='col-3 offset-1' >
                   <SingleTile
                     type={"home"}
@@ -76,9 +77,16 @@ const PlayRow = (props) => {
                     }
                   />
                 </div>
+                <div className='col-1' style={{marginLeft: '20px'}}> 
+                  <Button onClick = {()=>props.toggleShowHistory(k)}><ViewList  /></Button>
+                </div>
+                
               </div>
+
             }
           </div>
+        {game.showHistory?<div className="col-12"> <Modal /></div>: null}
+
         </div>
         <div></div>
       </div>

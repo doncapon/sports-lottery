@@ -1,30 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
+import classes from './Modal.module.css';
+const Modal = (props) =>{
+    return ( <div className = {classes.modal} > 
+    <div className= "modal-content">
+    <div className="modal-header">
+            <h6 className= "modal-title" > Form Checker | last Five Meetings | Win chance</h6>
+        </div>
+        <div className="modal-body">
+            Modal Content will go here
+        </div>
 
-import classes from './Modal.css';
-import Auxy from '../../../hoc/Auxy/Auxy';
-import Backdrop from '../Backdrop/Backdrop';
-
-class Modal extends Component {
-
-    shouldComponentUpdate ( nextProps, nextState ) {
-        return nextProps.show !== this.props.show || nextProps.children !== this.props.children;
-    }
-
-    render () {
-        return (
-            <Auxy>
-                <Backdrop show={this.props.show} clicked={this.props.modalClosed} />
-                <div
-                    className={classes.Modal}
-                    style={{
-                        transform: this.props.show ? 'translateY(0)' : 'translateY(-100vh)',
-                        opacity: this.props.show ? '1' : '0'
-                    }}>
-                    {this.props.children}
-                </div>
-            </Auxy>
-        )
-    }
+        <div className="modal-footer">
+        </div>
+    </div>
+</div>    );
 }
 
 export default Modal;

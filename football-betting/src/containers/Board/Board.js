@@ -29,6 +29,7 @@ class Board extends Component {
                           setPurchaseAll = {this.props.onSetPurchaseAll } playingGames = {this.props.playingGames }
                             editIndex={this.props.editIndex} 
                              calculateTotalPrice = { this.props.onCalculateOverAllPrice}
+                             toggleShowHistory= {this.props.onToggleShowHistory}
                         />
                         
                     </div>
@@ -110,6 +111,7 @@ const mapDispatchToProps = dispatch => {
          onEmptyEditingISlip : () => dispatch(actions.EmptyEditingISlip()),
          onCalculateOverAllPrice : (slip, game, side)=>dispatch(actions.calculateOverAllPrice(slip, game, side)),
          onGenrateSlip : (amount)=>dispatch(actions.genrateSlip(amount)),
+         onToggleShowHistory : (gameIndex)=>dispatch(actions.toggleShowHistory(gameIndex)),
     };
 };
 

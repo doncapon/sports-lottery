@@ -16,6 +16,7 @@ const initialStte = {
                             games: [
                                 {
                                     id: "game_1",
+                                    showHistory: false,
                                     amount: 0,
                                     "game_1": {
                                             team1 : 'Manchester United',
@@ -26,6 +27,7 @@ const initialStte = {
                                 },
                                 {
                                     id: "game_2",
+                                    showHistory: false,
                                     amount: 0,     
                                     "game_2": {
                                             team1 : 'Chelsea',
@@ -36,6 +38,7 @@ const initialStte = {
                                 },
                                 {
                                     id: "game_3",
+                                    showHistory: false,
                                     amount: 0,
                                     "game_3": { 
                                             team1 : 'Real Madrid', 
@@ -47,6 +50,7 @@ const initialStte = {
                                 {
                                     id: "game_4",
                                     amount: 0,
+                                    showHistory: false,
                                     "game_4": { 
                                             team1 : 'Leicester city', 
                                             team2: 'Manchester city', 
@@ -56,6 +60,7 @@ const initialStte = {
                                 },
                                 {
                                     id: "game_5",
+                                    showHistory: false,
                                     amount: 0,
                                     "game_5": { 
                                             team1 : 'Wolverhampton wonderers', 
@@ -67,6 +72,7 @@ const initialStte = {
                                 {
                                     id: "game_6",
                                     amount: 0,
+                                    showHistory: false,
                                     "game_6": { 
                                             team1 : 'Liverpool', 
                                             team2: 'Newcastle United',
@@ -76,6 +82,7 @@ const initialStte = {
                                 },
                                 {
                                     id: "game_7",
+                                    showHistory: false,
                                     amount: 0,
                                     "game_7": { 
                                             team1 : 'Watford', 
@@ -87,6 +94,7 @@ const initialStte = {
                                 {
                                     id: "game_8",
                                     amount: 0, 
+                                    showHistory: false,
                                     "game_8": { 
                                             team1 : 'Everton', 
                                             team2: 'Tottenham HotSpur',  
@@ -96,6 +104,7 @@ const initialStte = {
                                 },
                                 {
                                     id: "game_9",
+                                    showHistory: false,
                                     amount: 0,
                                     "game_9": {
                                             team1 : 'Crystal Palace', 
@@ -106,6 +115,7 @@ const initialStte = {
                                 },
                                 {
                                     id: "game_10",
+                                    showHistory: false,
                                     amount: 0,
                                     "game_10": {
                                             team1 : 'West Bromich Abion', 
@@ -116,6 +126,7 @@ const initialStte = {
                                 },
                                 {
                                     id: "game_11",
+                                    showHistory: false,
                                     amount: 0,
                                     "game_11": { 
                                             team1 : 'Espanol', 
@@ -127,6 +138,7 @@ const initialStte = {
                                 {
                                     id: "game_12",
                                     amount: 0,
+                                    showHistory: false,
                                     "game_12": {
                                             team1 : 'Southhampton', 
                                             team2: 'BrentFord',
@@ -147,6 +159,15 @@ const initialStte = {
     quickBet: [480, 960, 1440],
     gamesLength: 12
 };
+
+const toggleShowHistory=(state, action)=>{
+    return produce(state, draft=>{
+        draft.slips[state.editIndex]["slip_" + (state.editIndex+ 1)]
+        .games[action.gameIndex].showHistory = !draft.slips[state.editIndex]["slip_" + (state.editIndex+ 1)]
+        .games[action.gameIndex].showHistory;
+    })
+}
+
 const  getRandomInt = (max) => {
     return Math.floor(Math.random() * Math.floor(max));
   }
@@ -572,6 +593,8 @@ const setPurchaseAll = (state, action)=>{
 
 const reducer = (state = initialStte, action) =>{
     switch (action.type){  
+        case actionTypes.TOGGLE_SHOW_HISTORY:
+            return toggleShowHistory(state,action);
         case actionTypes.CHECK_HAS_STARED:
             return checkHasStartedPlaying(state,action);
         case actionTypes.EMPTY_EDITING_SLIP:
