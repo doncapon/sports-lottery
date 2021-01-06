@@ -78,7 +78,7 @@ const PlayRow = (props) => {
                   />
                 </div>
                 <div className='col-1' style={{marginLeft: '20px'}}> 
-                  <Button onClick = {()=>props.toggleShowHistory(k)}><ViewList  /></Button>
+                  <Button size="md" onClick = {()=>props.toggleShowHistory(k)}><ViewList  /></Button>
                 </div>
                 
               </div>
