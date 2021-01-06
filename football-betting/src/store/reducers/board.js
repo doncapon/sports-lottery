@@ -144,7 +144,8 @@ const initialStte = {
     basePrice: 20,
     loading: false,
     isStarted: false,
-    quickBet: [480, 960, 1440]
+    quickBet: [480, 960, 1440],
+    gamesLength: 12
 };
 const  getRandomInt = (max) => {
     return Math.floor(Math.random() * Math.floor(max));
@@ -153,90 +154,91 @@ const genrateSlip = (state, action) =>{
     return produce( state, draft =>{
         let arrayGames = [[]];
         let clonedGames = draft.slips[state.editIndex]["slip_" + (state.editIndex + 1)].games;
-        for(let i = 0 ; i <  clonedGames.length; i++){
-            arrayGames.push([0,0,0]);
-        }
-        for(let i = 0 ; i <  clonedGames.length; i++){
-            let index = getRandomInt(3);
-            clonedGames[i]["game_" + (i+1)].sides[index].selected = true;
-            clonedGames[i].amount = 1;
-            arrayGames[index] = 1;
-        }
         draft.slips[state.editIndex].slipPrice = state.basePrice
-        let threesided = getRandomInt(12);
-        arrayGames[threesided] = [1,1,1]
-        let amount = action.amount.split(' ')[0];
-        let k = 0 ;
-        switch(amount){
-            case "480":
-             while(k < 5){
-                  
-                   for(let i = 0 ; i < 3 ; i++)
-                   clonedGames[threesided]["game_" + (threesided+1)].sides[i].selected = true;
-
-                  let game = getRandomInt(12);
-                  let side = getRandomInt(3);
-                  
-                  let side1 =  clonedGames[game]["game_" + (game+1)].sides[0].selected;
-                  let side2 =  clonedGames[game]["game_" + (game+1)].sides[1].selected;
-                  let side3 =  clonedGames[game]["game_" + (game+1)].sides[2].selected;
-
-                  if(arrayGames[game][side] === 1 || ( (side1 && side2) || (side1 && side3) || (side2 && side3 ))){
-                      k -=1;
-                      continue;
-                  }
-                  clonedGames[game]["game_" + (game+1)].sides[side].selected = true;
-                  draft.slips[state.editIndex].slipPrice =  state.quickBet[0];
-                  k++;
-             }
+        let gameRandom = getRandomInt(state.gamesLength);
+        let rand2; 
+        for(let i = 0 ; i < 1; i++){
+            let temp = getRandomInt(state.gamesLength);
+            if(gameRandom === temp  ){
+                continue;
+            }
+            rand2 = temp;
             break;
-            case "960":
-                while(k < 6){
-                     
-                      for(let i = 0 ; i < 3 ; i++)
-                      clonedGames[threesided]["game_" + (threesided+1)].sides[i].selected = true;
-   
-                     let game = getRandomInt(12);
-                     let side = getRandomInt(3);
-                     
-                     let side1 =  clonedGames[game]["game_" + (game+1)].sides[0].selected;
-                     let side2 =  clonedGames[game]["game_" + (game+1)].sides[1].selected;
-                     let side3 =  clonedGames[game]["game_" + (game+1)].sides[2].selected;
-   
-                     if(arrayGames[game][side] === 1 || ( (side1 && side2) || (side1 && side3) || (side2 && side3 ))){
-                         k -=1;
-                         continue;
-                     }
-                     clonedGames[game]["game_" + (game+1)].sides[side].selected = true;
-                     draft.slips[state.editIndex].slipPrice =  state.quickBet[1];
-                     k++;
-                }
-               break;
-               case "1,440":
-                while(k < 7){
-                     
-                      for(let i = 0 ; i < 3 ; i++)
-                      clonedGames[threesided]["game_" + (threesided+1)].sides[i].selected = true;
-   
-                     let game = getRandomInt(12);
-                     let side = getRandomInt(3);
-                     
-                     let side1 =  clonedGames[game]["game_" + (game+1)].sides[0].selected;
-                     let side2 =  clonedGames[game]["game_" + (game+1)].sides[1].selected;
-                     let side3 =  clonedGames[game]["game_" + (game+1)].sides[2].selected;
-   
-                     if(arrayGames[game][side] === 1 || ( (side1 && side2) || (side1 && side3) || (side2 && side3 ))){
-                         k -=1;
-                         continue;
-                     }
-                     clonedGames[game]["game_" + (game+1)].sides[side].selected = true;
-                     draft.slips[state.editIndex].slipPrice =  state.quickBet[2];
-                     k++;
-                }
-               break;
-                default:
-                    break;
         }
+        let amount = action.amount.split(' ')[0];
+        let sides = [0,0,0];
+        for(let i = 0 ; i < state.gamesLength; i++){
+            let rand = getRandomInt(3);
+            sides[rand] = 1;
+            arrayGames[i] = Object.assign([], sides);
+            sides = [0,0,0];
+        }
+        arrayGames[gameRandom] = Object.assign([], [1,1,1]);
+        if(amount === "480"){
+            let attempt = 0;
+            let InitialAttempt = 3;
+            while(attempt < InitialAttempt){
+                    let newRand = getRandomInt(arrayGames.length);
+                    let sideRand = getRandomInt(3);
+                    if(arrayGames[newRand][sideRand] === 1 || newRand === gameRandom ||
+                       (arrayGames[newRand][0] + arrayGames[newRand][1]+ arrayGames[newRand][2]) > 1  ){
+                         continue;
+                    }
+                    arrayGames[newRand][sideRand] = 1;
+                    attempt++;
+            }
+            draft.slips[state.editIndex].slipPrice = state.quickBet[0];
+        }else if (amount === "960"){
+            let attempt = 0;
+            let InitialAttempt = 4;
+            
+            while(attempt < InitialAttempt){
+                    let newRand = getRandomInt(arrayGames.length);
+                    let sideRand = getRandomInt(3);
+                    if(arrayGames[newRand][sideRand] === 1 || newRand === gameRandom ||
+                        (arrayGames[newRand][0] + arrayGames[newRand][1]+ arrayGames[newRand][2]) > 1 ){
+                         continue;
+                    }
+                    arrayGames[newRand][sideRand] = 1;
+                    attempt++;
+            }
+            draft.slips[state.editIndex].slipPrice = state.quickBet[1];
+        }else{
+            let attempt = 0;
+            let InitialAttempt = 3;
+            let u = 0 ;
+        arrayGames[rand2] = Object.assign([], [1,1,1]);
+
+            while(attempt <InitialAttempt){
+                    let newRand = getRandomInt(arrayGames.length);
+                    let sideRand = getRandomInt(3);
+                    if(arrayGames[newRand][sideRand] === 1 || newRand === gameRandom ||
+                        newRand === rand2 ||
+                        (arrayGames[newRand][0] + arrayGames[newRand][1]+ arrayGames[newRand][2]) > 1 ){
+                         continue;
+                    }
+                    arrayGames[newRand][sideRand] = 1;
+                    attempt++;
+                    console.log(u++);
+
+            }
+            draft.slips[state.editIndex].slipPrice = state.quickBet[2];
+        }
+        for(let i = 0 ; i < arrayGames.length; i++){
+            for(let k = 0 ; k < 3; k++){
+                if(arrayGames[i][k] === 1){
+                    clonedGames[i]["game_" + (i+1)].sides[k].selected = true;
+                }else{
+                    clonedGames[i]["game_" + (i+1)].sides[k].selected = false;
+                }
+            }    
+        }
+        for(let i = 0 ; i < arrayGames.length; i++){
+            draft.slips[state.editIndex]["slip_" + (state.editIndex+ 1)]
+            .games[i].amount = arrayGames[i][0] + arrayGames[i][1] + arrayGames[i][2]
+        }
+        draft.slips[state.editIndex].purchasable = true;
+
     })
 }
 
