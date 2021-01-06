@@ -130,8 +130,8 @@ const BetSlip = React.memo(
                       <BetItems key={ind} games={slip[slip.id].games} />
                   </div>
 
-                  <div className={"row  justify-content-center " + classes.Buttons}>
-                    <div className="col-2 ">
+                  <div className={"row   " + classes.Buttons}>
+                    <div className="col-2 offset-3 ">
                       <Button
                         size="md"
                         disabled={!slip.purchasable}
@@ -143,8 +143,8 @@ const BetSlip = React.memo(
                     </div>
                   </div>
 
-                  <div className="row justify-content-center  ">
-                    <div className="col-2  ">
+                  <div className="row   ">
+                    <div className="col-2 offset-3  ">
                       <Button
                         onClick={() => copyBetSlip(ind, props.slips.length)}
                         size="md"
@@ -159,8 +159,8 @@ const BetSlip = React.memo(
                     </div>
                   </div>
 
-                  <div className="row justify-content-center">
-                    <div className="col-2 ">
+                  <div className="row ">
+                    <div className="col-2 offset-3 ">
                       <Button
                         variant="outline-primary"
                         size="md"

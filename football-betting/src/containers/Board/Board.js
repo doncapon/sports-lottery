@@ -51,6 +51,8 @@ class Board extends Component {
                               
                         </div>
                     </div>
+        {console.log(this.props.slips[this.props.editIndex])}
+                    
                     <div className= 'row ' >
                         <div className='col-md-7' style = {{fontSize: '1emm', float:'left'}}>
                             { (this.props.purchaseAll&& this.props.totalPrice > 0) ? <p style ={{fontWeight: 'bold' }} >
