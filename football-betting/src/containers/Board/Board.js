@@ -19,13 +19,15 @@ class Board extends Component {
               
                 <div className= {'col-12 col-lg-7 '+classes.BoardLeft}>
                     <div className="row">   
-                        <TopBoard isStarted = {this.props.isStarted} clicked ={this.props.onEmptyEditingISlip} />
+                        <TopBoard isStarted = {this.props.isStarted} clicked ={this.props.onEmptyEditingISlip}
+                                                genrateSlip = {this.props.onGenrateSlip}
+                        />
                     </div>
                     <div className ='row ' >
                         <PlayRow  toggleSelectedTile = {this.props.ontoggleSelectedTile} 
                          slips = {this.props.slips} checkPurchasable= {this.props.onIsPurchasing} 
                           setPurchaseAll = {this.props.onSetPurchaseAll } playingGames = {this.props.playingGames }
-                            editIndex={this.props.editIndex}
+                            editIndex={this.props.editIndex} 
                              calculateTotalPrice = { this.props.onCalculateOverAllPrice}
                         />
                         
@@ -104,7 +106,8 @@ const mapDispatchToProps = dispatch => {
          onDeleteAndResetAll : () => dispatch(actions.deleteAndResetAll()),
          onAddEmptySlip : () => dispatch(actions.addEmptySlip()),
          onEmptyEditingISlip : () => dispatch(actions.EmptyEditingISlip()),
-         onCalculateOverAllPrice : (slip, game, side)=>dispatch(actions.calculateOverAllPrice(slip, game, side))
+         onCalculateOverAllPrice : (slip, game, side)=>dispatch(actions.calculateOverAllPrice(slip, game, side)),
+         onGenrateSlip : (amount)=>dispatch(actions.genrateSlip(amount)),
     };
 };
 

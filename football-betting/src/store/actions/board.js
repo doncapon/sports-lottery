@@ -1,10 +1,37 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios-predictions';
 
+export const genrateSlip = (amount, ) =>{
+    return dispatch =>{
+        dispatch(EmptyEditingISlip());
+        dispatch(genrateSlip2(amount));
+        
+        dispatch(setPurchaseAll());
+        dispatch(calculateGrandTtoalPriceOfAllSlips());
+
+    }
+}
+export const genrateSlip2 = (amount) =>{
+    return {
+        type: actionTypes.GENERATE_SLIP,
+        amount: amount
+    }
+}
+
+export const setPurchaseAll= ()=>{
+    return{
+        type: actionTypes.PURCHASE_ALL
+    }
+}
+export const checkPurchasable = (index)=>{
+    return {
+        type: actionTypes.CHECK_PURCHASABLE,
+        slipIndex: index
+    }
+}
 
 export const EmptyEditingISlip =()=>{
     return dispatch =>{
-        // dispatch(checkHasStartedPlaying());
         dispatch(EmptyEditingIndexSlip());
     }
 }
@@ -118,17 +145,7 @@ export const setRemoving=(slipIndex,isRemoved)=>{
         removing: isRemoved
     }
 }
-export const setPurchaseAll= ()=>{
-    return{
-        type: actionTypes.PURCHASE_ALL
-    }
-}
-export const checkPurchasable = (index)=>{
-    return {
-        type: actionTypes.CHECK_PURCHASABLE,
-        slipIndex: index
-    }
-}
+
 
 export const deleteAndResetAll = ()=>{
     return {
