@@ -57,11 +57,11 @@ class Board extends Component {
                     <div className= 'row ' >
                         <div className='col-md-7' style = {{fontSize: '1emm', float:'left'}}>
                             { (this.props.purchaseAll&& this.props.totalPrice > 0) ? <p style ={{fontWeight: 'bold' }} >
-                                <span style={{marginRight: '1vw'}}>Total Price:</span><span 
-                            style={{fontSize: '1.2em',color: 'blue' , fontWeight: 'bold'}}>
+                                <span style={{marginRight: '1vw', fontSize: '1.4em'}}>Total Price:</span><span 
+                            style={{fontSize: '1.8em',color: 'blue' , fontWeight: 'bold'}}>
                                 <NumberFormat value={ this.props.totalPrice}  displayType={'text'} thousandSeparator={true} prefix={'₦'} />
                                 </span>
-                            <span style={{color: 'green', fontWeight: 'bold' , marginLeft: '0.2vw'}}>NAIRA</span></p>  : null }
+                            <span style={{color: 'green', fontWeight: 'bold' ,fontSize: '1.4em', marginLeft: '0.2vw'}}>NAIRA</span></p>  : null }
                         </div>
                     </div>
                     <div className = 'row'>
@@ -81,15 +81,15 @@ class Board extends Component {
     }
 }
 
-const mapStateToProps = state =>{
+const mapstateToProps = state =>{
     return {
-        slips : state.slips,
-        playingGames : state.playingGames,
-        totalPrice: state.totalPrice,
-        editIndex : state.editIndex,
-        loading : state.loading,
-        purchaseAll: state.purchaseAll,
-        isStarted : state.isStarted
+        slips : state.board.slips,
+        playingGames : state.board.playingGames,
+        totalPrice: state.board.totalPrice,
+        editIndex : state.board.editIndex,
+        loading : state.board.loading,
+        purchaseAll: state.board.purchaseAll,
+        isStarted : state.board.isStarted
     };
 };
 const mapDispatchToProps = dispatch => {
@@ -115,4 +115,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Board);
+export default connect(mapstateToProps, mapDispatchToProps)(Board);
