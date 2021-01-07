@@ -31,10 +31,10 @@ const PlayRow = (props) => {
               row={k + 1}
             />
           </div>
-          <div className='col-5  ' >
+          <div className='col-6  ' >
             {
                <div className="row" >
-                <div className='col-3 offset-1' >
+                <div className='col-3 ' >
                   <SingleTile
                     type={"home"}
                     selected={game[gameId + (k + 1)].sides[0].selected}
@@ -77,7 +77,7 @@ const PlayRow = (props) => {
                     }
                   />
                 </div>
-                <div className='col-1' style={{marginLeft: '25px'}}> 
+                <div className='col-1 '> 
                   <Button size="md" onClick = {()=>props.toggleShowHistory(k)}>
                 {!game.showHistory? <CaretDownFill  />: <CaretUpFill />} </Button>
                 </div>

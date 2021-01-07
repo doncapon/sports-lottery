@@ -5,7 +5,7 @@ import {Trash2Fill} from 'react-bootstrap-icons';
 const topBoard = (props) =>{
 const genrateSlip = (event) =>{
     let i =  event.target.innerHTML;
-    props.genrateSlip(i);
+    props.genrateSlip(i, props.editIndex);
 }
     return (<div className = 'col-12'>
             <span  style= {{  textAlign : 'left' , color: 'skyblue', fontWeight: 'bold'}}

@@ -20,6 +20,10 @@ body {
   -o-background-size: cover;
   background-size: cover;
 }
+
+button:disabled {
+  cursor: not-allowed;
+}
 div {
   padding: 0;
   margin: 0;

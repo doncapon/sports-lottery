@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 import {
   PlusSquareFill,
   Trash2Fill,
-  ArrowUpRightCircleFill,
+  XCircle,
 } from "react-bootstrap-icons";
 import classes from "./BetSlip.module.css";
 import "./BetSlip.module.css";
@@ -46,19 +46,19 @@ const BetSlip = React.memo(
       setEndPage(end);
 
       setActivePage(k);
-    }
-    const addEmptySlip =()=>{
+    };
+    const addEmptySlip = () => {
       props.addEmptySlip();
       setEditIndex(props.slips.length);
 
       props.setPurchaseAll();
       ActivePageAddHandler();
       props.setTotalPrice();
-    }
+    };
 
     const ActivePageRemoveHandler = () => {
       let rest = props.slips.length - 1;
-      if (rest === 3 || rest === 6 || rest === 7 || rest === 12) {
+      if (rest === 3 || rest === 6 || rest === 9 || rest === 12) {
         setStartPage(startPage - displaySlips);
         setEndPage(endPage - displaySlips);
         setActivePage(activePage - 1);
@@ -90,11 +90,11 @@ const BetSlip = React.memo(
       props.setPurchaseAll();
       ActivePageAddHandler();
       props.setTotalPrice();
-    }
+    };
 
     const setEditIndex = (ind) => {
       props.setEditIndex(ind);
-    }
+    };
     const RemoveBetFromSlip = (oldIndex) => {
       if (oldIndex > 0) props.setRemoving(oldIndex, true);
 
@@ -111,70 +111,67 @@ const BetSlip = React.memo(
           <div className={" col-4 "} key={ind}>
             <div className="row">
               <div
-                className=  {( props.editIndex === ind) ? classes.Edit : null}
+                className={props.editIndex === ind ? classes.Edit : null}
                 style={{
                   borderRadius: "5%",
                   background: "#f7f4bc",
                   margin: "0 1% 5% 0",
                 }}
               >
-                  <div className="row">
-                    <div className="col-12 ">
-                      <div style={{ fontWeight: "bold" }}>
-                        Slip {ind + 1}
-                      </div>
-                    </div>
+                <div className="row">
+                  <div className="col-12 ">
+                    <div style={{ fontWeight: "bold" }}>Slip {ind + 1}</div>
                   </div>
+                </div>
 
-                  <div className="row" onClick={() => setEditIndex(ind)}>
-                      <BetItems key={ind} games={slip[slip.id].games} />
+                <div className="row" onClick={() => setEditIndex(ind)}>
+                  <BetItems key={ind} games={slip[slip.id].games} />
+                </div>
+
+                <div className={"row   " + classes.Buttons}>
+                  <div className="col-2 offset-3 ">
+                    <Button
+                      size="md"
+                      disabled={!slip.purchasable}
+                      variant="outline-primary"
+                      onClick={() => setEditIndex(ind)}
+                    >
+                      <XCircle />
+                    </Button>
                   </div>
+                </div>
 
-                  <div className={"row   " + classes.Buttons}>
-                    <div className="col-2 offset-3 ">
-                      <Button
-                        size="md"
-                        disabled={!slip.purchasable}
-                        variant="outline-primary"
-                        onClick={() => setEditIndex(ind)}
-                      >
-                        <ArrowUpRightCircleFill />
-                      </Button>
-                    </div>
+                <div className="row   ">
+                  <div className="col-2 offset-3  ">
+                    <Button
+                      onClick={() => copyBetSlip(ind, props.slips.length)}
+                      size="md"
+                      variant="outline-primary"
+                      disabled={
+                        !props.purchaseAll ||
+                        props.slips.length > totalSlips - 1
+                      }
+                    >
+                      <PlusSquareFill />
+                    </Button>
                   </div>
+                </div>
 
-                  <div className="row   ">
-                    <div className="col-2 offset-3  ">
-                      <Button
-                        onClick={() => copyBetSlip(ind, props.slips.length)}
-                        size="md"
-                        variant="outline-primary"
-                        disabled={
-                          !props.purchaseAll ||
-                          props.slips.length > totalSlips - 1
-                        }
-                      >
-                        <PlusSquareFill  />
-                      </Button>
-                    </div>
-                  </div>
-
-                  <div className="row ">
-                    <div className="col-2 offset-3 ">
-                      <Button
-                        variant="outline-primary"
-                        size="md"
-                        disabled={slip.disableDelete}
-                        onClick={() => RemoveBetFromSlip(ind)}
-                      >
-                        <Trash2Fill />
-                      </Button>
-                    </div>
+                <div className="row ">
+                  <div className="col-2 offset-3 ">
+                    <Button
+                      variant="outline-primary"
+                      size="md"
+                      disabled={slip.disableDelete}
+                      onClick={() => RemoveBetFromSlip(ind)}
+                    >
+                      <Trash2Fill />
+                    </Button>
                   </div>
                 </div>
               </div>
             </div>
-          
+          </div>
         );
       });
     }
@@ -185,43 +182,67 @@ const BetSlip = React.memo(
 
     return (
       <>
-        {props.slips.length > 0 ? (
-          <div className="row" style={{ paddingTop: "5px" }}>
-            <div className="offset-6">
-              {" "}
-              <span style={{ color: "grey", fontWeight: "bold" }}>
-                EMPTY
-                <span
-                  style={{
-                    color: "black",
-                    fontWeight: "bold",
-                    marginRight: "4px",
-                  }}
-                >
-                  ?
-                </span>{" "}
-              </span>
-              <Button
-                onClick={HandleDeleteAllFromSlip}
-                size="sm"
-                variant="outline-danger"
+        <div className={"row " + classes.BetSlip}>
+          <div
+            className="col-12"
+            style={{ marginBottom: "0.5vh", background: "grey" }}
+          >
+            <div className="row">
+              <div
+                className="col-12"
+                style={{ textAlign: "left", padding: "0" }}
               >
-                <Trash />
-              </Button>
+                <Button
+                  variant="secondary"
+                  style={{
+                    fontSize: "1.5em",
+                    maxWidth: "350px",
+                  }}
+                  onClick={addEmptySlip}
+                  disabled={!props.purchaseAll}
+                >
+                  ADD NEW ENTRY TO BETSLIPS
+                </Button>
+              </div>
+            </div>
+            <div className="col-12 ">
+              {props.slips.length > 0 ? (
+                <div className="row">
+                  <div
+                    className="col-12"
+                    style={{ padding: "0", paddingTop: "5px" }}
+                  >
+                    <div className="row">
+                      <div
+                        className="col-2"
+                        style={{
+                          marginLeft: '10px',
+                          fontSize: "1.6em",
+                          textAlign: "left",
+                          padding: "0",
+                        }}
+                      >
+                        BETSLIPS
+                      </div>
+                      <div className="col-6 offset-3" style = {{marginBottom: '5px'}}>
+                        
+                        <Button
+                          style = {{border: '4px solid white'}}
+                          onClick={HandleDeleteAllFromSlip}
+                          size="sm"
+                          variant="outline-muted"
+                        > <span style = {{fontSize: '1.6em', fontWeight: 'bold' }}>EMPTY </span>
+                          <Trash size="30" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
             </div>
           </div>
-        ) : null}
-        <div className={"row " + classes.BetSlip}>
-          <div style={{marginBottom: '0.5vh'}}>
-            <Button
-              variant= 'secondary'
-              style={{ fontSize: '1.5em' ,width:'80vw', maxWidth : '350px'}}
-              onClick = {addEmptySlip}
-              disabled = {!props.purchaseAll}
-             >ADD NEW ROW TO BETSLIP</Button>
-          </div>
-          </div>
-          <div className= 'row'>
+        </div>
+        <div className="row">
           <div>
             <Pagination
               activePage={activePage}

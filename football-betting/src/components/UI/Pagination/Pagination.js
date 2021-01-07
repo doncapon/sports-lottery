@@ -5,7 +5,7 @@ const Pagination = React.memo( (props) =>{
     let navItems = [];
     let end = 3;
     let start = 1;
-    let classesFul = []
+    let classesFul = [];
     let rows = Math.floor((props.usedPages-1)/ props.show)+1;
     let activePage = props.activePage;
 

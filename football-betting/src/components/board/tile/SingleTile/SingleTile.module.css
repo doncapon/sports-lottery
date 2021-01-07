@@ -19,7 +19,7 @@
 
 .SingleTile:hover {
     cursor: pointer;
-    background-color: blue;
+    background-color: #0275d8;
 }
 
 .Selected {
