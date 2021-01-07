@@ -215,7 +215,7 @@ const BetSlip = React.memo(
           <div style={{marginBottom: '0.5vh'}}>
             <Button
               variant= 'secondary'
-              style={{ fontSize: '0.9em' ,width:'80vw', maxWidth : '350px'}}
+              style={{ fontSize: '1.5em' ,width:'80vw', maxWidth : '350px'}}
               onClick = {addEmptySlip}
               disabled = {!props.purchaseAll}
              >ADD NEW ROW TO BETSLIP</Button>
