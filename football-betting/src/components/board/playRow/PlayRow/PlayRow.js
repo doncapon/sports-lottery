@@ -2,7 +2,7 @@ import SingleTile from "../../tile/SingleTile/SingleTile";
 import Team from "../team/team";
 import classes from "./PlayRow.module.css";
 import Button from 'react-bootstrap/Button';
-import { ViewList } from "react-bootstrap-icons";
+import {  CaretDownFill, CaretUpFill } from "react-bootstrap-icons";
 import Modal from '../../../UI/Modal/Modal';
 const PlayRow = (props) => {
   const HandlerAdd = (slipIndex, gameIndex, sideIndex, side) => {
@@ -77,8 +77,9 @@ const PlayRow = (props) => {
                     }
                   />
                 </div>
-                <div className='col-1' style={{marginLeft: '20px'}}> 
-                  <Button size="md" onClick = {()=>props.toggleShowHistory(k)}><ViewList  /></Button>
+                <div className='col-1' style={{marginLeft: '25px'}}> 
+                  <Button size="md" onClick = {()=>props.toggleShowHistory(k)}>
+                {!game.showHistory? <CaretDownFill  />: <CaretUpFill />} </Button>
                 </div>
                 
               </div>
