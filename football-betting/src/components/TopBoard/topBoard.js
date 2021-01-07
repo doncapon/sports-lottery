@@ -9,7 +9,7 @@ const genrateSlip = (event) =>{
 }
     return (<div className = 'col-12'>
             <span  style= {{  textAlign : 'left' , color: 'skyblue', fontWeight: 'bold'}}
-            > play with <span style={{fontSize: '1.3em', color: 'green'}}>25₦</span><span style={{color: 'grey', margin: '0'}}> Naira </span></span>
+            > play with <span style={{fontSize: '1.3em', color: 'green'}}>{props.basePrice}₦</span><span style={{color: 'grey', margin: '0'}}> Naira </span></span>
             <div className= 'row'>
                 <div >Quick Random Play: </div>
                 </div>

@@ -23,6 +23,7 @@ class Board extends Component {
               clicked={this.props.onEmptyEditingISlip}
               genrateSlip={this.props.onGenrateSlip}
               editIndex = {this.props.editIndex}
+              basePrice = {this.props.basePrice}
             />
           </div>
           <div className="row ">
@@ -98,6 +99,7 @@ class Board extends Component {
 
 const mapstateToProps = (state) => {
   return {
+    basePrice: state.board.basePrice,
     slips: state.board.slips,
     playingGames: state.board.playingGames,
     totalPrice: state.board.totalPrice,
