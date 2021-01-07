@@ -14,5 +14,5 @@ export {
      addEmptySlip,
      EmptyEditingISlip,
      genrateSlip,
-     toggleShowHistory
+     toggleShowHistory,
 } from './board';

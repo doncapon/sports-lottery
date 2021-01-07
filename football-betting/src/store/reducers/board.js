@@ -156,7 +156,6 @@ const initialStte = {
     basePrice: 20,
     loading: false,
     isStarted: false,
-    quickBet: [480, 960, 1440],
     gamesLength: 12
 };
 
@@ -208,7 +207,6 @@ const genrateSlip = (state, action) =>{
                     arrayGames[newRand][sideRand] = 1;
                     attempt++;
             }
-            draft.slips[state.editIndex].slipPrice = state.quickBet[0];
         }else if (amount === "960"){
             let attempt = 0;
             let InitialAttempt = 4;
@@ -223,7 +221,6 @@ const genrateSlip = (state, action) =>{
                     arrayGames[newRand][sideRand] = 1;
                     attempt++;
             }
-            draft.slips[state.editIndex].slipPrice = state.quickBet[1];
         }else{
             let attempt = 0;
             let InitialAttempt = 3;
@@ -243,7 +240,6 @@ const genrateSlip = (state, action) =>{
                     console.log(u++);
 
             }
-            draft.slips[state.editIndex].slipPrice = state.quickBet[2];
         }
         for(let i = 0 ; i < arrayGames.length; i++){
             for(let k = 0 ; k < 3; k++){
@@ -261,6 +257,25 @@ const genrateSlip = (state, action) =>{
         draft.slips[state.editIndex].purchasable = true;
 
     })
+}
+
+const calculateSpecificSlipPrice = (state, action) =>{
+    return produce (state, draft =>{
+        let games = draft.slips[action.slipIndex]["slip_" + (action.slipIndex+ 1)]
+        .games;
+        
+        let totalPrice = state.basePrice;
+        for(let i = 0 ; i < games.length; i++){
+            if(games[i].amount >1){
+                totalPrice *= 2;
+                if(games[i].amount > 2){
+                    totalPrice *= 1.5;
+                }
+            }
+         
+        }
+         draft.slips[action.slipIndex].slipPrice = totalPrice;
+    });
 }
 
 const checkHasStartedPlaying = (state , action) =>{
@@ -298,9 +313,13 @@ const EmptyEditingIndexSlip =(state, action) =>{
                     games[i]["game_" + (i+1)].sides.splice(0,3);
                 }
                 editSlip["slip_" + (state.editIndex + 1)].games = games;
-                editSlip.purchasable = false
+                editSlip.purchasable = false;
+                editSlip.slipPrice = 0;
 
                 draft.slips[state.editIndex] = Object.assign({}, editSlip);
+                draft.purchaseAll = false;
+                draft.totalPrice = 0;
+                draft.isStarted = true;
             
     });
 }
@@ -422,12 +441,16 @@ const deleteAndResetAll = (state, action)=>{
             }
             games[i]["game_" + (i+1)].sides.splice(0,3);
         }
-    
+        
         clonedSlips[0]["slip_1"].games = games;
         clonedSlips[0].purchasable = false
-
+        clonedSlips[0].slipPrice = 0 ;
         }
+         
+
         draft.slips = _.cloneDeep(clonedSlips);
+        draft.totalPrice = 0;
+        draft.purchaseAll = false;
     })
 }
 
@@ -438,7 +461,6 @@ const toggleSelectedTile = (state, action) =>{
         .sides[action.sideIndex].selected = !action.side;
     });
 }
-
 
 const calculateSlipPrice = (state, action) =>{
     return produce (state, draft =>{
@@ -501,10 +523,12 @@ const removeRowFromBetSlip = (state, action) =>{
         if(draft.slips.length > 1){
             const clonedSlips = _.cloneDeep(draft.slips);
             let len = clonedSlips.length;
+            let initialPrice = clonedSlips[action.deleteId].slipPrice;
+
             let remainderLen = len- action.deleteId -1;
             clonedSlips.splice(action.deleteId, 1) ;
             let newId = "slip_";
-            let oldId = "slip_"
+            let oldId = "slip_";
             for(let i = 0 ; i < remainderLen; i++ ){
                     let k = i + action.deleteId;
                     newId += (k+1);
@@ -516,6 +540,7 @@ const removeRowFromBetSlip = (state, action) =>{
                     oldId = "slip_" ;
             }
                 draft.slips = _.cloneDeep(clonedSlips);
+                draft.totalPrice -= initialPrice;
         }else{
             const games = _.cloneDeep(state.slips[0]["slip_1"].games);
             if(state.slips.length <= 1){
@@ -530,6 +555,7 @@ const removeRowFromBetSlip = (state, action) =>{
                 }
                 draft.slips[0]["slip_1"].games = games;
                 draft.slips[0].purchasable = false
+                draft.totalPrice = 0;
             }
         }
    });
@@ -593,6 +619,8 @@ const setPurchaseAll = (state, action)=>{
 
 const reducer = (state = initialStte, action) =>{
     switch (action.type){  
+        case actionTypes.CALCULATE_EDIT_INDEX_PRICE:
+            return calculateSpecificSlipPrice(state,action);
         case actionTypes.TOGGLE_SHOW_HISTORY:
             return toggleShowHistory(state,action);
         case actionTypes.CHECK_HAS_STARED:

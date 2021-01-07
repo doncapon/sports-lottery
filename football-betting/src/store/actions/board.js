@@ -1,12 +1,13 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios-predictions';
 
-export const genrateSlip = (amount, ) =>{
+export const genrateSlip = (amount, slipIndex ) =>{
     return dispatch =>{
         dispatch(EmptyEditingISlip());
         dispatch(genrateSlip2(amount));
 
         dispatch(setPurchaseAll());
+        dispatch(calculateSpecificSlipPrice(slipIndex));
         dispatch(calculateGrandTtoalPriceOfAllSlips());
 
     }
@@ -106,6 +107,13 @@ export const addEmptySlip = () =>{
     return { 
         type : actionTypes.ADD_EMPTY_SLIP,
         
+    };
+}
+
+export const calculateSpecificSlipPrice = (slipIndex) =>{
+    return { 
+        type : actionTypes.CALCULATE_EDIT_INDEX_PRICE, 
+        slipIndex : slipIndex       
     };
 }
 
