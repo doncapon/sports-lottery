@@ -28,9 +28,9 @@ slips: null,
 //                                 },
 
 //                            ]   
-//                   }
+ //                   }
 //            }
-    ],
+    // ],
     editIndex : 0,
     totalPrice: 0,
     purchaseAll: false,
