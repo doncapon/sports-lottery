@@ -14,7 +14,7 @@ class Board extends Component {
   }
 
   render() {
-    return !this.props.loading ? (
+    return this.props.loading ? (
       <div className={"row " + classes.Board}>
         <div className={"col-12 col-lg-7 " + classes.BoardLeft}>
           <div className="row" style={{ background: "#eee" }}>
@@ -44,7 +44,6 @@ class Board extends Component {
           className={"col-lg-5 " + classes.BoardRight}
           style={{ background: "#c6f5f3", minWidth: "25%" }}
         >
-            {console.log(this.props.totalPrice)}
           <div className="row">
             <div className={"col-11  "} style={{ marginLeft: "2.4vw" }}>
               <Betslip

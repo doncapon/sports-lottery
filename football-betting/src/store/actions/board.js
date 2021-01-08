@@ -1,5 +1,7 @@
 import * as actionTypes from './actionTypes';
-import axios from '../../axios-predictions';
+import axios from '../../axios-fixtures';
+// import moment from 'moment'
+
 
 export const genrateSlip = (amount, slipIndex ) =>{
     return dispatch =>{
@@ -77,29 +79,66 @@ export const calculateOverAllPrice = (slipIndex, gameIndex, sideIndex)=>{
         dispatch(calculateGrandTtoalPriceOfAllSlips(slipIndex));
     }
 }
-
+// const getNextPlayDate=(day="saturday")=>{
+//     let i;
+//     if(day === "tuesday")
+//     i = 2;
+//     if(day === "saturday")
+//     i = 6;
+//     var d = new Date();
+//     d.setDate(d.getDate() + (i + 7 - d.getDay()) % 7);
+//     console.log(moment(d).format("YYYY-MM-DD"));
+//     return moment(d).format("YYYY-MM-DD");
+// }
 export const setBoard=() =>{
     return dispatch =>{
-        axios.get("predictions/157462" , {
+        axios.get("fixtures/date/2021-01-16"
+        // +getNextPlayDate("tuesday")
+         ,
+        {
             headers: {
                 'x-rapidapi-key': '8275c582bamshd83a3179dd00459p19f0b2jsn94c889368579',
                 'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
               }
         })
         .then(response =>{
-            // console.log(response);
-          dispatch(initializeBoard(response.data.api.predictions));
+            let EnglandFixtures = response.data.api.fixtures
+            .filter(fixture =>fixture.league.country === "England" );
+            let Championship = EnglandFixtures.filter(fixture => fixture.league.name === "Championship");
+            let PremierShip = EnglandFixtures.filter(fixture => fixture.league.name === "Premier League");
+            let countWanted;
+            if((Championship.length + PremierShip.length) < 13)
+            countWanted = Championship.length + PremierShip.length;
+            else
+            countWanted = 13;
 
+            let premCount= 7;
+            let ChamCount = 6;
+            if(countWanted === 13){
+                if(Championship.length < 6)
+                    premCount = countWanted - Championship.length;
+                if(PremierShip.length < 7)
+                    ChamCount = countWanted - PremierShip.length;
+            }else{
+                if(Championship.length < 5)
+                    premCount = countWanted - Championship.length;
+                if(PremierShip < 6)
+                    Championship = countWanted - PremierShip.length;
+            }
+            let wantedFixtures = PremierShip.splice(0, premCount).concat(Championship.splice(0, ChamCount));
+            
+            dispatch(initializeBoard(wantedFixtures));
+            console.log("i got called");
         }).catch(error =>{
 
         });
     };
 }
 
-export const initializeBoard = (predictions) =>{
+export const initializeBoard = (fixtures) =>{
     return { 
         type : actionTypes.INITIALIZE_BOARD,
-        predictions: predictions
+        fixtures: fixtures
     };
 }
 
