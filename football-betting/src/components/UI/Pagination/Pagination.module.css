@@ -13,8 +13,7 @@
 
 }
 .NavItem {
-    border-radius: 3px;
-    padding: 0.5vw;
+    padding: 1vw 0.5vw;
     border: 3px solid #ccc;
     background: #eee;
 }
