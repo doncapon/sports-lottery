@@ -75,7 +75,8 @@ export const EmptyEditingIndexSlip =()=>{
 }
 export const calculateOverAllPrice = (slipIndex, gameIndex, sideIndex)=>{
     return dispatch =>{
-        dispatch(calculateSlipPrice(slipIndex, gameIndex, sideIndex));
+        dispatch(calulateGameAmount(slipIndex, gameIndex, sideIndex));
+        dispatch(calculateSpecificSlipPrice(slipIndex))
         dispatch(calculateGrandTtoalPriceOfAllSlips(slipIndex));
     }
 }
@@ -144,7 +145,6 @@ export const initializeBoard = (fixtures) =>{
 export const addEmptySlip = () =>{
     return { 
         type : actionTypes.ADD_EMPTY_SLIP,
-        
     };
 }
 
@@ -156,7 +156,7 @@ export const calculateSpecificSlipPrice = (slipIndex) =>{
 }
 
 
-export const calculateSlipPrice = (slipIndex, gameIndex,sideIndex) =>{
+export const calulateGameAmount = (slipIndex, gameIndex,sideIndex) =>{
     return { 
         type : actionTypes.CALCULATE_SLIP_PRICE,
         slipIndex: slipIndex,

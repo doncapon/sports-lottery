@@ -18,7 +18,7 @@ class  PlayRow  extends Component {
     this.props.toggleSelectedTile(slipIndex, gameIndex, sideIndex, side);
     this.props.checkPurchasable(slipIndex);
     this.props.setPurchaseAll();
-    this.props.calculateTotalPrice(slipIndex,gameIndex, sideIndex);
+    this.props.CalculateOverAllPrice(slipIndex,gameIndex, sideIndex);
     this.props.checkPurchasable(slipIndex);
 
   };

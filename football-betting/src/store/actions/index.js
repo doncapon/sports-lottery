@@ -10,6 +10,7 @@ export {
      setRemoving,
      deleteAndResetAll,
      calculateOverAllPrice,
+     calculateSpecificSlipPrice,
      calculateGrandTtoalPriceOfAllSlips,
      addEmptySlip,
      EmptyEditingISlip,

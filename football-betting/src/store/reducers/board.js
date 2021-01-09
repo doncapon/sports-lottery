@@ -343,48 +343,22 @@ const toggleSelectedTile = (state, action) =>{
     });
 }
 
-const calculateSlipPrice = (state, action) =>{
+const calulateGameAmount = (state, action) =>{
     return produce (state, draft =>{
-        let side = draft.slips[action.slipIndex]["slip_" + (action.slipIndex + 1)]
+        let side = draft.slips[action.slipIndex]["slip_" +
+         (action.slipIndex + 1)]
         .games[action.gameIndex]['game_' + (action.gameIndex+ 1)]
         .sides[action.sideIndex].selected;
-        let game = draft.slips[action.slipIndex]["slip_" + (action.slipIndex + 1)]
+        let game = draft.slips[action.slipIndex]["slip_"
+         + (action.slipIndex + 1)]
         .games[action.gameIndex];
-        
-        let totalPrice = _.cloneDeep(state.slips[action.slipIndex].slipPrice);
-        let purchasable = state.slips[action.slipIndex].purchasable;
-        if(purchasable && totalPrice === 0  && state.purchaseAll){
-            totalPrice = state.basePrice;
-        }
         
         if(side){
             game.amount += 1;
         }else{
             game.amount -= 1;
         }
-
-        if(purchasable && totalPrice > 0)
-        {
-
-            if(side){
-        if(game.amount === 2){
-                    totalPrice *= 2;
-                }else if(game.amount ===3){
-                    totalPrice *= 1.5;
-
-                }
-            }else{
-        if(game.amount === 1){
-                    totalPrice /=2;
-                }else if(game.amount ===2){
-
-                    totalPrice /= 1.5;
-                }else{
-                    totalPrice = 0;
-                }
-            }
-        }
-         draft.slips[action.slipIndex].slipPrice = totalPrice;
+    
     });
 }
 
@@ -531,7 +505,7 @@ const reducer = (state = initialStte, action) =>{
         case actionTypes.DELETE_AND_RESET_ALL:
             return deleteAndResetAll(state, action);
         case actionTypes.CALCULATE_SLIP_PRICE:
-            return calculateSlipPrice(state, action);
+            return calulateGameAmount(state, action);
         case actionTypes.CALCULAT_GRAND_tOTAL:
             return calculateGrandTtoalPriceOfAllSlips(state,action);
         case actionTypes.GENERATE_SLIP:
