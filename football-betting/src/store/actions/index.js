@@ -15,4 +15,9 @@ export {
      EmptyEditingISlip,
      genrateSlip,
      toggleShowHistory,
+
 } from './board';
+
+export {
+     fetchPredictionsAll
+} from './prediction';

@@ -6,16 +6,12 @@ import { connect } from "react-redux";
 import * as actions from "../../store/actions/index";
 import Betslip from "../Betslip/Betslip";
 import NumberFormat from "react-number-format";
-import TopBoard from "../../components/TopBoard/topBoard";
+import TopBoard from "../../components/topBoard/topBoard";
 
 class Board extends Component {
-  componentDidMount() {
-    this.props.onSetBoard();
-  }
 
   render() {
-    return this.props.loading ? (
-      <div className={"row " + classes.Board}>
+    return <div className={"row " + classes.Board}>
         <div className={"col-12 col-lg-7 " + classes.BoardLeft}>
           <div className="row" style={{ background: "#eee" }}>
             <TopBoard
@@ -28,6 +24,9 @@ class Board extends Component {
           </div>
           <div className="row ">
             <PlayRow
+                loading = {this.props.loading}
+                fetchPredictionsAll = {this.props.onFetchPredictionsAll}
+                predictions = {this.props.predictions}
               toggleSelectedTile={this.props.ontoggleSelectedTile}
               slips={this.props.slips}
               checkPurchasable={this.props.onIsPurchasing}
@@ -88,29 +87,29 @@ class Board extends Component {
                   prefix={"₦"}
                 />
               </Button>
+
             </div>
           </div>
         </div>
       </div>
-    ) : null;
   }
 }
-
 const mapstateToProps = (state) => {
   return {
+    loading: state.board.loading,
     basePrice: state.board.basePrice,
     slips: state.board.slips,
     playingGames: state.board.playingGames,
     totalPrice: state.board.totalPrice,
     editIndex: state.board.editIndex,
-    loading: state.board.loading,
     purchaseAll: state.board.purchaseAll,
     isStarted: state.board.isStarted,
+
+    predictions: state.pred.predictions,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    onSetBoard: () => dispatch(actions.setBoard()),
     ontoggleSelectedTile: (slipIndex, gameIndex, sideIndex, side) =>
       dispatch(
         actions.toggleSelectedTile(slipIndex, gameIndex, sideIndex, side)
@@ -135,6 +134,9 @@ const mapDispatchToProps = (dispatch) => {
     onGenrateSlip: (amount, slipIndex) => dispatch(actions.genrateSlip(amount, slipIndex)),
     onToggleShowHistory: (gameIndex) =>
       dispatch(actions.toggleShowHistory(gameIndex)),
+
+      onFetchPredictionsAll: (FixturesList, gameIndex) =>
+      dispatch(actions.fetchPredictionsAll(FixturesList, gameIndex)),
   };
 };
 

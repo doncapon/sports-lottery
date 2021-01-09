@@ -4,6 +4,12 @@
     font-size: 1rem;
     margin : auto;
 
+    
+  background: url(../../assets/bg1.png) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 

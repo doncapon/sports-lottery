@@ -128,7 +128,6 @@ export const setBoard=() =>{
             let wantedFixtures = PremierShip.splice(0, premCount).concat(Championship.splice(0, ChamCount));
             
             dispatch(initializeBoard(wantedFixtures));
-            console.log("i got called");
         }).catch(error =>{
 
         });

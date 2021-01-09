@@ -2,23 +2,32 @@ import SingleTile from "../../tile/SingleTile/SingleTile";
 import Team from "../team/team";
 import classes from "./PlayRow.module.css";
 import Button from 'react-bootstrap/Button';
+import { Component } from "react";
 import {  CaretDownFill, CaretUpFill } from "react-bootstrap-icons";
 import Modal from '../../../UI/Modal/Modal';
-const PlayRow = (props) => {
-  const HandlerAdd = (slipIndex, gameIndex, sideIndex, side) => {
-    props.toggleSelectedTile(slipIndex, gameIndex, sideIndex, side);
-    props.checkPurchasable(slipIndex);
-    props.setPurchaseAll();
-    props.calculateTotalPrice(slipIndex,gameIndex, sideIndex);
-    props.checkPurchasable(slipIndex);
+class  PlayRow  extends Component {
+  state = {
+    isLoaded: false
+  }
+  HandlePredictions =(gameIndex, fixture_id)=>{
+    this.props.fetchPredictionsAll(fixture_id, gameIndex );  
+    this.props.toggleShowHistory(gameIndex);
+
+  }
+   HandlerAdd = (slipIndex, gameIndex, sideIndex, side) => {
+    this.props.toggleSelectedTile(slipIndex, gameIndex, sideIndex, side);
+    this.props.checkPurchasable(slipIndex);
+    this.props.setPurchaseAll();
+    this.props.calculateTotalPrice(slipIndex,gameIndex, sideIndex);
+    this.props.checkPurchasable(slipIndex);
 
   };
+  render(){
   let board = [];
 
   const gameId = "game_";
-
-  board = props.slips[props.editIndex][
-    "slip_" + (props.editIndex + 1)
+  board = this.props.slips[this.props.editIndex][
+    "slip_" + (this.props.editIndex + 1)
   ].games.map((game, k) => {
     return (
       <div className={" col-12 " + classes.PlayRow} style={{marginBottom: '1%'}} key={k}>
@@ -39,8 +48,8 @@ const PlayRow = (props) => {
                     type={"home"}
                     selected={game[gameId + (k + 1)].sides[0].selected}
                     clicked={() =>
-                      HandlerAdd(
-                        props.editIndex,
+                      this.HandlerAdd(
+                        this.props.editIndex,
                         k,
                         0,
                         game[gameId + (k + 1)].sides[0].selected
@@ -53,8 +62,8 @@ const PlayRow = (props) => {
                     type={"draw"}
                     selected={game[gameId + (k + 1)].sides[1].selected}
                     clicked={() =>
-                      HandlerAdd(
-                        props.editIndex,
+                      this.HandlerAdd(
+                        this.props.editIndex,
                         k,
                         1,
                         game[gameId + (k + 1)].sides[1].selected
@@ -68,8 +77,8 @@ const PlayRow = (props) => {
                     type={"away"}
                     selected={game[gameId + (k + 1)].sides[2].selected}
                     clicked={() =>
-                      HandlerAdd(
-                        props.editIndex,
+                      this.HandlerAdd(
+                        this.props.editIndex,
                         k,
                         2,
                         game[gameId + (k + 1)].sides[2].selected
@@ -78,15 +87,22 @@ const PlayRow = (props) => {
                   />
                 </div>
                 <div className='col-1 '> 
-                  <Button size="md" onClick = {()=>props.toggleShowHistory(k)}>
+                  <Button size="md" onClick = {()=>this.HandlePredictions(k, game.fixture_id)}>
                 {!game.showHistory? <CaretDownFill  />: <CaretUpFill />} </Button>
                 </div>
                 
               </div>
 
             }
+
           </div>
-        {game.showHistory?<div className="col-12"> <Modal /></div>: null}
+     
+        {(game.showHistory && this.props.predictions !== null)?<div className="col-12">
+           <Modal predictions ={this.props.predictions.filter((pred, i) => {
+           return  pred.gameIndex === k
+        })}
+        
+        /></div>: null}
 
         </div>
         <div></div>
@@ -94,6 +110,7 @@ const PlayRow = (props) => {
     );
   });
   return <>{board}</>;
+}
 };
 
 export default PlayRow;
