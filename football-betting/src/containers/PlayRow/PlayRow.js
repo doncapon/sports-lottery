@@ -1,10 +1,10 @@
-import SingleTile from "../../tile/SingleTile/SingleTile";
-import Team from "../team/team";
+import SingleTile from "../../components/board/tile/SingleTile/SingleTile";
+import Team from "../../components/board/team/team";
 import classes from "./PlayRow.module.css";
 import Button from 'react-bootstrap/Button';
 import { Component } from "react";
 import {  CaretDownFill, CaretUpFill } from "react-bootstrap-icons";
-import Modal from '../../../UI/Modal/Modal';
+import Modal from '../../components/UI/Modal/Modal';
 class  PlayRow  extends Component {
   state = {
     isLoaded: false

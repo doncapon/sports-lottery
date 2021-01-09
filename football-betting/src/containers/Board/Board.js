@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import classes from "./Board.module.css";
 import Button from "react-bootstrap/Button";
-import PlayRow from "../../components/board/playRow/PlayRow/PlayRow.js";
+import PlayRow from "../PlayRow/PlayRow";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions/index";
 import Betslip from "../Betslip/Betslip";
