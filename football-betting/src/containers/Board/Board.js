@@ -7,11 +7,17 @@ import * as actions from "../../store/actions/index";
 import Betslip from "../Betslip/Betslip";
 import NumberFormat from "react-number-format";
 import TopBoard from "../../components/topBoard/topBoard";
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 class Board extends Component {
+
+  componentDidMount() {
+    if(!this.props.loading)
+    this.props.onSetBoard();
+  }
+
   render() {
-    return (
-      <div className={"row " + classes.Board}>
+    return ( this.props.loading ? (<div className={"row " + classes.Board}>
         <div className={"col-12 col-lg-7 " + classes.BoardLeft}>
           <div className="row" style={{ background: "#eee" }}>
             <TopBoard
@@ -86,7 +92,9 @@ class Board extends Component {
             </div>
           </div>
         </div>
-      </div>
+      </div>)
+       : <div><Spinner /></div>
+     
     );
   }
 }
@@ -106,6 +114,7 @@ const mapstateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
+    onSetBoard: () => dispatch(actions.setBoard()),
     ontoggleSelectedTile: (slipIndex, gameIndex, sideIndex, side) =>
       dispatch(
         actions.toggleSelectedTile(slipIndex, gameIndex, sideIndex, side)
