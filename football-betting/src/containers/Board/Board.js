@@ -23,7 +23,7 @@ class Board extends Component {
             />
           </div>
           <div className="row ">
-            <PlayRow
+            <PlayRow 
                 loading = {this.props.loading}
                 fetchPredictionsAll = {this.props.onFetchPredictionsAll}
                 predictions = {this.props.predictions}
@@ -33,7 +33,7 @@ class Board extends Component {
               setPurchaseAll={this.props.onSetPurchaseAll}
               playingGames={this.props.playingGames}
               editIndex={this.props.editIndex}
-              calculateTotalPrice={this.props.onCalculateOverAllPrice}
+              CalculateOverAllPrice={this.props.onCalculateOverAllPrice}
               toggleShowHistory={this.props.onToggleShowHistory}
             />
           </div>
@@ -81,7 +81,7 @@ class Board extends Component {
               >
                 PAY{" "}
                 <NumberFormat
-                  value={this.props.totalPrice}
+                  value={this.props.purchaseAll? this.props.totalPrice  : 0}
                   displayType={"text"}
                   thousandSeparator={true}
                   prefix={"₦"}
