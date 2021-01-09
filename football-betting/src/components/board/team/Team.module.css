@@ -1,6 +1,5 @@
 .TeamRow{
     
-    font-size: 10px;
     text-align: left;
     font-weight: unset;
     display: inline;
@@ -8,9 +7,6 @@
 }
 
 
-.TeamRow .RowNumber{
-    font-size: 90%;
-}
 
 
 

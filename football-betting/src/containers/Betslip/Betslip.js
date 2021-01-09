@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import BetItems from "../../components/betSlip/BetSlip/BetItems";
+import BetItems from "../../components/betItems/BetItems";
 import Button from "react-bootstrap/Button";
 import {
   PlusSquareFill,
