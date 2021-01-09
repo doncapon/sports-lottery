@@ -243,7 +243,7 @@ const BetSlip = React.memo(
           </div>
         </div>
         <div className="row">
-          <div>
+          <div className= "col-12">
             <Pagination
               activePage={activePage}
               usedPages={props.slips.length}

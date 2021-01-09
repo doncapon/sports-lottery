@@ -15,7 +15,7 @@ const Pagination = React.memo( (props) =>{
             classesFul.push( classes.Edit);
         }
      
-        navItems.push(<div className={ classesFul.join(' ') }
+        navItems.push(<div className={"col-3  "+  classesFul.join(' ') }
          onClick= {props.clicked} key={i}>
              {start} - {end} 
          </div>)
