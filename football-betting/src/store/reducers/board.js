@@ -48,7 +48,6 @@ const iniialLizeBoard = (state, action ) =>{
         let slipId = "slip_";
         let games1 = [];
         let gameId = "game_";
-        console.log(action.fixture);
         action.fixtures.forEach((fixture , i)=> {
             let game = {
                 id : gameId + (i+1), 
@@ -73,7 +72,6 @@ const iniialLizeBoard = (state, action ) =>{
         draft.gamesLength = action.fixtures.length;
         draft.slips = Object.assign([], newSlips);
         draft.loading = true;
-        console.log(draft.slips);
 
     });
 }

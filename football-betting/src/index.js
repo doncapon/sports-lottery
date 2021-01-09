@@ -12,6 +12,7 @@ import { createStore, applyMiddleware, compose,
   combineReducers
 } from 'redux';
 import boardReducer from "./store/reducers/board";
+import predictionReducer from "./store/reducers/prediction";
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
  
@@ -19,9 +20,8 @@ import storage from 'redux-persist/lib/storage' // defaults to localStorage for 
 import { PersistGate } from 'redux-persist/es/integration/react';
 
 const persistConfig = {
-  key: 'root',
+  key: 'slips',
   storage,
-  blacklist: ['exclude']
 }
 
 
@@ -30,26 +30,27 @@ const persistConfig = {
 const composeEnhancers = process.env.NODE_ENV === "development" ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
 const rootReducer = combineReducers({
   board: boardReducer,
+  pred: predictionReducer
 });
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+// const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-let  store = createStore(persistedReducer, composeEnhancers(
+let  store = createStore(rootReducer, composeEnhancers(
     applyMiddleware(thunk)));
-let persistor = persistStore(store);
+// let persistor = persistStore(store);
 
-export { store, persistor };
+// export { store, persistor };
 
 
 const app = (
 <Provider store = {store}> 
+{/* <PersistGate 
+      loading={null}
+      persistor={persistor}> */}
 <BrowserRouter>
-<PersistGate 
-loading={null}
-      persistor={persistor}>
   <App />
-</PersistGate>
-</BrowserRouter>
+  </BrowserRouter>
+{/* </PersistGate> */}
 </Provider>
 );
 ReactDOM.render(

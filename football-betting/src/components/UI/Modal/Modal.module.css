@@ -1,0 +1,22 @@
+
+
+ul li:hover{
+    cursor: pointer;
+
+}
+span {
+    padding: 10px 10px 5px;
+
+}
+span:hover{
+    cursor: pointer;
+    
+}
+.Selected {
+    border-bottom: 2px solid black;
+    color: purple;
+}
+
+li + li::before {
+    content: " | ";
+}
