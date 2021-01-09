@@ -30,20 +30,20 @@ class  PlayRow  extends Component {
     "slip_" + (this.props.editIndex + 1)
   ].games.map((game, k) => {
     return (
-      <div className={" col-12 " + classes.PlayRow} style={{marginBottom: '1%'}} key={k}>
+      <div className={" col-12 " + classes.PlayRow} style={{  marginBottom: '1%'}} key={k}>
         <div className="row " >
 
-          <div className={"col-6"}  >
+          <div className={"col-5"} style={{ minWidth: '300px', padding: '0px', margin: '0'}} >
             <Team
               team1={game[gameId + (k + 1)].team1}
               team2={game[gameId + (k + 1)].team2}
               row={k + 1}
             />
           </div>
-          <div className='col-6  ' >
+          <div className='col-7  ' >
             {
                <div className="row" >
-                <div className='col-3 ' >
+                <div className='offset-1' >
                   <SingleTile
                     type={"home"}
                     selected={game[gameId + (k + 1)].sides[0].selected}
@@ -57,7 +57,7 @@ class  PlayRow  extends Component {
                     }
                   />
                 </div>
-                <div className= {'col-3 '}>
+                <div style= {{marginLeft: '2vh'}}>
                   <SingleTile
                     type={"draw"}
                     selected={game[gameId + (k + 1)].sides[1].selected}
@@ -71,7 +71,7 @@ class  PlayRow  extends Component {
                     }
                   />
                 </div>
-                <div className= {'col-3 '}>
+                <div style = {{marginLeft: '2vh'}}>
                   
                   <SingleTile
                     type={"away"}
@@ -86,7 +86,7 @@ class  PlayRow  extends Component {
                     }
                   />
                 </div>
-                <div className='col-1 '> 
+                <div className = 'offset-1' > 
                   <Button size="md" onClick = {()=>this.HandlePredictions(k, game.fixture_id)}>
                 {!game.showHistory? <CaretDownFill  />: <CaretUpFill />} </Button>
                 </div>
