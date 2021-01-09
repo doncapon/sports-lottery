@@ -1,5 +1,5 @@
 import { React } from "react";
-import BetTile from "../../board/tile/betTile/BetTitle";
+import BetTile from "../board/tile/betTile/BetTitle";
 
 const BetItems = (props) => {
   let betrows = null;

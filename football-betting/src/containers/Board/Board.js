@@ -9,24 +9,24 @@ import NumberFormat from "react-number-format";
 import TopBoard from "../../components/topBoard/topBoard";
 
 class Board extends Component {
-
   render() {
-    return <div className={"row " + classes.Board}>
+    return (
+      <div className={"row " + classes.Board}>
         <div className={"col-12 col-lg-7 " + classes.BoardLeft}>
           <div className="row" style={{ background: "#eee" }}>
             <TopBoard
               isStarted={this.props.isStarted}
               clicked={this.props.onEmptyEditingISlip}
               genrateSlip={this.props.onGenrateSlip}
-              editIndex = {this.props.editIndex}
-              basePrice = {this.props.basePrice}
+              editIndex={this.props.editIndex}
+              basePrice={this.props.basePrice}
             />
           </div>
           <div className="row ">
-            <PlayRow 
-                loading = {this.props.loading}
-                fetchPredictionsAll = {this.props.onFetchPredictionsAll}
-                predictions = {this.props.predictions}
+            <PlayRow
+              loading={this.props.loading}
+              fetchPredictionsAll={this.props.onFetchPredictionsAll}
+              predictions={this.props.predictions}
               toggleSelectedTile={this.props.ontoggleSelectedTile}
               slips={this.props.slips}
               checkPurchasable={this.props.onIsPurchasing}
@@ -63,17 +63,13 @@ class Board extends Component {
             </div>
           </div>
           <div className="row">
-            <div
-              className="col-6"
-              style={{ marginBottom: "0.2em" 
-            }}
-            >
+            <div className="col-6" style={{ marginBottom: "0.2em" }}>
               <Button
                 disabled={!this.props.purchaseAll}
                 variant="success"
                 style={{
                   padding: "0.5vw 2vw",
-                  width: '30vw',
+                  width: "30vw",
                   fontWeight: "bold",
                   fontSize: "2.2em",
                 }}
@@ -81,17 +77,17 @@ class Board extends Component {
               >
                 PAY{" "}
                 <NumberFormat
-                  value={this.props.purchaseAll? this.props.totalPrice  : 0}
+                  value={this.props.purchaseAll ? this.props.totalPrice : 0}
                   displayType={"text"}
                   thousandSeparator={true}
                   prefix={"₦"}
                 />
               </Button>
-
             </div>
           </div>
         </div>
       </div>
+    );
   }
 }
 const mapstateToProps = (state) => {
@@ -125,17 +121,19 @@ const mapDispatchToProps = (dispatch) => {
     onSetEditIndex: (index) => dispatch(actions.setEditIndex(index)),
     onCheckPurchasable: (index) => dispatch(actions.checkPurchasable(index)),
     onSetPurchaseAll: () => dispatch(actions.setPurchaseAll()),
-    onSetTotalPrice: () =>dispatch(actions.calculateGrandTtoalPriceOfAllSlips()),
+    onSetTotalPrice: () =>
+      dispatch(actions.calculateGrandTtoalPriceOfAllSlips()),
     onDeleteAndResetAll: () => dispatch(actions.deleteAndResetAll()),
     onAddEmptySlip: () => dispatch(actions.addEmptySlip()),
     onEmptyEditingISlip: () => dispatch(actions.EmptyEditingISlip()),
     onCalculateOverAllPrice: (slip, game, side) =>
       dispatch(actions.calculateOverAllPrice(slip, game, side)),
-    onGenrateSlip: (amount, slipIndex) => dispatch(actions.genrateSlip(amount, slipIndex)),
+    onGenrateSlip: (amount, slipIndex) =>
+      dispatch(actions.genrateSlip(amount, slipIndex)),
     onToggleShowHistory: (gameIndex) =>
       dispatch(actions.toggleShowHistory(gameIndex)),
 
-      onFetchPredictionsAll: (FixturesList, gameIndex) =>
+    onFetchPredictionsAll: (FixturesList, gameIndex) =>
       dispatch(actions.fetchPredictionsAll(FixturesList, gameIndex)),
   };
 };
