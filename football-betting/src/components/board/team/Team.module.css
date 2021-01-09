@@ -1,15 +1,12 @@
 .TeamRow{
     
-    font-size: 80%;
     text-align: left;
     font-weight: unset;
     display: inline;
+    text-align: left;
 }
 
 
-.TeamRow .RowNumber{
-    font-size: 90%;
-}
 
 
 

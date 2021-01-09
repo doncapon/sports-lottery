@@ -12,18 +12,20 @@
 
 
 .Side {
-    padding: 0% 50%;
+    padding: 0.5vw 4vh;
     background-color: white;
-    margin: 3% 0%;
+    margin: 3% 0% ;
 }
 
 .SingleTile:hover {
     cursor: pointer;
+    background-color: #0275d8;
 }
 
 .Selected {
     background-color: blue;
     color: white;
+
 }
 
 

@@ -5,7 +5,6 @@ import classes from './BetTitle.module.css';
 class BetTile extends Component {
      render(){
         const classesFul = [];
-
         classesFul.push(classes.BetTile);
         let child = null;
         if(this.props.selected){
@@ -31,9 +30,9 @@ class BetTile extends Component {
                 break;
         }
      
-        return ( <div  className = {'row  '+ classesFul.join(' ')  } style={{width: '2vw'}} 
-        onClick = {this.props.clicked}  selected = {this.props.selected} >
-            <div className= 'col-sm-1' style={{fontSize: '2vv' , paddingLeft: '0.5vw'}}>  { child}</div></div>);
+        return ( <div className= {'col-1 ' + classesFul.join(' ') }
+                 selected = {this.props.selected}
+            style={{fontSize: '10px', margin: '0'}}>  { child}</div>);
         
 
             

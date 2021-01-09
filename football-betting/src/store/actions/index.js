@@ -1,4 +1,5 @@
 export {
+     setBoard,
      toggleSelectedTile,
      copyBetslip,
      removeRowFromBetSlip,
@@ -9,6 +10,15 @@ export {
      setRemoving,
      deleteAndResetAll,
      calculateOverAllPrice,
+     calculateSpecificSlipPrice,
      calculateGrandTtoalPriceOfAllSlips,
-     addEmptySlip
+     addEmptySlip,
+     EmptyEditingISlip,
+     genrateSlip,
+     toggleShowHistory,
+
 } from './board';
+
+export {
+     fetchPredictionsAll
+} from './prediction';

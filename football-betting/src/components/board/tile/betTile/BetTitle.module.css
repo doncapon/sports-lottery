@@ -1,5 +1,4 @@
 .BetTile {
-    font-size: 1vw;
     float: left;
     color: grey;
     border: 1px solid rgb(138, 91, 91);
@@ -10,13 +9,13 @@
 .Home, .Away, .Draw {
     background : white;
     caret-color: transparent;
-    padding: 0.vw 0vw 0.1vw;
-    margin-right: 0.4vw;
+    padding: 4px 1.2vw.7vw;
 }
 
 .Selected  {
     background-color: blue;
-    color: white
+    color: white;
+    font-weight: bold;
 }
 
 

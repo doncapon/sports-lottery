@@ -1,0 +1,22 @@
+.PlayRow {
+    padding: 0px;
+    font-weight: bold;
+    font-size: 1rem;
+    float: left;
+    caret-color: transparent;
+}
+
+/* For small screen */
+.PlayRow:nth-child(even){
+  background: #e1f5f7;
+}
+.PlayRow:nth-child(odd){
+  background: skyblue;
+}
+
+.PlayRow:hover{
+    background: #c7e2eb;
+}
+
+    
+   

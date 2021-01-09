@@ -5,20 +5,17 @@ const Pagination = React.memo( (props) =>{
     let navItems = [];
     let end = 3;
     let start = 1;
-    let classesFul = []
+    let classesFul = [];
     let rows = Math.floor((props.usedPages-1)/ props.show)+1;
     let activePage = props.activePage;
 
      for(let i = 1 ; i <= rows ; i++){
-        classesFul.push(' col-md-2');
         classesFul.push(classes.NavItem );
-  
-
         if (i === activePage){
             classesFul.push( classes.Edit);
         }
      
-        navItems.push(<div className={ classesFul.join(' ') }
+        navItems.push(<div className={"col-3  "+  classesFul.join(' ') }
          onClick= {props.clicked} key={i}>
              {start} - {end} 
          </div>)

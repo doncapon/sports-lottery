@@ -4,144 +4,239 @@ import _ from "lodash";
 
 const initialStte = {
 
-    slips : [
-             {
-                id:  "slip_1",
-                purchasable: false,
-                slipPrice: 0,
-                adding: false,
-                removing: false,
-                "slip_1":  { 
-                            games: [
-                                {
-                                    id: "game_1",
-                                    amount: 0,
-                                    "game_1": {
-                                            team1 : 'Manchester United',
-                                            team2: 'Watford FC' ,
-                                            isValid: false,
-                                            sides: [ {selected : false}, {selected : false}, {selected : false} ],
-                                    }
-                                },
-                                {
-                                    id: "game_2",
-                                    amount: 0,     
-                                    "game_2": {
-                                            team1 : 'Chelsea',
-                                            team2: 'Arsenal',  
-                                            isValid: false,
-                                            sides: [ {selected : false}, {selected : false}, {selected : false} ],
-                                    }
-                                },
-                                {
-                                    id: "game_3",
-                                    amount: 0,
-                                    "game_3": { 
-                                            team1 : 'Real Madrid', 
-                                            team2: 'Barcelona',
-                                            isValid: false,
-                                            sides: [{selected : false}, {selected : false}, {selected : false} ]
-                                    }
-                                },
-                                // {
-                                //     id: "game_4",
-                                //     amount: 0,
-                                //     "game_4": { 
-                                //             team1 : 'Leicester city', 
-                                //             team2: 'Manchester city', 
-                                //             isValid: false,
-                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
-                                //     }
-                                // },
-                                // {
-                                //     id: "game_5",
-                                //     amount: 0,
-                                //     "game_5": { 
-                                //             team1 : 'Wolverhampton wonderers', 
-                                //             team2: 'Stoke city', 
-                                //             isValid: false,
-                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
-                                //     }
-                                // },
-                                // {
-                                //     id: "game_6",
-                                //     amount: 0,
-                                //     "game_6": { 
-                                //             team1 : 'Liverpool', 
-                                //             team2: 'Newcastle United',
-                                //             isValid: false,
-                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
-                                //     }
-                                // },
-                                // {
-                                //     id: "game_7",
-                                //     amount: 0,
-                                //     "game_7": { 
-                                //             team1 : 'Watford', 
-                                //             team2: 'Burnley FC',  
-                                //             isValid: false,
-                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
-                                //     }
-                                // },
-                                // {
-                                //     id: "game_8",
-                                //     amount: 0, 
-                                //     "game_8": { 
-                                //             team1 : 'Everton', 
-                                //             team2: 'Tottenham HotSpur',  
-                                //             isValid: false,
-                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
-                                //     }
-                                // },
-                                // {
-                                //     id: "game_9",
-                                //     amount: 0,
-                                //     "game_9": {
-                                //             team1 : 'Crystal Palace', 
-                                //             team2: 'HuddersField',  
-                                //             isValid: false,
-                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
-                                //     }
-                                // },
-                                // {
-                                //     id: "game_10",
-                                //     amount: 0,
-                                //     "game_10": {
-                                //             team1 : 'West Bromich Abion', 
-                                //             team2: 'WestHam United',  
-                                //             isValid: false,
-                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
-                                //     }
-                                // },
-                                // {
-                                //     id: "game_11",
-                                //     amount: 0,
-                                //     "game_11": { 
-                                //             team1 : 'Espanol', 
-                                //             team2: 'Getafe', 
-                                //             isValid: false,
-                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
-                                //     }
-                                // },
-                                // {
-                                //     id: "game_12",
-                                //     amount: 0,
-                                //     "game_12": {
-                                //             team1 : 'Southhampton', 
-                                //             team2: 'BrentFord',
-                                //             isValid: false,
-                                //             sides: [{selected : false}, {selected : false}, {selected : false} ]
-                                //     }
-                                // }
-                            ]   
-                    }
-            }
-    ],
+slips: null, 
+// [ 
+        
+//  {
+//                 id:  "slip_1",
+//                 purchasable: false,
+//                 slipPrice: 0,
+//                 adding: false,
+//                 removing: false,
+//                 "slip_1":  { 
+//                             games: [
+//                                 {
+//                                     id: "game_1",
+//                                     showHistory: false,
+//                                     amount: 0,
+//                                     "game_1": {
+//                                             team1 : 'Manchester United',
+//                                             team2: 'Watford FC' ,
+//                                             isValid: false,
+//                                             sides: [ {selected : false}, {selected : false}, {selected : false} ],
+//                                     }
+//                                 },
+
+//                            ]   
+ //                   }
+//            }
+    // ],
     editIndex : 0,
     totalPrice: 0,
     purchaseAll: false,
-    basePrice: 25,
+    basePrice: 20,
+    loading: false,
+    isStarted: false,
+    gamesLength: null
 };
+
+
+const iniialLizeBoard = (state, action ) =>{
+    
+    return produce (state, draft =>{
+        
+        let slipId = "slip_";
+        let games1 = [];
+        let gameId = "game_";
+        action.fixtures.forEach((fixture , i)=> {
+            let game = {
+                id : gameId + (i+1), 
+                amount: 0,
+                fixture_id: fixture.fixture_id, 
+                    [gameId + (i+1)] : { 
+                        team1_id: fixture.homeTeam.team_id,
+                        team1 : fixture.homeTeam.team_name, 
+                        team2_id: fixture.awayTeam.team_id,
+                        team2 : fixture.awayTeam.team_name , isValid: false,
+                        sides: [ { selected : false}, {selected : false}, {selected : false} ],
+                    }
+            };
+                games1.splice(i,i+1,game);
+        });
+        let slipInner = Object.assign({}, { games: games1});
+        let newSlip = Object.assign({}, { id: (slipId + 1) ,purchasable: false,
+            slipPrice: 0, adding: false, removing: false , [slipId +1]  : slipInner});
+        newSlip.games = Object.assign([], games1);
+        let newSlips = [Object.assign({}, newSlip )];
+        newSlips.splice(0,1, newSlip);
+        draft.gamesLength = action.fixtures.length;
+        draft.slips = Object.assign([], newSlips);
+        draft.loading = true;
+
+    });
+}
+const toggleShowHistory=(state, action)=>{
+    return produce(state, draft=>{
+        draft.slips[state.editIndex]["slip_" + (state.editIndex+ 1)]
+        .games[action.gameIndex].showHistory = !draft.slips[state.editIndex]["slip_" + (state.editIndex+ 1)]
+        .games[action.gameIndex].showHistory;
+    })
+}
+
+const  getRandomInt = (max) => {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+const genrateSlip = (state, action) =>{
+    return produce( state, draft =>{
+        let arrayGames = [[]];
+        let clonedGames = draft.slips[state.editIndex]["slip_" + (state.editIndex + 1)].games;
+        draft.slips[state.editIndex].slipPrice = state.basePrice
+        let gameRandom = getRandomInt(state.gamesLength);
+        let rand2; 
+        for(let i = 0 ; i < 1; i++){
+            let temp = getRandomInt(state.gamesLength);
+            if(gameRandom === temp  ){
+                continue;
+            }
+            rand2 = temp;
+            break;
+        }
+        let amount = action.amount.split(' ')[0];
+        let sides = [0,0,0];
+        for(let i = 0 ; i < state.gamesLength; i++){
+            let rand = getRandomInt(3);
+            sides[rand] = 1;
+            arrayGames[i] = Object.assign([], sides);
+            sides = [0,0,0];
+        }
+        arrayGames[gameRandom] = Object.assign([], [1,1,1]);
+        if(amount === "480"){
+            let attempt = 0;
+            let InitialAttempt = 3;
+            while(attempt < InitialAttempt){
+                    let newRand = getRandomInt(arrayGames.length);
+                    let sideRand = getRandomInt(3);
+                    if(arrayGames[newRand][sideRand] === 1 || newRand === gameRandom ||
+                       (arrayGames[newRand][0] + arrayGames[newRand][1]+ arrayGames[newRand][2]) > 1  ){
+                         continue;
+                    }
+                    arrayGames[newRand][sideRand] = 1;
+                    attempt++;
+            }
+        }else if (amount === "960"){
+            let attempt = 0;
+            let InitialAttempt = 4;
+            
+            while(attempt < InitialAttempt){
+                    let newRand = getRandomInt(arrayGames.length);
+                    let sideRand = getRandomInt(3);
+                    if(arrayGames[newRand][sideRand] === 1 || newRand === gameRandom ||
+                        (arrayGames[newRand][0] + arrayGames[newRand][1]+ arrayGames[newRand][2]) > 1 ){
+                         continue;
+                    }
+                    arrayGames[newRand][sideRand] = 1;
+                    attempt++;
+            }
+        }else{
+            let attempt = 0;
+            let InitialAttempt = 3;
+        arrayGames[rand2] = Object.assign([], [1,1,1]);
+
+            while(attempt <InitialAttempt){
+                    let newRand = getRandomInt(arrayGames.length);
+                    let sideRand = getRandomInt(3);
+                    if(arrayGames[newRand][sideRand] === 1 || newRand === gameRandom ||
+                        newRand === rand2 ||
+                        (arrayGames[newRand][0] + arrayGames[newRand][1]+ arrayGames[newRand][2]) > 1 ){
+                         continue;
+                    }
+                    arrayGames[newRand][sideRand] = 1;
+                    attempt++;
+
+            }
+        }
+        for(let i = 0 ; i < arrayGames.length; i++){
+            for(let k = 0 ; k < 3; k++){
+                if(arrayGames[i][k] === 1){
+                    clonedGames[i]["game_" + (i+1)].sides[k].selected = true;
+                }else{
+                    clonedGames[i]["game_" + (i+1)].sides[k].selected = false;
+                }
+            }    
+        }
+        for(let i = 0 ; i < arrayGames.length; i++){
+            draft.slips[state.editIndex]["slip_" + (state.editIndex+ 1)]
+            .games[i].amount = arrayGames[i][0] + arrayGames[i][1] + arrayGames[i][2]
+        }
+        draft.slips[state.editIndex].purchasable = true;
+
+    })
+}
+
+const calculateSpecificSlipPrice = (state, action) =>{
+    return produce (state, draft =>{
+        let games = draft.slips[action.slipIndex]["slip_" + (action.slipIndex+ 1)]
+        .games;
+        
+        let totalPrice = state.basePrice;
+        for(let i = 0 ; i < games.length; i++){
+            if(games[i].amount >1){
+                totalPrice *= 2;
+                if(games[i].amount > 2){
+                    totalPrice *= 1.5;
+                }
+            }
+         
+        }
+         draft.slips[action.slipIndex].slipPrice = totalPrice;
+    });
+}
+
+const checkHasStartedPlaying = (state , action) =>{
+    return produce(state, draft =>{
+
+    
+    const editSlip = _.cloneDeep(state.slips[state.editIndex]);
+    const games = editSlip["slip_" + (state.editIndex + 1)].games;
+    let hasStarted = false;
+    for(let i = 0 ; i< games.length ; i++){
+        for(let k = 0 ; k < games[i]["game_" + (i+1)].sides.length; k++){
+            if(games[i]["game_" + (i+1)].sides[k].selected){
+                hasStarted = true;
+                break;
+            }
+        }
+        if(hasStarted){
+            break;
+        }
+    }
+    draft.isStarted = hasStarted;
+})
+}
+const EmptyEditingIndexSlip =(state, action) =>{
+    return produce (state, draft =>{
+        const editSlip = _.cloneDeep(state.slips[state.editIndex]);
+        const games = editSlip["slip_" + (state.editIndex + 1)].games;
+           
+                const  side = {selected : false};
+                const len = 3;
+                for(let i = 0; i < games.length; i++){
+                    for(let k = 0 ; k < len; k++){
+                        games[i]["game_" + (i+1)].sides.push(side);
+                    }
+                    games[i]["game_" + (i+1)].sides.splice(0,3);
+                }
+                editSlip["slip_" + (state.editIndex + 1)].games = games;
+                editSlip.purchasable = false;
+                editSlip.slipPrice = 0;
+
+                draft.slips[state.editIndex] = Object.assign({}, editSlip);
+                draft.purchaseAll = false;
+                draft.totalPrice = 0;
+                draft.isStarted = true;
+            
+    });
+}
 
 const checkPurchasable=(state, action)=>{
      
@@ -227,12 +322,16 @@ const deleteAndResetAll = (state, action)=>{
             }
             games[i]["game_" + (i+1)].sides.splice(0,3);
         }
-    
+        
         clonedSlips[0]["slip_1"].games = games;
         clonedSlips[0].purchasable = false
-
+        clonedSlips[0].slipPrice = 0 ;
         }
+         
+
         draft.slips = _.cloneDeep(clonedSlips);
+        draft.totalPrice = 0;
+        draft.purchaseAll = false;
     })
 }
 
@@ -244,49 +343,22 @@ const toggleSelectedTile = (state, action) =>{
     });
 }
 
-
-const calculateSlipPrice = (state, action) =>{
+const calulateGameAmount = (state, action) =>{
     return produce (state, draft =>{
-        let side = draft.slips[action.slipIndex]["slip_" + (action.slipIndex + 1)]
+        let side = draft.slips[action.slipIndex]["slip_" +
+         (action.slipIndex + 1)]
         .games[action.gameIndex]['game_' + (action.gameIndex+ 1)]
         .sides[action.sideIndex].selected;
-        let game = draft.slips[action.slipIndex]["slip_" + (action.slipIndex + 1)]
+        let game = draft.slips[action.slipIndex]["slip_"
+         + (action.slipIndex + 1)]
         .games[action.gameIndex];
-        
-        let totalPrice = _.cloneDeep(state.slips[action.slipIndex].slipPrice);
-        let purchasable = state.slips[action.slipIndex].purchasable;
-        if(purchasable && totalPrice === 0  && state.purchaseAll){
-            totalPrice = state.basePrice;
-        }
         
         if(side){
             game.amount += 1;
         }else{
             game.amount -= 1;
         }
-
-        if(purchasable && totalPrice > 0)
-        {
-
-            if(side){
-        if(game.amount === 2){
-                    totalPrice *= 2;
-                }else if(game.amount ===3){
-                    totalPrice *= 1.5;
-
-                }
-            }else{
-        if(game.amount === 1){
-                    totalPrice /=2;
-                }else if(game.amount ===2){
-
-                    totalPrice /= 1.5;
-                }else{
-                    totalPrice = 0;
-                }
-            }
-        }
-         draft.slips[action.slipIndex].slipPrice = totalPrice;
+    
     });
 }
 
@@ -306,10 +378,12 @@ const removeRowFromBetSlip = (state, action) =>{
         if(draft.slips.length > 1){
             const clonedSlips = _.cloneDeep(draft.slips);
             let len = clonedSlips.length;
+            let initialPrice = clonedSlips[action.deleteId].slipPrice;
+
             let remainderLen = len- action.deleteId -1;
             clonedSlips.splice(action.deleteId, 1) ;
             let newId = "slip_";
-            let oldId = "slip_"
+            let oldId = "slip_";
             for(let i = 0 ; i < remainderLen; i++ ){
                     let k = i + action.deleteId;
                     newId += (k+1);
@@ -321,6 +395,7 @@ const removeRowFromBetSlip = (state, action) =>{
                     oldId = "slip_" ;
             }
                 draft.slips = _.cloneDeep(clonedSlips);
+                draft.totalPrice -= initialPrice;
         }else{
             const games = _.cloneDeep(state.slips[0]["slip_1"].games);
             if(state.slips.length <= 1){
@@ -335,6 +410,7 @@ const removeRowFromBetSlip = (state, action) =>{
                 }
                 draft.slips[0]["slip_1"].games = games;
                 draft.slips[0].purchasable = false
+                draft.totalPrice = 0;
             }
         }
    });
@@ -397,7 +473,17 @@ const setPurchaseAll = (state, action)=>{
 
 
 const reducer = (state = initialStte, action) =>{
-    switch (action.type){
+    switch (action.type){  
+        case actionTypes.CALCULATE_EDIT_INDEX_PRICE:
+            return calculateSpecificSlipPrice(state,action);
+        case actionTypes.TOGGLE_SHOW_HISTORY:
+            return toggleShowHistory(state,action);
+        case actionTypes.CHECK_HAS_STARED:
+            return checkHasStartedPlaying(state,action);
+        case actionTypes.EMPTY_EDITING_SLIP:
+            return EmptyEditingIndexSlip(state,action);
+        case actionTypes.INITIALIZE_BOARD:
+            return iniialLizeBoard(state,action);
         case actionTypes.ADD_EMPTY_SLIP:
             return addEmptySlip(state,action);
         case actionTypes.SET_EDITING_INDEX:
@@ -419,9 +505,11 @@ const reducer = (state = initialStte, action) =>{
         case actionTypes.DELETE_AND_RESET_ALL:
             return deleteAndResetAll(state, action);
         case actionTypes.CALCULATE_SLIP_PRICE:
-            return calculateSlipPrice(state, action);
+            return calulateGameAmount(state, action);
         case actionTypes.CALCULAT_GRAND_tOTAL:
             return calculateGrandTtoalPriceOfAllSlips(state,action);
+        case actionTypes.GENERATE_SLIP:
+            return genrateSlip(state,action);
        default: 
             return state;
     }
