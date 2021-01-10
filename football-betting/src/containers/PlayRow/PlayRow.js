@@ -5,6 +5,8 @@ import Button from 'react-bootstrap/Button';
 import { Component } from "react";
 import {  CaretDownFill, CaretUpFill } from "react-bootstrap-icons";
 import Modal from '../../components/UI/Modal/Modal';
+import WithErrorHandler from '../../hoc/WithErrorHandler/WithErrorHandler';
+import axios from '../../axios-fixtures';
 class  PlayRow  extends Component {
   state = {
     isLoaded: false
@@ -113,4 +115,4 @@ class  PlayRow  extends Component {
 }
 };
 
-export default PlayRow;
+export default WithErrorHandler(PlayRow, axios);
