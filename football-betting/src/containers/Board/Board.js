@@ -8,6 +8,8 @@ import Betslip from "../Betslip/Betslip";
 import NumberFormat from "react-number-format";
 import TopBoard from "../../components/topBoard/topBoard";
 import Spinner from '../../components/UI/Spinner/Spinner';
+import WithErrorHandler from '../../hoc/WithErrorHandler/WithErrorHandler';
+import axios from '../../axios-fixtures';
 
 class Board extends Component {
 
@@ -147,4 +149,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapstateToProps, mapDispatchToProps)(Board);
+export default connect(mapstateToProps, mapDispatchToProps)(WithErrorHandler(Board, axios));

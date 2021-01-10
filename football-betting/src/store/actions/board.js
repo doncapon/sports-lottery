@@ -1,6 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios-fixtures';
-// import moment from 'moment'
+import moment from 'moment'
 
 
 export const genrateSlip = (amount, slipIndex ) =>{
@@ -80,21 +80,21 @@ export const calculateOverAllPrice = (slipIndex, gameIndex, sideIndex)=>{
         dispatch(calculateGrandTtoalPriceOfAllSlips(slipIndex));
     }
 }
-// const getNextPlayDate=(day="saturday")=>{
-//     let i;
-//     if(day === "tuesday")
-//     i = 2;
-//     if(day === "saturday")
-//     i = 6;
-//     var d = new Date();
-//     d.setDate(d.getDate() + (i + 7 - d.getDay()) % 7);
-//     console.log(moment(d).format("YYYY-MM-DD"));
-//     return moment(d).format("YYYY-MM-DD");
-// }
+const getNextPlayDate=(day="saturday")=>{
+    let i;
+    if(day === "tuesday")
+    i = 2;
+    if(day === "saturday")
+    i = 6;
+    var d = new Date();
+    d.setDate(d.getDate() + (i + 7 - d.getDay()) % 7);
+    console.log(moment(d).format("YYYY-MM-DD"));
+    return moment(d).format("YYYY-MM-DD");
+}
 export const setBoard=() =>{
     return dispatch =>{
-        axios.get("fixtures/date/2021-01-16"
-        // +getNextPlayDate("tuesday")
+        axios.get("fixtures/date/"
+        +getNextPlayDate("tuesday")
          ,
         {
             headers: {

@@ -35,11 +35,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 let  store = createStore(persistedReducer,composeEnhancers(
     applyMiddleware(thunk, logger)));
-let persistor = persistStore(store);
-
-// export  {store, persistor}
-
-
+let persistor = persistStore(store); 
 
 const app = (
 <Provider store = {store}> 
