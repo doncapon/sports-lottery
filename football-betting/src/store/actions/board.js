@@ -94,7 +94,7 @@ const getNextPlayDate=(day="saturday")=>{
 export const setBoard=() =>{
     return dispatch =>{
         axios.get("fixtures/date/"
-        +getNextPlayDate("tuesday")
+        +getNextPlayDate()
          ,
         {
             headers: {
