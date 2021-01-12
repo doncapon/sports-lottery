@@ -30,6 +30,20 @@ export const TOGGLE_SHOW_HISTORY = 'TOGGLE_SHOW_HISTORY';
 
 export const FETCH_PREDICTIONS_ALL = 'FETCH_PREDICTIONS_ALL';
 
+export const SET_ISPAYING = 'SET_ISPAYING';
+export const EXECUTE_PURCHASE = 'EXECUTE_PURCHASE';
+export const SET_ISPAID = 'SET_ISPAID';
+
+
+export const SET_RECEIPT = 'SET_RECEIPT';
+export const TOGGLE_SHOW_RECEIPT = 'TOGGLE_SHOW_RECEIPT';
+
+export const SET_GAMEDATE = 'SET_GAMEDATE';
+
+
+
+
+
 
 
 

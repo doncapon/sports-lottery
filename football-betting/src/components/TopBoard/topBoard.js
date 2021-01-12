@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import {Trash2Fill} from 'react-bootstrap-icons';
+import Funds from '../../components/board/funds/funds';
 
 const topBoard = (props) =>{
 const genrateSlip = (event) =>{
@@ -8,8 +9,16 @@ const genrateSlip = (event) =>{
     props.genrateSlip(i, props.editIndex);
 }
     return (<div className = 'col-12'>
+          <div className="row" style={{textAlign: "left"}}>
+
+             <Funds funds = {props.funds} showFunds = {props.showFunds}  firstName = {props.firstName} 
+              toggleShowFunds = {props.toggleShowFunds }
+             />
+          </div>
+          <div className= "row">
             <span  style= {{  textAlign : 'left' , color: 'skyblue', fontWeight: 'bold'}}
             > play with <span style={{fontSize: '1.3em', color: 'green'}}>{props.basePrice}₦</span><span style={{color: 'grey', margin: '0'}}> Naira </span></span>
+            </div>
             <div className= 'row'>
                 <div >Quick Random Play: </div>
                 </div>

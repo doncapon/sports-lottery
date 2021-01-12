@@ -1,6 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios-fixtures';
-import moment from 'moment'
+import { getNextPlayDate } from '../../shared/utility';
 
 
 export const genrateSlip = (amount, slipIndex ) =>{
@@ -14,6 +14,19 @@ export const genrateSlip = (amount, slipIndex ) =>{
 
     }
 }
+
+export const toggleIsShowReceipt = () =>{
+    return {
+        type: actionTypes.TOGGLE_SHOW_RECEIPT,
+    }
+}
+
+export const setReceipt = () =>{
+    return {
+        type: actionTypes.SET_RECEIPT,
+    }
+}
+
 export const genrateSlip2 = (amount) =>{
     return {
         type: actionTypes.GENERATE_SLIP,
@@ -33,6 +46,27 @@ export const setPurchaseAll= ()=>{
         type: actionTypes.PURCHASE_ALL
     }
 }
+
+export const setIsPaying = (isPaying)=>{
+    return {
+        type: actionTypes.SET_ISPAYING,
+        isPaying: isPaying
+    }
+}
+
+export const executePurchase= ()=>{
+    return {
+        type: actionTypes.EXECUTE_PURCHASE
+    }
+}
+export const setIsPaid = (isPaid)=>{
+    return {
+        type: actionTypes.SET_ISPAID,
+        isPaid: isPaid
+    }
+}
+
+
 export const checkPurchasable = (index)=>{
     return {
         type: actionTypes.CHECK_PURCHASABLE,
@@ -80,21 +114,11 @@ export const calculateOverAllPrice = (slipIndex, gameIndex, sideIndex)=>{
         dispatch(calculateGrandTtoalPriceOfAllSlips(slipIndex));
     }
 }
-const getNextPlayDate=(day="saturday")=>{
-    let i;
-    if(day === "tuesday")
-    i = 2;
-    if(day === "saturday")
-    i = 6;
-    var d = new Date();
-    d.setDate(d.getDate() + (i + 7 - d.getDay()) % 7);
-    console.log(moment(d).format("YYYY-MM-DD"));
-    return moment(d).format("YYYY-MM-DD");
-}
-export const setBoard=() =>{
+
+export const setBoard=( kickOffDay, kickOffTime) =>{
+    let kickOffDate = getNextPlayDate(kickOffDay);
     return dispatch =>{
-        axios.get("fixtures/date/"
-        +getNextPlayDate()
+        axios.get("fixtures/date/"+ kickOffDate
          ,
         {
             headers: {
@@ -103,11 +127,15 @@ export const setBoard=() =>{
               }
         })
         .then(response =>{
-            let EnglandFixtures = response.data.api.fixtures
-            .filter(fixture =>fixture.league.country === "England" );
-            let Championship = EnglandFixtures.filter(fixture => fixture.league.name === "Championship");
+
+            let dateTime = ( kickOffDate +"T"+kickOffTime);
+            let fixtureAtTime = response.data.api.fixtures.filter(
+                fixture =>fixture.event_date === dateTime);
+            let EnglandFixtures =fixtureAtTime.filter(fixture =>fixture.league.country === "England" );
             let PremierShip = EnglandFixtures.filter(fixture => fixture.league.name === "Premier League");
+            let Championship = EnglandFixtures.filter(fixture => fixture.league.name === "Championship");
             let countWanted;
+
             if((Championship.length + PremierShip.length) < 13)
             countWanted = Championship.length + PremierShip.length;
             else
@@ -127,7 +155,16 @@ export const setBoard=() =>{
                     Championship = countWanted - PremierShip.length;
             }
             let wantedFixtures = PremierShip.splice(0, premCount).concat(Championship.splice(0, ChamCount));
-            
+            let countAfter = wantedFixtures.length;
+            if(wantedFixtures.length < 13){
+                let leagueOneFixture = EnglandFixtures.filter(fixture => fixture.league.name === "League One");
+                wantedFixtures = wantedFixtures.concat(leagueOneFixture.splice(0, (13 - countAfter)));
+            }
+            let counterAFterLeagueOne = wantedFixtures.length;
+            if(wantedFixtures.length < 13){
+                let leagueTwoFixture = EnglandFixtures.filter(fixture => fixture.league.name === "League Two");
+                wantedFixtures = wantedFixtures.concat(leagueTwoFixture.splice(0, (13 - counterAFterLeagueOne)));
+            }
             dispatch(initializeBoard(wantedFixtures));
         }).catch(error =>{
 
