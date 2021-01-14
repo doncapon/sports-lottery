@@ -1,0 +1,74 @@
+
+.BetSlips{
+    float: left;
+    width: 100%;
+}
+.Betslip{
+    width: 33%;
+    float: left;
+
+}
+
+.Betslip:nth-child(){
+    display: block;
+}
+.BetSlipWrapper {
+    caret-color: transparent;
+}
+.SlipNumber{
+    font-weight: bold; float: left; 
+    margin-left: 20px;
+}
+.BetSlipInner {
+    border-radius: 5px;
+    background: #f7f4bc;
+    margin: 0 5px;
+}
+
+.Edit { 
+    border-radius: 5px;
+    background: #f7f4bc;
+    margin: 0 5px;
+
+    border: green 5px solid;
+}
+
+
+
+.SlipButtons{
+    margin-bottom: 0.5vh;
+    background: grey;
+}
+
+
+.NewSlipButton{
+     padding: 0 20px;
+     padding: 0 60px 5px ;
+     font-size: 1.6em;
+     max-width: 350px;
+     float: left;
+     font-weight: bolder;
+
+}
+
+.EmptyWrapper{
+    display: flex;
+}
+.NewButton{
+    display:  block;
+    clear: both;
+    width: 100%;
+}
+.BetslipText{
+        color: white;
+        margin-left: 27px;
+        font-size: 1.3em;
+        text-align: left;
+        padding: 7px 0 0;
+        display: inline;
+}
+
+.Empty{
+    display: inline;
+    margin:  0 0 5px 35px;
+}

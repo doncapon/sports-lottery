@@ -1,25 +1,19 @@
+import classes from "./Team.module.css";
 import { React } from "react";
 
 const Team = (props) => {
   return (
     <div
-      className="row"
-      style={{
-        padding: '0',
-        float: "left",
-        fontSize: "2.8vh",
-        margin: "0px"
-        , display: 'block'
-      }}
+      className={classes.Team}
+  
     >
        
-        <div className="col-12" 
-        style={{ margin :"0px 3px 0 0px", textAlign: "left" }}>
+        <div  style={{ margin :"0px 0px 0 ", textAlign: "left" }}>
           <span>{props.row}.</span>
             {props.team1}
-            <span style={{ color: "grey" }}>vs</span>
+            <span style={{ color: "grey", padding: '0 5px' }}>vs</span>
           
-          <span style={{ textAlign: "right" }}>{props.team2}</span>{" "}
+          <span style={{ textAlign: "left" , padding: '0'}}>{props.team2}</span>{" "}
         </div>
       </div>
   );

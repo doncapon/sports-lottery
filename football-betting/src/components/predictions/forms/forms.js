@@ -103,7 +103,7 @@ const forms = (props) => {
             </div>
 
             <div className="row">
-              <div className="col-4">losses</div>
+              <div className="col-4">Losses</div>
               <div className="col-8">
                 <div className="row">
                   <div className="col-3">{allLastHome.matchs.loses.home}</div>
@@ -252,7 +252,7 @@ const forms = (props) => {
             </div>
 
             <div className="row">
-              <div className="col-4">losses</div>
+              <div className="col-4">Losses</div>
               <div className="col-8">
                 <div className="row">
                   <div className="col-3">{allLastAway.matchs.loses.home}</div>

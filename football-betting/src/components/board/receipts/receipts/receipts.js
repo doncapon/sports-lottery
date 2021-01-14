@@ -1,12 +1,13 @@
 import React from 'react';
 import Receipt from  '../receipt/receipt';
-
+import classes from './Receipts.mocdule.css';
 const receipts = (props)=>{
 
     return(
         props.receipts.map((receipt, i) =>{
-            return <div style={{margin: '10px 0 10px', paddingRight: '50px'}} className="col-12"> 
-            <Receipt receipt = {receipt} basePrice =  {props.basePrice}  gameDate = {props.gameDate}/> </div>
+            return <div className={classes.ReceiptWrapper} key = {receipt.id}> 
+            <Receipt receipt = {receipt} basePrice =  {props.basePrice} 
+             gameDate = {props.gameDate}/> </div>
         })
     );
 } 

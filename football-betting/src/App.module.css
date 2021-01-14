@@ -1,22 +1,15 @@
 .App {
   text-align: left;
+  width: 100%;
+  min-width: 280px;
+  overflow: hidden;
+}
+.Navs{
+  display:  none;
 }
 
-h1 {
-  margin-left: 60px;
-  color: white;
-  text-align: left;
+@media only screen and (min-width: 768px){
+  .Navs{
+    display: block;
+  }
 }
-
-h1> span {
-  color: skyblue;
-  font-style: italic;
-
-}
-
-  .container-fluid {
-    padding-right:0px;
-    padding-left:0px;
-    margin-right:auto;
-    margin-left:auto
- }

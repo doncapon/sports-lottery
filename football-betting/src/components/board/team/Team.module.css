@@ -1,10 +1,15 @@
+.Team{
+        font-size: 2.8vh;
+        display: block;
+}
+
+
 .TeamRow{
     
     text-align: left;
-    font-weight: unset;
     display: inline;
-    text-align: left;
 }
+
 
 
 

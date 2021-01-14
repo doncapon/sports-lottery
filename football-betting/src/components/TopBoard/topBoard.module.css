@@ -1,0 +1,48 @@
+.TopBoard{
+    float: left;
+    display: block;
+    clear: right;
+}
+.Quick {
+    text-align: left;
+    padding-left: 20px;
+
+}
+
+.Buttons {
+    margin: 0;
+    padding-left: 20px;
+
+    float: left;
+    
+}
+.Funds { 
+    margin: 0;
+    clear:both;
+    padding: 0;
+}
+
+.EmptySelection{
+     font-weight: bold;
+     display: flex;
+     float: right;
+     margin: 0px 10px 0;
+     background: pink;
+    padding: 0;
+    width: 100%;
+}
+
+.PlayWith { 
+    font-size: 1.3em;
+    padding-left: 20px;
+    
+}
+
+.EmptyText {
+    margin: 10px;
+
+}
+
+.EmptyButton{
+    margin-left:  10px;
+}

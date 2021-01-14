@@ -1,0 +1,37 @@
+.ReceiptWrapper{
+    width: 100%;
+    background: white;
+    margin: 10px 0 0;
+}
+.HeaderWrapper{
+    display: flex;
+    float: left;
+}
+.MatchHeader{
+    margin-left: 10px;
+
+}
+.SelectionHeader{
+    float: right;
+    margin-left: 140px;
+}
+
+.ResultWrapper{
+    width: 100%;
+}
+.TeamResult{
+    float: right;
+    padding-right: 10px;
+}
+
+.TeamsName{
+    margin-left: 10px;
+    float: left;
+    display: flex;
+}
+
+.MatchResult{
+    font-size: 0.8em;
+    /* margin-left: 20px; */
+    /* float: right; */
+}

@@ -9,7 +9,7 @@
 .Home, .Away, .Draw {
     background : white;
     caret-color: transparent;
-    padding: 4px 1.2vw.7vw;
+    padding: 4px 1.2vw .7vw;
 }
 
 .Selected  {

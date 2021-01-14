@@ -1,9 +1,10 @@
 .PlayRow {
-    padding: 0px;
     font-weight: bold;
     font-size: 1rem;
     float: left;
     caret-color: transparent;
+    padding-bottom: 4px;
+    
 }
 
 /* For small screen */
@@ -16,6 +17,19 @@
 
 .PlayRow:hover{
     background: #c7e2eb;
+}
+
+.TeamAndSelection {
+  width: 100%;
+}
+
+.Teams{
+  width: 100vw;
+  position: relative;
+}
+
+.SingleTiles{
+  margin-left: 30px;
 }
 
     
