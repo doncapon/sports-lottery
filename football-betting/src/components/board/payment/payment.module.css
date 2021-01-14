@@ -1,0 +1,44 @@
+.PaymentWrapper{
+    width: 100%;
+}
+
+.PaymentWrapperInner{
+        color: white;
+        background: grey;
+        width: 100%;
+        display: flex;
+}
+
+.HeaderLeft , .TermHeaderLeft{
+    float: left;
+    padding-left: 5px;
+}
+.TermHeaderLeft{
+    padding-left: 10px;
+}
+.HeaderRight, .TermHeaderRight{
+    margin-left: 40px;
+}
+
+
+.TermsWrapper{
+    width: 100%;
+}
+
+.TermHeaderRight{
+    margin-left: 150px;
+    color: green;
+}
+
+.AcceptTerms{
+    text-align: left;
+    margin-left: 10px;
+    font-size: 0.9em;
+}
+
+.ShowReceipt {
+        font-weight: bold;
+        font-size: 1.3em;
+        float: left;
+        width: 100%;
+}

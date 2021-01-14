@@ -12,9 +12,10 @@
 
 
 .Side {
-    padding: 0.5vw 4vh;
+    padding: 0.2vw 2vh;
     background-color: white;
-    margin: 3% 0% ;
+    margin: 1% 5px ;
+    display: inline;
 }
 
 .SingleTile:hover {

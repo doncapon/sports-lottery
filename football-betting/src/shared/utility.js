@@ -24,6 +24,5 @@ export function uuid() {
     let d = moment(Date.now()).format("SSSSS-MMssDD-HHYYYYmm");
     let str = Math.floor(Math.random() * 10000);
     d += "-" + str
-    console.log(d)
     return d;
   }

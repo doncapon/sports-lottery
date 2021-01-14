@@ -59,6 +59,9 @@ const toggleIsShowReceipt = (state, action) => {
 const setReceipt = (state, action) => {
     return produce(state, draft => {
         draft.receipts = _.cloneDeep(draft.slips);
+        for(let i = 0; i < draft.slips.length; i++){
+            draft.slips[i].gameNumber = uuid();
+        }
     })
 }
 const executePurchase = (state, action) => {
@@ -78,7 +81,7 @@ const setIsPaying = (state, action) => {
         draft.isPaying = action.isPaying;
     })
 }
-const iniialLizeBoard = (state, action) => {
+const initializeBoard = (state, action) => {
 
     return produce(state, draft => {
 
@@ -108,7 +111,8 @@ const iniialLizeBoard = (state, action) => {
         newSlip.games = Object.assign([], games1);
 
         newSlip.gameNumber = uuid();
-        let newSlips = [Object.assign({}, newSlip)];
+        // let newSlips = [Object.assign({}, newSlip)];
+        let newSlips = [];
         newSlips.splice(0, 1, newSlip);
         draft.gamesLength = action.fixtures.length;
         draft.slips = Object.assign([], newSlips);
@@ -116,9 +120,7 @@ const iniialLizeBoard = (state, action) => {
         draft.isPaid = false;
         draft.isShowReceipt = false;
         
-        // draft.gameDate = '2021-01-16';
         draft.gameDate = moment(action.fixtures[0].event_date).format("DD-MM-YYYY");
-        console.log(moment(action.fixtures[0].event_date).format("DD-MM-YYYY"));
         draft.loading = true;
 
     });
@@ -315,22 +317,17 @@ const checkPurchasable = (state, action) => {
 
 const copyBetslip = (state, action) => {
     return produce(state, draft => {
-
-
         const oldId = "slip_" + (action.position + 1);
         const newId = "slip_" + (draft.slips.length + 1);
-        let clonedSlips = _.cloneDeep(draft.slips);
-        let updatedSlip = _.cloneDeep(clonedSlips[action.position]);
-        let clonedUpdatedSlip = _.cloneDeep(updatedSlip[oldId]);
-        let newslip = _.cloneDeep(clonedUpdatedSlip);
-        newslip.gameNumber = uuid();
+        let newslip = _.cloneDeep(draft.slips[action.position][oldId]);
 
         draft.slips.splice(draft.slips.length, 0, {
             id: newId, purchasable: true,
             slipPrice: state.slips[action.position].slipPrice, adding: false,
             removing: false, [newId]: newslip
         });
-        
+
+        draft.slips[draft.slips.length-1].gameNumber = uuid();
         draft.isPaying = false;
         draft.isPaid = false;
         draft.isShowReceipt = false;
@@ -581,7 +578,7 @@ const reducer = (state = initialStte, action) => {
         case actionTypes.EMPTY_EDITING_SLIP:
             return EmptyEditingIndexSlip(state, action);
         case actionTypes.INITIALIZE_BOARD:
-            return iniialLizeBoard(state, action);
+            return initializeBoard(state, action);
         case actionTypes.ADD_EMPTY_SLIP:
             return addEmptySlip(state, action);
         case actionTypes.SET_EDITING_INDEX:

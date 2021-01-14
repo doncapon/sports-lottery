@@ -1,0 +1,25 @@
+.BetrowsWrapper{
+    width:90px;
+}
+.BetTileS{
+    display: flex;
+    float: right;
+    padding-right: 6px;
+}
+
+.Betrows{
+    background: blue;
+    font-size: 0.9em;
+    /* width:80px; */
+    
+}
+
+.RowNumber{
+    float: left;
+    padding: 0;
+    margin: 0 4px ;
+}
+
+.BetItem {
+    margin-left: 4px;
+}
