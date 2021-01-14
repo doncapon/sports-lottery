@@ -1,0 +1,20 @@
+.Row { 
+        padding: 5px 0;
+        border: 1px solid lightgrey;
+        width: 100%;
+        display: flex;
+        float: 'left';
+        font-size: .8em;
+}
+
+.Others, .Score{
+    margin-left: 5%;
+
+}
+.Score{
+    font-size: 1.2em;
+}
+
+.Vs {
+    margin : 0 2%;
+}

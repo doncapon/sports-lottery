@@ -4,7 +4,7 @@ import classes from "./PlayRow.module.css";
 import Button from 'react-bootstrap/Button';
 import { Component } from "react";
 import { CaretDownFill, CaretUpFill } from "react-bootstrap-icons";
-import Modal from '../../components/UI/Modal/Modal';
+import Stats from '../../components/board/Stats/Stats';
 import WithErrorHandler from '../../hoc/WithErrorHandler/WithErrorHandler';
 import axios from '../../axios-fixtures';
 class PlayRow extends Component {
@@ -100,7 +100,7 @@ class PlayRow extends Component {
             </div>
 
             {(game.showHistory && this.props.predictions !== null) ? <div className="">
-              <Modal predictions={this.props.predictions.filter((pred, i) => {
+              <Stats predictions={this.props.predictions.filter((pred, i) => {
                 return pred.gameIndex === k
               })}
 

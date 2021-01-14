@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import Odds from "../../predictions/odds/odds";
-import classes from "./Modal.module.css";
+import classes from "./Stats.module.css";
 import H2h from "../../predictions/h2h/h2h";
 import Forms from "../../predictions/forms/forms";
 
-const Modal = (props) => {
+const Stats = (props) => {
   const [selectedLink, setSelectedLink] = useState(0);
   const HandleLinkClick = (e) => {
     switch (e.target.innerHTML) {
         
-      case "Win percentage":
+      case "Odds":
         setSelectedLink(0);
         break;
       case "Form":
         setSelectedLink(1);
         break;
-      case "Recent meetiings (H2H)":
+      case "H2H":
         setSelectedLink(2);
         break;
       default:
@@ -66,7 +66,7 @@ const Modal = (props) => {
                   className={(selectedLink === 0) ? classes.Selected: null}
                   onClick={(e) => HandleLinkClick(e)}
                 >
-                  Win percentage
+                  Odds
                 </span> {" | "}
 
                 <span
@@ -81,13 +81,13 @@ const Modal = (props) => {
                   className={(selectedLink === 2) ? classes.Selected: null}
                   onClick={(e) => HandleLinkClick(e)}
                 >
-                  Recent meetiings (H2H)
+                  H2H
                 </span>
             
         
           </h6>
         </div>
-        <div className="modal-body row" style={{ textAlign: "center" }}>
+        <div className="modal-body" style={{ textAlign: "center" }}>
           {showedObject}
         </div>
 
@@ -97,4 +97,4 @@ const Modal = (props) => {
   );
 };
 
-export default Modal;
+export default Stats;

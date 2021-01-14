@@ -122,6 +122,7 @@ const Betslips = React.memo(
               <div className={classes.Buttons}>
                   <Button
                     size="md"
+                    style={{margin: '20px 0  10px'}}
                     disabled={!slip.purchasable}
                     variant="outline-primary"
                     onClick={() => setEditIndex(ind)}
@@ -131,6 +132,7 @@ const Betslips = React.memo(
               </div>
                   <div>
                   <Button
+                    style={{marginBottom: '10px'}}
                     onClick={() => copyBetSlip(ind, props.slips.length)}
                     size="md"
                     variant="outline-primary"
@@ -144,6 +146,7 @@ const Betslips = React.memo(
                   </div>
                     <div>
                   <Button
+                    style={{marginBottom: '10px'}}
                     variant="outline-primary"
                     size="md"
                     disabled={slip.disableDelete}
