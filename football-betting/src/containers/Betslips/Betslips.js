@@ -108,12 +108,9 @@ const Betslips = React.memo(
       betSlip = props.slips.map((slip, ind) => {
         return (
           <div className={classes.Betslip} key={ind}>
-
-
-            <div
-              className={(props.editIndex === ind) ? classes.Edit : classes.BetSlipInner}
-            >
-                <div className={classes.SlipNumber} >Slip {ind + 1}</div>
+            <div className={(props.editIndex === ind)
+              ? classes.Edit : classes.BetSlipInner} >
+              <div className={classes.SlipNumber} >slip {ind + 1}</div>
               <div className={classes.BetItems} onClick={() => setEditIndex(ind)}>
                 <BetItems key={ind} games={slip[slip.id].games} />
               </div>
@@ -122,7 +119,7 @@ const Betslips = React.memo(
                 <div>
                   <Button
                     size="md"
-                    style={{ margin: '20px 0  10px' }}
+                    style={{ margin: '20px 0 10px' }}
                     disabled={!slip.purchasable}
                     variant="outline-primary"
                     onClick={() => setEditIndex(ind)}

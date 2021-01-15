@@ -32,7 +32,7 @@ class BetTile extends Component {
      
         return ( <div className= {classesFul.join(' ') }
                  selected = {this.props.selected}
-            style={{fontSize: '10px', margin: '0'}}>  { child}</div>);
+            >  { child}</div>);
         
 
             

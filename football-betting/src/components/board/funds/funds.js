@@ -6,9 +6,9 @@ const funds = (props) => {
     let title = props.firstName;
     let titleLarge = props.firstName;
     if (props.showFunds) {
-        title += "\xa0\xa0\xa0\xa0\ Wallet: ₦" + props.funds.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        title += "\xa0\xa0\xa0\xa0 Wallet: ₦" + props.funds.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     } else {
-        title += "\xa0\xa0\xa0\xa0\ wallet hidden";
+        title += "\xa0\xa0\xa0\xa0 wallet hidden";
     }
 
     if (props.showFunds) {

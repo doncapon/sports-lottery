@@ -88,11 +88,11 @@
 /* Larger devices */
 @media only screen and (min-width: 1000px) {
   .PlayRow{
-      margin: 0 10px 0 10px;
+      margin: 0 1px 0 10px;
   }
   .TeamAndSelection {
     display: flex;
-    width: max-content
+    width: 48vw
 
   }
 
