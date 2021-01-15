@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
-import classes from './ModalSecond.module.css';
+import classes from './Modal.module.css';
 import Auxy from '../../../hoc/Auxy/Auxy';
 import Backdrop from '../Backdrop/Backdrop';
 
-class ModalSecond extends Component {
+class Modal extends Component {
 
     shouldComponentUpdate ( nextProps, nextState ) {
         return nextProps.show !== this.props.show || nextProps.children !== this.props.children;
@@ -13,12 +13,12 @@ class ModalSecond extends Component {
     render () {
         return (
             <Auxy>
-                <Backdrop show={this.props.show} clicked={this.props.ModalSecondClosed} />
+                <Backdrop show={this.props.show} clicked={this.props.modalClosed} />
                 <div
-                    className={classes.ModalSecond}
+                    className={classes.Modal}
                     style={{
                         transform: this.props.show ? 'translateY(0)' : 'translateY(-100vh)',
-                        opacity: this.props.show ? '2' : '0'
+                        opacity: this.props.show ? '1' : '0'
                     }}>
                     {this.props.children}
                 </div>
@@ -27,4 +27,4 @@ class ModalSecond extends Component {
     }
 }
 
-export default ModalSecond;
+export default Modal;
