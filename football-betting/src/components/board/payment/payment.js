@@ -14,9 +14,17 @@ const payment = (props) => {
                 : 'Payment confirmed'}
             </div>
             <div className={classes.HeaderRight}>
-                <Button variant="danger" onClick={() => { props.closePayment(false, false) }} >
-                    {!props.isPaid ?
-                        'CANCEL' : 'CLOSE'} <XOctagon /> </Button>
+                <div className= {classes.ButtonNormal}>
+                    <Button variant="danger" onClick={() => { props.closePayment(false, false) }} >
+                        {!props.isPaid ?
+                            'CANCEL' : 'CLOSE'} <XOctagon /> </Button>
+                </div>
+                <div className= {classes.ButtonLarge}>
+                    <Button variant="danger" onClick={() => { props.closePayment(false, false) }} 
+                    size="lg">
+                        {!props.isPaid ?
+                            'CANCEL' : 'CLOSE'} <XOctagon /> </Button>
+                </div>
             </div>
         </div>
         { !props.isPaid ?
@@ -37,7 +45,7 @@ const payment = (props) => {
             </div>
             : <div >
                 <div className={classes.TermHeaderLeft} > You have been changed   </div>
-                <div className= {classes.TermHeaderRight} style={{ color: 'green' }}>
+                <div className={classes.TermHeaderRight} style={{ color: 'green' }}>
                     <NumberFormat
                         value={props.totalPrice}
                         displayType={"text"}

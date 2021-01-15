@@ -15,8 +15,8 @@ const h2h =(props) =>{
         </div>
     });
     
-    return (<div className="" >
-            <h5 style= {{textAlign: "left" , marginLeft: '2vw'}}>RECENT MEETINGS RESULT</h5>
+    return (<div >
+            <h5 className={classes.H2hHeading}>RECENT MEETINGS RESULT</h5>
             {head}    
     </div>);
 }

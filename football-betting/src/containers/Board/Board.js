@@ -35,76 +35,75 @@ class Board extends Component {
 
   render() {
     return (this.props.loading ? (<div className={classes.Board}>
-      <div className={classes.TopBoard} >
-        <TopBoard
-          isStarted={this.props.isStarted}
-          clicked={this.props.onEmptyEditingISlip}
-          genrateSlip={this.props.onGenrateSlip}
-          editIndex={this.props.editIndex}
-          basePrice={this.props.basePrice}
-          funds={this.props.funds}
-          firstName={"Emmanuel"}
-          showFunds={true}
-          toggleShowFunds={this.props.toggleShowFunds}
-        />
-      </div>
 
-      <div className={classes.Main}>
 
-        <div className={classes.BoardLeft}>
-          <div className={classes.PlaySection}>
-            <PlayRow
-              loading={this.props.loading}
-              fetchPredictionsAll={this.props.onFetchPredictionsAll}
-              predictions={this.props.predictions}
-              toggleSelectedTile={this.props.ontoggleSelectedTile}
-              slips={this.props.slips}
-              checkPurchasable={this.props.onIsPurchasing}
-              setPurchaseAll={this.props.onSetPurchaseAll}
-              playingGames={this.props.playingGames}
-              editIndex={this.props.editIndex}
-              CalculateOverAllPrice={this.props.onCalculateOverAllPrice}
-              toggleShowHistory={this.props.onToggleShowHistory}
-            />
-          </div>
+      <div className={classes.BoardLeft}>
+        <div className={classes.TopBoard} >
+          <TopBoard
+            isStarted={this.props.isStarted}
+            clicked={this.props.onEmptyEditingISlip}
+            genrateSlip={this.props.onGenrateSlip}
+            editIndex={this.props.editIndex}
+            basePrice={this.props.basePrice}
+            funds={this.props.funds}
+            firstName={"Emmanuel"}
+            showFunds={true}
+            toggleShowFunds={this.props.toggleShowFunds}
+          />
         </div>
-
-        <div className={classes.BoardRight}>
-          <div className={classes.Betslip}>
-            <Betslips
-              slips={this.props.slips}
-              setAdding={this.props.onSetAdding}
-              setRemoving={this.props.onSetRemoving}
-              setPurchaseAll={this.props.onSetPurchaseAll}
-              checkPurchasable={this.props.onCheckPurchasable}
-              setTotalPrice={this.props.onSetTotalPrice}
-              deleteAndResetAll={this.props.onDeleteAndResetAll}
-              addEmptySlip={this.props.onAddEmptySlip}
-              removeSlipSingle={this.props.onRemoveRowFromBetSlip}
-              purchaseAll={this.props.purchaseAll}
-              setEditIndex={this.props.onSetEditIndex}
-              addBetSlip={this.props.onAddRowToslips}
-              editIndex={this.props.editIndex}
+        <div className={classes.PlayRow}>
+          <PlayRow
+            loading={this.props.loading}
+            fetchPredictionsAll={this.props.onFetchPredictionsAll}
+            predictions={this.props.predictions}
+            toggleSelectedTile={this.props.ontoggleSelectedTile}
+            slips={this.props.slips}
+            checkPurchasable={this.props.onIsPurchasing}
+            setPurchaseAll={this.props.onSetPurchaseAll}
+            playingGames={this.props.playingGames}
+            editIndex={this.props.editIndex}
+            CalculateOverAllPrice={this.props.onCalculateOverAllPrice}
+            toggleShowHistory={this.props.onToggleShowHistory}
+          />
+        </div>
+      </div>
+      <div className={classes.BoardRight}>
+        <div className={classes.Betslip}>
+          <Betslips
+            slips={this.props.slips}
+            setAdding={this.props.onSetAdding}
+            setRemoving={this.props.onSetRemoving}
+            setPurchaseAll={this.props.onSetPurchaseAll}
+            checkPurchasable={this.props.onCheckPurchasable}
+            setTotalPrice={this.props.onSetTotalPrice}
+            deleteAndResetAll={this.props.onDeleteAndResetAll}
+            addEmptySlip={this.props.onAddEmptySlip}
+            removeSlipSingle={this.props.onRemoveRowFromBetSlip}
+            purchaseAll={this.props.purchaseAll}
+            setEditIndex={this.props.onSetEditIndex}
+            addBetSlip={this.props.onAddRowToslips}
+            editIndex={this.props.editIndex}
+          />
+        </div>
+        <div className={classes.Payment} >
+          {(this.props.isPaying || this.props.isPaid) ?
+            <Payment totalPrice={this.props.totalPrice} toggleshowShowReceipt={this.props.onToggleIsShowReceipt}
+              isPaid={this.props.isPaid} closePayment={this.togglePaymentButton} isShowReceipt={this.props.isShowReceipt}
+              gamesCount={this.props.slips.length} setIsPaying={this.props.onSetIsPaying}
+              receipts={this.props.receipts}
             />
-          </div>
-          <div className={classes.Payment} >
-            {(this.props.isPaying || this.props.isPaid) ?
-              <Payment totalPrice={this.props.totalPrice} toggleshowShowReceipt={this.props.onToggleIsShowReceipt}
-                isPaid={this.props.isPaid} closePayment={this.togglePaymentButton} isShowReceipt={this.props.isShowReceipt}
-                gamesCount={this.props.slips.length} setIsPaying={this.props.onSetIsPaying}
-                receipts={this.props.receipts}
-              />
-              : null}
-          </div>
-          <div className={classes.ButtonsAndReceipt}>
-            {(!this.props.isPaying && !this.props.isPaid) ?
+            : null}
+        </div>
+        <div className={classes.ButtonsAndReceipt}>
+          {(!this.props.isPaying && !this.props.isPaid) ?
+            <div>
               <div className={classes.PayButtons}>
                 <Button
                   disabled={!this.props.purchaseAll || this.props.funds < this.props.totalPrice}
                   variant="success"
-                  className= {classes.PayButton}
+                  className={classes.PayButton}
                   onClick={() => this.togglePaymentButton(true, false)}
-              
+
                 >
                   PAY {" "}
                   <NumberFormat
@@ -118,16 +117,16 @@ class Board extends Component {
                   <div style={{ color: 'red', textAlign: 'center', background: 'grey' }}>Sorry, you do not have enough funds to make the purchase</div>
                   <Button> <ArrowRight style={{ fontWeight: 'bolder' }} size="20" /> GO TO FUNDS TRANFER</Button>
                 </div> : null}
-
               </div>
-              : this.props.isPaying ?
-                <div> <Button
-                  disabled={!this.props.purchaseAll}
-                  variant="success"
-                  onClick={this.confirmPurchase}
-                  className={classes.ConfrimePayments}
+              <div className={classes.PayButtonsLarge}>
+                <Button
+                  disabled={!this.props.purchaseAll || this.props.funds < this.props.totalPrice}
+                  variant="success" size="lg"
+                  className={classes.PayButton}
+                  onClick={() => this.togglePaymentButton(true, false)}
+
                 >
-                  CONFIRM {" "}
+                  PAY {" "}
                   <NumberFormat
                     value={this.props.purchaseAll ? this.props.totalPrice : 0}
                     displayType={"text"}
@@ -135,19 +134,42 @@ class Board extends Component {
                     prefix={"₦"}
                   />
                 </Button>
+                {this.props.funds < this.props.totalPrice ? <div>
+                  <div style={{ color: 'red', textAlign: 'center', background: 'grey' }}>Sorry, you do not have enough funds to make the purchase</div>
+                  <Button size="lg"> <ArrowRight style={{ fontWeight: 'bolder' }} size="20" /> GO TO FUNDS TRANFER</Button>
+                </div> : null}
+              </div>
 
+            </div>
+
+            : this.props.isPaying ?
+              <div> <Button
+                disabled={!this.props.purchaseAll}
+                variant="success"
+                onClick={this.confirmPurchase}
+                className={classes.ConfrimePayments}
+              >
+                CONFIRM {" "}
+                <NumberFormat
+                  value={this.props.purchaseAll ? this.props.totalPrice : 0}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                  prefix={"₦"}
+                />
+              </Button>
+
+              </div>
+              : this.props.isShowReceipt ?
+                <div className={classes.Receipts}>
+                  <Receipts receipts={this.props.receipts}
+                    basePrice={this.props.basePrice} gameDate={this.props.gameDate} />
                 </div>
-                : this.props.isShowReceipt ?
-                  <div className = {classes.Receipts}>
-                    <Receipts receipts={this.props.receipts}
-                      basePrice={this.props.basePrice} gameDate={this.props.gameDate} />
-                  </div>
-                  : null}
-          </div>
-
+                : null}
         </div>
+
       </div>
-    </div>)
+    </div>
+    )
       : <div><Spinner /></div>
 
     );

@@ -1,3 +1,4 @@
+import classes from "./forms.module.css";
 import React from "react";
 
 const forms = (props) => {
@@ -7,17 +8,17 @@ const forms = (props) => {
   let last5away = props.away.last_5_matches;
   let allLastAway = props.away.all_last_matches;
   return (
-    <div className="row"  style={{fontSize: "0.8em"}}>
+    <div className={ "row " + classes.FormsWrapper} >
       <div className="col-12">
         <div className="row">
-          <h5>{props.home.team_name}</h5>
+          <h5 className = {classes.H5s }>{props.home.team_name}</h5>
         </div>
         <div className="row">
           <div className="col-6">
-            <h5>Last 5 Matches</h5>
+            <h5 className = {classes.H5s }>Last 5 Matches</h5>
           </div>
           <div className="col-6">
-            <h5>Cumulative Matches</h5>
+            <h5 className = {classes.H5s }>Cumulative Matches</h5>
           </div>
         </div>
         <div className="row">
@@ -115,7 +116,7 @@ const forms = (props) => {
 
             <div className="row">
               <div className="col-4">
-                <h6>Goals</h6>
+                <h6 className={classes.Goals}>Goals</h6>
               </div>
               <div className="col-8">
                 <div className="row">
@@ -159,14 +160,14 @@ const forms = (props) => {
 
         {/* Away Team */}
         <div className="row"   style={{marginTop: '20px'}}>
-          <h5>{props.away.team_name}</h5>
+          <h5 className = {classes.H5s }>{props.away.team_name}</h5>
         </div>
         <div className="row">
           <div className="col-6">
-            <h5>Last 5 Matches</h5>
+            <h5 className = {classes.H5s }>Last 5 Matches</h5>
           </div>
           <div className="col-6">
-            <h5>Cumulative Matches</h5>
+            <h5 className = {classes.H5s }>Cumulative Matches</h5>
           </div>
         </div>
         <div className="row">
@@ -264,7 +265,7 @@ const forms = (props) => {
 
             <div className="row">
               <div className="col-4">
-                <h6>Goals</h6>
+                <h6 className={classes.Goals}>Goals</h6>
               </div>
               <div className="col-8">
                 <div className="row">

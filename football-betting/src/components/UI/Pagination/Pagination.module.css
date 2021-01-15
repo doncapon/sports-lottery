@@ -1,6 +1,6 @@
 .NavItems {
     font-size: 1.2em;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     padding-left: 0;
     margin-left: 0;
 }
@@ -13,7 +13,7 @@
 
 }
 .NavItem {
-    padding: 1vw 0.5vw;
+    padding: 2vw 0.5vw;
     border: 3px solid #ccc;
     background: #eee;
 }
@@ -22,4 +22,20 @@
     background: skyblue;
     border: 3px solid grey;
 
+}
+
+/* medium screens */
+@media only screen and (min-width: 660px){
+    .NavItems {
+        margin-bottom: 10px;
+    }
+}
+
+
+/* Larger  screens */
+@media only screen and (min-width: 960px){
+    .NavItem {
+        padding: 0.3vw 0.5vw;
+    }
+    
 }

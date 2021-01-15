@@ -9,7 +9,7 @@ const Team = (props) => {
     >
        
         <div  style={{ margin :"0px 0px 0 ", textAlign: "left" }}>
-          <span>{props.row}.</span>
+          <span className={classes.RowNumber}>{props.row}.</span>
             {props.team1}
             <span style={{ color: "grey", padding: '0 5px' }}>vs</span>
           

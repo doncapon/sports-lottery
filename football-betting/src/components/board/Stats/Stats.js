@@ -63,14 +63,14 @@ const Stats = (props) => {
           <h6 className="modal-title" style={{ color: "blue" }}>
          
                 <span
-                  className={(selectedLink === 0) ? classes.Selected: null}
+                  className={(selectedLink === 0) ? classes.Selected: classes.Rest}
                   onClick={(e) => HandleLinkClick(e)}
                 >
                   Odds
                 </span> {" | "}
 
                 <span
-                  className={(selectedLink === 1) ? classes.Selected: null}
+                  className={(selectedLink === 1) ? classes.Selected: classes.Rest}
                   onClick={(e) => HandleLinkClick(e)}
                 >
                   Form
@@ -78,7 +78,7 @@ const Stats = (props) => {
                 {" | "}
             
                 <span
-                  className={(selectedLink === 2) ? classes.Selected: null}
+                  className={(selectedLink === 2) ? classes.Selected: classes.Rest}
                   onClick={(e) => HandleLinkClick(e)}
                 >
                   H2H

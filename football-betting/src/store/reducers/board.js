@@ -42,7 +42,7 @@ const initialStte = {
     isStarted: false,
     gamesLength: null,
     isPaying: false,
-    funds: 15000,
+    funds: 15500,
     isPaid: false,
     isShowReceipt: false,
     gameDate: null,

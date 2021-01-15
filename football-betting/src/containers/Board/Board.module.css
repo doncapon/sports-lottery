@@ -3,17 +3,11 @@
     font-weight: bold;
     font-size: 1rem;
     margin : 0 auto;
-    width: 100%;
+    width: 100vw;
+    position: relative;
     overflow: hidden;
-    
-/*     
-  background: url(../../assets/bg1.png) no-repeat center center fixed; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover; */
 
-  background: rgb(153, 182, 238);
+   background: rgb(153, 182, 238);
 }
 .TopBoard {
     background: #eee;
@@ -22,32 +16,10 @@
     height: 200px;
 }
 
- .Main{
-     display: block;
- }
-
-.BoardLeft{
-    background: yellow;
-    padding-left: ;
-}
-
-
-/*  */
-
-
-
 .BoardRight {
     background: #c6f5f3;
 
 }
-
-
-
-.PlaySection {
-    width: 100%;
-    /* margin: 200px 0; */
-}
-
 .Betslip {
     width: 100%;
 }
@@ -56,7 +28,6 @@
     background: lightgrey;
     padding-bottom: 0.2em;
     width: 100%;
-    /* display: block; */
     clear: both;
 }
 
@@ -65,10 +36,16 @@
 }
 .PayButtons{
     width: 100%;
+    display: block;
+}
+
+.PayButtonsLarge{
+    width: 100%;
+    display: none;
 }
 
 .PayButton{
-        padding: 0.0vw 0vw 0;
+        padding: 0;
         width: 100%;
         font-weight: bold;
         font-size: 2.2em;
@@ -86,6 +63,49 @@
     margin-top : 10px;
 }
 
-@media only screen and (min-width: 768px){
+/* medium screens */
+@media only screen and (min-width: 660px){
+    .TopBoard {
+        height: 250px;
+    }
+    .Betslip{
+        padding-bottom: 30px;
+    }
+    .PayButtons{
+        width: 100%;
+        display: none;
+        margin-bottom: 20px;
+    }
+    
+    .PayButtonsLarge{
+        width: 100%;
+        display: block;
+    }
+}
+/* large screens */
+@media only screen and (min-width: 960px){
+    .Board{
+        position: relative;
+        width: 90% ;
+        background: #eee;
+    }
+    .TopBoard {
+        height: 220px;
+    }
+    .Main{
+        width: 100%;
+    }
+    .BoardLeft{
+        width: 55%;
+        float: left;
+    }
+    .BoardRight{
+        width: 45%;
+        float: right;
+
+    }
+    .PlayRow{
+        margin: 0 30px 0 0;
+    }
 
 }

@@ -8,8 +8,6 @@ class SingleTile extends Component {
         const classesFul = [];
         const majorClass = [];
        
-
-       
         let child = null;
         switch ( this.props.type ) {
             case ( 'home' ):

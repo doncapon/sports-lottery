@@ -12,31 +12,27 @@ const BetItems = (props) => {
         <div
           className={classes.BetrowsWrapper}
           key={k}
-          style={{
-            float: "left",
-            marginBottom: "8%",
-          }}
-        >
+       >
               <div className= {classes.Betrows}>
                 <div
                   className= {classes.RowNumber}
                >
-                  {k + 1}.
+                  {k < 9? "0" +(k + 1) : k+1}.
                 </div>
                 <div className ={classes.BetTileS}>
-                  <div  style={{ padding: "0" }}>
-                    <BetTile
+                  <div className={classes.BetItem}>
+                    <BetTile 
                       type={"home"}
                       selected={game[gameId + (k + 1)].sides[0].selected}
                     />
                   </div>
-                  <div className={classes.BetItem} style={{ padding: "0" }}>
+                  <div className={classes.BetItem}>
                     <BetTile
                       type={"draw"}
                       selected={game[gameId + (k + 1)].sides[1].selected}
                     />
                   </div>
-                  <div className= {classes.BetItem}  style={{ padding: "0" }}>
+                  <div className= {classes.BetItem}  >
                     <BetTile
                       type={"away"}
                       selected={game[gameId + (k + 1)].sides[2].selected}
