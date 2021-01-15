@@ -4,19 +4,49 @@ ul li:hover{
     cursor: pointer;
 
 }
-span {
+.Rest {
     padding: 10px 10px 5px;
 
 }
-span:hover{
+.Rest:hover{
     cursor: pointer;
     
 }
 .Selected {
+    padding: 10px 10px 5px;
+
     border-bottom: 2px solid black;
     color: purple;
 }
 
 li + li::before {
     content: " | ";
+}
+
+
+/* medium sized screens  */
+@media only screen and (min-width: 768px){
+    .Rest {
+        font-size: 1.4em;
+    }
+
+    .Selected {
+        font-size: 1.4em;
+
+    }
+}
+
+/* Larger sized screens  */
+@media only screen and (min-width: 960px){
+    .Rest {
+        font-size: 1.4em;
+    }
+
+    .Selected {
+        font-size: 1.4em;
+
+    }
+    .modal{
+        width: 48vw;
+    }
 }

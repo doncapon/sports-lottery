@@ -1,5 +1,5 @@
 .Team{
-        font-size: 2.8vh;
+        font-size: 4.0vw;
         display: block;
 }
 
@@ -11,6 +11,24 @@
 }
 
 
+/* medium screens */
+@media only screen and (min-width: 768px) {
+    .Team{
+        font-size: 2.9vw;
+    }
+}
+
+
+/* Larger screen screens */
+@media only screen and (min-width: 960px) {
+    .RowNumber{
+        margin: 0 4px;
+    }
+    .Team{
+        font-size: 2.6vh;
+        padding-top: 7px;
+    }
+}
 
 
 

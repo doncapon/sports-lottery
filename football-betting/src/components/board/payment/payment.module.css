@@ -5,7 +5,8 @@
 .PaymentWrapperInner{
         color: white;
         background: grey;
-        width: 100%;
+        position: relative;
+        width: 100vw;
         display: flex;
 }
 
@@ -17,7 +18,7 @@
     padding-left: 10px;
 }
 .HeaderRight, .TermHeaderRight{
-    margin-left: 40px;
+    margin-left: 40vw;
 }
 
 
@@ -41,4 +42,68 @@
         font-size: 1.3em;
         float: left;
         width: 100%;
+}
+
+.ButtonNormal{
+    display: block;
+}
+
+.ButtonLarge {
+    display: none;
+}
+
+
+/* medium sciens only */
+
+@media only screen and (min-width: 660px){
+    .PaymentWrapper{
+        font-size: 2em;
+    }
+    .HeaderRight, .TermHeaderRight{
+        margin-left: 40vw;
+    }
+    
+    .ButtonNormal{
+        display: none;
+    }
+
+    .ButtonLarge {
+        display: block;
+    }
+    .PaymentWrapperInner{
+        padding: 15px 0px;
+    }
+
+    .TermHeaderRight{
+        margin-left: 450px;
+    }
+ 
+}
+
+/* Larger screens */
+@media only screen and (min-width: 660px){
+    .PaymentWrapper{
+        font-size: 1.6em;
+    }
+    .HeaderRight, .TermHeaderRight{
+        margin-left: 10vw;
+    }
+    
+    .ButtonNormal{
+        display: none;
+    }
+
+    .ButtonLarge {
+        display: block;
+    }
+    .PaymentWrapperInner{
+        padding: 15px 0px;
+    }
+        .TermHeaderLeft{
+            font-size: 0.8em;
+        }
+    .TermHeaderRight{
+        margin-left: 300px;
+    }
+ 
 }

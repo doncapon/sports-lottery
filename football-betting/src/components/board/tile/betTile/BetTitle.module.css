@@ -18,7 +18,19 @@
     font-weight: bold;
 }
 
+/* medium screens */
+
+@media only screen and (min-width: 660px) {
+    .Home, .Away, .Draw {
+        padding: 4px 2.5vw .7vw;
+    }
+}
 
 
+/* Larger screens */
 
-
+@media only screen and (min-width: 960px) {
+    .Home, .Away, .Draw {
+        padding: 4px 0.5vw .7vw;
+    }
+}

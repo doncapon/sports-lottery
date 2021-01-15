@@ -44,8 +44,8 @@ class PlayRow extends Component {
             </div>
             <div className={classes.SingleTiles} >
               {
-                <div  >
-                  <div className= {classes.SingleTile}>
+                <div className={classes.SingleTilesInner}  >
+                  <div className={classes.SingleTile}>
                     <SingleTile
                       type={"home"}
                       selected={game[gameId + (k + 1)].sides[0].selected}
@@ -59,55 +59,55 @@ class PlayRow extends Component {
                       }
                     />
                   </div>
-                  
-                    <div className= {classes.SingleTile}>
-                      <SingleTile
-                        type={"draw"}
-                        selected={game[gameId + (k + 1)].sides[1].selected}
-                        clicked={() =>
-                          this.HandlerAdd(
-                            this.props.editIndex,
-                            k,
-                            1,
-                            game[gameId + (k + 1)].sides[1].selected
-                          )
-                        }
-                      />
-                    </div>
-                    <div className= {classes.SingleTile}>
 
-                      <SingleTile
-                        type={"away"}
-                        selected={game[gameId + (k + 1)].sides[2].selected}
-                        clicked={() =>
-                          this.HandlerAdd(
-                            this.props.editIndex,
-                            k,
-                            2,
-                            game[gameId + (k + 1)].sides[2].selected
-                          )
-                        }
-                      />
-                    </div>
-                    <div className={classes.ButtonToggle} >
-                      <Button size="sm" onClick={() => this.HandlePredictions(k, game.fixture_id)}>
-                        {!game.showHistory ? <CaretDownFill /> : <CaretUpFill />} </Button>
-                    </div>
+                  <div className={classes.SingleTile}>
+                    <SingleTile
+                      type={"draw"}
+                      selected={game[gameId + (k + 1)].sides[1].selected}
+                      clicked={() =>
+                        this.HandlerAdd(
+                          this.props.editIndex,
+                          k,
+                          1,
+                          game[gameId + (k + 1)].sides[1].selected
+                        )
+                      }
+                    />
                   </div>
+                  <div className={classes.SingleTileLast}>
+
+                    <SingleTile
+                      type={"away"}
+                      selected={game[gameId + (k + 1)].sides[2].selected}
+                      clicked={() =>
+                        this.HandlerAdd(
+                          this.props.editIndex,
+                          k,
+                          2,
+                          game[gameId + (k + 1)].sides[2].selected
+                        )
+                      }
+                    />
+                  </div>
+                  <div className={classes.Toggler} >
+                    <Button className={classes.BtnToggleSmall} size="sm" onClick={() => this.HandlePredictions(k, game.fixture_id)}>
+                      {!game.showHistory ? <CaretDownFill /> : <CaretUpFill />} </Button>
+                    <Button className={classes.BtnToggleMedium} size="lg" onClick={() => this.HandlePredictions(k, game.fixture_id)}>
+                      {!game.showHistory ? <CaretDownFill /> : <CaretUpFill />} </Button>
+
+                  </div>
+                </div>
 
               }
 
             </div>
-
-            {(game.showHistory && this.props.predictions !== null) ? <div className="">
+          </div>
+          {(game.showHistory && this.props.predictions !== null) ? <div className="">
               <Stats predictions={this.props.predictions.filter((pred, i) => {
                 return pred.gameIndex === k
               })}
 
               /></div> : null}
-
-          </div>
-          <div></div>
         </div>
       );
     });

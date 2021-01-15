@@ -15,16 +15,15 @@ const topBoard = (props) => {
         toggleShowFunds={props.toggleShowFunds}
       />
     </div>
-    <div className={classes.PlayWith} style={{  textAlign: 'left', color: 'blue', fontWeight: 'bold' }}
+    <div className= {classes.TopBoardTextsAndButtons} >
+    <div className={classes.PlayWith} style={{  textAlign: 'left', color: '#0890ff', fontWeight: 'bold' }}
     >play with <div style={{ color: 'green', display: 'inline'}}>
         {props.basePrice}</div> ₦aira
     </div>
-    <div>   
     <div className={classes.Quick} >Quick Random Play: </div>
-
+    </div>
       <div className={classes.Buttons}>
         <Button
-          style={{ marginRight: '5px' }}
           
           variant="success"
           size="md"
@@ -34,7 +33,6 @@ const topBoard = (props) => {
         </Button>
 
         <Button
-          style={{ marginRight: '5px' }}
           onClick={(e) => genrateSlip(e)}
           variant="success"
           size="md"
@@ -49,24 +47,56 @@ const topBoard = (props) => {
         >
           1,440 ₦
        </Button>
+       <div>   
 
       </div>
     </div>
 
-    <div className={classes.EmptySelection}  >
-      <div className={classes.EmptyText} >
-      REMOVE SELECTIONS: 
-      </div>
-      <div className={classes.EmptyButton}>
+{/* medium buttons */}
+<div className={classes.ButtonsLarge}>
         <Button
-          variant="outline-black"
+          
+          variant="success"
+          size="lg"
+          onClick={(e) => genrateSlip(e)}
+        >
+          480 ₦
+        </Button>
+
+        <Button
+          onClick={(e) => genrateSlip(e)}
+          variant="success"
+          size="lg"
+        >
+          960 ₦
+        </Button>
+
+        <Button
+          variant="success"
+          onClick={(e) => genrateSlip(e)}
+          size="lg"
+        >
+          1,440 ₦
+       </Button>
+       <div>   
+
+      </div>
+    </div>
+
+
+    <div className={classes.EmptySelection}  >
+      <span className= {classes.EmptyText}>REMOVE SELECTIONS: </span>
+        <Button
+          className={classes.DeleteButton}
+          variant="outline-dark"
           disabled={!props.isStarted}
           onClick={props.clicked}
-          size="md"
+          size="sm"
         >
-          <Trash2Fill  size= "20" />
+          <div className= {classes.TrashSmall}><Trash2Fill  size= "25" /></div>
+          <div className= {classes.TrashMedium}><Trash2Fill  size= "35" /></div>
+          <div className= {classes.TrashLarge} ><Trash2Fill  size= "25" /></div>
         </Button>
-      </div>
     </div>
   </div>);
 

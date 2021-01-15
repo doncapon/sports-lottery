@@ -30,9 +30,9 @@ const receipt = (props) => {
             })}
         </div>
 
-        <div style={{ width: '100%',paddingTop: '290px', textAlign: 'left',marginLeft: '15px', borderBottom: '2px solid black' }}>
+        <div className={classes.BottomSection}>
             <div>
-                <div style={{ width: '100%' }}>
+                <div style={{ width: '100%' ,clear: 'both' }}>
                     <div>Number of Rows : {props.receipt.slipAmount}</div>
                 </div>
                 <div style={{ width: '100%' }}>

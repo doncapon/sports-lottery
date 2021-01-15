@@ -108,31 +108,31 @@ const Betslips = React.memo(
       betSlip = props.slips.map((slip, ind) => {
         return (
           <div className={classes.Betslip} key={ind}>
+
+
             <div
               className={(props.editIndex === ind) ? classes.Edit : classes.BetSlipInner}
             >
-              <div className={classes.SlipNumber}>
-                <div style={{ fontWeight: "bold" }}>Slip {ind + 1}</div>
-              </div>
-
+                <div className={classes.SlipNumber} >Slip {ind + 1}</div>
               <div className={classes.BetItems} onClick={() => setEditIndex(ind)}>
                 <BetItems key={ind} games={slip[slip.id].games} />
               </div>
 
               <div className={classes.Buttons}>
+                <div>
                   <Button
                     size="md"
-                    style={{margin: '20px 0  10px'}}
+                    style={{ margin: '20px 0  10px' }}
                     disabled={!slip.purchasable}
                     variant="outline-primary"
                     onClick={() => setEditIndex(ind)}
                   >
                     <XCircle />
                   </Button>
-              </div>
-                  <div>
+                </div>
+                <div>
                   <Button
-                    style={{marginBottom: '10px'}}
+                    style={{ margin: '0px 0  10px' }}
                     onClick={() => copyBetSlip(ind, props.slips.length)}
                     size="md"
                     variant="outline-primary"
@@ -143,10 +143,10 @@ const Betslips = React.memo(
                   >
                     <PlusSquareFill />
                   </Button>
-                  </div>
-                    <div>
+                </div>
+                <div>
                   <Button
-                    style={{marginBottom: '10px'}}
+                    style={{ margin: '0px 0  10px' }}
                     variant="outline-primary"
                     size="md"
                     disabled={slip.disableDelete}
@@ -154,9 +154,51 @@ const Betslips = React.memo(
                   >
                     <Trash2Fill />
                   </Button>
-                  </div>
                 </div>
               </div>
+
+
+
+              <div className={classes.ButtonsLarge}>
+                <div>
+                  <Button
+                    size="lg"
+                    style={{ margin: '20px 0  10px' }}
+                    disabled={!slip.purchasable}
+                    variant="outline-primary"
+                    onClick={() => setEditIndex(ind)}
+                  >
+                    <XCircle />
+                  </Button>
+                </div>
+                <div>
+                  <Button
+                    style={{ margin: '0px 0  10px' }}
+                    onClick={() => copyBetSlip(ind, props.slips.length)}
+                    size="lg"
+                    variant="outline-primary"
+                    disabled={
+                      !props.purchaseAll ||
+                      props.slips.length > totalSlips - 1
+                    }
+                  >
+                    <PlusSquareFill />
+                  </Button>
+                </div>
+                <div>
+                  <Button
+                    style={{ margin: '0px 0  10px' }}
+                    variant="outline-primary"
+                    size="lg"
+                    disabled={slip.disableDelete}
+                    onClick={() => RemoveBetFromSlip(ind)}
+                  >
+                    <Trash2Fill />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
         );
       });
     }
@@ -174,7 +216,6 @@ const Betslips = React.memo(
             <div className={classes.NewButton}>
               <Button
                 variant="secondary"
-                style={{ border: '4px solid white' }}
                 className={classes.NewSlipButton}
                 onClick={addEmptySlip}
                 disabled={!props.purchaseAll}
@@ -182,26 +223,24 @@ const Betslips = React.memo(
                 ADD NEW SLIP
                 </Button>
             </div>
-            <div className="">
+            <div >
               {props.slips.length > 0 ? (
-                <div className="row">
-                  <div className={classes.EmptyWrapper} >
-                    <div className={classes.BetslipText} >
-                      BETSLIPS
+                <div className={classes.EmptyWrapper} >
+                  <div className={classes.BetslipText} >
+                    BETSLIPS
                       </div>
 
-                    <div className={classes.Empty} >
-                      <Button
-                        style={{ border: '2px solid white' }}
-                        onClick={HandleDeleteAllFromSlip}
-                        size="sm"
-                        variant="outline-muted"
-                      > <span style={{ fontSize: '1.4em', fontWeight: 'bold' }}>EMPTY </span>
-                        <Trash size="25" />
-                      </Button>
-                    </div>
-
+                  <div className={classes.Empty} >
+                    <Button
+                      className={classes.EmptyButton}
+                      onClick={HandleDeleteAllFromSlip}
+                      size="sm"
+                      variant="outline-muted"
+                    > <span className={classes.EmptyText}>EMPTY </span>
+                      <Trash size="25" />
+                    </Button>
                   </div>
+
                 </div>
               ) : null}
             </div>

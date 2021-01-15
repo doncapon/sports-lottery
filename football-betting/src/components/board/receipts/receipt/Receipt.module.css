@@ -30,8 +30,44 @@
     display: flex;
 }
 
+
 .MatchResult{
     font-size: 0.8em;
-    /* margin-left: 20px; */
-    /* float: right; */
+}
+
+
+.BottomSection{
+    width: 100; 
+    padding-top: 320px;
+    text-align: left;
+    margin-left: 15px;
+    border-bottom: 2px solid black;
+}
+
+@media only screen and (min-width: 660px){
+    .SelectionHeader{
+    margin-left: 400px;
+
+    }
+    .ReceiptWrapper{
+        font-size: 2.4=em;
+    }
+    .BottomSection{
+        padding-top:  740px;
+    }
+
+}
+
+@media only screen and (min-width: 960px){
+
+    .SelectionHeader{
+        margin-left: 200px;
+    
+        }
+        .ReceiptWrapper{
+            font-size: 1.5em;
+        }
+        .BottomSection{
+            padding-top:  430px;
+        }
 }
