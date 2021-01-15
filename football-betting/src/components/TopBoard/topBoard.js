@@ -37,7 +37,7 @@ const topBoard = (props) => {
           variant="success"
           size="md"
         >
-          960 ₦
+          1000 ₦
         </Button>
 
         <Button
@@ -68,7 +68,7 @@ const topBoard = (props) => {
           variant="success"
           size="lg"
         >
-          960 ₦
+          1000 ₦
         </Button>
 
         <Button

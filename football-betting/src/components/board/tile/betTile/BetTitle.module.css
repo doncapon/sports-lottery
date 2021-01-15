@@ -29,7 +29,7 @@
 
 /* Larger screens */
 
-@media only screen and (min-width: 960px) {
+@media only screen and (min-width: 1000px) {
     .Home, .Away, .Draw {
         padding: 4px 0.5vw .7vw;
     }

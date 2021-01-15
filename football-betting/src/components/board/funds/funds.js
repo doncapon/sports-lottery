@@ -6,20 +6,20 @@ const funds = (props) => {
     let title = props.firstName;
     let titleLarge = props.firstName;
     if (props.showFunds) {
-        title += "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0 ₦" + props.funds.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        title += "\xa0\xa0\xa0\xa0\ Wallet: ₦" + props.funds.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     } else {
-        title += "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0 funds hidden";
+        title += "\xa0\xa0\xa0\xa0\ wallet hidden";
     }
 
     if (props.showFunds) {
         titleLarge +=  "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0"+
-        "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0 ₦"+
+        "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0 Wallet: ₦"+
         props.funds.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     } else {
         titleLarge += "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0"+
-        "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0"+
+        "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0"+
 
-         " funds hidden";
+         " wallet hidden";
     }
 
     return (
@@ -29,18 +29,18 @@ const funds = (props) => {
                 <DropdownButton id="dropdown-item-button"
                     title={title} menuAlign='right' size="lg">
                     {/* <Dropdown.ItemText>Dropdown item text</Dropdown.ItemText> */}
-                    <Dropdown.Item as="button">Transer funds</Dropdown.Item>
+                    <Dropdown.Item as="button">Transfer funds</Dropdown.Item>
                     <Dropdown.Item as="button">Game History</Dropdown.Item>
-                    <Dropdown.Item onClick={props.toggleShowFunds} as="button">toggleShowFunds</Dropdown.Item>
+                    <Dropdown.Item onClick={props.toggleShowFunds} as="button">{!props.showFunds?'Show wallet':'Hide wallet'}</Dropdown.Item>
                 </DropdownButton>
             </div>
             <div className={classes.FundsLarge}>
                 <DropdownButton id="dropdown-item-button"
                     title={titleLarge} menuAlign='right' size="lg">
                     {/* <Dropdown.ItemText>Dropdown item text</Dropdown.ItemText> */}
-                    <Dropdown.Item as="button">Transer funds</Dropdown.Item>
+                    <Dropdown.Item as="button">Transfer funds</Dropdown.Item>
                     <Dropdown.Item as="button">Game History</Dropdown.Item>
-                    <Dropdown.Item onClick={props.toggleShowFunds} as="button">toggleShowFunds</Dropdown.Item>
+                    <Dropdown.Item onClick={props.toggleShowFunds} as="button">{!props.showFunds?'Show wallet':'Hide wallet'}</Dropdown.Item>
                 </DropdownButton>
             </div>
         </div>

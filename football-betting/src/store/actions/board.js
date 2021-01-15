@@ -15,6 +15,12 @@ export const genrateSlip = (amount, slipIndex ) =>{
     }
 }
 
+export const toggleShowFunds = () =>{
+    return {
+        type: actionTypes.TOGGLE_SHOWFUNDS,
+    }
+}
+
 export const toggleIsShowReceipt = () =>{
     return {
         type: actionTypes.TOGGLE_SHOW_RECEIPT,

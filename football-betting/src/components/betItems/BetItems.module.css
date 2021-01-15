@@ -41,7 +41,7 @@
 
 
 /* Larger screens */
-@media only screen and (min-width: 960px){
+@media only screen and (min-width: 1000px){
     .BetItem {
         margin-left: 0.5vw;
     }

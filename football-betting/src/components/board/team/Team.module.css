@@ -20,7 +20,7 @@
 
 
 /* Larger screen screens */
-@media only screen and (min-width: 960px) {
+@media only screen and (min-width: 1000px) {
     .RowNumber{
         margin: 0 4px;
     }
