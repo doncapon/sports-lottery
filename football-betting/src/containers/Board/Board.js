@@ -16,11 +16,13 @@ import Receipts from '../../components/board/receipts/receipts/receipts';
 
 class Board extends Component {
 
-  componentDidMount() {
+  constructor(props){
+    super(props);
     if (!this.props.loading) {
       this.props.onSetBoard(this.props.gameDay, this.props.kickOffTime);
     }
   }
+
 
   togglePaymentButton = (paying, paid) => {
     this.props.onSetIsPaying(paying);

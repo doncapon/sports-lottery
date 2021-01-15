@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-import ModalSecond from '../../components/UI/ModalSecond/ModalSecond';
+import Modal from '../../components/UI/Modal/Modal';
 import Auxy from '../Auxy/Auxy';
 
-const WithErrorHandler = ( WrappedComponent, axios ) => {
+const withErrorHandler = ( WrappedComponent, axios ) => {
     return class extends Component {
         state = {
             error: null
@@ -31,11 +31,11 @@ const WithErrorHandler = ( WrappedComponent, axios ) => {
         render () {
             return (
                 <Auxy>
-                    <ModalSecond
+                    <Modal
                         show={this.state.error}
-                        ModalSecondlosed={this.errorConfirmedHandler}>
+                        modalClosed={this.errorConfirmedHandler}>
                         {this.state.error ? this.state.error.message : null}
-                    </ModalSecond>
+                    </Modal>
                     <WrappedComponent {...this.props} />
                 </Auxy>
             );
@@ -43,4 +43,4 @@ const WithErrorHandler = ( WrappedComponent, axios ) => {
     }
 }
 
-export default WithErrorHandler;
+export default withErrorHandler;

@@ -48,7 +48,7 @@ const initialStte = {
     gameDate: null,
     gameDay: 'saturday',
     kickOffTime: '15:00:00+00:00',
-    showFunds:  true
+    showFunds:  true,
 
 };
     
