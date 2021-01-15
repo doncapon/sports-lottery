@@ -10,12 +10,15 @@
     background : white;
     caret-color: transparent;
     padding: 4px 1.2vw .7vw;
+    
 }
 
 .Selected  {
     background-color: blue;
     color: white;
     font-weight: bold;
+    font-size: 10px; 
+    margin: 0;
 }
 
 /* medium screens */
@@ -23,14 +26,18 @@
 @media only screen and (min-width: 660px) {
     .Home, .Away, .Draw {
         padding: 4px 2.5vw .7vw;
+        font-size: 10px; 
+        margin: 0;
     }
 }
 
 
 /* Larger screens */
 
-@media only screen and (min-width: 960px) {
+@media only screen and (min-width: 1000px) {
     .Home, .Away, .Draw {
-        padding: 4px 0.5vw .7vw;
+        padding: 6px 7px 6px;
+        font-size: 0.6vw; 
+        margin: 0;
     }
 }

@@ -47,10 +47,16 @@ const initialStte = {
     isShowReceipt: false,
     gameDate: null,
     gameDay: 'saturday',
-    kickOffTime: '15:00:00+00:00'
+    kickOffTime: '15:00:00+00:00',
+    showFunds:  true
 
 };
     
+const toggleShowFunds = (state, action) => {
+    return produce(state, draft => {
+        draft.showFunds = !draft.showFunds
+    });
+}
 const toggleIsShowReceipt = (state, action) => {
     return produce(state, draft => {
         draft.isShowReceipt = !draft.isShowReceipt
@@ -173,7 +179,7 @@ const genrateSlip = (state, action) => {
                 arrayGames[newRand][sideRand] = 1;
                 attempt++;
             }
-        } else if (amount === "960") {
+        } else if (amount === "1000") {
             let attempt = 0;
             let InitialAttempt = 4;
 
@@ -559,6 +565,8 @@ const setPurchaseAll = (state, action) => {
 
 const reducer = (state = initialStte, action) => {
     switch (action.type) {
+        case actionTypes.TOGGLE_SHOWFUNDS:
+            return toggleShowFunds(state, action);
         case actionTypes.TOGGLE_SHOW_RECEIPT:
             return toggleIsShowReceipt(state, action);
         case actionTypes.SET_RECEIPT:

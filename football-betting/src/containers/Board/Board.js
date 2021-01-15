@@ -47,8 +47,8 @@ class Board extends Component {
             basePrice={this.props.basePrice}
             funds={this.props.funds}
             firstName={"Emmanuel"}
-            showFunds={true}
-            toggleShowFunds={this.props.toggleShowFunds}
+            showFunds={this.props.showFunds}
+            toggleShowFunds={this.props.onToggleShowFunds}
           />
         </div>
         <div className={classes.PlayRow}>
@@ -178,6 +178,7 @@ class Board extends Component {
 const mapstateToProps = (state) => {
   return {
     loading: state.board.loading,
+    showFunds: state.board.showFunds,
     isShowReceipt: state.board.isShowReceipt,
     receipts: state.board.receipts,
     basePrice: state.board.basePrice,
@@ -200,6 +201,7 @@ const mapstateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onSetBoard: (kickOffDay, kicOffTime) => dispatch(actions.setBoard(kickOffDay, kicOffTime)),
+    onToggleShowFunds: () => dispatch(actions.toggleShowFunds()),
     onToggleIsShowReceipt: () => dispatch(actions.toggleIsShowReceipt()),
     onSetReceipt: () => dispatch(actions.setReceipt()),
     onExecutePurchase: () => dispatch(actions.executePurchase()),

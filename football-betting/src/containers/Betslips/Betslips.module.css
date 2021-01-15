@@ -125,10 +125,13 @@
 
 
 /* Larger screens */
-@media only screen and (min-width: 960px){
+@media only screen and (min-width: 1000px){
  
+    .BetSlipWrapper{
+        height: 140px;
+    }
     .NewSlipButton{
-         margin: 15px 50px 0 5px;
+         margin: 0px 50px 0 5px;
         float: right;
         padding-top: 0px;
         font-size: 2.0em;
@@ -149,5 +152,8 @@
         margin-left: 3vw;
         font-size: 1.3em;
     }
-  
+    .Betslip{
+        width: 12v.5w;
+    
+    }
 }

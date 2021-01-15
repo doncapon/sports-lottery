@@ -20,12 +20,12 @@
 
 
 /* Larger screen screens */
-@media only screen and (min-width: 960px) {
+@media only screen and (min-width: 1000px) {
     .RowNumber{
         margin: 0 4px;
     }
     .Team{
-        font-size: 2.6vh;
+        font-size: 14px;
         padding-top: 7px;
     }
 }

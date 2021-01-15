@@ -21,6 +21,7 @@ export {
      executePurchase,
      setReceipt,
      toggleIsShowReceipt,
+     toggleShowFunds
 
 } from './board';
 
