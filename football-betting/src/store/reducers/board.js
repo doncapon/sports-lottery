@@ -34,6 +34,7 @@ const initialStte = {
     //            }
     // ],
     receipts: null,
+    isFACup: true,
     editIndex: 0,
     totalPrice: 0,
     purchaseAll: false,
@@ -46,7 +47,9 @@ const initialStte = {
     isPaid: false,
     isShowReceipt: false,
     gameDate: null,
-    gameDay: 'saturday',
+    gameDateRaw: null,
+    daysOffset: 0,
+    hourToNextDay: 9,   //24 - kick-off time
     kickOffTime: '15:00:00+00:00',
     showFunds:  true,
 
@@ -125,7 +128,7 @@ const initializeBoard = (state, action) => {
         draft.isPaying = false;
         draft.isPaid = false;
         draft.isShowReceipt = false;
-        
+        draft.gameDateRaw = action.fixtures[0].event_date;
         draft.gameDate = moment(action.fixtures[0].event_date).format("DD-MM-YYYY");
         draft.loading = true;
 
