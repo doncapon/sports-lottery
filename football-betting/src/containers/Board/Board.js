@@ -120,32 +120,10 @@ class Board extends Component {
                   <Button> <ArrowRight style={{ fontWeight: 'bolder' }} size="20" /> GO TO FUNDS TRANFER</Button>
                 </div> : null}
               </div>
-              <div className={classes.PayButtonsLarge}>
-                <Button
-                  disabled={!this.props.purchaseAll || this.props.funds < this.props.totalPrice}
-                  variant="success" size="lg"
-                  className={classes.PayButton}
-                  onClick={() => this.togglePaymentButton(true, false)}
-
-                >
-                  PAY {" "}
-                  <NumberFormat
-                    value={this.props.purchaseAll ? this.props.totalPrice : 0}
-                    displayType={"text"}
-                    thousandSeparator={true}
-                    prefix={"₦"}
-                  />
-                </Button>
-                {this.props.funds < this.props.totalPrice ? <div>
-                  <div style={{ color: 'red', textAlign: 'center', background: 'grey' }}>Sorry, you do not have enough funds to make the purchase</div>
-                  <Button size="lg"> <ArrowRight style={{ fontWeight: 'bolder' }} size="20" /> GO TO FUNDS TRANFER</Button>
-                </div> : null}
-              </div>
-
             </div>
 
             : this.props.isPaying ?
-              <div> <Button
+              <div> <Button 
                 disabled={!this.props.purchaseAll}
                 variant="success"
                 onClick={this.confirmPurchase}

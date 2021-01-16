@@ -40,7 +40,7 @@
   margin-left: 0vw;
 }
 
-.BtnToggleSmall{
+.BtnToggle{
   display: block;
   
 }
@@ -74,13 +74,17 @@
   .SingleTileLast{
     margin-right: 20px;
   }
-  .BtnToggleSmall{
-    display: none;
+  .BtnToggle{
+    width: 5vh;
+    height: 5vh;
+  }
+
+  .Icon{
+    width: 3vh;
+    height: 3vh;;
   }
   
-  .BtnToggleMedium{
-    display: block;
-  }
+
 }
 
     
@@ -107,14 +111,15 @@
 
   }
 
-  .BtnToggleSmall{
+  .BtnToggle{
     margin-top: 4px;
     display: block;
+    
+    height: 5.5vh;
+    width: 6.5vh;
+    margin-top: 0.8vh;
   }
   
-  .BtnToggleMedium{
-    display: none;
-  }
   .SingleTileLast{
     margin-right: 15px;
   }

@@ -32,8 +32,8 @@ const receipt = (props) => {
 
         <div className={classes.BottomSection}>
             <div>
-                <div style={{ width: '100%' ,clear: 'both' }}>
-                    <div>Number of Rows : {props.receipt.slipAmount}</div>
+                <div style={{ width: '100%', clear: 'both' }}>
+                    <div>Rows played : {props.receipt.slipAmount}</div>
                 </div>
                 <div style={{ width: '100%' }}>
                     <div>Price per Row : {props.basePrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "₦"}</div>
@@ -49,7 +49,7 @@ const receipt = (props) => {
             </div>
 
         </div>
-        <div style={{marginLeft: '100px'}}>Price: {props.receipt.slipPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "₦"}
+        <div style={{ marginLeft: '100px' }}>Price: {props.receipt.slipPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "₦"}
         </div>
     </div>)
 };
