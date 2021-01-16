@@ -22,7 +22,7 @@ import { PersistGate } from 'redux-persist/es/integration/react';
 const composeEnhancers = process.env.NODE_ENV === "development" ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
 const persistConfig = {
   key: 'root',
-  storage
+  storage,
 }
 
 const rootReducer = combineReducers({
@@ -33,17 +33,17 @@ const rootReducer = combineReducers({
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 
-let  store = createStore(persistedReducer,composeEnhancers(
+let  store = createStore(rootReducer,composeEnhancers(
     applyMiddleware(thunk, logger)));
 let persistor = persistStore(store); 
 
 const app = (
 <Provider store = {store}> 
 <BrowserRouter>
-<PersistGate  loading={null}
-      persistor={persistor}>
+{/* <PersistGate  loading={null}
+      persistor={persistor}> */}
   <App />
-  </PersistGate>
+  {/* </PersistGate> */}
   </BrowserRouter>
 </Provider>
 );

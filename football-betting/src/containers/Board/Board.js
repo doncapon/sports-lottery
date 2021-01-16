@@ -13,16 +13,21 @@ import axios from '../../axios-fixtures';
 import Payment from '../../components/board/payment/payment';
 import { ArrowRight } from "react-bootstrap-icons";
 import Receipts from '../../components/board/receipts/receipts/receipts';
-
+import moment from 'moment';
 class Board extends Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
-    if (!this.props.loading) {
-      this.props.onSetBoard(this.props.gameDay, this.props.kickOffTime);
-    }
-  }
+    console.log(this.props.hourToNextDay);
 
+    if(!this.props.loading)
+    this.props.onSetBoard(this.props.isFACup, this.props.kickOffTime,this.props.daysOffset,  this.props.hourToNextDay);
+  }
+  // shouldComponentUpdate() {
+  //   let now = new Date();
+  //   //  return moment(now).format("YYYY-MM-DD HH:MM") < moment(this.props.gameDateRaw)
+  //   //  .format("YYYY-MM-DD HH:MM") ;
+  // }
 
   togglePaymentButton = (paying, paid) => {
     this.props.onSetIsPaying(paying);
@@ -123,7 +128,7 @@ class Board extends Component {
             </div>
 
             : this.props.isPaying ?
-              <div> <Button 
+              <div> <Button
                 disabled={!this.props.purchaseAll}
                 variant="success"
                 onClick={this.confirmPurchase}
@@ -157,7 +162,14 @@ class Board extends Component {
 }
 const mapstateToProps = (state) => {
   return {
+    hourToNextDay: state.board.hourToNextDay,
+    gameDate: state.board.gameDate,
+    daysOffset: state.board.daysOffset,
+    evaluationDate: state.board.evaluationDate,
+    gameDateRaw: state.board.gameDateRaw,
+
     loading: state.board.loading,
+    isFACup: state.board.isFACup,
     showFunds: state.board.showFunds,
     isShowReceipt: state.board.isShowReceipt,
     receipts: state.board.receipts,
@@ -172,15 +184,12 @@ const mapstateToProps = (state) => {
     isPaid: state.board.isPaid,
     funds: state.board.funds,
     kickOffTime: state.board.kickOffTime,
-    gameDate: state.board.gameDate,
-    gameDay: state.board.gameDay,
-
     predictions: state.pred.predictions,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    onSetBoard: (kickOffDay, kicOffTime) => dispatch(actions.setBoard(kickOffDay, kicOffTime)),
+    onSetBoard: ( isFACup ,kicOffTime,daysOffset, nexthours) => dispatch(actions.setBoard( isFACup ,kicOffTime,daysOffset, nexthours)),
     onToggleShowFunds: () => dispatch(actions.toggleShowFunds()),
     onToggleIsShowReceipt: () => dispatch(actions.toggleIsShowReceipt()),
     onSetReceipt: () => dispatch(actions.setReceipt()),

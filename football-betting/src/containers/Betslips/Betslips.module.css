@@ -114,7 +114,7 @@
 
 
 /* Larger screens */
-@media only screen and (min-width: 1330pxx{
+@media only screen and (min-width: 960px){
  
     .BetSlipWrapper{
         height: 140px;
@@ -158,9 +158,9 @@
     }
     .SlipNumber{
         font-weight: bold; 
-        margin-left: 0vh;
-        font-size: 3.5vh;
+        margin-left: 8vh;
         text-align: left;
+        font-size: 3.2vh;
     }
     .Betslip{
         width: 12vw 5vw;

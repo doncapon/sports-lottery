@@ -15,6 +15,73 @@ export const genrateSlip = (amount, slipIndex ) =>{
     }
 }
 
+export const setBoard=(isFaCup , kickOffTime ,  daysOffset, hourstoNext ) =>{
+    let kickOffDate = getNextPlayDate( daysOffset, hourstoNext);
+    return dispatch =>{
+        axios.get("fixtures/date/"+ kickOffDate
+         ,
+        {
+            headers: {
+                'x-rapidapi-key': '8275c582bamshd83a3179dd00459p19f0b2jsn94c889368579',
+                'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
+              }
+        })
+        .then(response =>{
+
+            let dateTime = ( kickOffDate +"T"+kickOffTime);
+            let fixtureAtTime = response.data.api.fixtures.filter(
+                fixture =>fixture.event_date === dateTime);
+            let EnglandFixtures =fixtureAtTime.filter(fixture =>fixture.league.country === "England" );
+            
+            EnglandFixtures.forEach(fix=>  console.log(fix.league.name))
+            
+            let PremierShipOrFACup;
+            if(!isFaCup)    {
+                PremierShipOrFACup = EnglandFixtures.filter(fixture => fixture.league.name === "Premier League");
+            }else{
+                PremierShipOrFACup = EnglandFixtures.filter(fixture => fixture.league.name === "FA Cup");
+            }
+            
+
+            let Championship = EnglandFixtures.filter(fixture => fixture.league.name === "Championship");
+            let countWanted;
+
+            if((Championship.length + PremierShipOrFACup.length) < 13)
+            countWanted = Championship.length + PremierShipOrFACup.length;
+            else
+            countWanted = 13;
+
+            let premCount= 7;
+            let ChamCount = 6;
+            if(countWanted === 13){
+                if(Championship.length < 6)
+                    premCount = countWanted - Championship.length;
+                if(PremierShipOrFACup.length < 7)
+                    ChamCount = countWanted - PremierShipOrFACup.length;
+            }else{
+                if(Championship.length < 5)
+                    premCount = countWanted - Championship.length;
+                if(PremierShipOrFACup < 6)
+                    Championship = countWanted - PremierShipOrFACup.length;
+            }
+            let wantedFixtures = PremierShipOrFACup.splice(0, premCount).concat(Championship.splice(0, ChamCount));
+            let countAfter = wantedFixtures.length;
+            if(wantedFixtures.length < 13){
+                let leagueOneFixture = EnglandFixtures.filter(fixture => fixture.league.name === "League One");
+                wantedFixtures = wantedFixtures.concat(leagueOneFixture.splice(0, (13 - countAfter)));
+            }
+            let counterAFterLeagueOne = wantedFixtures.length;
+            if(wantedFixtures.length < 13){
+                let leagueTwoFixture = EnglandFixtures.filter(fixture => fixture.league.name === "League Two");
+                wantedFixtures = wantedFixtures.concat(leagueTwoFixture.splice(0, (13 - counterAFterLeagueOne)));
+            }
+            dispatch(initializeBoard(wantedFixtures));
+        }).catch(error =>{
+
+        });
+    };
+}
+
 export const toggleShowFunds = () =>{
     return {
         type: actionTypes.TOGGLE_SHOWFUNDS,
@@ -119,63 +186,6 @@ export const calculateOverAllPrice = (slipIndex, gameIndex, sideIndex)=>{
         dispatch(calculateSpecificSlipPrice(slipIndex))
         dispatch(calculateGrandTtoalPriceOfAllSlips(slipIndex));
     }
-}
-
-export const setBoard=( kickOffDay, kickOffTime) =>{
-    let kickOffDate = getNextPlayDate(kickOffDay);
-    return dispatch =>{
-        axios.get("fixtures/date/"+ kickOffDate
-         ,
-        {
-            headers: {
-                'x-rapidapi-key': '8275c582bamshd83a3179dd00459p19f0b2jsn94c889368579',
-                'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
-              }
-        })
-        .then(response =>{
-
-            let dateTime = ( kickOffDate +"T"+kickOffTime);
-            let fixtureAtTime = response.data.api.fixtures.filter(
-                fixture =>fixture.event_date === dateTime);
-            let EnglandFixtures =fixtureAtTime.filter(fixture =>fixture.league.country === "England" );
-            let PremierShip = EnglandFixtures.filter(fixture => fixture.league.name === "Premier League");
-            let Championship = EnglandFixtures.filter(fixture => fixture.league.name === "Championship");
-            let countWanted;
-
-            if((Championship.length + PremierShip.length) < 13)
-            countWanted = Championship.length + PremierShip.length;
-            else
-            countWanted = 13;
-
-            let premCount= 7;
-            let ChamCount = 6;
-            if(countWanted === 13){
-                if(Championship.length < 6)
-                    premCount = countWanted - Championship.length;
-                if(PremierShip.length < 7)
-                    ChamCount = countWanted - PremierShip.length;
-            }else{
-                if(Championship.length < 5)
-                    premCount = countWanted - Championship.length;
-                if(PremierShip < 6)
-                    Championship = countWanted - PremierShip.length;
-            }
-            let wantedFixtures = PremierShip.splice(0, premCount).concat(Championship.splice(0, ChamCount));
-            let countAfter = wantedFixtures.length;
-            if(wantedFixtures.length < 13){
-                let leagueOneFixture = EnglandFixtures.filter(fixture => fixture.league.name === "League One");
-                wantedFixtures = wantedFixtures.concat(leagueOneFixture.splice(0, (13 - countAfter)));
-            }
-            let counterAFterLeagueOne = wantedFixtures.length;
-            if(wantedFixtures.length < 13){
-                let leagueTwoFixture = EnglandFixtures.filter(fixture => fixture.league.name === "League Two");
-                wantedFixtures = wantedFixtures.concat(leagueTwoFixture.splice(0, (13 - counterAFterLeagueOne)));
-            }
-            dispatch(initializeBoard(wantedFixtures));
-        }).catch(error =>{
-
-        });
-    };
 }
 
 export const initializeBoard = (fixtures) =>{
