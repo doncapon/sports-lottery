@@ -33,7 +33,7 @@
 
 
 /* medium screens */
-@media only screen and (min-width: 660px){
+@media only screen and (min-width: 768px){
     .Betrows{
         font-size: 1.4em;
     }
@@ -41,7 +41,7 @@
 
 
 /* Larger screens */
-@media only screen and (min-width: 1000px){
+@media only screen and (min-width: 960px){
     .BetItem {
         margin-left: 0.5vw;
     }

@@ -25,7 +25,7 @@
 }
 
 /* medium screens */
-@media only screen and (min-width: 660px){
+@media only screen and (min-width: 768px){
     .NavItems {
         margin-bottom: 10px;
     }
@@ -33,7 +33,7 @@
 
 
 /* Larger  screens */
-@media only screen and (min-width: 1000px){
+@media only screen and (min-width: 960px){
     .NavItem {
         padding: 0.3vw 0.5vw;
         height: 35px;

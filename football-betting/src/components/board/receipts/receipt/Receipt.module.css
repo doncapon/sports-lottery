@@ -41,7 +41,7 @@
     border-bottom: 2px solid black;
 }
 
-@media only screen and (min-width: 660px){
+@media only screen and (min-width: 768px){
     .SelectionHeader{
     margin-left: 350px;
 
@@ -58,7 +58,7 @@
 
 }
 
-@media only screen and (min-width: 1000px){
+@media only screen and (min-width: 960px){
 
         .SelectionHeader{
         margin-left: 35vh;

@@ -37,7 +37,7 @@ li + li::before {
 }
 
 /* Larger sized screens  */
-@media only screen and (min-width: 1000px){
+@media only screen and (min-width: 960px){
     .Rest {
         font-size: 1.4em;
     }

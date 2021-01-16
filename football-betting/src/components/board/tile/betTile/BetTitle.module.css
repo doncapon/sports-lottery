@@ -23,7 +23,7 @@
 
 /* medium screens */
 
-@media only screen and (min-width: 660px) {
+@media only screen and (min-width: 768px) {
     .Home, .Away, .Draw {
         padding: 4px 2.5vw .7vw;
         font-size: 10px; 
@@ -34,7 +34,7 @@
 
 /* Larger screens */
 
-@media only screen and (min-width: 1000px) {
+@media only screen and (min-width: 960px) {
     .Home, .Away, .Draw {
         padding: 1.05vh 7px 0.9vh;
         font-size: 1.6vh; 

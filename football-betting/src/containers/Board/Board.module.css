@@ -59,7 +59,7 @@
 }
 
 /* medium screens */
-@media only screen and (min-width: 660px){
+@media only screen and (min-width: 768px){
     .TopBoard {
         height: 250px;
     }
@@ -78,11 +78,15 @@
     
 
 }
+
+    
+
+
 /* large screens */
-@media only screen and (min-width: 1000px){
+@media only screen and (min-width: 960px){
     .Board{
         position: relative;
-        width: 90% ;
+        width: 100% ;
         background: #eee;
     }
     .TopBoard {
@@ -105,4 +109,16 @@
         margin: 0;
     }
 
+}
+
+
+/* Xtra Large */
+
+
+
+/* large screens */
+@media only screen and (min-width: 1200px){
+    .Board{
+        width: 90% ;
+    }
 }

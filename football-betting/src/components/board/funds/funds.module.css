@@ -7,7 +7,7 @@
 }
 
 
-@media only screen and (min-width: 660px){
+@media only screen and (min-width: 768px){
     .FundsLarge {
         display: block;
     }
