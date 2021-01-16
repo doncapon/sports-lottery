@@ -1,0 +1,35 @@
+.Row { 
+        padding: 5px 0;
+        border: 1px solid lightgrey;
+        width: 100%;
+        margin: 0 auto;
+        display: flex;
+        float: 'left';
+        font-size: .8em;
+}
+
+.Others, .Score{
+    margin-left: 5%;
+
+}
+.Score{
+    font-size: 1.2em;
+}
+
+.Vs {
+    margin : 0 2%;
+}
+.H2hHeading{
+    text-align: left; 
+    margin-left: 2vw;
+}
+
+/* midum sized screns */
+@media only screen and (min-width: 768px){
+    .Row{
+        font-size: 1.4em;
+    }
+    .H2hHeading{
+        margin-left: 4vw;
+    }
+}

@@ -38,7 +38,8 @@ class Navs extends Component {
         loader={<Loader type="Puff" color="#D85B5B" height={25} width={25} />}
         isLoading={this.state.isLoading}
         helpCallback={() => {
-          alert("I need help... and coffee...");
+          window.location="/";
+
         }}
         menuItems={[
           {
@@ -47,7 +48,8 @@ class Navs extends Component {
             isAuth: true,
             onClick: () => {
               // What you want to do...
-              alert("Its coffee time...");
+              window.location="/";
+
             },
           },
           {
@@ -55,7 +57,7 @@ class Navs extends Component {
             icon: faBookOpen,
             isAuth: () => {
               // Claim authorization logic...
-              return false;
+                return false;              
             },
           },
           {

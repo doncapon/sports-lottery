@@ -12,9 +12,10 @@
 
 
 .Side {
-    padding: 0.5vw 4vh;
+    padding: 0.2vw 4vh;
     background-color: white;
-    margin: 3% 0% ;
+    margin: 1% 5px ;
+    display: inline;
 }
 
 .SingleTile:hover {
@@ -28,5 +29,24 @@
 
 }
 
+/* medium size devivces */
+
+@media only screen and (min-width: 768px){
+    .Side { 
+        padding:  1vw 3vh;
+        margin: 7% 9% 0 1vh;
+    }
+}
 
 
+@media only screen and (min-width: 960px){
+    .Side { 
+        padding:  0.3vh 1.8vw;
+        margin: 0.7vh 5px ;
+
+    }
+
+    .SingleTile {
+        font-size: 2.6vh;
+    }
+}

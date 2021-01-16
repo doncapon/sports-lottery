@@ -16,6 +16,12 @@ export {
      EmptyEditingISlip,
      genrateSlip,
      toggleShowHistory,
+     setIsPaying,
+     setIsPaid,
+     executePurchase,
+     setReceipt,
+     toggleIsShowReceipt,
+     toggleShowFunds
 
 } from './board';
 
