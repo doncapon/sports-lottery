@@ -31,7 +31,7 @@
 
 /* medium size devivces */
 
-@media only screen and (min-width: 660px){
+@media only screen and (min-width: 768px){
     .Side { 
         padding:  1vw 3vh;
         margin: 7% 9% 0 1vh;
@@ -39,7 +39,7 @@
 }
 
 
-@media only screen and (min-width: 1000px){
+@media only screen and (min-width: 960px){
     .Side { 
         padding:  0.3vh 1.8vw;
         margin: 0.7vh 5px ;

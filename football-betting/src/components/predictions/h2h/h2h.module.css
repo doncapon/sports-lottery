@@ -25,7 +25,7 @@
 }
 
 /* midum sized screns */
-@media only screen and (min-width: 660px){
+@media only screen and (min-width: 768px){
     .Row{
         font-size: 1.4em;
     }
