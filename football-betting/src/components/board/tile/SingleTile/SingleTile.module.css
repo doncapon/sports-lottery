@@ -41,6 +41,12 @@
 
 @media only screen and (min-width: 1000px){
     .Side { 
-        padding:  0.3vw 1.8vw;
+        padding:  0.3vh 1.8vw;
+        margin: 0.7vh 5px ;
+
+    }
+
+    .SingleTile {
+        font-size: 2.6vh;
     }
 }

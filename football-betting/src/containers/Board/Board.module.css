@@ -6,7 +6,7 @@
     width: 100vw;
     position: relative;
     overflow: hidden;
-
+    padding-bottom: 30px;
    background: rgb(153, 182, 238);
 }
 .TopBoard {
@@ -39,11 +39,6 @@
     display: block;
 }
 
-.PayButtonsLarge{
-    width: 100%;
-    display: none;
-}
-
 .PayButton{
         padding: 0;
         width: 100%;
@@ -73,14 +68,15 @@
     }
     .PayButtons{
         width: 100%;
-        display: none;
         margin-bottom: 20px;
+        height: 10vh;
+    }
+
+    .PayButton, .ConfrimePayments{
+        height: 8vh;
     }
     
-    .PayButtonsLarge{
-        width: 100%;
-        display: block;
-    }
+
 }
 /* large screens */
 @media only screen and (min-width: 1000px){

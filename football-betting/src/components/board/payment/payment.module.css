@@ -61,15 +61,14 @@
     }
     .HeaderRight, .TermHeaderRight{
         margin-left: 40vw;
+
     }
     
-    .ButtonNormal{
-        display: none;
+    .CancelButton{
+        height: 4vh;
+        margin-left: 15vw;
     }
 
-    .ButtonLarge {
-        display: block;
-    }
     .PaymentWrapperInner{
         padding: 15px 0px;
     }
@@ -89,13 +88,6 @@
         margin-left: 10vw;
     }
     
-    .ButtonNormal{
-        display: none;
-    }
-
-    .ButtonLarge {
-        display: block;
-    }
     .PaymentWrapperInner{
         padding: 15px 0px;
     }
@@ -105,5 +97,10 @@
     .TermHeaderRight{
         margin-left: 300px;
     }
- 
+  
+    .CancelButton{
+        margin-left: 7vw;
+        height: 8vh;
+
+    }
 }

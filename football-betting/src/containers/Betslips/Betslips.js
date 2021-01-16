@@ -118,82 +118,43 @@ const Betslips = React.memo(
               <div className={classes.Buttons}>
                 <div>
                   <Button
-                    size="md"
+                    className={classes.EditButton}
                     style={{ margin: '20px 0 10px' }}
                     disabled={!slip.purchasable}
-                    variant="outline-primary"
+                    variant="primary"
                     onClick={() => setEditIndex(ind)}
                   >
-                    <XCircle />
+                    <XCircle  className={classes.Icon }/>
                   </Button>
                 </div>
                 <div>
                   <Button
                     style={{ margin: '0px 0  10px' }}
                     onClick={() => copyBetSlip(ind, props.slips.length)}
-                    size="md"
-                    variant="outline-primary"
+                    className={classes.CopyButton}
+                    variant="primary"
                     disabled={
                       !props.purchaseAll ||
                       props.slips.length > totalSlips - 1
                     }
                   >
-                    <PlusSquareFill />
+                    <PlusSquareFill  className={classes.Icon} />
                   </Button>
                 </div>
                 <div>
                   <Button
                     style={{ margin: '0px 0  10px' }}
-                    variant="outline-primary"
-                    size="md"
+                    variant="primary"
+                    className={classes.DeleteButton}
                     disabled={slip.disableDelete}
                     onClick={() => RemoveBetFromSlip(ind)}
                   >
-                    <Trash2Fill />
+                    <Trash2Fill  className={classes.Icon} />
                   </Button>
                 </div>
               </div>
 
 
-
-              <div className={classes.ButtonsLarge}>
-                <div>
-                  <Button
-                    size="lg"
-                    style={{ margin: '20px 0  10px' }}
-                    disabled={!slip.purchasable}
-                    variant="outline-primary"
-                    onClick={() => setEditIndex(ind)}
-                  >
-                    <XCircle />
-                  </Button>
-                </div>
-                <div>
-                  <Button
-                    style={{ margin: '0px 0  10px' }}
-                    onClick={() => copyBetSlip(ind, props.slips.length)}
-                    size="lg"
-                    variant="outline-primary"
-                    disabled={
-                      !props.purchaseAll ||
-                      props.slips.length > totalSlips - 1
-                    }
-                  >
-                    <PlusSquareFill />
-                  </Button>
-                </div>
-                <div>
-                  <Button
-                    style={{ margin: '0px 0  10px' }}
-                    variant="outline-primary"
-                    size="lg"
-                    disabled={slip.disableDelete}
-                    onClick={() => RemoveBetFromSlip(ind)}
-                  >
-                    <Trash2Fill />
-                  </Button>
-                </div>
-              </div>
             </div>
           </div>
         );

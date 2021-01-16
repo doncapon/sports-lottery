@@ -15,16 +15,11 @@ const payment = (props) => {
             </div>
             <div className={classes.HeaderRight}>
                 <div className= {classes.ButtonNormal}>
-                    <Button variant="danger" onClick={() => { props.closePayment(false, false) }} >
+                    <Button className={classes.CancelButton}variant="danger" onClick={() => { props.closePayment(false, false) }} >
                         {!props.isPaid ?
                             'CANCEL' : 'CLOSE'} <XOctagon /> </Button>
                 </div>
-                <div className= {classes.ButtonLarge}>
-                    <Button variant="danger" onClick={() => { props.closePayment(false, false) }} 
-                    size="lg">
-                        {!props.isPaid ?
-                            'CANCEL' : 'CLOSE'} <XOctagon /> </Button>
-                </div>
+             
             </div>
         </div>
         { !props.isPaid ?

@@ -84,10 +84,6 @@
 .Buttons{
     display: block;
 }
-
-.ButtonsLarge{
-    display: none;
-}
 .EmptyButton{
      border: 2px solid white;
 }
@@ -108,13 +104,6 @@
     .EmptyText{
         font-size: 1.8em;
     }
-    .Buttons{
-        display: none;
-    }
-    
-    .ButtonsLarge{
-        display: block;
-    }
     .SlipNumber{
         font-size: 1.8em;
         margin-left: 100px;
@@ -129,6 +118,26 @@
  
     .BetSlipWrapper{
         height: 140px;
+    }
+    .EditButton{
+        height: 6vh;
+        width: 6vh;
+    }
+
+    .CopyButton{
+        height: 6vh;
+        width: 6vh;
+    }
+
+    .DeleteButton{
+        height: 6vh;
+        width: 6vh;
+    }
+
+    .Icon{
+        padding: 0;
+        height: 2vh;
+        width: 2vh;
     }
     .NewSlipButton{
          margin: 0px 50px 0 5px;
@@ -150,10 +159,10 @@
     .SlipNumber{
         font-weight: bold; 
         margin-left: 3vw;
-        font-size: 1.3em;
+        font-size: 3.5vh;
     }
     .Betslip{
-        width: 12v.5w;
+        width: 12vw 5vw;
     
     }
 }
