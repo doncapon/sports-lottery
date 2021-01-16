@@ -1,6 +1,7 @@
 import classes from "./funds.module.css";
 import React from "react";
 import { DropdownButton, Dropdown } from 'react-bootstrap';
+import {NavLink, Link} from 'react-router-dom';
 const funds = (props) => {
 
     let title = props.firstName;
@@ -29,7 +30,7 @@ const funds = (props) => {
                 <DropdownButton id="dropdown-item-button"
                     title={title} menuAlign='right' size="lg">
                     {/* <Dropdown.ItemText>Dropdown item text</Dropdown.ItemText> */}
-                    <Dropdown.Item as="button">Transfer funds</Dropdown.Item>
+                    <Dropdown.Item to= "/payment" as={NavLink}></Dropdown.Item>
                     <Dropdown.Item as="button">Game History</Dropdown.Item>
                     <Dropdown.Item onClick={props.toggleShowFunds} as="button">{!props.showFunds?'Show wallet':'Hide wallet'}</Dropdown.Item>
                 </DropdownButton>
@@ -38,7 +39,7 @@ const funds = (props) => {
                 <DropdownButton id="dropdown-item-button"
                     title={titleLarge} menuAlign='right' size="lg">
                     {/* <Dropdown.ItemText>Dropdown item text</Dropdown.ItemText> */}
-                    <Dropdown.Item as="button">Transfer funds</Dropdown.Item>
+                    <Dropdown.Item to= "/payment" as={NavLink}>Transfer funds</Dropdown.Item>
                     <Dropdown.Item as="button">Game History</Dropdown.Item>
                     <Dropdown.Item onClick={props.toggleShowFunds} as="button">{!props.showFunds?'Show wallet':'Hide wallet'}</Dropdown.Item>
                 </DropdownButton>
