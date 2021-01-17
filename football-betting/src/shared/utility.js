@@ -15,7 +15,6 @@ export const getNextPlayDate=(daysOffset, hoursToGo)=>{
     d.setTime(d.getTime() + (hoursToGo *60*60*1000));
     d.setDate(d.getDate() + (i + 7 - d.getDay()) % 7);
     d.setDate(d.getDate() + daysOffset);
-    console.log(d, daysOffset, hoursToGo)
     return moment(d).format("YYYY-MM-DD");
 }
 

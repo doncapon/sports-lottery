@@ -1,5 +1,6 @@
 export {
      setBoard,
+     resetReduxBoard,
      toggleSelectedTile,
      copyBetslip,
      removeRowFromBetSlip,

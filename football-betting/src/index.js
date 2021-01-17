@@ -23,6 +23,7 @@ const composeEnhancers = process.env.NODE_ENV === "development" ? window.__REDUX
 const persistConfig = {
   key: 'root',
   storage,
+  // blacklist: ['loading', 'rerender',]
 }
 
 const rootReducer = combineReducers({
@@ -33,17 +34,17 @@ const rootReducer = combineReducers({
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 
-let  store = createStore(rootReducer,composeEnhancers(
+let  store = createStore(persistedReducer,composeEnhancers(
     applyMiddleware(thunk, logger)));
 let persistor = persistStore(store); 
 
 const app = (
 <Provider store = {store}> 
 <BrowserRouter>
-{/* <PersistGate  loading={null}
-      persistor={persistor}> */}
+<PersistGate  loading={null}
+      persistor={persistor}>
   <App />
-  {/* </PersistGate> */}
+  </PersistGate>
   </BrowserRouter>
 </Provider>
 );
