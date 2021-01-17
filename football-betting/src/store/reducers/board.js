@@ -4,6 +4,7 @@ import _ from "lodash";
 // import uuid from 'react-uuid'
 import {uuid} from '../../shared/utility'
 import moment from 'moment';
+
 const initialStte = {
 
     slips: null,
@@ -33,8 +34,14 @@ const initialStte = {
     //                   }
     //            }
     // ],
-    receipts: null,
     isFACup: true,
+    isFACupNextWeek: false,
+    daysOffset: 0,
+    daysOffsetNextWeek: 7,
+    hourToNextDay: 9,   //24 - kick-off time
+    kickOffTime: '15:00:00+00:00',
+
+    receipts: null,
     editIndex: 0,
     totalPrice: 0,
     purchaseAll: false,
@@ -48,13 +55,14 @@ const initialStte = {
     isShowReceipt: false,
     gameDate: null,
     gameDateRaw: null,
-    daysOffset: 0,
-    hourToNextDay: 9,   //24 - kick-off time
-    kickOffTime: '15:00:00+00:00',
     showFunds:  true,
 
 };
-    
+const resetReduxBoard = (state, action) =>{
+    return produce(state, draft=>{
+        draft.slips = null;
+    })
+}
 const toggleShowFunds = (state, action) => {
     return produce(state, draft => {
         draft.showFunds = !draft.showFunds
@@ -568,6 +576,8 @@ const setPurchaseAll = (state, action) => {
 
 const reducer = (state = initialStte, action) => {
     switch (action.type) {
+        case actionTypes.RESET_BOARD:
+            return resetReduxBoard(state, action);
         case actionTypes.TOGGLE_SHOWFUNDS:
             return toggleShowFunds(state, action);
         case actionTypes.TOGGLE_SHOW_RECEIPT:

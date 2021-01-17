@@ -13,20 +13,38 @@ import axios from '../../axios-fixtures';
 import Payment from '../../components/board/payment/payment';
 import { ArrowRight } from "react-bootstrap-icons";
 import Receipts from '../../components/board/receipts/receipts/receipts';
-import moment from 'moment';
+import {getNextPlayDate} from '../../shared/utility';
+
 class Board extends Component {
 
   constructor(props) {
     super(props);
-    console.log(this.props.hourToNextDay);
+    let kickOffDate;
+    kickOffDate = getNextPlayDate( this.props.daysOffset,
+      this.props.hourToNextDay);
 
-    if(!this.props.loading)
-    this.props.onSetBoard(this.props.isFACup, this.props.kickOffTime,this.props.daysOffset,  this.props.hourToNextDay);
+      if(!this.props.loading){
+        this.props.onSetBoard(this.props.isFACup, 
+          this.props.kickOffTime, kickOffDate);
+      }
+
+    let now = new Date();
+    let kickOffDateTime = new Date((kickOffDate+" "
+    +this.props.kickOffTime).replace(/-/g,"/"));
+
+      if( now >=  kickOffDateTime){
+        console.log("got 2", kickOffDateTime)
+        kickOffDate =  getNextPlayDate( 
+          this.props.daysOffset+ this.props.daysOffsetNextWeek,
+          this.props.hourToNextDay);
+        this.props.onResetReduxBoard();
+        this.props.onSetBoard(this.props.isFACupNextWeek, 
+          this.props.kickOffTime, kickOffDate);
+      }
+    
   }
-  // shouldComponentUpdate() {
-  //   let now = new Date();
-  //   //  return moment(now).format("YYYY-MM-DD HH:MM") < moment(this.props.gameDateRaw)
-  //   //  .format("YYYY-MM-DD HH:MM") ;
+  // shouldComponentUpdate(nextProps, nextState){
+  //   return true;
   // }
 
   togglePaymentButton = (paying, paid) => {
@@ -165,11 +183,13 @@ const mapstateToProps = (state) => {
     hourToNextDay: state.board.hourToNextDay,
     gameDate: state.board.gameDate,
     daysOffset: state.board.daysOffset,
+    daysOffsetNextWeek: state.board.daysOffsetNextWeek,
     evaluationDate: state.board.evaluationDate,
     gameDateRaw: state.board.gameDateRaw,
+    isFACup: state.board.isFACup,
+    isFACupNextWeek: state.board.isFACupNextWeek,
 
     loading: state.board.loading,
-    isFACup: state.board.isFACup,
     showFunds: state.board.showFunds,
     isShowReceipt: state.board.isShowReceipt,
     receipts: state.board.receipts,
@@ -189,7 +209,8 @@ const mapstateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    onSetBoard: ( isFACup ,kicOffTime,daysOffset, nexthours) => dispatch(actions.setBoard( isFACup ,kicOffTime,daysOffset, nexthours)),
+    onSetBoard: ( isFACup ,kicOffTime, kickOfftime) => dispatch(actions.setBoard( isFACup ,kicOffTime,kickOfftime)),
+    onResetReduxBoard: () => dispatch(actions.resetReduxBoard()),
     onToggleShowFunds: () => dispatch(actions.toggleShowFunds()),
     onToggleIsShowReceipt: () => dispatch(actions.toggleIsShowReceipt()),
     onSetReceipt: () => dispatch(actions.setReceipt()),

@@ -1,6 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios-fixtures';
-import { getNextPlayDate } from '../../shared/utility';
+// import { getNextPlayDate } from '../../shared/utility';
 
 
 export const genrateSlip = (amount, slipIndex ) =>{
@@ -15,8 +15,8 @@ export const genrateSlip = (amount, slipIndex ) =>{
     }
 }
 
-export const setBoard=(isFaCup , kickOffTime ,  daysOffset, hourstoNext ) =>{
-    let kickOffDate = getNextPlayDate( daysOffset, hourstoNext);
+export const setBoard=(isFaCup , kickOffTime , kickOffDate ) =>{
+    // let kickOffDate = getNextPlayDate( daysOffset, hourstoNext);
     return dispatch =>{
         axios.get("fixtures/date/"+ kickOffDate
          ,
@@ -33,7 +33,7 @@ export const setBoard=(isFaCup , kickOffTime ,  daysOffset, hourstoNext ) =>{
                 fixture =>fixture.event_date === dateTime);
             let EnglandFixtures =fixtureAtTime.filter(fixture =>fixture.league.country === "England" );
             
-            EnglandFixtures.forEach(fix=>  console.log(fix.league.name))
+            // EnglandFixtures.forEach(fix=>  console.log(fix.league.name))
             
             let PremierShipOrFACup;
             if(!isFaCup)    {
@@ -81,7 +81,11 @@ export const setBoard=(isFaCup , kickOffTime ,  daysOffset, hourstoNext ) =>{
         });
     };
 }
-
+export const resetReduxBoard=()=>{
+    return {
+        type: actionTypes.RESET_BOARD
+    }
+}
 export const toggleShowFunds = () =>{
     return {
         type: actionTypes.TOGGLE_SHOWFUNDS,
