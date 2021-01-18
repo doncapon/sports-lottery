@@ -3,8 +3,6 @@
     background: white;
     margin: 10px 0 0;
 }
-.HeaderWrapper{
-}
 .MatchHeader{
     margin-left: 0px;
     display: inline;
@@ -17,25 +15,22 @@
 .ResultWrapper{
     width: 100%;
 }
-.TeamResult{
-    float: right;
-    padding-right: 10px;
-}
-
 
 .TeamsName{
-    margin-left: 10px;
     display: flex;
     float: left;
+    font-size: 0.8em;
+    margin-left: 5px;
 }
 
 .MatchResult{
     font-size: 0.8em;
+    margin-left: 2px;
 }
 
 .BottomSection{
     width: 100vw; 
-    padding-top: 260px;
+    padding-top: 20px;
     text-align: left;
     margin-left: 15px;
     border-bottom: 2px solid black;
@@ -43,39 +38,38 @@
 
 @media only screen and (min-width: 768px){
     .SelectionHeader{
-    margin-left: 350px;
+    margin-left: 260px;
 
     }
     .ReceiptWrapper{
         font-size: 2.4em;
     }
     .BottomSection{
-        padding-top:  640px;
+        padding-top:  30px;
     }
-    .TeamResult{
-        padding-right: 20px;
+    .MatchResult{
+        margin-left: 50px;
     }
-
 }
 
 @media only screen and (min-width: 960px){
 
-        .SelectionHeader{
-        margin-left: 35vh;
-        width: 37vw;
-    
-        }
-        .ResultWrapper{
-            width: 37vw;
-        }
         .ReceiptWrapper{
+            width: 45vw;
             font-size: 4vh;
         }
         .BottomSection{
-            padding-top:  65vh;
+            padding-top:  10px;
         }
+        .MatchResult{
+            margin-left: 30px;
+        }
+}
 
-        .SelectionHeader{
-            margin-right: 125vh;
-        }
+@media only screen and (min-width: 1200px){
+
+    .ReceiptWrapper{
+        width: 40vw;
+        font-size: 4vh;
+    }
 }

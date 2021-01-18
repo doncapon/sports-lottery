@@ -11,19 +11,19 @@ const receipt = (props) => {
         <div className={classes.ResultWrapper}>
             {props.receipt[props.receipt.id].games.map((game, i) => {
                 let sides = game[game.id].sides;
-                return <div key={game.id} className={classes.MatchResult} >
-                    <div className={classes.TeamsName}>
-                        <div>{i + 1}</div>
-                        <div style={{ marginLeft: '10px' }}>
+                return <div key={game.id} className={classes.MatchResult+" row"} >
+                    <div className={classes.TeamsName + " col-8"}>
+                        <div>{i + 1}.</div>
+                        <div style={{ marginLeft: '3px' }}>
                             {game[game.id].team1}
-                            {" \xa0 "}- {" \xa0 "}
+                            {"  "}- {"  "}
                             {game[game.id].team2}
                         </div>
                     </div>
-                    <div className={classes.TeamResult}>
-                        {sides[0].selected ? ' 1 \xa0\xa0' : ' - \xa0\xa0'}
-                        {sides[1].selected ? ' x \xa0\xa0' : ' - \xa0\xa0'}
-                        {sides[2].selected ? ' 2 ' : ' - '}
+                    <div className={classes.TeamResult + " col-3"}>
+                        {sides[0].selected ? '1 \xa0\xa0' : ' -\xa0\xa0'}
+                        {sides[1].selected ? 'x \xa0\xa0' : ' -\xa0\xa0'}
+                        {sides[2].selected ? '2 ' : '- '}
                     </div>
                 </div>
 
@@ -49,7 +49,7 @@ const receipt = (props) => {
             </div>
 
         </div>
-        <div style={{ marginLeft: '100px' }}>Price: {props.receipt.slipPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "₦"}
+        <div style={{ marginLeft: '0px' }}>Price: {props.receipt.slipPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "₦"}
         </div>
     </div>)
 };
