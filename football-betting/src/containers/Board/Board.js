@@ -8,7 +8,7 @@ import Betslips from "../Betslips/Betslips";
 import NumberFormat from "react-number-format";
 import TopBoard from "../../components/topBoard/topBoard";
 import Spinner from '../../components/UI/Spinner/Spinner';
-import WithErrorHandler from '../../hoc/WithErrorHandler/WithErrorHandler';
+import WithErrorHandler from '../../hoc/WithErrorHandler/withErrorHandler';
 import axios from '../../axios-fixtures';
 import Payment from '../../components/board/payment/payment';
 import { ArrowRight } from "react-bootstrap-icons";

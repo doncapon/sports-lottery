@@ -3,7 +3,7 @@ import React from 'react';
 import { XOctagon } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import NumberFormat from "react-number-format";
-import classes from './Payment.module.css';
+import classes from './payment.module.css';
 
 
 const payment = (props) => {
