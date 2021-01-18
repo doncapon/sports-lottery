@@ -1,9 +1,10 @@
 .PlayRow {
-    padding: 0px;
     font-weight: bold;
     font-size: 1rem;
     float: left;
     caret-color: transparent;
+    padding-bottom: 4px;
+    
 }
 
 /* For small screen */
@@ -16,6 +17,112 @@
 
 .PlayRow:hover{
     background: #c7e2eb;
+}
+
+.TeamAndSelection {
+  width: 100vw;
+  position: relative;
+  
+}
+
+.Teams{
+  width: 100vw;
+  position: relative;
+
+}
+
+.SingleTiles{
+  width: 80vw;
+  margin-left: 22vw;
+}
+
+.Toggler{
+  margin-left: 0vw;
+}
+
+.BtnToggle{
+  display: block;
+  
+}
+
+.BtnToggleMedium{
+  display: none;
+}
+
+.SingleTileLast{
+  margin-right: 15px;
+}
+/* medium devices */
+@media only screen and (min-width: 768px) {
+  .TeamAndSelection{
+    display: flex;
+  }
+  .Teams{
+    width: 100vw;
+  }
+  .SingleTile{
+    display: inline;
+  }
+  .SingleTiles{
+    margin-left: 50px;
+    width: max-content
+
+  }
+  .SingleTilesInner{
+    display: flex;
+  }
+  .SingleTileLast{
+    margin-right: 20px;
+  }
+  .BtnToggle{
+    width: 5vh;
+    height: 5vh;
+  }
+
+  .Icon{
+    width: 3vh;
+    height: 3vh;;
+  }
+  
+
+}
+
+    
+   
+/* Larger devices */
+@media only screen and (min-width: 960px) {
+  .PlayRow{
+      margin: 0 1px 0 10px;
+  }
+  .TeamAndSelection {
+    display: flex;
+    width: 48vw
+
+  }
+
+  .Teams{
+    width: 27vw;
+    position: relative;
+  
+  }
+  
+  .SingleTiles{
+    margin-left: 0px;
+
+  }
+
+  .BtnToggle{
+    margin-top: 4px;
+    display: block;
+    
+    height: 5.5vh;
+    width: 6.5vh;
+    margin-top: 0.8vh;
+  }
+  
+  .SingleTileLast{
+    margin-right: 15px;
+  }
 }
 
     

@@ -1,0 +1,81 @@
+.ReceiptWrapper{
+    width: 100vw;
+    background: white;
+    margin: 10px 0 0;
+}
+.HeaderWrapper{
+}
+.MatchHeader{
+    margin-left: 0px;
+    display: inline;
+}
+.SelectionHeader{
+    margin-left: 120px;
+    display: inline;
+}
+
+.ResultWrapper{
+    width: 100%;
+}
+.TeamResult{
+    float: right;
+    padding-right: 10px;
+}
+
+
+.TeamsName{
+    margin-left: 10px;
+    display: flex;
+    float: left;
+}
+
+.MatchResult{
+    font-size: 0.8em;
+}
+
+.BottomSection{
+    width: 100vw; 
+    padding-top: 260px;
+    text-align: left;
+    margin-left: 15px;
+    border-bottom: 2px solid black;
+}
+
+@media only screen and (min-width: 768px){
+    .SelectionHeader{
+    margin-left: 350px;
+
+    }
+    .ReceiptWrapper{
+        font-size: 2.4em;
+    }
+    .BottomSection{
+        padding-top:  640px;
+    }
+    .TeamResult{
+        padding-right: 20px;
+    }
+
+}
+
+@media only screen and (min-width: 960px){
+
+        .SelectionHeader{
+        margin-left: 35vh;
+        width: 37vw;
+    
+        }
+        .ResultWrapper{
+            width: 37vw;
+        }
+        .ReceiptWrapper{
+            font-size: 4vh;
+        }
+        .BottomSection{
+            padding-top:  65vh;
+        }
+
+        .SelectionHeader{
+            margin-right: 125vh;
+        }
+}

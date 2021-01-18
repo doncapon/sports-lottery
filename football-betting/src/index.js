@@ -22,7 +22,8 @@ import { PersistGate } from 'redux-persist/es/integration/react';
 const composeEnhancers = process.env.NODE_ENV === "development" ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
 const persistConfig = {
   key: 'root',
-  storage
+  storage,
+  // blacklist: ['loading', 'rerender',]
 }
 
 const rootReducer = combineReducers({
@@ -35,11 +36,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 let  store = createStore(persistedReducer,composeEnhancers(
     applyMiddleware(thunk, logger)));
-let persistor = persistStore(store);
-
-// export  {store, persistor}
-
-
+let persistor = persistStore(store); 
 
 const app = (
 <Provider store = {store}> 

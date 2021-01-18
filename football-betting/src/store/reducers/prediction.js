@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 const initialStte = {
     predictions : [],
-    loading: false
+    loading: false,
 }
 
 const fetchPredictionsAll = (state, action) =>{

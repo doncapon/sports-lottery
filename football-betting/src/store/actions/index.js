@@ -1,5 +1,6 @@
 export {
      setBoard,
+     resetReduxBoard,
      toggleSelectedTile,
      copyBetslip,
      removeRowFromBetSlip,
@@ -16,6 +17,12 @@ export {
      EmptyEditingISlip,
      genrateSlip,
      toggleShowHistory,
+     setIsPaying,
+     setIsPaid,
+     executePurchase,
+     setReceipt,
+     toggleIsShowReceipt,
+     toggleShowFunds
 
 } from './board';
 
