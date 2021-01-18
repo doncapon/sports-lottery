@@ -14,6 +14,7 @@ import { createStore, applyMiddleware, compose,
 import logger from 'redux-logger';
 import boardReducer from "./store/reducers/board";
 import predictionReducer from "./store/reducers/prediction";
+import configReducer from "./store/reducers/config";
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 import { PersistGate } from 'redux-persist/es/integration/react';
@@ -23,12 +24,13 @@ const composeEnhancers = process.env.NODE_ENV === "development" ? window.__REDUX
 const persistConfig = {
   key: 'root',
   storage,
-  // blacklist: ['loading', 'rerender',]
+  blacklist: ['config',]
 }
 
 const rootReducer = combineReducers({
   board: boardReducer,
-  pred: predictionReducer
+  pred: predictionReducer,
+  config: configReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

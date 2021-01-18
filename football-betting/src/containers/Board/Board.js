@@ -8,7 +8,7 @@ import Betslips from "../Betslips/Betslips";
 import NumberFormat from "react-number-format";
 import TopBoard from "../../components/topBoard/topBoard";
 import Spinner from '../../components/UI/Spinner/Spinner';
-import WithErrorHandler from '../../hoc/WithErrorHandler/WithErrorHandler';
+import WithErrorHandler from '../../hoc/WithErrorHandler/withErrorHandler';
 import axios from '../../axios-fixtures';
 import Payment from '../../components/board/payment/payment';
 import { ArrowRight } from "react-bootstrap-icons";
@@ -26,14 +26,15 @@ class Board extends Component {
       if(!this.props.loading){
         this.props.onSetBoard(this.props.isFACup, 
           this.props.kickOffTime, kickOffDate);
+          console.log("got called 1");
       }
 
     let now = new Date();
     let kickOffDateTime = new Date((kickOffDate+" "
     +this.props.kickOffTime).replace(/-/g,"/"));
+    console.log("got 2", kickOffDateTime)
 
       if( now >=  kickOffDateTime){
-        console.log("got 2", kickOffDateTime)
         kickOffDate =  getNextPlayDate( 
           this.props.daysOffset+ this.props.daysOffsetNextWeek,
           this.props.hourToNextDay);
@@ -180,15 +181,16 @@ class Board extends Component {
 }
 const mapstateToProps = (state) => {
   return {
-    hourToNextDay: state.board.hourToNextDay,
+    hourToNextDay: state.config.hourToNextDay,
+    isFACup: state.config.isFACup,
+    isFACupNextWeek: state.config.isFACupNextWeek,
+    daysOffset: state.config.daysOffset,
+    daysOffsetNextWeek: state.config.daysOffsetNextWeek,
+    kickOffTime: state.config.kickOffTime,
+
     gameDate: state.board.gameDate,
-    daysOffset: state.board.daysOffset,
-    daysOffsetNextWeek: state.board.daysOffsetNextWeek,
     evaluationDate: state.board.evaluationDate,
     gameDateRaw: state.board.gameDateRaw,
-    isFACup: state.board.isFACup,
-    isFACupNextWeek: state.board.isFACupNextWeek,
-
     loading: state.board.loading,
     showFunds: state.board.showFunds,
     isShowReceipt: state.board.isShowReceipt,
@@ -203,7 +205,6 @@ const mapstateToProps = (state) => {
     isPaying: state.board.isPaying,
     isPaid: state.board.isPaid,
     funds: state.board.funds,
-    kickOffTime: state.board.kickOffTime,
     predictions: state.pred.predictions,
   };
 };

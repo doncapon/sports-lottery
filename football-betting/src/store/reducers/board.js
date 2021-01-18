@@ -34,12 +34,6 @@ const initialStte = {
     //                   }
     //            }
     // ],
-    isFACup: true,
-    isFACupNextWeek: false,
-    daysOffset: 0,
-    daysOffsetNextWeek: 7,
-    hourToNextDay: 9,   //24 - kick-off time
-    kickOffTime: '15:00:00+00:00',
 
     receipts: null,
     editIndex: 0,
