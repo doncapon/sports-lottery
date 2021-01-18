@@ -1,0 +1,25 @@
+.App {
+  text-align: left;
+  width: 100%;
+  min-width: 280px;
+  overflow: hidden;
+}
+.Navs{
+  display:  none;
+}
+
+@media only screen and (min-width: 768px){
+  .Navs{
+    display: block;
+  }
+
+  .App{
+    
+  background: url(./assets/bg1.png) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
+  }
+}

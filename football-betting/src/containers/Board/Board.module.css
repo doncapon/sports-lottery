@@ -1,0 +1,120 @@
+.Board {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1rem;
+    margin : 0 auto;
+    width: 100vw;
+    position: relative;
+    overflow: hidden;
+    padding-bottom: 30px;
+   background: rgb(153, 182, 238);
+}
+.TopBoard {
+    background: #eee;
+    padding: 10px 15px 0px 5px;
+    width: 100%;
+    height: 200px;
+}
+
+.BoardRight {
+    background: #c6f5f3;
+
+}
+.Betslip {
+    width: 100%;
+}
+
+.Payment {
+    background: lightgrey;
+    padding-bottom: 0.2em;
+    width: 100%;
+    clear: both;
+}
+
+.ButtonsAndReceipt {
+    width: 100%;
+}
+.PayButtons{
+    width: 100%;
+    display: block;
+}
+
+.PayButton{
+        padding: 0;
+        width: 100%;
+        font-weight: bold;
+        font-size: 2.2em;
+}
+
+
+.ConfrimePayments{
+    padding: 0.0vw 0vw 0;
+    width: 100%;
+    font-weight: bold;
+    font-size: 2.2em;
+}
+
+.Receipts{
+    margin-top : 10px;
+}
+
+/* medium screens */
+@media only screen and (min-width: 768px){
+    .TopBoard {
+        height: 250px;
+    }
+    .Betslip{
+        padding-bottom: 30px;
+    }
+    .PayButtons{
+        width: 100%;
+        margin-bottom: 20px;
+        height: 10vh;
+    }
+
+    .PayButton, .ConfrimePayments{
+        height: 8vh;
+    }
+    
+
+}
+
+    
+
+
+/* large screens */
+@media only screen and (min-width: 960px){
+    .Board{
+        position: relative;
+        width: 100% ;
+        background: #eee;
+    }
+    .TopBoard {
+        height: 220px;
+    }
+    .Main{
+        width: 100%;
+    }
+    .BoardLeft{
+        width: 55%;
+        float: left;
+    }
+    .BoardRight{
+        width: 45%;
+        float: right;
+        padding: 0 10px;
+
+    }
+    .PlayRow{
+        margin: 0;
+    }
+
+}
+
+
+/* Xtra Large */
+@media only screen and (min-width: 1200px){
+    .Board{
+        width: 90% ;
+    }
+}

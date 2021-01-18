@@ -1,0 +1,52 @@
+.SingleTile {
+    border: 1px solid #ccc;
+    font-size: 90%;
+    float: left;
+    color: grey;
+    text-align: center;
+    caret-color: transparent;
+    
+
+}
+
+
+
+.Side {
+    padding: 0.2vw 4vh;
+    background-color: white;
+    margin: 1% 5px ;
+    display: inline;
+}
+
+.SingleTile:hover {
+    cursor: pointer;
+    background-color: #0275d8;
+}
+
+.Selected {
+    background-color: blue;
+    color: white;
+
+}
+
+/* medium size devivces */
+
+@media only screen and (min-width: 768px){
+    .Side { 
+        padding:  1vw 3vh;
+        margin: 7% 9% 0 1vh;
+    }
+}
+
+
+@media only screen and (min-width: 960px){
+    .Side { 
+        padding:  0.3vh 1.8vw;
+        margin: 0.7vh 5px ;
+
+    }
+
+    .SingleTile {
+        font-size: 2.6vh;
+    }
+}

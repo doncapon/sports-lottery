@@ -1,0 +1,17 @@
+.FundsLarge {
+    display: none;
+}
+
+.FundsNormal{
+    display:  block;
+}
+
+
+@media only screen and (min-width: 768px){
+    .FundsLarge {
+        display: block;
+    }
+    .FundsNormal{
+        display:  none;
+    }
+}
