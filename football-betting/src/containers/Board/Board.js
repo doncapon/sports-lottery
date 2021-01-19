@@ -31,9 +31,7 @@ class Board extends Component {
     let now = new Date();
     let kickOffDateTime = new Date((kickOffDate+" "
     +this.props.kickOffTime).replace(/-/g,"/"));
-
       if( now >=  kickOffDateTime){
-        console.log("got 2", kickOffDateTime)
         kickOffDate =  getNextPlayDate( 
           this.props.daysOffset+ this.props.daysOffsetNextWeek,
           this.props.hourToNextDay);
@@ -43,9 +41,6 @@ class Board extends Component {
       }
     
   }
-  // shouldComponentUpdate(nextProps, nextState){
-  //   return true;
-  // }
 
   togglePaymentButton = (paying, paid) => {
     this.props.onSetIsPaying(paying);
@@ -180,15 +175,16 @@ class Board extends Component {
 }
 const mapstateToProps = (state) => {
   return {
-    hourToNextDay: state.board.hourToNextDay,
+    hourToNextDay: state.config.hourToNextDay,
+    isFACup: state.config.isFACup,
+    isFACupNextWeek: state.config.isFACupNextWeek,
+    daysOffset: state.config.daysOffset,
+    daysOffsetNextWeek: state.config.daysOffsetNextWeek,
+    kickOffTime: state.config.kickOffTime,
+
     gameDate: state.board.gameDate,
-    daysOffset: state.board.daysOffset,
-    daysOffsetNextWeek: state.board.daysOffsetNextWeek,
     evaluationDate: state.board.evaluationDate,
     gameDateRaw: state.board.gameDateRaw,
-    isFACup: state.board.isFACup,
-    isFACupNextWeek: state.board.isFACupNextWeek,
-
     loading: state.board.loading,
     showFunds: state.board.showFunds,
     isShowReceipt: state.board.isShowReceipt,
@@ -203,7 +199,6 @@ const mapstateToProps = (state) => {
     isPaying: state.board.isPaying,
     isPaid: state.board.isPaid,
     funds: state.board.funds,
-    kickOffTime: state.board.kickOffTime,
     predictions: state.pred.predictions,
   };
 };
