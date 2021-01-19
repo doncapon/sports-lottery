@@ -117,7 +117,7 @@
 @media only screen and (min-width: 960px){
  
     .BetSlipWrapper{
-        height: 140px;
+        height: 125px;
     }
     .EditButton{
         height: 6vh;
@@ -158,9 +158,9 @@
     }
     .SlipNumber{
         font-weight: bold; 
-        margin-left: 8vh;
+        margin-left: 5vh;
         text-align: left;
-        font-size: 3.2vh;
+        font-size: 20.2px;
     }
     .Betslip{
         width: 12vw 5vw;
