@@ -26,14 +26,11 @@ class Board extends Component {
       if(!this.props.loading){
         this.props.onSetBoard(this.props.isFACup, 
           this.props.kickOffTime, kickOffDate);
-          console.log("got called 1");
       }
 
     let now = new Date();
     let kickOffDateTime = new Date((kickOffDate+" "
     +this.props.kickOffTime).replace(/-/g,"/"));
-    console.log("got 2", kickOffDateTime)
-
       if( now >=  kickOffDateTime){
         kickOffDate =  getNextPlayDate( 
           this.props.daysOffset+ this.props.daysOffsetNextWeek,
@@ -44,9 +41,6 @@ class Board extends Component {
       }
     
   }
-  // shouldComponentUpdate(nextProps, nextState){
-  //   return true;
-  // }
 
   togglePaymentButton = (paying, paid) => {
     this.props.onSetIsPaying(paying);

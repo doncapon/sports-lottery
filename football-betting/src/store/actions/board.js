@@ -33,7 +33,6 @@ export const setBoard=(isFaCup , kickOffTime , kickOffDate ) =>{
                 fixture =>fixture.event_date === dateTime);
             let EnglandFixtures =fixtureAtTime.filter(fixture =>fixture.league.country === "England" );
             
-            // EnglandFixtures.forEach(fix=>  console.log(fix.league.name))
             
             let PremierShipOrFACup;
             if(!isFaCup)    {
