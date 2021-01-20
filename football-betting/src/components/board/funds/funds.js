@@ -30,7 +30,8 @@ const funds = (props) => {
                 <DropdownButton id="dropdown-item-button"
                     title={title} menuAlign='right' size="lg">
                     {/* <Dropdown.ItemText>Dropdown item text</Dropdown.ItemText> */}
-                    <Dropdown.Item to= "/payment" as={NavLink}></Dropdown.Item>
+                    <Dropdown.Item to= "/payment" as={NavLink}>Transfer funds</Dropdown.Item>
+                    <Dropdown.Item to= "/results" as={NavLink}>Weekly Results</Dropdown.Item>
                     <Dropdown.Item as="button">Game History</Dropdown.Item>
                     <Dropdown.Item onClick={props.toggleShowFunds} as="button">{!props.showFunds?'Show wallet':'Hide wallet'}</Dropdown.Item>
                 </DropdownButton>
@@ -40,6 +41,7 @@ const funds = (props) => {
                     title={titleLarge} menuAlign='right' size="lg">
                     {/* <Dropdown.ItemText>Dropdown item text</Dropdown.ItemText> */}
                     <Dropdown.Item to= "/payment" as={NavLink}>Transfer funds</Dropdown.Item>
+                    <Dropdown.Item to= "/results" as={NavLink}>Weekly Results</Dropdown.Item>
                     <Dropdown.Item as="button">Game History</Dropdown.Item>
                     <Dropdown.Item onClick={props.toggleShowFunds} as="button">{!props.showFunds?'Show wallet':'Hide wallet'}</Dropdown.Item>
                 </DropdownButton>

@@ -80,6 +80,12 @@ export const setBoard=(isFaCup , kickOffTime , kickOffDate ) =>{
         });
     };
 }
+export const setFixtureIds = ()=>{
+    return {
+        type: actionTypes.SET_FIXTURE_IDS
+
+    }
+}
 export const resetReduxBoard=()=>{
     return {
         type: actionTypes.RESET_BOARD

@@ -14,6 +14,7 @@ import { createStore, applyMiddleware, compose,
 import logger from 'redux-logger';
 import boardReducer from "./store/reducers/board";
 import predictionReducer from "./store/reducers/prediction";
+import matchResultsReducer from "./store/reducers/matchResults";
 import configReducer from "./store/reducers/config";
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
@@ -30,23 +31,24 @@ const persistConfig = {
 const rootReducer = combineReducers({
   board: boardReducer,
   pred: predictionReducer,
+  matchResults: matchResultsReducer,
   config: configReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 
-let  store = createStore(persistedReducer,composeEnhancers(
+let  store = createStore(rootReducer,composeEnhancers(
     applyMiddleware(thunk, logger)));
 let persistor = persistStore(store); 
 
 const app = (
 <Provider store = {store}> 
 <BrowserRouter>
-<PersistGate  loading={null}
-      persistor={persistor}>
+{/* <PersistGate  loading={null}
+      persistor={persistor}> */}
   <App />
-  </PersistGate>
+  {/* </PersistGate> */}
   </BrowserRouter>
 </Provider>
 );
