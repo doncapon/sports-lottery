@@ -3,15 +3,21 @@ import React, { Component } from "react";
 import WithErrorHandler from '../../hoc/WithErrorHandler/withErrorHandler';
 import axios from "../../axios-fixtures";
 import * as actions from '../../store/actions/index';
-import {groupArrayByDate} from '../../shared/utility';
+import { groupArrayByDate } from '../../shared/utility';
 import Results from '../../components/gameHistory/results/results';
+import Spinner from '../../components/UI/Spinner/Spinner'; 
 
 class ResultPage extends Component {
     constructor(props) {
         super(props);
-            this.props.slips[0]["slip_1"].games.forEach((game, i) => {
-                this.props.onSetCurrentResult(game.fixture_id);
-            });
+      
+    }
+
+    componentDidMount(){
+        if (!this.props.loading) {
+            let resultSlips =[this.props.slips[0]["slip_1"], this.props.slips[0]["slip_1"]] 
+            this.props.onSetCurrentResult(resultSlips);
+        }
     }
     // groupGameResults =()=>{
     //     setTimeout(() => {
@@ -21,9 +27,9 @@ class ResultPage extends Component {
     // }
 
     render() {
-        return <div>
-            <Results results = {this.groupGameResults} />
-            </div>
+        return  !this.props.loading? <Spinner />:<div>
+            <Results results={this.groupGameResults} />
+        </div>
     }
 
 }
@@ -31,6 +37,7 @@ class ResultPage extends Component {
 const mapstateToProps = (state) => {
     return {
         slips: state.board.slips,
+        loading : state.matchResults.loading,
         currentResults: state.matchResults.currentResults,
     }
 };
