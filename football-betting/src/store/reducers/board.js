@@ -1,7 +1,6 @@
 import * as actionTypes from "../actions/actionTypes";
 import produce from 'immer';
 import _ from "lodash";
-// import uuid from 'react-uuid'
 import {uuid} from '../../shared/utility'
 import moment from 'moment';
 
@@ -34,7 +33,6 @@ const initialStte = {
     //                   }
     //            }
     // ],
-
     receipts: null,
     editIndex: 0,
     totalPrice: 0,
@@ -52,6 +50,8 @@ const initialStte = {
     showFunds:  true,
 
 };
+
+
 const resetReduxBoard = (state, action) =>{
     return produce(state, draft=>{
         draft.slips = null;

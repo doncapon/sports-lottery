@@ -22,10 +22,15 @@ export {
      executePurchase,
      setReceipt,
      toggleIsShowReceipt,
-     toggleShowFunds
-
+     toggleShowFunds,
 } from './board';
 
 export {
      fetchPredictionsAll
 } from './prediction';
+
+
+
+export {
+     setCurrentResult,
+} from './matchResults';

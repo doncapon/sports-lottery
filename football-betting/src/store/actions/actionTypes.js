@@ -40,7 +40,12 @@ export const SET_ISPAID = 'SET_ISPAID';
 export const SET_RECEIPT = 'SET_RECEIPT';
 export const TOGGLE_SHOW_RECEIPT = 'TOGGLE_SHOW_RECEIPT';
 
+export const SET_FIXTURE_IDS = 'SET_FIXTURE_IDS';
 export const SET_GAMEDATE = 'SET_GAMEDATE';
+
+//CurrentResults
+export const INITIALIZE_CURRENT_RESULT = 'INITIALIZE_CURRENT_RESULT';
+
 
 
 
