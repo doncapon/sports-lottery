@@ -60,3 +60,30 @@
     width: 19vw;
     margin-left: 5vw;
 }
+
+
+/* medium screens */
+@media only screen and (min-width: 768px){
+    .ResultsWrapper{
+        font-size: 1.6em;
+    }
+
+    .MoveRight{
+        margin-left: 11vw;
+    }
+
+    .Match{
+        width: 52vw;
+        margin-left: 3vw;
+    }
+    .Teams{
+        margin-left: 3vw;
+    }
+}
+
+
+/* Larger  screens */
+@media only screen and (min-width: 960px){
+
+    
+}

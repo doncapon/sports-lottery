@@ -3,11 +3,11 @@
 
 }
 .Main > div:nth-child(even){
-    background: #eee;
+    background:  #c3eafa;
 }
 
 .Main > div:nth-child(odd){
-    background:  #c3eafa;
+    background: #eee;
 }
 
 h6{
@@ -24,4 +24,29 @@ h6{
 
 .Pieces{
     width: 30vw;
+}
+
+
+
+/* medium screens */
+@media only screen and (min-width: 768px){
+    .Jackpot{
+        font-size: 1.2em;
+    }
+    h6{
+        font-size: 1.2em;
+    }
+    .Right{
+        width: 30vw;
+    }
+    .Row{
+        padding-left: 1vw;
+    }
+}
+
+
+/* Larger  screens */
+@media only screen and (min-width: 960px){
+
+    
 }
