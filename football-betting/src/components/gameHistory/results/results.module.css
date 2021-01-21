@@ -1,6 +1,7 @@
 .ResultsWrapper{
     background: #ccc;
     font-weight: bold;
+    font-size: 1.2em;
 }
 
 .ResultHead{
@@ -13,7 +14,7 @@
     padding: 5px 0;
 }
 .Match{
-    width: 50vw;
+    width: 60vw;
 }
 .BodyHeader{
     display: flex;
@@ -27,10 +28,10 @@
 }
 .Teams{
     display: flex;
-    width: 50vw;
+    width: 60vw;
 }
 .RowNumber{
-    width: 5vw;
+    width: 7vw;
 }
 .TeamNames{
     display: flex;
@@ -45,7 +46,7 @@
 }
 
 .MoveRight{
-    margin-left: 2vw;
+    margin-left: 4vw;
 }
 .BodyMain > div:nth-child(odd){
     background: #eee;
@@ -60,12 +61,15 @@
     width: 19vw;
     margin-left: 5vw;
 }
-
+.JackPotShare{
+    font-size: 0.8em;
+    margin-left: 4px;
+}
 
 /* medium screens */
 @media only screen and (min-width: 768px){
     .ResultsWrapper{
-        font-size: 1.6em;
+        font-size: 2.2em;
     }
 
     .MoveRight{
@@ -73,7 +77,7 @@
     }
 
     .Match{
-        width: 52vw;
+        width: 60vw;
         margin-left: 3vw;
     }
     .Teams{
@@ -84,6 +88,47 @@
 
 /* Larger  screens */
 @media only screen and (min-width: 960px){
+    .ResultsWrapper{
+        width: 90%;
+        margin: auto;
+    font-size: 1.2em;
+    }
+    .ResultHead{
+        margin-left: 3vw;
+    }
+    .Results{
+        display: flex;
+        width: 90vw;
+    }
+    .ResultBody{
+        float: left;
+        width: 45vw;
 
-    
+    }
+    .JackPotShare{
+        float: right;
+    }
+    .Match{
+        margin-left: 3vw;
+        width: 23vw;
+    }
+    .RowNumber{
+        width: 2vw;
+    }
+    .Teams{
+        width: 25vw;
+    }
+    .Score{
+    width: 10vw;
+    margin-left: 0;
+    }
+    .MoveRight{
+        margin-left: 8vw;
+    }
+    .SelectionRow{
+        width: 45vw;
+    }
+
+ 
+
 }

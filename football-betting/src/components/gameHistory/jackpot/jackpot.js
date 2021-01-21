@@ -4,49 +4,51 @@ import NumberFormat from 'react-number-format'
 const jackpot = (props) => {
     return <div className={classes.Jackpot}>
         <div className={classes.Header}>
-            <h6>WINNERS DISTRIBUTION</h6>
+            <h6>JACKPOT SHARE</h6>
         </div>
         <div className={classes.Main}>
             <div className={classes.Row}>
-                <div className={classes.Right}>{props.gamesLength} <span>correct</span></div>
-                <div className={classes.Pieces}>{props.thirteenPcs} <span>winners</span></div>
-                <div> {props.thirteen>=props.basePrice? 
-                   <NumberFormat
-                    value={props.thirteen.toFixed(2)}
-                    displayType={"text"}
-                    thousandSeparator={true}
-                    prefix={"₦"}
-                />: " - "}</div>
+                <div className={classes.Correct}><div className={classes.GameNumber}>{props.gamesLength}</div>
+                    <div className={classes.Greyed}>correct</div></div>
+                <div className={classes.Pieces}><div className={classes.PiecesNumber}>{props.thirteenPcs}</div>{"\xa0\xa0"}
+                    <div className={classes.Greyed}>winners</div></div>
+                <div> {props.thirteen >= props.basePrice ?
+                    <NumberFormat
+                        value={props.thirteen.toFixed(2)}
+                        displayType={"text"}
+                        thousandSeparator={true}
+                        prefix={"₦"}
+                    /> : " - "}</div>
             </div>
             <div className={classes.Row} >
-                <div className={classes.Right}>{props.gamesLength-1} <span>correct</span></div>
-                <div className={classes.Pieces}>{props.twelvePcs} <span>winners</span></div>
-                <div>{props.twelve>=props.basePrice?<NumberFormat
+                <div className={classes.Correct}><div className={classes.GameNumber}>{props.gamesLength - 1}</div> <div className={classes.Greyed}>correct</div></div>
+                <div className={classes.Pieces}><div className={classes.PiecesNumber}>{props.twelvePcs}</div>{"\xa0\xa0"} <div className={classes.Greyed}>winners</div></div>
+                <div>{props.twelve >= props.basePrice ? <NumberFormat
                     value={props.twelve.toFixed(2)}
                     displayType={"text"}
                     thousandSeparator={true}
                     prefix={"₦"}
-                />: " - "}</div>
+                /> : " - "}</div>
             </div>
             <div className={classes.Row}>
-                <div className={classes.Right} >{props.gamesLength-2} <span>correct</span></div>
-                <div  className={classes.Pieces}>{props.elevenPcs} <span>winners</span></div>
-                <div>{props.eleven>=props.basePrice?<NumberFormat
-                    value= {props.eleven.toFixed(2)}
+                <div className={classes.Correct} ><div className={classes.GameNumber}>{props.gamesLength - 2}</div> <div className={classes.Greyed}>correct</div></div>
+                <div className={classes.Pieces}><div className={classes.PiecesNumber}>{props.elevenPcs}</div>{"\xa0\xa0"} <div className={classes.Greyed}>winners</div></div>
+                <div>{props.eleven >= props.basePrice ? <NumberFormat
+                    value={props.eleven.toFixed(2)}
                     displayType={"text"}
                     thousandSeparator={true}
                     prefix={"₦"}
-                />: " - "}</div>
+                /> : " - "}</div>
             </div>
             <div className={classes.Row}>
-                <div className={classes.Right}>{props.gamesLength-3} <span>correct</span></div>
-                <div className={classes.Pieces}>{props.tenPcs} <span>winners</span></div>
-                <div>  {props.ten>=props.basePrice?   <NumberFormat
+                <div className={classes.Correct}><div className={classes.GameNumber}>{props.gamesLength - 3}</div> <div className={classes.Greyed}>correct</div></div>
+                <div className={classes.Pieces}><div className={classes.PiecesNumber}>{props.tenPcs}</div>{"\xa0\xa0"} <div className={classes.Greyed}>winners </div></div>
+                <div>  {props.ten >= props.basePrice ? <NumberFormat
                     value={props.ten.toFixed(2)}
                     displayType={"text"}
                     thousandSeparator={true}
                     prefix={"₦"}
-                />: " - " }
+                /> : " - "}
                 </div>
             </div>
         </div>
