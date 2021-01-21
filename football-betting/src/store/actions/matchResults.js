@@ -23,8 +23,8 @@ export const setCurrentResult = (slipsGames) => {
                     .then(response => {
                         let resultFixture = response.data.api.fixtures[0];
                         let returnResult = {
-                            homeGaols: resultFixture.goalsHomeTeam,
-                            awayGaols: resultFixture.goalsAwayTeam,
+                            homeGoals: resultFixture.goalsHomeTeam,
+                            awayGoals: resultFixture.goalsAwayTeam,
                             score: resultFixture.score.fulltime, homeTeam: resultFixture.homeTeam.team_name
                             , awayTeam: resultFixture.awayTeam.team_name, gameDate: resultFixture.event_date
                         };

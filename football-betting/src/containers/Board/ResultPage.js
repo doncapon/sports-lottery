@@ -3,15 +3,10 @@ import React, { Component } from "react";
 import WithErrorHandler from '../../hoc/WithErrorHandler/withErrorHandler';
 import axios from "../../axios-fixtures";
 import * as actions from '../../store/actions/index';
-import { groupArrayByDate } from '../../shared/utility';
 import Results from '../../components/gameHistory/results/results';
 import Spinner from '../../components/UI/Spinner/Spinner'; 
 
 class ResultPage extends Component {
-    constructor(props) {
-        super(props);
-      
-    }
 
     componentDidMount(){
         if (!this.props.loading) {
@@ -19,16 +14,10 @@ class ResultPage extends Component {
             this.props.onSetCurrentResult(resultSlips);
         }
     }
-    // groupGameResults =()=>{
-    //     setTimeout(() => {
-    //         return groupArrayByDate(this.props.currentResult);
-    //     }, 3000);
-
-    // }
 
     render() {
         return  !this.props.loading? <Spinner />:<div>
-            <Results results={this.groupGameResults} />
+            <Results results={this.props.currentResults} />
         </div>
     }
 

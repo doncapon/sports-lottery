@@ -25,26 +25,3 @@ export function uuid() {
     d += "-" + str
     return d;
   }
-
-  export const  groupArrayByDate=(data)=>{
-   
-    // this gives an object with dates as keys
-    const groups = data.reduce((groups, game) => {
-      const date = game.gameDate.split('T')[0];
-      if (!groups[date]) {
-        groups[date] = [];
-      }
-      groups[date].push(game);
-      return groups;
-    }, {});
-    
-    // Edit: to add it in the array format instead
-    const groupArrays = Object.keys(groups).map((date) => {
-      return {
-        date,
-        games: groups[date]
-      };
-    });
-
-    return groupArrays;
-  }
