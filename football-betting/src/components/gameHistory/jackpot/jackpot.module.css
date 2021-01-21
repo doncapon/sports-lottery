@@ -1,0 +1,87 @@
+.Jackpot{
+    font-size: 0.9em;
+}
+.Correct span, .Pieces span{
+    color: grey;
+
+}
+.Main > div:nth-child(even){
+    background:  #c3eafa;
+}
+
+.Main > div:nth-child(odd){
+    background: #eee;
+}
+
+h6{
+    padding-top: 10px;
+    font-size: 1em;
+    font-weight: bold;
+    padding-left: 5vw;
+}
+
+.Row{
+    display: flex;
+    padding: 3px 0
+}
+
+.Correct{
+    width: 30vw;
+    float: left;
+    display: flex;
+}
+
+.Pieces{
+    width: 38vw;
+    display: flex;
+    text-align: right;
+}
+
+.GameNumber{
+    width: 8vw;
+}
+
+
+/* medium screens */
+@media only screen and (min-width: 768px){
+    .Jackpot{
+        font-size: 1.2em;
+    }
+    h6{
+        font-size: 1.2em;
+    }
+    .Correct{
+        width: 30vw;
+    }
+    .Row{
+        padding-left: 1vw;
+    }
+}
+.Greyed{
+    color: grey;
+}
+
+/* Larger  screens */
+@media only screen and (min-width: 960px){
+    .Jackpot{
+        width:  42vw;
+        margin: auto;
+        font-size: 1.2em;
+    }
+    h6{
+        padding-top: 0px;
+    }
+    .GameNumber{
+        width: 2vw;
+        margin-left: 6vw;
+    }
+    .Pieces{
+        width: 12vw;
+    }
+    .Correct{
+        width: 15vw;
+    }
+    
+
+    
+}

@@ -28,19 +28,6 @@ class Board extends Component {
           this.props.kickOffTime, kickOffDate);
       }
 
-  
-
-    // let now = new Date();
-    // let kickOffDateTime = new Date((kickOffDate+" "
-    // +this.props.kickOffTime).replace(/-/g,"/"));
-    //   if( now >=  kickOffDateTime){
-    //     kickOffDate =  getNextPlayDate( 
-    //       this.props.daysOffset+ this.props.daysOffsetNextWeek,
-    //       this.props.hourToNextDay);
-    //     this.props.onResetReduxBoard();
-    //     this.props.onSetBoard(this.props.isFACupNextWeek, 
-    //       this.props.kickOffTime, kickOffDate);
-    //   }
    
   }
 
