@@ -33,4 +33,5 @@ export {
 
 export {
      setCurrentResult,
+     setUpWinners
 } from './matchResults';

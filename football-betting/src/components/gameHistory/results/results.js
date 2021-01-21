@@ -1,6 +1,7 @@
 import classes from "./results.module.css";
 import React from "react";
 import moment from 'moment';
+import Jackpot from "../jackpot/jackpot";
 
 const results = (props) => {
 
@@ -48,6 +49,13 @@ const results = (props) => {
                         </div>
                     })}
 
+                </div>
+                <div className={classes.JackPotShare}>
+                    <Jackpot basePrice={props.basePrice} gamesLength={props.gamesLength} thirteen ={props.thirteen}
+                        twelve = {props.twelve} eleven = {props.eleven} ten= {props.ten}
+                        thirteenPcs ={props.thirteenPcs} twelvePcs={props.twelvePcs}
+                        elevenPcs= {props.elevenPcs} tenPcs= {props.tenPcs}
+                        />
                 </div>
             </div>
         </div>

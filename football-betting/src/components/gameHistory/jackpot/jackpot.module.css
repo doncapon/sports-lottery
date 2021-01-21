@@ -1,0 +1,27 @@
+.Right span, .Pieces span{
+    color: grey;
+
+}
+.Main > div:nth-child(even){
+    background: #eee;
+}
+
+.Main > div:nth-child(odd){
+    background:  #c3eafa;
+}
+
+h6{
+    padding-top: 10px;
+}
+
+.Row{
+    display: flex;
+}
+
+.Right{
+    width: 20vw;
+}
+
+.Pieces{
+    width: 30vw;
+}

@@ -45,6 +45,7 @@ export const SET_GAMEDATE = 'SET_GAMEDATE';
 
 //CurrentResults
 export const INITIALIZE_CURRENT_RESULT = 'INITIALIZE_CURRENT_RESULT';
+export const SETUP_WINNERS = 'SETUP_WINNERS';
 
 
 
