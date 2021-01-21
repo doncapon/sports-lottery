@@ -279,6 +279,13 @@ export const copyBetslip = (position) =>{
 
 
 export const removeRowFromBetSlip = (deleteId) =>{
+    return dispatch =>{
+        dispatch(removeRowFromBetSlip2(deleteId));
+        dispatch(calculateGrandTtoalPriceOfAllSlips());
+    };
+}
+
+export const removeRowFromBetSlip2 = (deleteId) =>{
     return {
         type: actionTypes.REMOVE_ROW_FROM_BETSLIP,
         deleteId : deleteId
