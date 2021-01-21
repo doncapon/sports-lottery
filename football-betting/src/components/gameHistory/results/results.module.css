@@ -1,0 +1,62 @@
+.ResultsWrapper{
+    background: #ccc;
+    font-weight: bold;
+}
+
+.ResultHead{
+    display: flex;
+    padding: 10px 0 5px;
+}
+.SelectionRow{
+    display: flex;
+    width: 100vw;
+    padding: 5px 0;
+}
+.Match{
+    width: 50vw;
+}
+.BodyHeader{
+    display: flex;
+    margin-left: 2.5px;
+    padding-bottom: 10px;
+
+}
+.ResultBody{
+    font-size: 0.8em;
+    margin-left: 4px;
+}
+.Teams{
+    display: flex;
+    width: 50vw;
+}
+.RowNumber{
+    width: 5vw;
+}
+.TeamNames{
+    display: flex;
+    float: left;
+    flex-wrap: wrap;
+}
+.homeTeam{
+    display: block;
+}
+.awayTeam{
+    display: block;
+}
+
+.MoveRight{
+    margin-left: 2vw;
+}
+.BodyMain > div:nth-child(odd){
+    background: #eee;
+}
+
+.BodyMain> div:nth-child(even){
+    background: skyblue;
+}
+
+
+.Score{
+    width: 19vw;
+    margin-left: 5vw;
+}
