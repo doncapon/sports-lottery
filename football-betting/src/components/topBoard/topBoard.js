@@ -11,9 +11,9 @@ const topBoard = (props) => {
   }
   return (<div className= {classes.TopBoard}>
     <div className={classes.Funds} >
-      <Funds funds={props.funds} showFunds={props.showFunds} firstName={props.firstName}
+      {/* <Funds funds={props.funds} showFunds={props.showFunds} firstName={props.firstName}
         toggleShowFunds={props.toggleShowFunds}
-      />
+      /> */}
     </div>
     <div className= {classes.TopBoardTextsAndButtons} >
     <div className={classes.PlayWith} style={{  textAlign: 'left', color: '#0890ff', fontWeight: 'bold' }}
