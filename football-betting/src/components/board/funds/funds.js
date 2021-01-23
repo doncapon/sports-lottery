@@ -2,7 +2,7 @@ import classes from "./funds.module.css";
 import React from "react";
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import {NavLink} from 'react-router-dom';
-const funds = (props) => {
+const Funds = (props) => {
 
     let title = props.firstName;
     let titleLarge = props.firstName;
@@ -28,7 +28,7 @@ const funds = (props) => {
         <div style={{ clear: 'both' }}>
             <div className={classes.FundsNormal}>
                 <DropdownButton id="dropdown-item-button"
-                    title={title} menuAlign='right' size="lg">
+                    title={title} menuAlign='right' size="lg" variant="success">
                     {/* <Dropdown.ItemText>Dropdown item text</Dropdown.ItemText> */}
                     <Dropdown.Item to= "/payment" as={NavLink}>Transfer funds</Dropdown.Item>
                     <Dropdown.Item to= "/results" as={NavLink}>Weekly Results</Dropdown.Item>
@@ -38,7 +38,7 @@ const funds = (props) => {
             </div>
             <div className={classes.FundsLarge}>
                 <DropdownButton id="dropdown-item-button"
-                    title={titleLarge} menuAlign='right' size="lg">
+                    title={titleLarge} menuAlign='right' size="lg"  variant="success">
                     {/* <Dropdown.ItemText>Dropdown item text</Dropdown.ItemText> */}
                     <Dropdown.Item to= "/payment" as={NavLink}>Transfer funds</Dropdown.Item>
                     <Dropdown.Item to= "/results" as={NavLink}>Weekly Results</Dropdown.Item>
@@ -53,4 +53,4 @@ const funds = (props) => {
 }
 
 
-export default funds;
+export default Funds;
