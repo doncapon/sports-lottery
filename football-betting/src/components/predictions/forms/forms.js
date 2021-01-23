@@ -18,49 +18,49 @@ const forms = (props) => {
             <h5 className = {classes.H5s }>Last 5 Matches</h5>
           </div>
           <div className="col-6">
-            <h5 className = {classes.H5s }>Cumulative Matches</h5>
+            <h5 className = {classes.H5s }>All Matches</h5>
           </div>
         </div>
         <div className="row">
-          <div className="col-6">
+          <div className="col-5">
             <div className="row"  style= {{paddingTop: '20px'}}>
-              <div style={{fontWeight: 'bolder'}} className="col-6">Form</div>
+              <div style={{fontWeight: 'bolder'}} className="col-8">Form</div>
               <div className="col-4">{last5Home.forme}</div>
             </div>
             <div className="row">
-              <div style={{fontWeight: 'bolder'}} className="col-6">Attack</div>
+              <div style={{fontWeight: 'bolder'}} className="col-8">Attack</div>
               <div className="col-4">{last5Home.att}</div>
             </div>
             <div className="row">
-              <div style={{fontWeight: 'bolder'}} className="col-6">Defence</div>
+              <div style={{fontWeight: 'bolder'}} className="col-8">Defence</div>
               <div className="col-4">{last5Home.def}</div>
             </div>
             <div className="row">
-              <div style={{fontWeight: 'bolder'}} className="col-6">Goals</div>
+              <div style={{fontWeight: 'bolder'}} className="col-8">Goals</div>
               <div className="col-4">{last5Home.goals}</div>
             </div>
             <div className="row">
-              <div style={{fontWeight: 'bolder'}} className="col-6">goals_avg</div>
+              <div style={{fontWeight: 'bolder'}} className="col-8">goals_avg</div>
               <div className="col-4">{last5Home.goals_avg}</div>
             </div>
             <div className="row">
-              <div style={{fontWeight: 'bolder'}} className="col-6">conceded</div>
+              <div style={{fontWeight: 'bolder'}} className="col-8">conceded</div>
               <div className="col-4">{last5Home.goals_against}</div>
             </div>
             <div className="row">
-              <div style={{fontWeight: 'bolder'}} className="col-6">concd_avg</div>
+              <div style={{fontWeight: 'bolder'}} className="col-8">concd_avg</div>
               <div className="col-4">{last5Home.goals_against_avg}</div>
             </div>
           </div>
           {/* All matches home */}
-          <div className="col-6">
+          <div className="col-7">
             <div className="row">
               <div className="col-4"></div>
               <div className="col-8">
                 <div className="row">
                   <div style={{fontWeight: 'bolder'}} className="col-3">H</div>
                   <div style={{fontWeight: 'bolder'}} className="col-3">A</div>
-                  <div style={{fontWeight: 'bolder'}} className="col-3">Total</div>
+                  <div style={{fontWeight: 'bolder'}} className="col-3">Tot.</div>
                 </div>
               </div>
             </div>
@@ -122,7 +122,7 @@ const forms = (props) => {
                 <div className="row">
                   <div style={{fontWeight: 'bolder'}} className="col-3">H</div>
                   <div style={{fontWeight: 'bolder'}} className="col-3">A</div>
-                  <div style={{fontWeight: 'bolder'}} className="col-3">Total</div>
+                  <div style={{fontWeight: 'bolder'}} className="col-3">Tot.</div>
                 </div>
               </div>
             </div>
@@ -167,49 +167,49 @@ const forms = (props) => {
             <h5 className = {classes.H5s }>Last 5 Matches</h5>
           </div>
           <div className="col-6">
-            <h5 className = {classes.H5s }>Cumulative Matches</h5>
+            <h5 className = {classes.H5s }>All Matches</h5>
           </div>
         </div>
         <div className="row">
-          <div className="col-6">
+          <div className="col-5">
             <div className="row"  style= {{paddingTop: '20px'}}>
-              <div style={{fontWeight: 'bolder'}} className="col-6">Form</div>
+              <div style={{fontWeight: 'bolder'}} className="col-8">Form</div>
               <div className="col-4">{last5away.forme}</div>
             </div>
             <div className="row">
-              <div style={{fontWeight: 'bolder'}} className="col-6">Attack</div>
+              <div style={{fontWeight: 'bolder'}} className="col-8">Attack</div>
               <div className="col-4">{last5away.att}</div>
             </div>
             <div className="row">
-              <div style={{fontWeight: 'bolder'}} className="col-6">Defence</div>
+              <div style={{fontWeight: 'bolder'}} className="col-8">Defence</div>
               <div className="col-4">{last5away.def}</div>
             </div>
             <div className="row">
-              <div style={{fontWeight: 'bolder'}} className="col-6">Goals</div>
+              <div style={{fontWeight: 'bolder'}} className="col-8">Goals</div>
               <div className="col-4">{last5away.goals}</div>
             </div>
             <div className="row">
-              <div style={{fontWeight: 'bolder'}} className="col-6">goals_avg</div>
+              <div style={{fontWeight: 'bolder'}} className="col-8">goals_avg</div>
               <div  className="col-4">{last5away.goals_avg}</div>
             </div>
             <div className="row">
-              <div style={{fontWeight: 'bolder'}} className="col-6">conceded</div>
+              <div style={{fontWeight: 'bolder'}} className="col-8">conceded</div>
               <div className="col-4">{last5away.goals_against}</div>
             </div>
             <div className="row">
-              <div style={{fontWeight: 'bolder'}} className="col-6">concd_avg</div>
+              <div style={{fontWeight: 'bolder'}} className="col-8">concd_avg</div>
               <div className="col-4">{last5away.goals_against_avg}</div>
             </div>
           </div>
           {/* All matches home */}
-          <div className="col-6">
+          <div className="col-7">
             <div className="row">
               <div className="col-4"></div>
               <div className="col-8">
                 <div className="row">
                   <div style={{fontWeight: 'bolder'}} className="col-3">H</div>
                   <div style={{fontWeight: 'bolder'}} className="col-3">A</div>
-                  <div style={{fontWeight: 'bolder'}} className="col-3">Total</div>
+                  <div style={{fontWeight: 'bolder'}} className="col-3">Tot.</div>
                 </div>
               </div>
             </div>
@@ -271,7 +271,7 @@ const forms = (props) => {
                 <div className="row">
                   <div style={{fontWeight: 'bolder'}} className="col-3">H</div>
                   <div style={{fontWeight: 'bolder'}} className="col-3">A</div>
-                  <div style={{fontWeight: 'bolder'}} className="col-3">Total</div>
+                  <div style={{fontWeight: 'bolder'}} className="col-3">Tot.</div>
                 </div>
               </div>
             </div>
