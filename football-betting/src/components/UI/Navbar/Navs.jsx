@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import './Navs.css';
-import {Navbar,Nav,Button,FormControl,Form } from 'react-bootstrap';
+import {Navbar,Nav,Dropdown} from 'react-bootstrap';
+import {NavLink} from 'react-router-dom';
+import Funds from '../../../components/board/funds/funds'
 //import Navbar from "reactjs-navbar";
 import logo from "./logo.JPG";
 // import Loader from "react-loader-spinner";
@@ -157,7 +159,7 @@ class Navs extends Component {
       //     },
       //   ]}
       // />
-      <Navbar bg="dark" expand="lg">
+      <Navbar bg="success" expand="lg">
       <Navbar.Brand href="/">
       <img
         src={logo}
@@ -169,17 +171,23 @@ class Navs extends Component {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-          <Nav.Link href="#home">Home</Nav.Link>
-          <Nav.Link href="#link">Result</Nav.Link>
+          <Nav.Link to= "/home" as={NavLink}>Home</Nav.Link>
+          <Nav.Link to= "/results" as={NavLink}>Result</Nav.Link>
           
           </Nav>
-          <Form inline>
-          <FormControl type="email" placeholder="Email" className="mr-sm-2" />
-          <FormControl type="password" placeholder="password" className="mr-sm-2" />
-          <Button variant="outline-success">Login</Button>
-          
-          <Button variant="outline-success">SignUp</Button>
-          </Form>
+          <Dropdown>
+            <Dropdown.Toggle variant="success" id="dropdown-basic" style={{marginRight: "80px"}}>
+              Wallet
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+            <Dropdown.Item to= "/payment" as={NavLink}>Transfer funds</Dropdown.Item>
+            <Dropdown.Item to= "/results" as={NavLink}>Weekly Results</Dropdown.Item>
+            <Dropdown.Item to= "/gamehistory" as={NavLink}>Game History</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+          <Funds funds={this.props.funds} showFunds={this.props.showFunds} firstName={this.props.firstName} toggleShowFunds={this.props.toggleShowFunds}/>
+        
       </Navbar.Collapse>
   </Navbar>
      
