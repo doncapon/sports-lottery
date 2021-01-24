@@ -35,8 +35,9 @@ export const login = (username, password) => {
             password: password,
         };
         dispatch(loginStart());
-        axios.post("login", loginData)
+        axios.post("login", loginData,  {withCredentials: true})
             .then(response => {
+                console.log(response.data)
                 if (response.data === "login successfully") {
                     axios.get("me")
                         .then(response2 => {
@@ -44,14 +45,14 @@ export const login = (username, password) => {
                             dispatch(setIsLoggedIn(true));
                         })
                         .catch(error1 => {
-                            dispatch(loginFail(error1.response.data))
+                            dispatch(loginFail(error1))
                         })
 
                 }
 
             })
             .catch(error => {
-                dispatch(loginFail(error.response.data))
+                dispatch(loginFail(error))
                 dispatch(setIsLoggedIn(false));
             });
     }
