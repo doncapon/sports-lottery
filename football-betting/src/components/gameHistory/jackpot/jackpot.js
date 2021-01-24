@@ -8,7 +8,7 @@ const jackpot = (props) => {
             displayType={"text"}
             thousandSeparator={true}
             prefix={"₦"}
-        /> : " x "
+        /> : " Nil "
     }
     return <div className={classes.Jackpot}>
         <div className={classes.Header}>

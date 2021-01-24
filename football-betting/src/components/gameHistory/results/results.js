@@ -20,7 +20,7 @@ const results = (props) => {
         return <div className={classes.ResultsAndShare} key={k}>
             <div className={classes.ResultHead} >
                 <div>
-                    <span>{moment(result[0].gameDate).format("dddd")}</span>
+                    <span>{moment(result[0].gameDate).format("dddd")}</span>{" "}
                     <span>{moment(result[0].gameDate).format("DD.MM.YYYY")}</span>
                     <span>-</span>
                 </div>
