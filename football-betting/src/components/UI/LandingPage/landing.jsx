@@ -1,5 +1,7 @@
 import React,{Component} from 'react';
-import {Navbar,Nav,Button,FormControl,Form } from 'react-bootstrap';
+import {Navbar,Nav
+    // ,Button,FormControl,Form
+ } from 'react-bootstrap';
 
 class Landing extends Component {
     
@@ -16,13 +18,13 @@ class Landing extends Component {
                     <Nav.Link href="#link">Link</Nav.Link>
                     
                     </Nav>
-                    <Form inline>
+                    {/* <Form inline>
                     <FormControl type="email" placeholder="Email" className="mr-sm-2" />
                     <FormControl type="password" placeholder="password" className="mr-sm-2" />
                     <Button variant="outline-success">Login</Button>
                     
                     <Button variant="outline-success">SignUp</Button>
-                    </Form>
+                    </Form> */}
                 </Navbar.Collapse>
             </Navbar>
                

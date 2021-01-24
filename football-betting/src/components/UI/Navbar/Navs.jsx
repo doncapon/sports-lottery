@@ -3,6 +3,7 @@ import './Navs.css';
 import {Navbar,Nav,Dropdown} from 'react-bootstrap';
 import {NavLink} from 'react-router-dom';
 import Funds from '../../../components/board/funds/funds'
+import Login from '../../../components/loginLogout/login/login';
 //import Navbar from "reactjs-navbar";
 import logo from "./logo.JPG";
 // import Loader from "react-loader-spinner";
@@ -176,9 +177,9 @@ class Navs extends Component {
           
           </Nav>
           <Dropdown>
-            <Dropdown.Toggle variant="success" id="dropdown-basic" style={{marginRight: "80px"}}>
+            {/* <Dropdown.Toggle variant="success" id="dropdown-basic" style={{marginRight: "80px"}}>
               Wallet
-            </Dropdown.Toggle>
+            </Dropdown.Toggle> */}
 
             <Dropdown.Menu>
             <Dropdown.Item to= "/payment" as={NavLink}>Transfer funds</Dropdown.Item>
@@ -186,8 +187,11 @@ class Navs extends Component {
             <Dropdown.Item to= "/gamehistory" as={NavLink}>Game History</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
+          {this.props.isLoggedIn? 
           <Funds funds={this.props.funds} showFunds={this.props.showFunds} firstName={this.props.firstName} toggleShowFunds={this.props.toggleShowFunds}/>
-        
+            : <Login  login = {this.props.login} setPassword = {this.props.setPassword}
+            setUsername = {this.props.setUsername} />
+        }
       </Navbar.Collapse>
   </Navbar>
      
