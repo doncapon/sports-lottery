@@ -38,14 +38,14 @@ export const login = (username, password) => {
         axios.post("login", loginData)
             .then(response => {
                 if (response.data === "login successfully") {
-                    axios.get("me")
-                        .then(response2 => {
-                            console.log(response2);
+                    // axios.get("me")
+                    //     .then(response2 => {
+                    //         console.log(response2);
                             dispatch(setIsLoggedIn(true));
-                        })
-                        .catch(error1 => {
-                            dispatch(loginFail(error1.response.data))
-                        })
+                        // })
+                        // .catch(error1 => {
+                        //     dispatch(loginFail(error1.response.data))
+                        // })
 
                 }
 
