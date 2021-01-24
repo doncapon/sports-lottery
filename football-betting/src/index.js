@@ -15,6 +15,7 @@ import logger from 'redux-logger';
 import boardReducer from "./store/reducers/board";
 import predictionReducer from "./store/reducers/prediction";
 import matchResultsReducer from "./store/reducers/matchResults";
+import loginReducer from "./store/reducers/login";
 import configReducer from "./store/reducers/config";
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
@@ -25,14 +26,15 @@ const composeEnhancers = process.env.NODE_ENV === "development" ? window.__REDUX
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['config',]
+  blacklist: ['config','login']
 }
 
 const rootReducer = combineReducers({
   board: boardReducer,
   pred: predictionReducer,
   matchResults: matchResultsReducer,
-  config: configReducer
+  config: configReducer,
+  login: loginReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

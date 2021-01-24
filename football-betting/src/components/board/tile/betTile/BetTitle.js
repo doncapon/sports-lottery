@@ -13,18 +13,18 @@ class BetTile extends Component {
         switch ( this.props.type ) {
             case ( 'home' ):
                 classesFul.push(classes.Home);
-              child = '1';
+              child = 'H';
                 break;
             case ( 'draw' ):
                 classesFul.push(classes.Draw);
-                child = 'X';
+                child = 'D';
             break;
             case ( 'away' ):
                 classesFul.push(classes.Away);
-                child = '2';
+                child = 'A';
                 break;
             default:
-                child = '2';
+                child = 'A';
             
                 classesFul.push(classes.Home);
                 break;

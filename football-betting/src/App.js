@@ -14,7 +14,9 @@ class  App extends Component {
   render(){
    
     return(<div className={classes.App}>
-    <div className= {classes.Navs}><Navs funds={this.props.funds}
+    <div className= {classes.Navs}><Navs funds={this.props.funds} 
+    loggedIn = {false} setUsername = {this.props.onSetUsername} setPassword= {this.props.onSetPassword}
+    login = {this.props.onLogin} isLoggedIn= {this.props.isLoggedIn}
      showFunds={this.props.showFunds} firstName={'Emmanuel'} 
     toggleShowFunds={this.props.onToggleShowFunds}/></div>
     <Switch>
@@ -31,8 +33,9 @@ const mapstateToProps = (state) => {
   return {
       
     showFunds: state.board.showFunds,
-    
     funds: state.board.funds,
+
+    isLoggedIn: state.login.isLoggedIn
     
   };
 };
@@ -40,7 +43,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     
     onToggleShowFunds: () => dispatch(actions.toggleShowFunds()),
-    
+    onLogin: (username, password) => dispatch (actions.login(username,password)),
   };
 };
 

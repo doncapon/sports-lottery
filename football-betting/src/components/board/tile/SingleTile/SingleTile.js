@@ -12,18 +12,18 @@ class SingleTile extends Component {
         switch ( this.props.type ) {
             case ( 'home' ):
                 classesFul.push(classes.Side);
-              child = '1';
+              child = 'H';
                 break;
             case ( 'draw' ):
                 classesFul.push(classes.Side);
-                child = 'X';
+                child = 'D';
             break;
             case ( 'away' ):
                 classesFul.push(classes.Side);
-                child = '2';
+                child = 'A';
                 break;
             default:
-                child = '2';
+                child = 'A';
             
                 classesFul.push(classes.Side);
                 break;
