@@ -37,16 +37,24 @@ h6{
     text-align: right;
 }
 
+.Pot{
+    text-align: right;
+    width: 25vw;
+}
+
 .GameNumber{
     width: 8vw;
 }
-
+.Greyed{
+    color: grey;
+}
 
 /* medium screens */
 @media only screen and (min-width: 768px){
     .Jackpot{
         font-size: 1.2em;
     }
+    
     h6{
         font-size: 1.2em;
     }
@@ -56,10 +64,13 @@ h6{
     .Row{
         padding-left: 1vw;
     }
+
+    .Row{
+        display: flex;
+        padding: 3px 0
+    }
 }
-.Greyed{
-    color: grey;
-}
+
 
 /* Larger  screens */
 @media only screen and (min-width: 960px){
@@ -73,15 +84,19 @@ h6{
     }
     .GameNumber{
         width: 2vw;
-        margin-left: 6vw;
+        margin-left: 3vw;
     }
     .Pieces{
-        width: 12vw;
+        width: 11.5vw;
     }
     .Correct{
         width: 15vw;
     }
     
+    .Pot{
+        text-align: right;
+        width: 11vw;
+    }
 
     
 }

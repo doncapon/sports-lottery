@@ -8,11 +8,11 @@ const results = (props) => {
     const findSelection = (goalHome, goalAway) => {
 
         if (goalHome > goalAway) {
-            return "1";
+            return "H";
         } else if (goalHome < goalAway) {
-            return "2";
+            return "A";
         } else {
-            return "x";
+            return "D";
         }
     }
     console.log(props.results, props.results.length);
