@@ -14,7 +14,6 @@ const initialState = {
 
 const intializeResults=(state , action) =>{
     return produce(state, draft => {
-        console.log("This s it ",action.payload);
         draft.currentResults.splice(draft.currentResults.length, 
             (draft.currentResults.length+1), action.payload);
         draft.loading = true;

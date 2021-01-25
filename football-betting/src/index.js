@@ -26,7 +26,7 @@ const composeEnhancers = process.env.NODE_ENV === "development" ? window.__REDUX
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['config','login']
+  blacklist: ['config']
 }
 
 const rootReducer = combineReducers({

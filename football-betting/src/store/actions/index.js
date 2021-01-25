@@ -39,4 +39,6 @@ export {
 
 export {
      login,
+     setPassword,
+     setUsername,
 } from './login';

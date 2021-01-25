@@ -16,8 +16,9 @@ class  App extends Component {
     return(<div className={classes.App}>
     <div className= {classes.Navs}><Navs funds={this.props.funds} 
     loggedIn = {false} setUsername = {this.props.onSetUsername} setPassword= {this.props.onSetPassword}
-    login = {this.props.onLogin} isLoggedIn= {this.props.isLoggedIn}
-     showFunds={this.props.showFunds} firstName={'Emmanuel'} 
+    login = {this.props.onLogin} isLoggedIn= {this.props.isLoggedIn} 
+    username = {this.props.username} password ={this.props.password}
+     showFunds={this.props.showFunds} firstName={this.props.user.name} 
     toggleShowFunds={this.props.onToggleShowFunds}/></div>
     <Switch>
       <Route path= "/payment" component ={AcceptACard} />
@@ -35,6 +36,9 @@ const mapstateToProps = (state) => {
     showFunds: state.board.showFunds,
     funds: state.board.funds,
 
+    user: state.login.user,
+    username: state.login.username,
+    password: state.login.password,
     isLoggedIn: state.login.isLoggedIn
     
   };
@@ -43,6 +47,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     
     onToggleShowFunds: () => dispatch(actions.toggleShowFunds()),
+    onSetPassword: (password) => dispatch(actions.setPassword(password)),
+    onSetUsername: (username) => dispatch(actions.setUsername(username)),
     onLogin: (username, password) => dispatch (actions.login(username,password)),
   };
 };

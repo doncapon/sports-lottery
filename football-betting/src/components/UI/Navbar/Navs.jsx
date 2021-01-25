@@ -188,9 +188,11 @@ class Navs extends Component {
             </Dropdown.Menu>
           </Dropdown>
           {this.props.isLoggedIn? 
-          <Funds funds={this.props.funds} showFunds={this.props.showFunds} firstName={this.props.firstName} toggleShowFunds={this.props.toggleShowFunds}/>
+          <Funds funds={this.props.funds} showFunds={this.props.showFunds} firstName={this.props.firstName}
+           toggleShowFunds={this.props.toggleShowFunds}/>
             : <Login  login = {this.props.login} setPassword = {this.props.setPassword}
-            setUsername = {this.props.setUsername} />
+                username = {this.props.username} password ={this.props.password}
+                setUsername = {this.props.setUsername} />
         }
       </Navbar.Collapse>
   </Navbar>
