@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import classes from './AcceptACard.module.css';
-import {Redirect} from 'react-router';
+import {Redirect} from 'react-router-dom';
 import { connect } from "react-redux";
 class AcceptACard extends Component {
 
