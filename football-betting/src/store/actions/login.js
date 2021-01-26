@@ -1,6 +1,22 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios-users';
 
+
+export const setUsername = (username) =>{
+    return{
+        type: actionTypes.SET_USERNAME,
+        username: username
+    }
+}
+
+
+export const setPassword = (password) =>{
+    return{
+        type: actionTypes.SET_PASSWORD,
+        password: password
+    }
+}
+
 export const setIsLoggedIn = (isLoggedIn) => {
     return {
         type: actionTypes.SET_IS_LOGGED_IN,
@@ -20,9 +36,10 @@ export const loginFail = (error) => {
     }
 }
 
-export const loginSucces = () => {
+export const loginSucces = (user) => {
     return {
         type: actionTypes.LOGIN_SUCCESS,
+        user: user
     }
 }
 
@@ -35,20 +52,11 @@ export const login = (username, password) => {
             password: password,
         };
         dispatch(loginStart());
-        axios.post("login", loginData,  {withCredentials: true})
+        axios.post("login", loginData, { withCredentials: true })
             .then(response => {
-                console.log(response.data)
-                if (response.data === "login successfully") {
-                    axios.get("me")
-                        .then(response2 => {
-                            console.log(response2);
-                            dispatch(setIsLoggedIn(true));
-                        })
-                        .catch(error1 => {
-                            dispatch(loginFail(error1))
-                        })
-
-                }
+            
+                dispatch(loginSucces(response.data));
+                dispatch(setIsLoggedIn(true));
 
             })
             .catch(error => {

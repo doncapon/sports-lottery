@@ -1,7 +1,8 @@
 import classes from "./funds.module.css";
 import React from "react";
-import { DropdownButton, Dropdown } from 'react-bootstrap';
+import { DropdownButton, Dropdown, Button } from 'react-bootstrap';
 import {NavLink} from 'react-router-dom';
+import {Redirect} from 'react-router';
 const Funds = (props) => {
 
     let title = props.firstName;
@@ -13,20 +14,24 @@ const Funds = (props) => {
     }
 
     if (props.showFunds) {
-        titleLarge +=  "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0"+
-        "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0 Wallet: ₦"+
+        titleLarge +=  "\xa0\xa0\xa0\xa0"+
+        "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0 Wallet: ₦"+
         props.funds.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     } else {
-        titleLarge += "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0"+
+        titleLarge += "\xa0\xa0\xa0"+
         "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0"+
 
          " wallet hidden";
     }
-
+    const logout = ()=>{
+        props.setIsLoggedIn(false);
+        return <Redirect to="/" />
+    }
     return (
 
         <div style={{ clear: 'both' }}>
             <div className={classes.FundsNormal}>
+            <Button onClick={logout} variant="danger">Logout</Button>
                 <DropdownButton id="dropdown-item-button"
                     title={title} menuAlign='right' size="lg" variant="success">
                     {/* <Dropdown.ItemText>Dropdown item text</Dropdown.ItemText> */}
@@ -37,6 +42,7 @@ const Funds = (props) => {
                 </DropdownButton>
             </div>
             <div className={classes.FundsLarge}>
+            <Button onClick={logout} variant="danger">Logout</Button>
                 <DropdownButton id="dropdown-item-button"
                     title={titleLarge} menuAlign='right' size="lg"  variant="success">
                     {/* <Dropdown.ItemText>Dropdown item text</Dropdown.ItemText> */}

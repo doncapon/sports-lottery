@@ -15,7 +15,6 @@ const results = (props) => {
             return "D";
         }
     }
-    console.log(props.results, props.results.length);
     let results = props.results[0].map((result, k) => {
         return <div className={classes.ResultsAndShare} key={k}>
             <div className={classes.ResultHead} >
@@ -35,7 +34,6 @@ const results = (props) => {
                         <div className={classes.MoveRight}>Correct</div>
                     </div >
                     <div className={classes.BodyMain}>
-                        {console.log(result, result.length)}
                         {result.map((eachRes, i) => {
                             return <div key={i} className={classes.SelectionRow}>
                                 <div className={classes.Teams}>
