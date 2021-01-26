@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { Switch, Route, withRouter } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.module.css';
 import Landing from './components/UI/LandingPage/landing';
@@ -13,6 +13,7 @@ import ResultPage from './containers/Board/ResultPage';
 import { IdleTimeoutModal } from './components/UI/IdleTimeoutModal/IdleTimeoutModal';
 import IdleTimer from 'react-idle-timer';
 import Board from './containers/Board/Board';
+import Signup from './components/loginLogout/signup/signup';
 
 
 
@@ -22,7 +23,7 @@ class App extends React.Component {
     super(props)
 
     this.state = {
-      timeout: 1000 * 10 * 1,
+      timeout: 1000 * 60 * 10,
       showModal: false,
       isTimedOut: false
     }
@@ -51,20 +52,25 @@ class App extends React.Component {
     console.log('user is idle', e)
     const isTimedOut = this.state.isTimedOut
     if (isTimedOut) {
-      this.props.history.push('/');
+      this.props.onSetIsLoggedIn(false);
+      this.props.history.push("/")
+
     } else {
       this.setState({ showModal: true })
       this.idleTimer.reset();
       this.setState({ isTimedOut: true })
+
     }
   }
   handleClose() {
     this.setState({ showModal: false });
+
   }
 
   handleLogout() {
     this.setState({ showModal: false })
     this.props.onSetIsLoggedIn(false);
+    this.props.history.push("/")
   }
 
   render() {
@@ -87,19 +93,20 @@ class App extends React.Component {
           showFunds={this.props.showFunds} firstName={this.props.user.name}
           toggleShowFunds={this.props.onToggleShowFunds} /></div>
 
-        <BrowserRouter>
           <Switch>
             <Route path="/payment" component={AcceptACard} />
             <Route path="/results" component={ResultPage} />
+            <Route path="/signup" component={Signup} />
             <Route path="/home" component={Board} />
             <Route exact path="/" component={Landing} />
           </Switch>
-        </BrowserRouter>
-        <IdleTimeoutModal
-          showModal={this.state.showModal}
-          handleClose={this.handleClose}
-          handleLogout={this.handleLogout}
-        />
+        {this.props.isLoggedIn ?
+          <IdleTimeoutModal
+            showModal={this.state.showModal}
+            handleClose={this.handleClose}
+            handleLogout={this.handleLogout}
+          />
+          : null}
       </div>
 
     )
@@ -130,4 +137,4 @@ const mapDispatchToProps = (dispatch) => {
     onLogin: (username, password) => dispatch(actions.login(username, password)),
   };
 };
-export default connect(mapstateToProps, mapDispatchToProps)(App)
+export default withRouter(connect(mapstateToProps, mapDispatchToProps)(App));

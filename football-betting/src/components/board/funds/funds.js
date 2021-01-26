@@ -2,7 +2,7 @@ import classes from "./funds.module.css";
 import React from "react";
 import { DropdownButton, Dropdown, Button } from 'react-bootstrap';
 import {NavLink} from 'react-router-dom';
-import {Redirect} from 'react-router';
+import {Redirect} from 'react-router-dom';
 const Funds = (props) => {
 
     let title = props.firstName;
