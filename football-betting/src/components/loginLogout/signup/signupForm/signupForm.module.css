@@ -10,7 +10,7 @@
     label{
         display: none;
     } 
-    input[type=text], select  ,   input[type=password]   
+    input[type=text], select  ,   input[type=password], input[type=date]    
     {    
       width: 100%;    
       padding: 2px 20px;    
@@ -44,7 +44,11 @@
         cursor: pointer;    
       } 
       form > div> div{
-        font-size: 10px;;
+        font-size: 10px;
+    }
+    span{
+        font-size: 13px;;
+        
     }
     input[type=submit]:hover {    
       background-color: #45a049;    
@@ -64,7 +68,7 @@
         width: 25%;
         font-size: 13px;
     } 
-    input[type=text], select  ,   input[type=password]   
+    input[type=text], select  ,   input[type=password] ,  input[type=date]   
     {    
       width: 75%;
     }
@@ -72,5 +76,9 @@
     form > div> div{
         margin-left: 25%;
         font-size: 10px;;
+    }
+
+    span{
+        display: none;
     }
 }

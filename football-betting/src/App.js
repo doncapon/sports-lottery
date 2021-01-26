@@ -23,9 +23,9 @@ class App extends React.Component {
     super(props)
 
     this.state = {
-      timeout: 1000 * 60 * 10,
+      timeout: 1000 * 10 * 1,
       showModal: false,
-      isTimedOut: false
+      isTimedOut: false,
     }
 
     this.idleTimer = null;
@@ -39,17 +39,14 @@ class App extends React.Component {
   }
 
   _onAction(e) {
-    console.log('user did something', e)
     this.setState({ isTimedOut: false })
   }
 
   _onActive(e) {
-    console.log('user is active', e)
     this.setState({ isTimedOut: false })
   }
 
   _onIdle(e) {
-    console.log('user is idle', e)
     const isTimedOut = this.state.isTimedOut
     if (isTimedOut) {
       this.props.onSetIsLoggedIn(false);
@@ -62,6 +59,7 @@ class App extends React.Component {
 
     }
   }
+
   handleClose() {
     this.setState({ showModal: false });
 
@@ -85,21 +83,21 @@ class App extends React.Component {
           onAction={this.onAction}
           debounce={250}
           timeout={this.state.timeout} />
+
         <div className={classes.Navs}><Navs funds={this.props.funds}
-          loggedIn={false} setUsername={this.props.onSetUsername}
+          loggedIn={false} setUsername={this.props.onSetUsername} loginSuccess= {this.props.loginSuccess}
           setPassword={this.props.onSetPassword} setIsLoggedIn={this.props.onSetIsLoggedIn}
           login={this.props.onLogin} isLoggedIn={this.props.isLoggedIn}
           username={this.props.username} password={this.props.password}
           showFunds={this.props.showFunds} firstName={this.props.user.name}
           toggleShowFunds={this.props.onToggleShowFunds} /></div>
-
-          <Switch>
-            <Route path="/payment" component={AcceptACard} />
-            <Route path="/results" component={ResultPage} />
-            <Route path="/signup" component={Signup} />
-            <Route path="/home" component={Board} />
-            <Route exact path="/" component={Landing} />
-          </Switch>
+        <Switch>
+          <Route path="/payment" component={AcceptACard} />
+          <Route path="/results" component={ResultPage} />
+          <Route path="/signup" component={Signup} />
+          <Route path="/home" component={Board} />
+          <Route exact path="/" component={Landing} />
+        </Switch>
         {this.props.isLoggedIn ?
           <IdleTimeoutModal
             showModal={this.state.showModal}
@@ -108,7 +106,6 @@ class App extends React.Component {
           />
           : null}
       </div>
-
     )
   }
 
@@ -120,6 +117,7 @@ const mapstateToProps = (state) => {
     showFunds: state.board.showFunds,
     funds: state.board.funds,
 
+    loginSuccess:state.login.loginSuccess,
     user: state.login.user,
     username: state.login.username,
     password: state.login.password,

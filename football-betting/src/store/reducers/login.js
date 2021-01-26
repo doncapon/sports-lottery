@@ -4,7 +4,7 @@ import produce from "immer";
 const initialState = {
     username: '',
     password: '',
-    loginTime: null,
+    loginSuccess: '',
     user: {},
     loading: false,
     error: null,
@@ -27,7 +27,7 @@ const setIsLoggedIn = (state, action) =>{
         if(!action.isLoggedIn){
             draft.username = '';
             draft.password = '';
-        
+            draft.loginSuccess = '';
         }
     })
 }
@@ -44,6 +44,7 @@ const loginSuccess = (state, action )=>{
         draft.user = Object.assign({}, action.user);
         draft.loading = false;
         draft.error = null;
+        draft.loginSuccess= "success";
     })
 }
 
