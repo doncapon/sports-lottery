@@ -191,9 +191,10 @@ class Navs extends Component {
             <Funds funds={this.props.funds} showFunds={this.props.showFunds} firstName={this.props.firstName}
               toggleShowFunds={this.props.toggleShowFunds} setIsLoggedIn={this.props.setIsLoggedIn} />
             : <Login login={this.props.login} setPassword={this.props.setPassword}
-              username={this.props.username} password={this.props.password}
+              username={this.props.username} password={this.props.password} loginSuccess={this.props.loginSuccess} 
               setUsername={this.props.setUsername} />
           }
+
         </Navbar.Collapse>
       </Navbar>
 
