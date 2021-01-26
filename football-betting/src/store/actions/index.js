@@ -41,4 +41,5 @@ export {
      login,
      setPassword,
      setUsername,
+     setIsLoggedIn,
 } from './login';

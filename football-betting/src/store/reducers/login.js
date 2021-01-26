@@ -4,6 +4,7 @@ import produce from "immer";
 const initialState = {
     username: '',
     password: '',
+    loginTime: null,
     user: {},
     loading: false,
     error: null,
@@ -23,7 +24,11 @@ const setPassword = (state, action) =>{
 const setIsLoggedIn = (state, action) =>{
     return produce(state, draft=>{
         draft.isLoggedIn = action.isLoggedIn;
-        console.log(draft.isLoggedIn);
+        if(!action.isLoggedIn){
+            draft.username = '';
+            draft.password = '';
+        
+        }
     })
 }
 
