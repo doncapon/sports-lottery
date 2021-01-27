@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 class AcceptACard extends Component {
 
     render(){
-        if (!this.props.iLisLogged) {
+        if (!this.props.isLoggedIn) {
             return (
                 <Redirect to="/" />
             )

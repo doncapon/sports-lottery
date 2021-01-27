@@ -261,7 +261,7 @@ class SignupForm extends Component {
                             }
 
                         </div>
-                        <input type="button" value="Cancel" />
+                        <input onClick={()=>this.props.setShowForm(false)} type="button" value="Cancel" />
                         <input type="submit" value="Submit" />
                     </form>
                 </div>
