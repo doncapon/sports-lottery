@@ -31,11 +31,12 @@
 }
 
 .EmptySelection{
+    display: flex;
      font-weight: bold;
      background: pink;
      margin: 0;;
-     margin-top: 42px;
-     padding: 0;
+     margin-top: 52px;
+     width: 100vw;
      
 }
 Button {
@@ -47,13 +48,18 @@ Button {
     padding-top: 0;;
 }
 .TrashSmall{
-    display: block;
+    display: inline-block;
+    margin-left: 5vw;
 }
 .TrashMedium{
     display: none;
 }
 .TrashLarge{
     display: none;
+}
+
+.EmptyText{
+    margin-right: 10vw;
 }
 
 
@@ -72,23 +78,28 @@ Button {
         margin-right: 20px;
     }
     .ButtonsLarge{
-        display: block;
+        display: inline-block;
     }
     .EmptySelection{
-        margin-top: 55px;
+        margin-top: 80px;
         font-size: 1.8em;
         text-align: left;
+        width: 100vw;
     }
-
 
     .TrashSmall{
         display: none;
     }
     .TrashMedium{
-        display: block;
+        display: inline-block;
+        
     }
     .TrashLarge{
         display: none;
+    }
+    .EmptyText{
+        width: 70vw;
+        padding: 10px 0;
     }
 }
 
@@ -102,15 +113,15 @@ Button {
         font-size: 1.2em;    
     }
     .Buttons {
-        display: block;
+        display: inline-block;
     }
     .ButtonsLarge{
         display: none;
     }
     .EmptySelection{
-        width: 330px;
-
-     margin-top: 55px;
+        width: 45vw;
+        padding: 1px 0;
+        margin-top: 85px;
         font-size: 1.5em;
     }
     Button {
@@ -125,6 +136,12 @@ Button {
     }
     .TrashLarge{
         display: block;
+        margin-right: 3vw;
+    }
+
+    
+    .EmptyText{
+        width: 80vw;
     }
 }
 

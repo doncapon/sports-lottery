@@ -135,7 +135,8 @@ const Betslips = React.memo(
                     variant="primary"
                     disabled={
                       !props.purchaseAll ||
-                      props.slips.length > totalSlips - 1
+                      props.slips.length > totalSlips - 1||
+                      props.funds < props.totalPrice
                     }
                   >
                     <PlusSquareFill  className={classes.Icon} />

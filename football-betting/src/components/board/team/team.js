@@ -8,12 +8,12 @@ const Team = (props) => {
   
     >
        
-        <div  style={{ margin :"0px 0px 0 ", textAlign: "left" }}>
-          <span className={classes.RowNumber}>{props.row}.</span>
+        <div className= { classes.TeamRow}>
+          <div className={classes.RowNumber}>{props.row}.</div>
             {props.team1}
-            <span style={{ color: "grey", padding: '0 5px' }}>vs</span>
+            <div style={{ color: "grey", padding: '0 5px' }}>vs</div>
           
-          <span style={{ textAlign: "left" , padding: '0'}}>{props.team2}</span>{" "}
+          <div style={{ textAlign: "left" , padding: '0'}}>{props.team2}</div>{" "}
         </div>
       </div>
   );

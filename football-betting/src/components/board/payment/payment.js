@@ -2,7 +2,7 @@ import Button from 'react-bootstrap/Button';
 import React from 'react';
 import { XOctagon } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
-import NumberFormat from "react-number-format";
+import {addCommaToAmounts} from '../../../shared/utility';
 import classes from './payment.module.css';
 
 
@@ -26,12 +26,7 @@ const payment = (props) => {
             <div className={classes.TermsWrapper}>
                 <div className={classes.TermHeaderLeft} >{props.gamesCount + " "}game(s) </div>
                 <div className={classes.TermHeaderRight} >
-                    <NumberFormat
-                        value={props.totalPrice}
-                        displayType={"text"}
-                        thousandSeparator={true}
-                        prefix={"₦"}
-                    />
+                {"₦"+addCommaToAmounts(props.totalPrice.toString(10))}
                 </div>
                 <div >
                     <p className={classes.AcceptTerms} >By confirming you are have read
@@ -41,12 +36,8 @@ const payment = (props) => {
             : <div >
                 <div className={classes.TermHeaderLeft} > You have been changed   </div>
                 <div className={classes.TermHeaderRight} style={{ color: 'green' }}>
-                    <NumberFormat
-                        value={props.totalPrice}
-                        displayType={"text"}
-                        thousandSeparator={true}
-                        prefix={"₦"}
-                    />
+                {"₦"+addCommaToAmounts(props.totalPrice.toString(10))}
+
                 </div>
                 <Button
                     variant="info"

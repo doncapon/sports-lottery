@@ -1,7 +1,6 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import { Trash2Fill } from 'react-bootstrap-icons';
-import Funds from '../../components/board/funds/funds';
 import classes from './topBoard.module.css';
 
 const topBoard = (props) => {
@@ -10,11 +9,7 @@ const topBoard = (props) => {
     props.genrateSlip(i, props.editIndex);
   }
   return (<div className= {classes.TopBoard}>
-    <div className={classes.Funds} >
-      {/* <Funds funds={props.funds} showFunds={props.showFunds} firstName={props.firstName}
-        toggleShowFunds={props.toggleShowFunds}
-      /> */}
-    </div>
+   
     <div className= {classes.TopBoardTextsAndButtons} >
     <div className={classes.PlayWith} style={{  textAlign: 'left', color: '#0890ff', fontWeight: 'bold' }}
     >play with <div style={{ color: 'green', display: 'inline'}}>
@@ -85,7 +80,7 @@ const topBoard = (props) => {
 
 
     <div className={classes.EmptySelection}  >
-      <span className= {classes.EmptyText}>REMOVE SELECTIONS: </span>
+      <div className= {classes.EmptyText}>REMOVE SELECTIONS: </div>
         <Button
           className={classes.DeleteButton}
           variant="outline-dark"
