@@ -5,7 +5,6 @@ import PlayRow from "../PlayRow/PlayRow";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions/index";
 import Betslips from "../Betslips/Betslips";
-import NumberFormat from "react-number-format";
 import TopBoard from "../../components/topBoard/topBoard";
 import Spinner from '../../components/UI/Spinner/Spinner';
 import WithErrorHandler from '../../hoc/WithErrorHandler/withErrorHandler';
@@ -14,7 +13,7 @@ import Payment from '../../components/board/payment/payment';
 import { ArrowRight } from "react-bootstrap-icons";
 import Receipts from '../../components/board/receipts/receipts/receipts';
 import {getNextPlayDate} from '../../shared/utility';
-
+import {addCommaToAmounts} from '../../shared/utility';
 class Board extends Component {
 
   constructor(props) {
@@ -55,7 +54,6 @@ class Board extends Component {
             editIndex={this.props.editIndex}
             basePrice={this.props.basePrice}
             funds={this.props.funds}
-            firstName={"Emmanuel"}
             showFunds={this.props.showFunds}
             toggleShowFunds={this.props.onToggleShowFunds}
           />
@@ -92,6 +90,8 @@ class Board extends Component {
             setEditIndex={this.props.onSetEditIndex}
             addBetSlip={this.props.onAddRowToslips}
             editIndex={this.props.editIndex}
+            funds ={this.props.funds}
+            totalPrice = {this.props.totalPrice}
           />
         </div>
         <div className={classes.Payment} >
@@ -114,17 +114,15 @@ class Board extends Component {
                   onClick={() => this.togglePaymentButton(true, false)}
 
                 >
-                  PAY {" "}
-                  <NumberFormat
-                    value={this.props.purchaseAll ? this.props.totalPrice : 0}
-                    displayType={"text"}
-                    thousandSeparator={true}
-                    prefix={"₦"}
-                  />
+                  PAY
+                  {" "}
+                  
+                  { this.props.purchaseAll ? "₦" + addCommaToAmounts(this.props.totalPrice.toString(10)) : "₦0"}
+
                 </Button>
                 {this.props.funds < this.props.totalPrice ? <div>
-                  <div style={{ color: 'red', textAlign: 'center', background: 'grey' }}>Sorry, you do not have enough funds to make the purchase</div>
-                  <Button> <ArrowRight style={{ fontWeight: 'bolder' }} size="20" /> GO TO FUNDS TRANFER</Button>
+                  <div style={{ color: 'red', textAlign: 'center', background: 'grey', padding: '10px 0', marginBottom: '10px' }}>Sorry, you do not have enough funds to make the purchase</div>
+                  <div><Button className= {classes.TransferButton}> <ArrowRight style={{ fontWeight: 'bolder' }} size="20" /> GO TO FUNDS TRANSFER</Button></div>
                 </div> : null}
               </div>
             </div>
@@ -137,12 +135,7 @@ class Board extends Component {
                 className={classes.ConfrimePayments}
               >
                 CONFIRM {" "}
-                <NumberFormat
-                  value={this.props.purchaseAll ? this.props.totalPrice : 0}
-                  displayType={"text"}
-                  thousandSeparator={true}
-                  prefix={"₦"}
-                />
+                  { this.props.purchaseAll ? "₦" + addCommaToAmounts(this.props.totalPrice.toString(10)) : "₦0"}
               </Button>
 
               </div>

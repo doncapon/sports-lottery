@@ -60,29 +60,29 @@ const Stats = (props) => {
     <div className={classes.modal}>
       <div className="modal-content">
         <div className="modal-header">
-          <h6 className="modal-title" style={{ color: "blue" }}>
+          <h6 className="modal-title" style={{ color: "blue", display: 'flex' }}>
          
-                <span
+                <div
                   className={(selectedLink === 0) ? classes.Selected: classes.Rest}
                   onClick={(e) => HandleLinkClick(e)}
                 >
                   Odds
-                </span> {" | "}
+                </div> {" | "}
 
-                <span
+                <div
                   className={(selectedLink === 1) ? classes.Selected: classes.Rest}
                   onClick={(e) => HandleLinkClick(e)}
                 >
                   Form
-                </span>
+                </div>
                 {" | "}
             
-                <span
+                <div
                   className={(selectedLink === 2) ? classes.Selected: classes.Rest}
                   onClick={(e) => HandleLinkClick(e)}
                 >
                   H2H
-                </span>
+                </div>
             
         
           </h6>

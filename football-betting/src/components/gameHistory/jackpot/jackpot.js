@@ -1,14 +1,11 @@
 import React from "react";
 import classes from './jackpot.module.css';
-import NumberFormat from 'react-number-format'
+import {addCommaToAmounts} from '../../../shared/utility';
+
 const jackpot = (props) => {
     const checkAmount = (amount) => {
-        return amount >= props.basePrice ? <NumberFormat
-            value={amount.toFixed(2)}
-            displayType={"text"}
-            thousandSeparator={true}
-            prefix={"₦"}
-        /> : " Nil "
+        return amount >= props.basePrice ? "₦"+addCommaToAmounts(amount.toString(10))
+        : " Nil "
     }
     return <div className={classes.Jackpot}>
         <div className={classes.Header}>
