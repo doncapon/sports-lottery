@@ -1,13 +1,13 @@
 import React,{Component} from 'react';
 import {Navbar,Nav
-    // ,Button,FormControl,Form
- } from 'react-bootstrap';
-
+    // ,Button,FormControl,Form 
+} from 'react-bootstrap';
+import classes from './landing.module.css';
 class Landing extends Component {
     
     render(){
         return(
-            <>
+            <div className={classes.LandingWrapper}>
         
             <Navbar bg="light" expand="lg">
                 <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
@@ -28,7 +28,7 @@ class Landing extends Component {
                 </Navbar.Collapse>
             </Navbar>
                
-            </>
+            </div>
         );
     }
 }
