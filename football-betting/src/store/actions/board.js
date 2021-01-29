@@ -86,6 +86,15 @@ export const setFixtureIds = ()=>{
 
     }
 }
+
+export const creditFunds = (funds)=>{
+    return {
+        type: actionTypes.CREDIT_FUNDS,
+        funds: funds
+
+    }
+}
+
 export const resetReduxBoard=()=>{
     return {
         type: actionTypes.RESET_BOARD
@@ -94,6 +103,13 @@ export const resetReduxBoard=()=>{
 export const toggleShowFunds = () =>{
     return {
         type: actionTypes.TOGGLE_SHOWFUNDS,
+    }
+}
+
+export const setShowFunds = (show) =>{
+    return {
+        type: actionTypes.SET_SHOW_FUNDS,
+        show: show
     }
 }
 

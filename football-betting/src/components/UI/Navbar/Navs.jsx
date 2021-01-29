@@ -1,11 +1,13 @@
-import React, { Component } from "react";
-import './Navs.css';
-import { Navbar, Nav, Dropdown } from 'react-bootstrap';
+import React, { Component, } from "react";
+import { Navbar, Nav, Dropdown, Button } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import Funds from '../../../components/board/funds/funds'
 import Login from '../../../components/loginLogout/login/login';
+import { Redirect, withRouter} from 'react-router-dom';
+
 //import Navbar from "reactjs-navbar";
 import logo from "./logo.JPG";
+import classes from "./Navs.module.css";
 // import Loader from "react-loader-spinner";
 // import {
 // //   faUsers,
@@ -34,7 +36,13 @@ class Navs extends Component {
   state = {
     isLoading: false,
   };
-
+  logout = () => {
+    const isShow = true;
+    this.props.setShowFunds(isShow);
+    this.props.setIsLoggedIn(false);
+    this.props.deleteAndResetAll();
+     return <Redirect to="/" />
+  }
   render() {
     return (
       // <Navbar
@@ -172,7 +180,7 @@ class Navs extends Component {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link to="/home" as={NavLink}>Home</Nav.Link>
+            <Nav.Link to="/play" as={NavLink}>Play</Nav.Link>
             <Nav.Link to="/results" as={NavLink}>Result</Nav.Link>
 
           </Nav>
@@ -182,16 +190,19 @@ class Navs extends Component {
             </Dropdown.Toggle> */}
 
             <Dropdown.Menu>
-              <Dropdown.Item to="/payment" as={NavLink}>Transfer funds</Dropdown.Item>
+              <Dropdown.Item to="/transfers" as={NavLink}>Transfer funds</Dropdown.Item>
               <Dropdown.Item to="/results" as={NavLink}>Weekly Results</Dropdown.Item>
               <Dropdown.Item to="/gamehistory" as={NavLink}>Game History</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
           {this.props.isLoggedIn ?
-            <Funds funds={this.props.funds} showFunds={this.props.showFunds} firstName={this.props.firstName}
-              toggleShowFunds={this.props.toggleShowFunds} setIsLoggedIn={this.props.setIsLoggedIn} />
+            <div className={classes.LoginSection}>
+              <Button onClick={this.logout} variant="danger">Logout</Button>
+              <Funds funds={this.props.funds} showFunds={this.props.showFunds} firstName={this.props.firstName}
+                toggleShowFunds={this.props.toggleShowFunds} setIsLoggedIn={this.props.setIsLoggedIn} />
+            </div>
             : <Login login={this.props.login} setPassword={this.props.setPassword}
-              username={this.props.username} password={this.props.password} loginSuccess={this.props.loginSuccess} 
+              username={this.props.username} password={this.props.password} loginSuccess={this.props.loginSuccess}
               setUsername={this.props.setUsername} />
           }
 
@@ -201,4 +212,4 @@ class Navs extends Component {
     );
   }
 }
-export default Navs;
+export default withRouter( Navs);

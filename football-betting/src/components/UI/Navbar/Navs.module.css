@@ -21,3 +21,14 @@
     --rm-font-size: 0.875rem;
     --sm-font-size: 0.65rem;
   }
+
+  .LoginSection{
+    display: block;
+  }
+
+
+  @media only screen and (min-width: 768px) {
+    .LoginSection{
+      display: flex;
+    }
+  }

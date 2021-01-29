@@ -4,7 +4,6 @@ import moment from 'moment';
 import Jackpot from "../jackpot/jackpot";
 
 const results = (props) => {
-
     const findSelection = (goalHome, goalAway) => {
 
         if (goalHome > goalAway) {
@@ -16,6 +15,7 @@ const results = (props) => {
         }
     }
     let results = props.results[0].map((result, k) => {
+
         return <div className={classes.ResultsAndShare} key={k}>
             <div className={classes.ResultHead} >
                 <div>

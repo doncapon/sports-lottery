@@ -1,5 +1,5 @@
 import React from 'react'
-import { Switch, Route, withRouter } from 'react-router-dom'
+import { Switch, Route, withRouter, Redirect } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.module.css';
 import Landing from './components/UI/LandingPage/landing';
@@ -8,12 +8,12 @@ import classes from './App.module.css';
 import * as actions from './store/actions/index'
 import { connect } from 'react-redux'
 
-import AcceptACard from './containers/CardPayments/AcceptACard/AcceptACard';
 import ResultPage from './containers/Board/ResultPage';
 import { IdleTimeoutModal } from './components/UI/IdleTimeoutModal/IdleTimeoutModal';
 import IdleTimer from 'react-idle-timer';
 import Board from './containers/Board/Board';
 import Signup from './components/loginLogout/signup/signup';
+import Transfers from './containers/Transfers/Transfers';
 
 
 
@@ -23,7 +23,7 @@ class App extends React.Component {
     super(props)
 
     this.state = {
-      timeout: 1000 * 60 * 15,
+      timeout: 1000 * 60 * 30,
       showModal: false,
       isTimedOut: false,
     }
@@ -75,28 +75,33 @@ class App extends React.Component {
 
     return (
       <div className={classes.App}>
-        <IdleTimer
-          ref={ref => { this.idleTimer = ref }}
-          element={document}
-          onActive={this.onActive}
-          onIdle={this.onIdle}
-          onAction={this.onAction}
-          debounce={250}
-          timeout={this.state.timeout} />
+        {this.props.isLoggedIn ?
 
+          <IdleTimer
+            ref={ref => { this.idleTimer = ref }}
+            element={document}
+            onActive={this.onActive}
+            onIdle={this.onIdle}
+            onAction={this.onAction}
+            debounce={250}
+            timeout={this.state.timeout} />
+          : null}
         <div className={classes.Navs}><Navs funds={this.props.funds}
-          loggedIn={false} setUsername={this.props.onSetUsername} loginSuccess= {this.props.loginSuccess}
+          loggedIn={false} setUsername={this.props.onSetUsername} loginSuccess={this.props.loginSuccess}
           setPassword={this.props.onSetPassword} setIsLoggedIn={this.props.onSetIsLoggedIn}
-          login={this.props.onLogin} isLoggedIn={this.props.isLoggedIn}
+          login={this.props.onLogin} isLoggedIn={this.props.isLoggedIn} deleteAndResetAll={this.props.onDeleteAndResetAll}
           username={this.props.username} password={this.props.password}
-          showFunds={this.props.showFunds} firstName={this.props.user.name}
-          toggleShowFunds={this.props.onToggleShowFunds} /></div>
+          showFunds={this.props.showFunds} firstName={this.props.user.name} setShowFunds={this.props.onSetShowFunds}
+          toggleShowFunds={this.props.onToggleShowFunds}
+          
+          /></div>
         <Switch>
-          <Route path="/payment" component={AcceptACard} />
+          <Route path="/transfers" component={Transfers} />
           <Route path="/results" component={ResultPage} />
           <Route path="/signup" component={Signup} />
-          <Route path="/home" component={Board} />
+          <Route path="/play" component={Board} />
           <Route exact path="/" component={Landing} />
+          <Redirect to="/" />
         </Switch>
         {this.props.isLoggedIn ?
           <IdleTimeoutModal
@@ -117,7 +122,7 @@ const mapstateToProps = (state) => {
     showFunds: state.board.showFunds,
     funds: state.board.funds,
 
-    loginSuccess:state.login.loginSuccess,
+    loginSuccess: state.login.loginSuccess,
     user: state.login.user,
     username: state.login.username,
     password: state.login.password,
@@ -133,6 +138,9 @@ const mapDispatchToProps = (dispatch) => {
     onSetPassword: (password) => dispatch(actions.setPassword(password)),
     onSetUsername: (username) => dispatch(actions.setUsername(username)),
     onLogin: (username, password) => dispatch(actions.login(username, password)),
+    onDeleteAndResetAll: () => dispatch(actions.deleteAndResetAll()),
+    onSetShowFunds: () => dispatch(actions.setShowFunds()),
+
   };
 };
 export default withRouter(connect(mapstateToProps, mapDispatchToProps)(App));

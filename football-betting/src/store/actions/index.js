@@ -23,6 +23,8 @@ export {
      setReceipt,
      toggleIsShowReceipt,
      toggleShowFunds,
+     setShowFunds,
+     creditFunds
 } from './board';
 
 export {

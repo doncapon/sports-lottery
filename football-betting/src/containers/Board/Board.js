@@ -53,9 +53,6 @@ class Board extends Component {
             genrateSlip={this.props.onGenrateSlip}
             editIndex={this.props.editIndex}
             basePrice={this.props.basePrice}
-            funds={this.props.funds}
-            showFunds={this.props.showFunds}
-            toggleShowFunds={this.props.onToggleShowFunds}
           />
         </div>
         <div className={classes.PlayRow}>
@@ -188,7 +185,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onSetBoard: ( isFACup ,kicOffTime, kickOfftime) => dispatch(actions.setBoard( isFACup ,kicOffTime,kickOfftime)),
     onResetReduxBoard: () => dispatch(actions.resetReduxBoard()),
-    onToggleShowFunds: () => dispatch(actions.toggleShowFunds()),
+    // onToggleShowFunds: () => dispatch(actions.toggleShowFunds()),
     onToggleIsShowReceipt: () => dispatch(actions.toggleIsShowReceipt()),
     onSetReceipt: () => dispatch(actions.setReceipt()),
     onExecutePurchase: () => dispatch(actions.executePurchase()),
