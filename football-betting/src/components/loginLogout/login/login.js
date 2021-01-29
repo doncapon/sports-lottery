@@ -1,5 +1,5 @@
 import { Button, FormControl, Form } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom';
+import {  useHistory } from 'react-router-dom';
 
 const Login = (props) => {
     let history = useHistory();
@@ -12,13 +12,17 @@ const Login = (props) => {
         // }else{
         //     alert.error("Could not log in"); 
         // }
+        setTimeout(() => {
+        history.push("/play");
+            
+        }, 1000);
     }
 
     const HandleSignup = () => {
+        let history= useHistory();
         history.push("/signup");
     }
     return (<div>
-        {console.log("i am been called2 ", props.loginSuccess )}
 
         <Form inline onSubmit={(e) => HandleSubmit(e)}>
             <FormControl type="text" onChange={(e) => props.setUsername(e.target.value)} placeholder="username" className="mr-sm-2" />

@@ -52,11 +52,22 @@ const initialStte = {
 };
 
 
+const creditFunds = (state, action) =>{
+    return produce(state, draft=>{
+        draft.funds += action.funds;
+    })
+}
 const resetReduxBoard = (state, action) =>{
     return produce(state, draft=>{
         draft.slips = null;
     })
 }
+const setShowFunds = (state, action) => {
+    return produce(state, draft => {
+        draft.showFunds = action.show;
+    });
+}
+
 const toggleShowFunds = (state, action) => {
     return produce(state, draft => {
         draft.showFunds = !draft.showFunds
@@ -620,6 +631,10 @@ const reducer = (state = initialStte, action) => {
             return calculateGrandTtoalPriceOfAllSlips(state, action);
         case actionTypes.GENERATE_SLIP:
             return genrateSlip(state, action);
+        case actionTypes.SET_SHOW_FUNDS:
+            return setShowFunds(state, action);
+            case actionTypes.CREDIT_FUNDS:
+                return creditFunds(state, action);
         default:
             return state;
     }

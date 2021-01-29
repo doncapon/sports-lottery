@@ -1,0 +1,19 @@
+.Top{
+    display: flex;
+    margin : 2vh auto 0vh;
+    text-align: center;
+}
+
+.ToWalletHeader, .ToBankHeader{
+    margin: 2vh 8px;
+    padding: 5px 20px;
+    border: 2px solid #ccc;
+    background: #eee;
+    box-shadow: #ccc;
+}
+.Selected{
+    background-color: skyblue;
+}
+.ToBankHeader{
+
+}

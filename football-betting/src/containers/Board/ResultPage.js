@@ -4,7 +4,7 @@ import WithErrorHandler from '../../hoc/WithErrorHandler/withErrorHandler';
 import axios from "../../axios-fixtures";
 import * as actions from '../../store/actions/index';
 import Results from '../../components/gameHistory/results/results';
-import Spinner from '../../components/UI/Spinner/Spinner'; 
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 class ResultPage extends Component {
     constructor(props) {
@@ -14,19 +14,23 @@ class ResultPage extends Component {
             this.props.thirteenPieces, this.props.twelvePieces, this.props.elevenPieces,
             this.props.tenPieces);
     }
-    componentDidMount(){
+    componentDidMount() {
         if (!this.props.loading) {
-            let resultSlips =[this.props.slips[0]["slip_1"], this.props.slips[0]["slip_1"]] 
+            let resultSlips = [this.props.slips[0]["slip_1"], this.props.slips[0]["slip_1"]]
             this.props.onSetCurrentResult(resultSlips);
         }
     }
 
     render() {
-        return  !this.props.loading? <Spinner />:<div>
-            <Results results={this.props.currentResults} basePrice ={this.props.basePrice} gamesLength={this.props.gamesLength} thirteen ={this.props.thirteen}
-            twelve = {this.props.twelve} eleven = {this.props.eleven} ten= {this.props.ten}
-            thirteenPcs ={this.props.thirteenPieces} twelvePcs={this.props.twelvePieces}
-            elevenPcs= {this.props.elevenPieces} tenPcs= {this.props.tenPieces}
+        
+        if(!this.props.isLoggedIn)
+        this.props.history.push("/play");
+        return !this.props.loading ? <Spinner /> : <div>
+            <Results results={this.props.currentResults} basePrice={this.props.basePrice} gamesLength={this.props.gamesLength} thirteen={this.props.thirteen}
+                twelve={this.props.twelve} eleven={this.props.eleven} ten={this.props.ten}
+                thirteenPcs={this.props.thirteenPieces} twelvePcs={this.props.twelvePieces}
+                elevenPcs={this.props.elevenPieces} tenPcs={this.props.tenPieces}
+                isLoggedIn= {this.props.isLoggedIn}
             />
         </div>
     }
@@ -39,7 +43,7 @@ const mapstateToProps = (state) => {
         gamesLength: state.board.gamesLength,
         basePrice: state.board.basePrice,
 
-        loading : state.matchResults.loading,
+        loading: state.matchResults.loading,
         currentResults: state.matchResults.currentResults,
 
         thirteen: state.matchResults.thirteen,
@@ -52,11 +56,14 @@ const mapstateToProps = (state) => {
         twelvePieces: state.config.twelvePieces,
         elevenPieces: state.config.elevenPieces,
         tenPieces: state.config.tenPieces,
-    
+
         thirteenPercent: state.config.thirteenPercent,
         twelvePercent: state.config.twelvePercent,
         elevenPercent: state.config.elevenPercent,
-        tenPercent: state.config.tenPercent
+        tenPercent: state.config.tenPercent,
+
+        isLoggedIn: state.login.isLoggedIn
+
     }
 };
 
@@ -66,8 +73,8 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(actions.setCurrentResult(fixture_id)),
         onSetUpWinners: (jackpot, thirteenpct, twelvepct, elevenpct, tenpct,
             thirteenPieces, twelvePieces, elevenPieces, tenPieces) =>
-        dispatch(actions.setUpWinners(jackpot ,thirteenpct, twelvepct, elevenpct, tenpct,
-            thirteenPieces, twelvePieces, elevenPieces, tenPieces)),
+            dispatch(actions.setUpWinners(jackpot, thirteenpct, twelvepct, elevenpct, tenpct,
+                thirteenPieces, twelvePieces, elevenPieces, tenPieces)),
     }
 }
 export default connect(mapstateToProps, mapDispatchToProps)(WithErrorHandler(ResultPage, axios));

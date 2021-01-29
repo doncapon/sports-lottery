@@ -126,10 +126,8 @@ class SignupForm extends Component {
         }
         axios.post("register" , registerData)
         .then(response =>{
-            console.log(response.data);
         })
         .catch(error =>{
-            console.log(error)
             // this.setState({apiError: error.response.data})
         })
         if (this.handleFormValidation()) {
@@ -139,7 +137,7 @@ class SignupForm extends Component {
     }
 
     render() {
-
+    
         const { nameErr, emailIdErr, dobErr, roleErr, phoneNumberErr, usernameErr, passwordErr,
             passwordConfErr } = this.state.formErrors;
 
