@@ -41,7 +41,7 @@ const Funds = (props) => {
                 <DropdownButton id="dropdown-item-button"
                     title={titleLarge} menuAlign='right' size="lg" variant="success">
                     {/* <Dropdown.ItemText>Dropdown item text</Dropdown.ItemText> */}
-                    <Dropdown.Item to="/payment" as={NavLink}>Transfer funds</Dropdown.Item>
+                    <Dropdown.Item to="/transfers" as={NavLink}>Transfer funds</Dropdown.Item>
                     <Dropdown.Item to="/results" as={NavLink}>Weekly Results</Dropdown.Item>
                     <Dropdown.Item as="button">Game History</Dropdown.Item>
                     <Dropdown.Item onClick={props.toggleShowFunds} as="button">
