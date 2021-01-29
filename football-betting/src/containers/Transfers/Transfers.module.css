@@ -17,3 +17,28 @@
 .ToBankHeader{
 
 }
+
+
+/* medium screens */
+@media only screen and (min-width: 768px){
+    .CardWrapper{
+        width: 60vw;
+        background: white;
+        margin: 0 auto;
+    }
+
+
+    .ToWalletHeader, .ToBankHeader{
+        margin: 1vh 8px;
+        padding: 5px 20px;
+    }
+}
+
+
+
+/* Larger devices */
+@media only screen and (min-width: 960px) {
+    .CardWrapper{
+        width: 50vw;
+    }
+}

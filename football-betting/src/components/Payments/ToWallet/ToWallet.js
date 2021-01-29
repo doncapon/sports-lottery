@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import './ToWallet.module.css'
 import { PaystackButton } from 'react-paystack';
+import classes from "./ToWallet.module.css";
 class ToWallet extends Component {
     constructor(props) {
         super(props);
@@ -78,7 +79,7 @@ class ToWallet extends Component {
                     <form onSubmit={this.handleSubmit}>
 
                         <div>
-                            <label htmlFor="emailId">Email</label>
+                            <label className={classes.label} htmlFor="emailId">Email</label>
                             <input type="text" name="emailId"
                                 value={this.state.emailId}
                                 onChange={this.handleChange}
@@ -91,7 +92,7 @@ class ToWallet extends Component {
                         </div>
 
                         <div>
-                            <label htmlFor="amount">Amount</label>
+                            <label className={classes.label} htmlFor="amount">Amount</label>
                             <input type="number" name="amount"
                                 onChange={this.handleChange}
                                 value={this.state.amount}
@@ -104,7 +105,7 @@ class ToWallet extends Component {
                        
                     </form>
                 </div>
-                <PaystackButton
+                <PaystackButton className={classes.Button}
                     reference={reference}
                     email={this.state.emailId}
                     amount={this.state.amount * 100}
