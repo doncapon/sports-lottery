@@ -48,15 +48,27 @@ const initialStte = {
     gameDate: null,
     gameDateRaw: null,
     showFunds:  true,
+    isToWallet: true,
 
 };
 
-
+const setIsToWallet = (state, action) =>{
+    return produce(state, draft=>{
+        draft.isToWallet = action.isToWallet;
+    });
+}
 const creditFunds = (state, action) =>{
     return produce(state, draft=>{
         draft.funds += action.funds;
     })
 }
+
+const debitFunds = (state, action) =>{
+    return produce(state, draft=>{
+        draft.funds -= action.funds;
+    })
+}
+
 const resetReduxBoard = (state, action) =>{
     return produce(state, draft=>{
         draft.slips = null;
@@ -635,6 +647,10 @@ const reducer = (state = initialStte, action) => {
             return setShowFunds(state, action);
             case actionTypes.CREDIT_FUNDS:
                 return creditFunds(state, action);
+            case actionTypes.DEBIT_FUNDS:
+                return debitFunds(state, action);
+            case actionTypes.SET_ISTOWALLET:
+                return setIsToWallet(state, action);
         default:
             return state;
     }

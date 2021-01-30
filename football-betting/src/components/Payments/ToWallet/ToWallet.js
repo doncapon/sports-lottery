@@ -8,50 +8,69 @@ class ToWallet extends Component {
         this.state = {
             emailId: '',
             amount: '',
-            formErrors: {},
+            emailError : '',
+            amountErr: '',
             config: {}
         };
 
         this.initialState = this.state;
     }
-
-    handleFormValidation() {
-        const { emailId, amount } = this.state;
-        let formErrors = {};
+    handleFormValidationEmail(emailId) {
+        
+        let emailError = '';
         let formIsValid = true;
 
         //Email    
         if (!emailId) {
             formIsValid = false;
-            formErrors["emailIdErr"] = "Email id is required.";
+            emailError = "Email id is required.";
         }
-        else if (!(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(emailId))) {
+        else if (!(/^[ ]*([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})[ ]*$/i.test(emailId))) {
 
             formIsValid = false;
-            formErrors["emailIdErr"] = "Invalid email id.";
+            emailError = "Invalid email id.";
         }
 
-        //Phone number    
+        this.setState({ emailError: emailError });
+        return formIsValid;
+    }
+    handleFormValidationAmount(amount) {
+        let amountErr = '';
+        let formIsValid = true;
+
+
+        //Amount
         if (!amount) {
             formIsValid = false;
-            formErrors["amountErr"] = "Phone number is required.";
+            amountErr = "Amount is required.";
         }
         else {
-            if (amount < 0) {
+            if (amount < 100) {
                 formIsValid = false;
-                formErrors["amountErr"] = "Amount cannot be less than zero";
+                amountErr = "Minimum amount is 100 Naira";
             }
             if(amount %1 !== 0){
-                formErrors["amountErr"] = "No decimals allowed, remove dot(.)";
+                amountErr= "No decimals allowed, remove dot(.)";
 
             }
         }
-        this.setState({ formErrors: formErrors });
+        this.setState({ amountErr: amountErr });
         return formIsValid;
     }
 
-    handleChange = (e) => {
+    handleChangeEmail = (e) => {
+        e.preventDefault();
+        
         let { name, value } = e.target;
+        this.handleFormValidationEmail(value)
+
+        this.setState({ [name]: value });
+    }
+    handleChangeAmount = (e) => {
+        e.preventDefault();
+        
+        let { name, value } = e.target;
+        this.handleFormValidationAmount(value)
         this.setState({ [name]: value });
     }
 
@@ -66,27 +85,25 @@ class ToWallet extends Component {
         console.log('closed')
     }
 
-
-
-
     render() {
-
-        const { emailIdErr, amountErr } = this.state.formErrors;
+        
+        const  emailIdErr = this.state.emailError;
+        const  amountErr = this.state.amountErr;
         const reference = '' + Math.floor((Math.random() * 1000000000) + 1);
         return (
             <div className="formDiv">
                 <div>
-                    <form onSubmit={this.handleSubmit}>
+                    <form>
 
                         <div>
                             <label className={classes.label} htmlFor="emailId">Email</label>
                             <input type="text" name="emailId"
                                 value={this.state.emailId}
-                                onChange={this.handleChange}
+                                onChange={this.handleChangeEmail}
                                 placeholder="Email Address"
                                 className={emailIdErr ? ' showError' : ''} />
                             {emailIdErr &&
-                                <div style={{ color: "red" }}>{emailIdErr}</div>
+                                <div className={classes.Error} style={{ color: "red" }}>{emailIdErr}</div>
                             }
 
                         </div>
@@ -94,22 +111,22 @@ class ToWallet extends Component {
                         <div>
                             <label className={classes.label} htmlFor="amount">Amount</label>
                             <input type="number" name="amount"
-                                onChange={this.handleChange}
+                                onChange={this.handleChangeAmount}
                                 value={this.state.amount}
-                                placeholder="Amount"
+                                placeholder="Amount 100 Naira minimum"
                                 className={amountErr ? ' showError' : ''} />
                             {amountErr &&
-                                <div style={{ color: "red" }}>{amountErr}</div>
+                                <div  className={classes.Error} style={{ color: "red" }}>{amountErr}</div>
                             }
                         </div>
-                       
+                    
                     </form>
                 </div>
                 <PaystackButton className={classes.Button}
                     reference={reference}
                     email={this.state.emailId}
                     amount={this.state.amount * 100}
-                    publicKey={'pk_test_6de1def8442e2f2447e3f88367518f797f5360af'}
+                    publicKey={process.env.REACT_APP_PAYSTACT_PUBLIC_KEY}
                     text={'Pay Here'}
                     onSuccess={() => this.handlePaystackSuccessAction(reference)}
                     onClose={this.handlePaystackCloseAction} />
