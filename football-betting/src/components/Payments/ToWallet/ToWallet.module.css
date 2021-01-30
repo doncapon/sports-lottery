@@ -62,7 +62,10 @@
       width: 40vw;
     }
 
-    
+    .Error{
+      font-size: 15px;
+      margin-left: 12.5vw;
+    }
     .Button{  
         width: 40%;
       margin-left: 2vw;
@@ -84,5 +87,11 @@
 
     .label{
         width: 7vw;
+
+    }
+
+    .Error{
+      font-size: 15px;
+      margin-left: 9vw;
     }
 }

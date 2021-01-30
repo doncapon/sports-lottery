@@ -24,7 +24,9 @@ export {
      toggleIsShowReceipt,
      toggleShowFunds,
      setShowFunds,
-     creditFunds
+     creditFunds,
+     setIsToWallet,
+     debitFunds
 } from './board';
 
 export {

@@ -86,10 +86,25 @@ export const setFixtureIds = ()=>{
 
     }
 }
+export const setIsToWallet = (isToWallet)=>{
+    return {
+        type: actionTypes.SET_ISTOWALLET,
+        isToWallet: isToWallet,
+
+    }
+}
 
 export const creditFunds = (funds)=>{
     return {
         type: actionTypes.CREDIT_FUNDS,
+        funds: funds
+
+    }
+}
+
+export const debitFunds = (funds)=>{
+    return {
+        type: actionTypes.DEBIT_FUNDS,
         funds: funds
 
     }

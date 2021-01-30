@@ -24,12 +24,12 @@ class SignupForm extends Component {
     }
 
     handleFormValidation() {
-        const { studName, emailId, dob, phoneNumber, username, role, password, passwordConf } = this.state;
+        const { name, emailId, dob, phoneNumber, username, role, password, passwordConf } = this.state;
         let formErrors = {};
         let formIsValid = true;
 
         //Student name     
-        if (!studName) {
+        if (!name) {
             formIsValid = false;
             formErrors["nameErr"] = "Name is required.";
         }
