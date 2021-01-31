@@ -12,9 +12,9 @@ import ResultPage from './containers/Board/ResultPage';
 import { IdleTimeoutModal } from './components/UI/IdleTimeoutModal/IdleTimeoutModal';
 import IdleTimer from 'react-idle-timer';
 import Board from './containers/Board/Board';
-import Signup from './components/loginLogout/signup/signup';
 import Transfers from './containers/Transfers/Transfers';
 import ForgotPassword from './components/loginLogout/forgotPassword/forgotPassword';
+import signupForm from './components/loginLogout/signup/signupForm/signupForm';
 
 
 
@@ -96,10 +96,12 @@ class App extends React.Component {
           toggleShowFunds={this.props.onToggleShowFunds} slips = {this.props.slips}
           
           /></div>
+{console.log(this.props.showFunds, "Na me")}
+
         <Switch>
           <Route path="/transfers" component={Transfers} />
           <Route path="/results" component={ResultPage} />
-          <Route path="/signup" component={Signup} />
+          <Route path="/signup" component={signupForm} />
           <Route path="/forgot-password/:resetLink" component={ForgotPassword} />
           <Route path="/forgot-password" component={ForgotPassword} />
           <Route path="/play" component={Board} />
@@ -116,7 +118,6 @@ class App extends React.Component {
       </div>
     )
   }
-
 }
 
 const mapstateToProps = (state) => {

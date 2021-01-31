@@ -8,12 +8,7 @@
   display:  block;
 }
 
-@media only screen and (min-width: 768px){
-  .Navs{
-    display: block;
-  }
-
-  .App{
+.App{
     
   background: url(./assets/bg1.png) no-repeat center center fixed; 
   -webkit-background-size: cover;
@@ -22,4 +17,11 @@
   background-size: cover;
 
   }
+
+@media only screen and (min-width: 768px){
+  .Navs{
+    display: block;
+  }
+
+
 }

@@ -47,8 +47,9 @@ const initialStte = {
     isShowReceipt: false,
     gameDate: null,
     gameDateRaw: null,
-    showFunds:  true,
     isToWallet: true,
+    
+    showFunds:  true,
 
 };
 
