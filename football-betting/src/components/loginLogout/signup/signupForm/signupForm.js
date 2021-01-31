@@ -14,7 +14,6 @@ class SignupForm extends Component {
             passwordConf: '',
             emailId: '',
             dob: '',
-            role: 'user',
             phoneNumber: '',
             city: 'select',
             formErrors: {},
@@ -26,7 +25,7 @@ class SignupForm extends Component {
     }
 
     handleFormValidation() {
-        const { name, emailId, dob, phoneNumber, username, role, password, passwordConf } = this.state;
+        const { name, emailId, dob, phoneNumber, username, password, passwordConf } = this.state;
         let formErrors = {};
         let formIsValid = true;
 
@@ -93,12 +92,6 @@ class SignupForm extends Component {
             }
         }
 
-        //role   
-        if (role === '' || role === "select") {
-            formIsValid = false;
-            formErrors["cityErr"] = "Select city.";
-        }
-
         this.setState({ formErrors: formErrors });
         return formIsValid;
     }
@@ -113,7 +106,6 @@ class SignupForm extends Component {
         e.preventDefault();
 
         if (this.handleFormValidation()) {
-            let role = this.props.adminLoggedIn ? this.state.role : "user";
             const registerData = {
                 name: this.state.name,
                 surname: this.state.surname,
@@ -121,7 +113,6 @@ class SignupForm extends Component {
                 phone: this.state.phoneNumber,
                 dob: this.state.dob,
                 password: this.state.password,
-                state: role,
                 email: this.state.emailId
             }
             axios.post("register", registerData)
@@ -135,15 +126,13 @@ class SignupForm extends Component {
 
     render() {
 
-        const { nameErr, emailIdErr, dobErr, roleErr, phoneNumberErr, usernameErr, passwordErr,
+        const { nameErr, emailIdErr, dobErr, phoneNumberErr, usernameErr, passwordErr,
             passwordConfErr } = this.state.formErrors;
         if (this.props.isLoggedIn) {
             return (
                 this.props.history.push("/")
             )
         }
-        let roles = [classes.SelectRow];
-        if (roleErr) { roles.push("showError") }
         return (
             <div className={classes.Wrapper}>
                 <div className="formDiv">
@@ -158,7 +147,7 @@ class SignupForm extends Component {
                                     placeholder="Your name.."
                                     className={nameErr ? ' showError' : ''} />
                                 {nameErr &&
-                                    <div style={{ color: "red" }}>{nameErr}</div>
+                                    <div className= {classes.ErrorText}>{nameErr}</div>
                                 }
 
                             </div>
@@ -170,7 +159,7 @@ class SignupForm extends Component {
                                     placeholder="Your Surame.."
                                     className={nameErr ? ' showError' : ''} />
                                 {nameErr &&
-                                    <div style={{ color: "red" }}>{nameErr}</div>
+                                    <div className= {classes.ErrorText}>{nameErr}</div>
                                 }
 
                             </div>
@@ -183,7 +172,7 @@ class SignupForm extends Component {
                                     placeholder="Your email id.."
                                     className={emailIdErr ? ' showError' : ''} />
                                 {emailIdErr &&
-                                    <div style={{ color: "red" }}>{emailIdErr}</div>
+                                    <div className= {classes.ErrorText}>{emailIdErr}</div>
                                 }
 
                             </div>
@@ -195,7 +184,7 @@ class SignupForm extends Component {
                                     placeholder="Your phone number.."
                                     className={phoneNumberErr ? ' showError' : ''} />
                                 {phoneNumberErr &&
-                                    <div style={{ color: "red" }}>{phoneNumberErr}</div>
+                                    <div className= {classes.ErrorText}>{phoneNumberErr}</div>
                                 }
                             </div>
                             <div>
@@ -208,20 +197,7 @@ class SignupForm extends Component {
                                     placeholder="dob: DD-MM-YYYY.."
                                     className={dobErr ? ' showError' : ''} />
                                 {dobErr &&
-                                    <div style={{ color: "red" }}>{dobErr}</div>
-                                }
-                            </div>
-                            <div>
-                                <label className={classes.Label} htmlFor="role">Role</label>
-                                <select name="role" onChange={this.handleChange}
-                                    className={roles.join(" ")} disabled= {true}
-                                    value={this.state.role} >
-                                    <option value="select">--Role   --</option>
-                                    <option value="user">User</option>
-                                    <option value="admin">Admin</option>
-                                </select>
-                                {roleErr &&
-                                    <div style={{ color: "red" }}>{roleErr}</div>
+                                    <div className= {classes.ErrorText}>{dobErr}</div>
                                 }
                             </div>
 
@@ -233,7 +209,7 @@ class SignupForm extends Component {
                                     placeholder="Username.."
                                     className={usernameErr ? ' showError' : ''} />
                                 {usernameErr &&
-                                    <div style={{ color: "red" }}>{usernameErr}</div>
+                                    <div className= {classes.ErrorText}>{usernameErr}</div>
                                 }
 
                             </div>
@@ -246,7 +222,7 @@ class SignupForm extends Component {
                                     placeholder="Password.."
                                     className={passwordErr ? ' showError' : ''} />
                                 {passwordErr &&
-                                    <div style={{ color: "red" }}>{passwordErr}</div>
+                                    <div className= {classes.ErrorText}>{passwordErr}</div>
                                 }
 
                             </div>
@@ -259,7 +235,7 @@ class SignupForm extends Component {
                                     placeholder="Re-password"
                                     className={passwordConfErr ? ' showError' : ''} />
                                 {passwordConfErr &&
-                                    <div style={{ color: "red" }}>{passwordConfErr}</div>
+                                    <div className= {classes.ErrorText}>{passwordConfErr}</div>
                                 }
 
                             </div>
@@ -274,7 +250,8 @@ class SignupForm extends Component {
 }
 const mapstateToProps = (state) => {
     return {
-        isLoggedIn: state.login.isLoggedIn
+        isLoggedIn: state.login.isLoggedIn,
+        user: state.login.user,
     }
 }
 
