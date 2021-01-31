@@ -3,7 +3,7 @@ import { Navbar, Nav, Dropdown, Button } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import Funds from '../../../components/board/funds/funds'
 import Login from '../../../components/loginLogout/login/login';
-import { Redirect, withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
 //import Navbar from "reactjs-navbar";
 import logo from "./logo.JPG";
@@ -42,7 +42,8 @@ class Navs extends Component {
     this.props.setIsLoggedIn(false);
     if(this.props.slips !== null)
     this.props.deleteAndResetAll();
-     return <Redirect to="/" />
+    //  return <Redirect to="/" />
+    this.props.history.push("/");
   }
   render() {
     return (

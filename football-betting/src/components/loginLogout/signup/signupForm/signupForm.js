@@ -39,7 +39,7 @@ class SignupForm extends Component {
             formIsValid = false;
             formErrors["usernameErr"] = "Username is required.";
         }
-        //Student name     
+        //Passwod Validations   
         if (!password) {
             formIsValid = false;
             formErrors["passwordErr"] = "Password is required.";
@@ -91,7 +91,7 @@ class SignupForm extends Component {
             }
         }
 
-        //City    
+        //role   
         if (role === '' || role === "select") {
             formIsValid = false;
             formErrors["cityErr"] = "Select city.";
@@ -113,26 +113,25 @@ class SignupForm extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        let role = this.props.adminLoggedIn? this.state.role: "user";
-        const registerData = {
-            name: this.state.name,
-            surname: this.state.surname,
-            username: this.state.username,
-            phone: this.state.phoneNumber,
-            dob: this.state.dob,
-            password: this.state.password,
-            state: role,
-            email: this.state.emailId
-        }
-        axios.post("register" , registerData)
-        .then(response =>{
-        })
-        .catch(error =>{
-            // this.setState({apiError: error.response.data})
-        })
+       
         if (this.handleFormValidation()) {
+            let role = this.props.adminLoggedIn? this.state.role: "user";
+            const registerData = {
+                name: this.state.name,
+                surname: this.state.surname,
+                username: this.state.username,
+                phone: this.state.phoneNumber,
+                dob: this.state.dob,
+                password: this.state.password,
+                state: role,
+                email: this.state.emailId
+            }
+            axios.post("register" , registerData)
+            .then(response =>{
             alert('You have been successfully registered.')
-            // this.setState(this.initialState)
+            })
+            .catch(error =>{
+            })
         }
     }
 

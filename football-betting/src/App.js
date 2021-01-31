@@ -14,6 +14,7 @@ import IdleTimer from 'react-idle-timer';
 import Board from './containers/Board/Board';
 import Signup from './components/loginLogout/signup/signup';
 import Transfers from './containers/Transfers/Transfers';
+import ForgotPassword from './components/loginLogout/forgotPassword/forgotPassword';
 
 
 
@@ -99,6 +100,8 @@ class App extends React.Component {
           <Route path="/transfers" component={Transfers} />
           <Route path="/results" component={ResultPage} />
           <Route path="/signup" component={Signup} />
+          <Route path="/forgot-password/:resetLink" component={ForgotPassword} />
+          <Route path="/forgot-password" component={ForgotPassword} />
           <Route path="/play" component={Board} />
           <Route exact path="/" component={Landing} />
           <Redirect to="/" />

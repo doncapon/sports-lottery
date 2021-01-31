@@ -2,12 +2,14 @@ import { Button, FormControl, Form } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import React, { useState } from 'react';
 import axios from '../../../axios-users';
+import classes from './login.module.css'; 
 
 const Login = (props) => {
     const [showPopup, setShowPopUp] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [data, setData] = useState({});
+    const [forgot, setForgot] = useState(false);
     let history = useHistory();
     const login = async () => {
         const loginData = {
@@ -35,6 +37,7 @@ const Login = (props) => {
         }).catch(err => {
             setData(err);
             popUpFunc();
+            setForgot(true);
             props.setIsLoggedIn(false);
 
 
@@ -53,7 +56,10 @@ const Login = (props) => {
         }, 2000);
         setShowPopUp(true);
     }
-
+    const handleForgot=()=>{
+        setForgot(false);
+        history.push("forgot-password");
+    }
     return (<div>
 
         {showPopup ?
@@ -79,6 +85,9 @@ const Login = (props) => {
                 value={username} placeholder="username" className="mr-sm-2" />
             <FormControl type="password" onChange={(e) => setPassword(e.target.value)}
                 value={password} placeholder="password" className="mr-sm-2" />
+                {forgot? 
+                <Button className={classes.Forgot} onClick={handleForgot} >forgot password?</Button>
+                : null}
             <Button type="submit" variant="outline-light" disabled={username === "" || password === ""}>Login</Button>
 
             <Button onClick={HandleSignup} variant="outline-light">SignUp</Button>
