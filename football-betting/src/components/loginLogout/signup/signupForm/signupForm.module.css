@@ -15,6 +15,10 @@
     .Label{
         display: none;
     } 
+
+    .ErrorText{
+      color: red;
+    }
     input[type=text], select  ,   input[type=password], input[type=date]    
     {    
       width: 80%;    
@@ -80,11 +84,11 @@
         margin-left: 10px;
     } 
     
-    input[type=text],  input[type=password] ,  input[type=date]   , .SelectRow
+    input[type=text],  input[type=password] ,  input[type=date] 
     {    
       width: 75%;
     }
-
+ 
 
     form > div> div{
         margin-left: 25%;
@@ -101,14 +105,17 @@
   .Wrapper{
     width: 40%;
   }
-  input[type=text], select  ,   input[type=password] ,  input[type=date]  ,.SelectRow 
+  input[type=text], select  ,   input[type=password] ,  input[type=date]  
   {    
     width: 60%;
   }
   .Label{
     display: inline-block;
-    width: 30%;
+    width: 23%;
     font-size: 13px;
     margin-left: 10px;
 } 
+.ErrorText{
+  margin-left: 10vw;
+}
 }
