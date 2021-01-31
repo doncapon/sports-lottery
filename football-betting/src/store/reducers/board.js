@@ -407,6 +407,7 @@ const addEmptySlip = (state, action) => {
 const deleteAndResetAll = (state, action) => {
     return produce(state, draft => {
         const clonedSlips = _.cloneDeep(state.slips);
+
         if (state.slips.length > 1) {
 
             clonedSlips.splice(1, state.slips.length);

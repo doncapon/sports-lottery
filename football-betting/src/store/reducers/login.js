@@ -4,10 +4,8 @@ import produce from "immer";
 const initialState = {
     username: '',
     password: '',
-    loginSuccess: '',
     user: {},
     loading: false,
-    error: null,
     isLoggedIn: false,
 }
 const setUsername = (state, action) =>{
@@ -24,35 +22,13 @@ const setPassword = (state, action) =>{
 const setIsLoggedIn = (state, action) =>{
     return produce(state, draft=>{
         draft.isLoggedIn = action.isLoggedIn;
-        if(!action.isLoggedIn){
-            draft.username = '';
-            draft.password = '';
-            draft.loginSuccess = '';
-        }
+     
     })
 }
 
-const loginStart = (state, action) =>{
+const setLoggedInUser = (state, action) =>{
     return produce(state, draft =>{
-        draft.loading = true;
-        draft.error = null;
-    })
-}
-
-const loginSuccess = (state, action )=>{
-    return produce(state, draft =>{
-        draft.user = Object.assign({}, action.user);
-        draft.loading = false;
-        draft.error = null;
-        draft.loginSuccess= "success";
-    })
-}
-
-
-const loginFail = (state, action )=>{
-    return produce(state, draft =>{
-        draft.loading = false;
-        draft.error = action.error;
+        draft.user = action.user;
     })
 }
 
@@ -63,14 +39,10 @@ const reducer = (state = initialState , action)=>{
         return setPassword(state, action);
     case actionTypes.SET_USERNAME:
         return setUsername(state, action);
-    case actionTypes.LOGIN_START:
-        return loginStart(state, action);
     case actionTypes.SET_IS_LOGGED_IN:
         return setIsLoggedIn(state, action);
-    case actionTypes.LOGIN_SUCCESS:
-        return loginSuccess(state, action);
-    case actionTypes.LOGIN_FAIL:
-        return loginFail(state, action);
+    case actionTypes.SET_LOGGEDIN_USER:
+        return setLoggedInUser(state, action);
     default:
         return state;
     }

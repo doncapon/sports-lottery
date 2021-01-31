@@ -20,7 +20,7 @@ class ToBank extends Component {
     }
 
     handleFormValidation() {
-        const { name, amount, account, bank, savedBank } = this.state;
+        const { name, amount, account, bank } = this.state;
         let formErrors = {};
         let formIsValid = true;
 
@@ -59,11 +59,6 @@ class ToBank extends Component {
         }
         this.setState({ formErrors: formErrors });
 
-        //Bank
-        if (savedBank === '' || savedBank === "select") {
-            formIsValid = false;
-            formErrors["savedBankErr"] = "Select bank.";
-        }
         this.setState({ formErrors: formErrors });
 
         return formIsValid;
@@ -86,82 +81,91 @@ class ToBank extends Component {
     }
     handleSubmit2 = (e) => {
         e.preventDefault();
-        if (this.handleFormValidation()) {
-            alert('You have been successfully registered.')
-            // this.setState(this.initialState)
-        }
+        this.handleChange(e);
     }
     handleSubmit = (e) => {
         e.preventDefault();
-        const receipntData = {
-            type: "nuban",
-            name: this.state.name,
-            account_number: this.state.account,
-            bank_code: this.state.bank,
-            currency: "NGN"
-        }
-        const params = "account_number=" + this.state.account + "&bank_code=" + this.state.bank;
-        if (this.state.amount <= this.props.funds && this.state.amount > 0) {
-            axios.get("bank/resolve?" + params)
-                .then(response => {
-                    if (response.data.message === "Account number resolved") {
-                        axios.post("transferrecipient", receipntData)
-                            .then(response => {
-                                if (response.data.message === "Transfer recipient created successfully") {
-                                    return response.data.data;
-                                }
-                            })
-                            .then(value => {
-                                const paymentData = {
-                                    source: "balance",
-                                    amount: this.state.amount* 100,
-                                    recipient: value.recipient_code,
-                                    reason: "Returns from BetSoka account"
-                                }
-                                console.log(paymentData);
-
-                                axios.post("transfer", paymentData)
-                                    .then(response => {
-                                        if (response.data.status === "success") {
-                                            console.log("your withdrawal was successful")
-                                            this.props.debitFunds(this.state.amount);
-                                        }
-                                    })
-                                    .catch(error => {
-                                        this.setState({ apiError: error })
-                                    })
-                            })
-                            .catch(error => {
-                                this.setState({ apiError: error })
-                            });
-                    }
-                })
-                .catch(error => {
-                    this.setState({ apiError: error })
-                });
-        }
         if (this.handleFormValidation()) {
-            alert('Withdraw successful. Funds wull be received within 24 hours.')
-            // this.setState(this.initialState)
+
+            const receipntData = {
+                type: "nuban",
+                name: this.state.name,
+                account_number: this.state.account,
+                bank_code: this.state.bank,
+                currency: "NGN"
+            }
+            const params = "account_number=" + this.state.account + "&bank_code=" + this.state.bank;
+            if (this.state.amount <= this.props.funds && this.state.amount > 0) {
+                axios.get("bank/resolve?" + params)
+                    .then(response => {
+                        if (response.data.message === "Account number resolved") {
+                            axios.post("transferrecipient", receipntData)
+                                .then(response => {
+                                    if (response.data.message === "Transfer recipient created successfully") {
+                                        return response.data.data;
+                                    }
+                                })
+                                .then(value => {
+                                    const paymentData = {
+                                        source: "balance",
+                                        amount: "" + this.state.amount * 100,
+                                        recipient: value.recipient_code,
+                                        // reason: "Returns from BetSoka account"
+                                        reason: "Holiday Flexing"
+                                    };
+
+
+                                    console.log(paymentData);
+
+                                    axios.post("transfer", paymentData)
+                                        .then(response => {
+                                            if (response.data.status === "success") {
+                                                this.props.debitFunds(this.state.amount);
+                                                alert('Withdraw successful. Funds wull be received within 24 hours.')
+                                                // this.setState(this.initialState)
+
+                                            }
+
+                                        })
+                                        .catch(error => {
+                                            this.setState({ apiError: error })
+                                            console.log("From call ", this.state.apiError)
+                                        })
+                                })
+                                .catch(error => {
+                                    this.setState({ apiError: error })
+                                });
+                        }
+                    })
+                    .catch(error => {
+                        this.setState({ apiError: error })
+                    });
+            }
         }
     }
 
 
     render() {
 
-        const { nameErr, amountErr, accountErr, bankErr, savedBankErr } = this.state.formErrors;
-        // const reference = '' + Math.floor((Math.random() * 1000000000) + 1);
+        const { nameErr, amountErr, accountErr, bankErr } = this.state.formErrors;
+        const banks = [classes.Banks];
+        if (bankErr) {
+            banks.push(classes.showError);
+        }
+        const banksExist = [classes.BanksExist];
+
+
         return (
             <div className={classes.ToBankWrapper}>
                 <div>
-                    <form onSubmit={this.handleSubmit2}>
-                        <select name="bank"
+                    <form>
+                        <select name="savedBank"
                             value={this.state.savedBank}
-                            onChange={this.handleChange}
-                            className={savedBankErr ? ' showError' : ''} >
-                            <option value="select">User an exisitng bank</option>
-                            <option value="058">023948362354</option>
-                            <option value="zenith">08234634324</option>
+                            onChange={this.handleSubmit2}
+                            className={banksExist.join(" ")} >
+                            <option value="select">Use an exisitng bank</option>
+                            <option value="050988">023948362354</option>
+                            <option value="097654">08234634324</option>
                             <option value="echoCode">09237473264</option>
                         </select>
                     </form>
@@ -197,13 +201,11 @@ class ToBank extends Component {
 
                             <div>
                                 <label className={classes.label} htmlFor="name">Bank:</label>
-                                <label className={classes.label2} htmlFor="name">Bank:</label>
-
                                 <select name="bank"
                                     value={this.state.bank}
                                     onChange={this.handleChange}
-                                    className={bankErr ? ' showError' : ''} >
-                                    <option value="select">--Select--</option>
+                                    className={banks.join(" ")} >
+                                    <option value="select">--Select Bank--</option>
                                     <option value="058">Guaranty Trust Bank</option>
                                     <option value="zenith">Zenith Bank</option>
                                     <option value="echoCode">Eco bank</option>
@@ -225,12 +227,14 @@ class ToBank extends Component {
 
                             </div>
                             <div className={classes.Buttons}>
-                                <div>
+                                <div className={classes.ButtonInner}>
                                     <button className={classes.Button1}
                                     >Store Details</button>
                                 </div>
+                                {/* <div className={classes.SubmitInner}> */}
                                 <input type="submit" className={classes.Submit}
                                     value="Withdraw" />
+                                {/* </div> */}
                             </div>
                         </form>
                     </div>

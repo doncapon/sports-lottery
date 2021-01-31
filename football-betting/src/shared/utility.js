@@ -35,5 +35,8 @@ export function uuid() {
     while (rgx.test(x1)) {
             x1 = x1.replace(rgx, '$1,$2');
     }
-    return x1 + x2;
+    let num = x1+x2;
+    if(num.includes("."))
+    num = num.substr(0, num.indexOf(".") + 3)
+    return (num);
   }

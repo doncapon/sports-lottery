@@ -3,7 +3,7 @@ import { Navbar, Nav, Dropdown, Button } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import Funds from '../../../components/board/funds/funds'
 import Login from '../../../components/loginLogout/login/login';
-import { Redirect, withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
 //import Navbar from "reactjs-navbar";
 import logo from "./logo.JPG";
@@ -40,8 +40,10 @@ class Navs extends Component {
     const isShow = true;
     this.props.setShowFunds(isShow);
     this.props.setIsLoggedIn(false);
+    if(this.props.slips !== null)
     this.props.deleteAndResetAll();
-     return <Redirect to="/" />
+    //  return <Redirect to="/" />
+    this.props.history.push("/");
   }
   render() {
     return (
@@ -195,15 +197,16 @@ class Navs extends Component {
               <Dropdown.Item to="/gamehistory" as={NavLink}>Game History</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
+
           {this.props.isLoggedIn ?
             <div className={classes.LoginSection}>
               <Button onClick={this.logout} variant="danger">Logout</Button>
               <Funds funds={this.props.funds} showFunds={this.props.showFunds} firstName={this.props.firstName}
                 toggleShowFunds={this.props.toggleShowFunds} setIsLoggedIn={this.props.setIsLoggedIn} />
             </div>
-            : <Login login={this.props.login} setPassword={this.props.setPassword}
-              username={this.props.username} password={this.props.password} loginSuccess={this.props.loginSuccess}
-              setUsername={this.props.setUsername} />
+            : <Login login={this.props.login} setPassword={this.props.setPassword} setIsLoggedIn= {this.props.setIsLoggedIn}
+              username={this.props.username} password={this.props.password} loginMessage={this.props.loginMessage}
+              setUsername={this.props.setUsername} setLoggedInUser= {this.props.setLoggedInUser} />
           }
 
         </Navbar.Collapse>

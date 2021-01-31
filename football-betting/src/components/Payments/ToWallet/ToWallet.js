@@ -8,15 +8,16 @@ class ToWallet extends Component {
         this.state = {
             emailId: '',
             amount: '',
-            emailError : '',
+            emailError: '',
             amountErr: '',
             config: {}
         };
 
         this.initialState = this.state;
     }
+    
     handleFormValidationEmail(emailId) {
-        
+
         let emailError = '';
         let formIsValid = true;
 
@@ -49,8 +50,8 @@ class ToWallet extends Component {
                 formIsValid = false;
                 amountErr = "Minimum amount is 100 Naira";
             }
-            if(amount %1 !== 0){
-                amountErr= "No decimals allowed, remove dot(.)";
+            if (amount % 1 !== 0) {
+                amountErr = "No decimals allowed, remove dot(.)";
 
             }
         }
@@ -60,7 +61,7 @@ class ToWallet extends Component {
 
     handleChangeEmail = (e) => {
         e.preventDefault();
-        
+
         let { name, value } = e.target;
         this.handleFormValidationEmail(value)
 
@@ -68,7 +69,7 @@ class ToWallet extends Component {
     }
     handleChangeAmount = (e) => {
         e.preventDefault();
-        
+
         let { name, value } = e.target;
         this.handleFormValidationAmount(value)
         this.setState({ [name]: value });
@@ -86,9 +87,9 @@ class ToWallet extends Component {
     }
 
     render() {
-        
-        const  emailIdErr = this.state.emailError;
-        const  amountErr = this.state.amountErr;
+
+        const emailIdErr = this.state.emailError;
+        const amountErr = this.state.amountErr;
         const reference = '' + Math.floor((Math.random() * 1000000000) + 1);
         return (
             <div className="formDiv">
@@ -116,10 +117,10 @@ class ToWallet extends Component {
                                 placeholder="Amount 100 Naira minimum"
                                 className={amountErr ? ' showError' : ''} />
                             {amountErr &&
-                                <div  className={classes.Error} style={{ color: "red" }}>{amountErr}</div>
+                                <div className={classes.Error} style={{ color: "red" }}>{amountErr}</div>
                             }
                         </div>
-                    
+
                     </form>
                 </div>
                 <PaystackButton className={classes.Button}
