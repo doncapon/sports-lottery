@@ -1,0 +1,7 @@
+.alert-hidden{
+    display: none;
+}
+
+.alert-shown{
+    display: block;
+}

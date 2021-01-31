@@ -87,12 +87,12 @@ class App extends React.Component {
             timeout={this.state.timeout} />
           : null}
         <div className={classes.Navs}><Navs funds={this.props.funds}
-          loggedIn={false} setUsername={this.props.onSetUsername} loginSuccess={this.props.loginSuccess}
+          loggedIn={false} setUsername={this.props.onSetUsername} loginMessage={this.props.loginMessage}
           setPassword={this.props.onSetPassword} setIsLoggedIn={this.props.onSetIsLoggedIn}
-          login={this.props.onLogin} isLoggedIn={this.props.isLoggedIn} deleteAndResetAll={this.props.onDeleteAndResetAll}
+          setLoggedInUser={this.props.onSetLoggedInUser} isLoggedIn={this.props.isLoggedIn} deleteAndResetAll={this.props.onDeleteAndResetAll}
           username={this.props.username} password={this.props.password}
           showFunds={this.props.showFunds} firstName={this.props.user.name} setShowFunds={this.props.onSetShowFunds}
-          toggleShowFunds={this.props.onToggleShowFunds}
+          toggleShowFunds={this.props.onToggleShowFunds} slips = {this.props.slips}
           
           /></div>
         <Switch>
@@ -121,8 +121,9 @@ const mapstateToProps = (state) => {
 
     showFunds: state.board.showFunds,
     funds: state.board.funds,
+    slips: state.board.slips,
 
-    loginSuccess: state.login.loginSuccess,
+    loginMessage: state.login.loginMessage,
     user: state.login.user,
     username: state.login.username,
     password: state.login.password,
@@ -137,7 +138,7 @@ const mapDispatchToProps = (dispatch) => {
     onToggleShowFunds: () => dispatch(actions.toggleShowFunds()),
     onSetPassword: (password) => dispatch(actions.setPassword(password)),
     onSetUsername: (username) => dispatch(actions.setUsername(username)),
-    onLogin: (username, password) => dispatch(actions.login(username, password)),
+    onSetLoggedInUser: (username, password) => dispatch(actions.setLoggedInUser(username, password)),
     onDeleteAndResetAll: () => dispatch(actions.deleteAndResetAll()),
     onSetShowFunds: () => dispatch(actions.setShowFunds()),
 

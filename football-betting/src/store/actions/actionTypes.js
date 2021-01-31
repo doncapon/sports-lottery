@@ -54,9 +54,7 @@ export const SETUP_WINNERS = 'SETUP_WINNERS';
 
 //login
 export const SET_IS_LOGGED_IN = 'SET_IS_LOGGED_IN';
-export const LOGIN_FAIL = 'LOGIN_FAIL';
-export const LOGIN_START = 'LOGIN_START';
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const SET_LOGGEDIN_USER = 'SET_LOGGEDIN_USER';
 export const SET_USERNAME = 'SET_USERNAME';
 export const SET_PASSWORD = 'SET_PASSWORD';
 

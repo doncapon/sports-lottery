@@ -42,7 +42,7 @@ export {
 
 
 export {
-     login,
+     setLoggedInUser,
      setPassword,
      setUsername,
      setIsLoggedIn,
