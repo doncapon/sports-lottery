@@ -96,6 +96,8 @@ class App extends React.Component {
           toggleShowFunds={this.props.onToggleShowFunds} slips = {this.props.slips}
           
           /></div>
+{console.log(this.props.showFunds, "Na me")}
+
         <Switch>
           <Route path="/transfers" component={Transfers} />
           <Route path="/results" component={ResultPage} />
@@ -116,7 +118,6 @@ class App extends React.Component {
       </div>
     )
   }
-
 }
 
 const mapstateToProps = (state) => {

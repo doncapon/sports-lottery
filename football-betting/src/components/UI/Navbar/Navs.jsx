@@ -37,8 +37,6 @@ class Navs extends Component {
     isLoading: false,
   };
   logout = () => {
-    const isShow = true;
-    this.props.setShowFunds(isShow);
     this.props.setIsLoggedIn(false);
     if(this.props.slips !== null)
     this.props.deleteAndResetAll();
@@ -197,7 +195,6 @@ class Navs extends Component {
               <Dropdown.Item to="/gamehistory" as={NavLink}>Game History</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-
           {this.props.isLoggedIn ?
             <div className={classes.LoginSection}>
               <Button onClick={this.logout} variant="danger">Logout</Button>

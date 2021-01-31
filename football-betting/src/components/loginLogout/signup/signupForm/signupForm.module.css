@@ -35,8 +35,8 @@
     
     input[type=button] {    
         width: 30%;    
-        background-color: #ccc;    
-        color: white;    
+        background-color: #eee;    
+        font-size: 20px;
         padding: 5px 0%;    
         margin: 8px 10px 8px 20%;    
         border: none;    

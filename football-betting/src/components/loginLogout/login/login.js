@@ -45,7 +45,6 @@ const Login = (props) => {
     }
 
     const HandleSignup = () => {
-        let history = useHistory();
         history.push("/signup");
     }
     const popUpFunc = () => {
