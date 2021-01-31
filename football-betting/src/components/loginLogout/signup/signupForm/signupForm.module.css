@@ -1,20 +1,25 @@
+.Wrapper{
+  width: 80%;
+  margin: 10px auto;
+  background: white;
+}
+
 .formDiv {    
-    padding: 21px;    
-     border-radius: 5px;    
-     background-color: #f2f2f2;    
-     overflow: scroll;
+     background-color: white;    
+     width: 300px;
+     height: 300vh;
     }   
     h3{
         font-size: 15px;
     } 
-    label{
+    .Label{
         display: none;
     } 
     input[type=text], select  ,   input[type=password], input[type=date]    
     {    
-      width: 100%;    
+      width: 80%;    
       padding: 2px 20px;    
-      margin: 2px 0;    
+      margin: 2px auto  ;    
       display: inline-block;    
       border: 1px solid #ccc;    
       border-radius: 4px;    
@@ -48,6 +53,7 @@
     }
     span{
         font-size: 13px;;
+        margin-left: 20px;
         
     }
     input[type=submit]:hover {    
@@ -62,16 +68,23 @@
     
 /* medium screens */
 @media only screen and (min-width: 768px){
-
-    label{
+  .Wrapper{
+    width: 60%;
+    margin: 10px auto;
+    background: white;
+  }
+    .Label{
         display: inline-block;
-        width: 25%;
+        width: 20%;
         font-size: 13px;
+        margin-left: 10px;
     } 
-    input[type=text], select  ,   input[type=password] ,  input[type=date]   
+    
+    input[type=text],  input[type=password] ,  input[type=date]   , .SelectRow
     {    
       width: 75%;
     }
+
 
     form > div> div{
         margin-left: 25%;
@@ -81,4 +94,21 @@
     span{
         display: none;
     }
+}
+
+
+@media only screen and (min-width: 968px){
+  .Wrapper{
+    width: 40%;
+  }
+  input[type=text], select  ,   input[type=password] ,  input[type=date]  ,.SelectRow 
+  {    
+    width: 60%;
+  }
+  .Label{
+    display: inline-block;
+    width: 30%;
+    font-size: 13px;
+    margin-left: 10px;
+} 
 }
