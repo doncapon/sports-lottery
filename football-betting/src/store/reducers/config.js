@@ -18,6 +18,7 @@ const initialState = {
     elevenPercent: .15,
     tenPercent: 0.1,
 
+    basePrice: 20
 }
 
 

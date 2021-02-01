@@ -3,13 +3,13 @@ import axios from '../../axios-fixtures';
 // import { getNextPlayDate } from '../../shared/utility';
 
 
-export const genrateSlip = (amount, slipIndex ) =>{
+export const genrateSlip = (amount, slipIndex, basePrice ) =>{
     return dispatch =>{
         dispatch(EmptyEditingISlip());
-        dispatch(genrateSlip2(amount));
+        dispatch(genrateSlip2(amount, basePrice));
 
         dispatch(setPurchaseAll());
-        dispatch(calculateSpecificSlipPrice(slipIndex));
+        dispatch(calculateSpecificSlipPrice(slipIndex, basePrice));
         dispatch(calculateGrandTtoalPriceOfAllSlips());
 
     }
@@ -140,10 +140,11 @@ export const setReceipt = () =>{
     }
 }
 
-export const genrateSlip2 = (amount) =>{
+export const genrateSlip2 = (amount, basePrice) =>{
     return {
         type: actionTypes.GENERATE_SLIP,
-        amount: amount
+        amount: amount,
+        basePrice: basePrice
     }
 }
 
@@ -241,10 +242,11 @@ export const addEmptySlip = () =>{
     };
 }
 
-export const calculateSpecificSlipPrice = (slipIndex) =>{
+export const calculateSpecificSlipPrice = (slipIndex, basePrice) =>{
     return { 
         type : actionTypes.CALCULATE_EDIT_INDEX_PRICE, 
-        slipIndex : slipIndex       
+        slipIndex : slipIndex,
+        basePrice: basePrice       
     };
 }
 

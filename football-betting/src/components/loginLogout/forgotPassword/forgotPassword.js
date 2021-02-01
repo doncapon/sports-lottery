@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { connect } from "react-redux";
 import * as actions from '../../../store/actions';
 import classes from './forgotPassword.module.css';
 import Modal from '../../UI/Modal/Modal';
-import axios  from "../../../axios-users";
+import axios from "../../../axios-users";
 
 const ForgotPassword = (props) => {
     const [showModal, setShowModal] = useState(true);
@@ -15,6 +15,8 @@ const ForgotPassword = (props) => {
     const { resetLink } = useParams();
     const [formErrors, setFormErrors] = useState({});
     props.onSetIsLoggedIn(false);
+    let history = useHistory();
+
     const handleFormValidation = () => {
         const formErros1 = {};
         let formIsValid = true;
@@ -53,27 +55,42 @@ const ForgotPassword = (props) => {
     }
     const handleSubmitEmail = (e) => {
         e.preventDefault();
-  
+
         if (handleFormValidationEmail()) {
-            const emailBody = {email: emailId}
+            const emailBody = { email: emailId }
             axios.put("forgot-password", emailBody)
-            .then(response =>{
-                alert(response.data.message)
-            })
+                .then(response => {
+                    setShowModal(false);
+                    history.push("/");
+
+                    alert(response.data.message)
+                })
         }
-     
+
     }
     const handleSubmit = (e) => {
         e.preventDefault();
         if (handleFormValidation()) {
-            alert("Check your email and clink the reset link")
+            const resetBody = {
+                newPass: password,
+                resetLink: resetLink
+            }
+            axios.put("reset-password", resetBody)
+                .then(response => {
+                    return response.data;
+                })
+                .then(value => {
+                    setShowModal(false);
+                    history.push("/");
+                    alert("Your password has been changed. try it!")
+                });
         }
     }
 
     const { passwordErr, passwordConfErr } = formErrors;
 
     return (
-        <Modal show={showModal} modalClosed={()=>{}} >
+        <Modal show={showModal} modalClosed={() => { }} >
             <div className={classes.PasswordWrapper}>
                 {!resetLink ? <div>
                     <div className="formDiv">
@@ -120,22 +137,22 @@ const ForgotPassword = (props) => {
                                         }
 
                                     </div>
-                                        {password !== '' ?
-                                    <div>
-                                        <label htmlFor="passwordConf">Confirm Password</label>
-                                        <input type="password" name="passwordConf"
-                                            value={passwordConf}
-                                            onChange={(e) => setPasswordConf(e.target.value)}
-                                            placeholder="Re-password"
-                                            className={passwordConfErr ? ' showError' : ''} />
-                                        {passwordConfErr &&
-                                            <div className={classes.ErrorText}>{passwordConfErr}</div>
-                                        }
+                                    {password !== '' ?
+                                        <div>
+                                            <label htmlFor="passwordConf">Confirm Password</label>
+                                            <input type="password" name="passwordConf"
+                                                value={passwordConf}
+                                                onChange={(e) => setPasswordConf(e.target.value)}
+                                                placeholder="Re-password"
+                                                className={passwordConfErr ? ' showError' : ''} />
+                                            {passwordConfErr &&
+                                                <div className={classes.ErrorText}>{passwordConfErr}</div>
+                                            }
 
-                                    </div>
-                                    :null}
+                                        </div>
+                                        : null}
                                     <div className={classes.Buttons}>
-                                        <button type="button"  onClick={() => setShowModal(false)} className={classes.Button1}
+                                        <button type="button" onClick={() => setShowModal(false)} className={classes.Button1}
                                         >Cancel</button>
                                         <input type="submit"
                                             value="Change" />

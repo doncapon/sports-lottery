@@ -6,7 +6,7 @@ import classes from './topBoard.module.css';
 const topBoard = (props) => {
   const genrateSlip = (event) => {
     let i = event.target.innerHTML;
-    props.genrateSlip(i, props.editIndex);
+    props.genrateSlip(i, props.editIndex, this.props.basePrice);
   }
   return (<div className= {classes.TopBoard}>
    

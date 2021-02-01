@@ -17,9 +17,6 @@ const Login = (props) => {
             password: password,
         };
 
-        props.setUsername(username);
-        props.setPassword(password);
-
         let res = await axios.post("login", loginData, { withCredentials: true });
         return await res.data;
     };

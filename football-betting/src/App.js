@@ -51,7 +51,7 @@ class App extends React.Component {
     const isTimedOut = this.state.isTimedOut
     if (isTimedOut) {
       this.props.onSetIsLoggedIn(false);
-      this.props.history.push("/")
+      this.props.history.push("/");
 
     } else {
       this.setState({ showModal: true })
@@ -88,15 +88,13 @@ class App extends React.Component {
             timeout={this.state.timeout} />
           : null}
         <div className={classes.Navs}><Navs funds={this.props.funds}
-          loggedIn={false} setUsername={this.props.onSetUsername} loginMessage={this.props.loginMessage}
-          setPassword={this.props.onSetPassword} setIsLoggedIn={this.props.onSetIsLoggedIn}
+          loggedIn={false} setIsLoggedIn={this.props.onSetIsLoggedIn}
           setLoggedInUser={this.props.onSetLoggedInUser} isLoggedIn={this.props.isLoggedIn} deleteAndResetAll={this.props.onDeleteAndResetAll}
           username={this.props.username} password={this.props.password}
           showFunds={this.props.showFunds} firstName={this.props.user.name} setShowFunds={this.props.onSetShowFunds}
           toggleShowFunds={this.props.onToggleShowFunds} slips = {this.props.slips}
           
           /></div>
-{console.log(this.props.showFunds, "Na me")}
 
         <Switch>
           <Route path="/transfers" component={Transfers} />
@@ -140,8 +138,6 @@ const mapDispatchToProps = (dispatch) => {
 
     onSetIsLoggedIn: (value) => dispatch(actions.setIsLoggedIn(value)),
     onToggleShowFunds: () => dispatch(actions.toggleShowFunds()),
-    onSetPassword: (password) => dispatch(actions.setPassword(password)),
-    onSetUsername: (username) => dispatch(actions.setUsername(username)),
     onSetLoggedInUser: (username, password) => dispatch(actions.setLoggedInUser(username, password)),
     onDeleteAndResetAll: () => dispatch(actions.deleteAndResetAll()),
     onSetShowFunds: () => dispatch(actions.setShowFunds()),

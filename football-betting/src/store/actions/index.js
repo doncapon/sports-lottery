@@ -11,7 +11,6 @@ export {
      setRemoving,
      deleteAndResetAll,
      calculateOverAllPrice,
-     calculateSpecificSlipPrice,
      calculateGrandTtoalPriceOfAllSlips,
      addEmptySlip,
      EmptyEditingISlip,
@@ -43,7 +42,5 @@ export {
 
 export {
      setLoggedInUser,
-     setPassword,
-     setUsername,
      setIsLoggedIn,
 } from './login';

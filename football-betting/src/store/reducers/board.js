@@ -37,7 +37,6 @@ const initialStte = {
     editIndex: 0,
     totalPrice: 0,
     purchaseAll: false,
-    basePrice: 20,
     loading: false,
     isStarted: false,
     gamesLength: null,
@@ -175,7 +174,7 @@ const genrateSlip = (state, action) => {
     return produce(state, draft => {
         let arrayGames = [[]];
         let clonedGames = draft.slips[state.editIndex]["slip_" + (state.editIndex + 1)].games;
-        draft.slips[state.editIndex].slipPrice = state.basePrice
+        draft.slips[state.editIndex].slipPrice = action.basePrice
         let gameRandom = getRandomInt(state.gamesLength);
         let rand2;
         for (let i = 0; i < 1; i++) {
@@ -267,7 +266,7 @@ const calculateSpecificSlipPrice = (state, action) => {
         let games = draft.slips[action.slipIndex]["slip_" + (action.slipIndex + 1)]
             .games;
         let slipAmount = 1;
-        let totalPrice = state.basePrice;
+        let totalPrice = action.basePrice;
         for (let i = 0; i < games.length; i++) {
             if (games[i].amount > 1) {
                 totalPrice *= 2;
