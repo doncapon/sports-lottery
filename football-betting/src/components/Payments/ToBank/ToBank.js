@@ -179,7 +179,7 @@ class ToBank extends Component {
                                     onChange={this.handleChange}
                                     value={this.state.amount}
                                     placeholder="Amount: 100 Naira minimum"
-                                    className={amountErr ? ' showError' : ''} />
+                                    className={classes.Number} />
                                 {amountErr &&
                                     <div style={{ color: "red" }}>{amountErr}</div>
                                 }
@@ -191,7 +191,7 @@ class ToBank extends Component {
                                     value={this.state.name}
                                     onChange={this.handleChange}
                                     placeholder="Name: as in bank"
-                                    className={nameErr ? ' showError' : ''} />
+                                    className={classes.Text} />
                                 {nameErr &&
                                     <div style={{ color: "red" }}>{nameErr}</div>
                                 }
@@ -220,7 +220,7 @@ class ToBank extends Component {
                                     value={this.state.account}
                                     onChange={this.handleChange}
                                     placeholder="Account Number"
-                                    className={accountErr ? ' showError' : ''} />
+                                    className={classes.Number} />
                                 {accountErr &&
                                     <div style={{ color: "red" }}>{accountErr}</div>
                                 }
@@ -231,10 +231,8 @@ class ToBank extends Component {
                                     <button className={classes.Button1}
                                     >Store Details</button>
                                 </div>
-                                {/* <div className={classes.SubmitInner}> */}
                                 <input type="submit" className={classes.Submit}
                                     value="Withdraw" />
-                                {/* </div> */}
                             </div>
                         </form>
                     </div>

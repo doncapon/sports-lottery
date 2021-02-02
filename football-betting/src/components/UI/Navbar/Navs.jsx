@@ -197,7 +197,7 @@ class Navs extends Component {
           </Dropdown>
           {this.props.isLoggedIn ?
             <div className={classes.LoginSection}>
-              <Button onClick={this.logout} variant="danger">Logout</Button>
+              <Button className={classes.Logout} onClick={this.logout} variant="danger">Logout</Button>
               <Funds funds={this.props.funds} showFunds={this.props.showFunds} firstName={this.props.firstName}
                 toggleShowFunds={this.props.toggleShowFunds} setIsLoggedIn={this.props.setIsLoggedIn} />
             </div>

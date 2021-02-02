@@ -7,7 +7,7 @@
     label{
         display: none;
     } 
-    input[type=text], select  ,   input[type=password]  , input[type=number]  , .Banks
+    .Text, select  ,   .Password  , .Number , .Banks
     {    
       width: 100%;    
       padding: 10px 20px;    
@@ -33,11 +33,11 @@ option{
         display: flex   ;
     }
         
-    .Button1, input[type=submit]{    
+    .Button1, .Submit{    
       background-color: #ccc;    
       color: black;    
       padding: 5px 0%;    
-      margin: 8px 0;    
+      margin: 8px 10px;    
       border: none;    
       border-radius: 4px;    
       cursor: pointer;  
@@ -46,7 +46,7 @@ option{
     width: 45vw;
 
     } 
- input[type=submit]{
+ .Submit{
     color: white;
     background: green;
 }
@@ -81,12 +81,12 @@ option{
         margin-left: 2vw;
         font-weight: bold;
     } 
-    input[type=text], select  ,   input[type=password] ,  input[type=date] , .Banks
-      , input[type=number]   
+    .Text, select  ,   .Password ,  .Date, .Banks
+      , .Number  
     {    
       width: 40vw;
     }
-    .Button1, input[type=submit]{    
+    .Button1, .Submit{    
       width: 20vw;
     }
     
@@ -116,8 +116,8 @@ option{
 
 /* Larger devices */
 @media only screen and (min-width: 960px) {
-    input[type=text], select  ,   input[type=password] ,  input[type=date] , .Banks
-      , input[type=number]   
+    .Text, select  ,   .Password , .Banks
+      , .Number  
     {    
       width: 30vw;
     }
@@ -133,5 +133,9 @@ option{
   .BanksExist{
     background: #ccc;
     margin-left: 27px;
+  }
+  
+  .Button1, .Submit{   
+    width: 15vw;
   }
 }

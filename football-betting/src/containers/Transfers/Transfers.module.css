@@ -3,6 +3,11 @@
     margin : 2vh auto 0vh;
     text-align: center;
 }
+.CardWrapper, .Main{
+    background: white;
+    width: 95%;
+    margin: 10px auto
+}
 
 .ToWalletHeader, .ToBankHeader{
     margin: 2vh 8px;

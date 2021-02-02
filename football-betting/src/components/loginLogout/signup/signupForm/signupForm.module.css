@@ -19,7 +19,7 @@
     .ErrorText{
       color: red;
     }
-    input[type=text], select  ,   input[type=password], input[type=date]    
+    .Text, .Select  ,   .Password, .Date 
     {    
       width: 80%;    
       padding: 2px 20px;    
@@ -31,7 +31,9 @@
       font-size: 12px; 
     }    
         
-    input[type=submit] {    
+    .Text{
+    }
+    .Submit {    
       width: 30%;    
       background-color: #4CAF50;    
       color: white;    
@@ -42,7 +44,7 @@
       cursor: pointer;    
     } 
     
-    input[type=button] {    
+    .Button {    
         width: 30%;    
         background-color: #eee;    
         font-size: 20px;
@@ -60,14 +62,9 @@
         margin-left: 20px;
         
     }
-    input[type=submit]:hover {    
+    .Submit:hover {    
       background-color: #45a049;    
     }    
-    .showError{    
-      border-color: #a94442 !important;    
-      color: #a94442 !important;    
-      margin-bottom: 15px;    
-    }
 
     
 /* medium screens */
@@ -84,7 +81,7 @@
         margin-left: 10px;
     } 
     
-    input[type=text],  input[type=password] ,  input[type=date] 
+    .Text,  .Password ,  .Date
     {    
       width: 75%;
     }
@@ -105,7 +102,7 @@
   .Wrapper{
     width: 40%;
   }
-  input[type=text], select  ,   input[type=password] ,  input[type=date]  
+  .Text, select  ,   .Password ,  .Date
   {    
     width: 60%;
   }
