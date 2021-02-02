@@ -14,7 +14,11 @@
       border: 1px solid #ccc;    
       border-radius: 4px;  
     }    
-        
+        .TransferText{
+          margin: 0;
+          margin-top: 7px;
+          font-weight: bold;
+        }
     .Button {    
       width: 60%;    
       background-color: #4CAF50;    
@@ -27,8 +31,17 @@
       font-size: 20px;  
       margin-left: 5vw;
     } 
+    .QuickButtons{
+      margin-top: 2px;
+      color: gray;
+    }
+.Quick{
+  margin: 0px;
+  border: none;
+  padding: 3px 4px;
+  margin-right: 10px;
 
-
+}
     span{
         font-size: 13px;;
         
@@ -68,9 +81,25 @@
       margin-left: 2vw;
 
     }
-
+    .QuickButtons{
+      font-size: 15px;
+      margin: 0;  
+      margin:0;
+    }
+.QuickButtons{
+  margin-left: 100px;
+}
     span{
         display: none;
+    }
+    .Quick{
+      margin-right: 20px;
+    }
+
+    .TransferText{
+      margin-right: 5px;
+      margin-left: 0px;;
+      font-size: 12px;
     }
 }
 
@@ -86,6 +115,7 @@
         width: 7vw;
 
     }
+
     .Button{  
       width: 30%;
     margin-left: 0;
@@ -94,5 +124,24 @@
     .Error{
       font-size: 15px;
       margin-left: 9vw;
+    }
+    .QuickButtons{
+      margin-left: 15px;
+      margin-left: 103px;
+      font-size: 15px;
+    
+    }
+
+    .Quick{
+      margin-right: 20px;
+    }
+    .Number   {
+      margin-bottom: 20px;
+    }
+
+    .TransferText{
+      margin-right: 20px;
+      margin-left: 5px;;
+      font-size: 12px;
     }
 }

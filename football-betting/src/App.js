@@ -24,7 +24,7 @@ class App extends React.Component {
     super(props)
 
     this.state = {
-      timeout: 1000 * 60 * 30,
+      timeout: 1000 * 60 * 15,
       showModal: false,
       isTimedOut: false,
     }
