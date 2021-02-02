@@ -46,9 +46,13 @@ class ToWallet extends Component {
             amountErr = "Amount is required.";
         }
         else {
-            if (amount < 100) {
+            if (amount < 500) {
                 formIsValid = false;
                 amountErr = "Minimum amount is 100 Naira";
+            }
+            if (amount > 50000) {
+                formIsValid = false;
+                amountErr = "Maximum amount is 50000 Naira";
             }
             if (amount % 1 !== 0) {
                 amountErr = "No decimals allowed, remove dot(.)";
@@ -85,7 +89,9 @@ class ToWallet extends Component {
         // implementation for  whatever you want to do when the Paystack dialog closed.
         console.log('closed')
     }
-
+    QuickPayHandler =(e)=>{
+        this.setState({amount: e.target.innerHTML.split(" ")[1]})
+    }
     render() {
 
         const emailIdErr = this.state.emailError;
@@ -93,34 +99,39 @@ class ToWallet extends Component {
         const reference = '' + Math.floor((Math.random() * 1000000000) + 1);
         return (
             <div className="formDiv">
-                    <form>
+                <form>
 
-                        <div>
-                            <label className={classes.label} htmlFor="emailId">Email</label>
-                            <input type="text" name="emailId"
-                                value={this.state.emailId}
-                                onChange={this.handleChangeEmail}
-                                placeholder="Email Address"
-                                className={classes.Text} />
-                            {emailIdErr &&
-                                <div className={classes.Error} style={{ color: "red" }}>{emailIdErr}</div>
-                            }
+                    <div>
+                        <label className={classes.label} htmlFor="emailId">Email</label>
+                        <input type="text" name="emailId"
+                            value={this.state.emailId}
+                            onChange={this.handleChangeEmail}
+                            placeholder="Email Address"
+                            className={classes.Text} />
+                        {emailIdErr &&
+                            <div className={classes.Error} style={{ color: "red" }}>{emailIdErr}</div>
+                        }
 
-                        </div>
+                    </div>
+                    <div className= {classes.QuickButtons}>
+                        Quick transer: 
+                        <button type="button" onClick={(e) => this.QuickPayHandler(e)} className={classes.Quick}>₦ 500</button>
+                        <button type="button" onClick={(e) => this.QuickPayHandler(e)} className={classes.Quick}>₦ 1000</button>
+                        <button type="button" onClick={(e) => this.QuickPayHandler(e)} className={classes.Quick}>₦ 5000</button>
+                    </div>
+                    <div>
+                        <label className={classes.label} htmlFor="amount">Amount</label>
+                        <input type="number" name="amount"
+                            onChange={this.handleChangeAmount}
+                            value={this.state.amount}
+                            placeholder="Amount: ₦500 - ₦50000 "
+                            className={classes.Number} />
+                        {amountErr &&
+                            <div className={classes.Error} style={{ color: "red" }}>{amountErr}</div>
+                        }
+                    </div>
 
-                        <div>
-                            <label className={classes.label} htmlFor="amount">Amount</label>
-                            <input type="number" name="amount"
-                                onChange={this.handleChangeAmount}
-                                value={this.state.amount}
-                                placeholder="Amount 100 Naira minimum"
-                                className={classes.Number} />
-                            {amountErr &&
-                                <div className={classes.Error} style={{ color: "red" }}>{amountErr}</div>
-                            }
-                        </div>
-
-                    </form>
+                </form>
                 <PaystackButton className={classes.Button}
                     reference={reference}
                     email={this.state.emailId}

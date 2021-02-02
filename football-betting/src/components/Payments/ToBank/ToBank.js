@@ -7,7 +7,7 @@ class ToBank extends Component {
         super(props);
         this.state = {
             name: "Olusegun Akintimehin",
-            amount: '300',
+            amount: '500',
             account: "0125732236",
             bank: '058',
             savedBank: '',
@@ -41,9 +41,9 @@ class ToBank extends Component {
             formErrors["amountErr"] = "Amount is required.";
         }
         else {
-            if (Number(amount) <= 0) {
+            if (Number(amount) < 500) {
                 formIsValid = false;
-                formErrors["amountErr"] = "Please enter value greater than  0";
+                formErrors["amountErr"] = "Minimum amount allowed is 500";
             }
             if (Number(amount) > this.props.funds) {
                 formIsValid = false;
@@ -134,6 +134,7 @@ class ToBank extends Component {
                                 })
                                 .catch(error => {
                                     this.setState({ apiError: error })
+                                    console.log(error)
                                 });
                         }
                     })
