@@ -145,7 +145,7 @@ class SignupForm extends Component {
                                     value={this.state.name}
                                     onChange={this.handleChange}
                                     placeholder="Your name.."
-                                    className={nameErr ? ' showError' : ''} />
+                                    className={classes.Text} />
                                 {nameErr &&
                                     <div className= {classes.ErrorText}>{nameErr}</div>
                                 }
@@ -157,7 +157,7 @@ class SignupForm extends Component {
                                     value={this.state.surname}
                                     onChange={this.handleChange}
                                     placeholder="Your Surame.."
-                                    className={nameErr ? ' showError' : ''} />
+                                    className={classes.Text} />
                                 {nameErr &&
                                     <div className= {classes.ErrorText}>{nameErr}</div>
                                 }
@@ -170,7 +170,7 @@ class SignupForm extends Component {
                                     value={this.state.emailId}
                                     onChange={this.handleChange}
                                     placeholder="Your email id.."
-                                    className={emailIdErr ? ' showError' : ''} />
+                                    className={classes.Text} />
                                 {emailIdErr &&
                                     <div className= {classes.ErrorText}>{emailIdErr}</div>
                                 }
@@ -182,7 +182,7 @@ class SignupForm extends Component {
                                     onChange={this.handleChange}
                                     value={this.state.phoneNumber}
                                     placeholder="Your phone number.."
-                                    className={phoneNumberErr ? ' showError' : ''} />
+                                    className={classes.Text} />
                                 {phoneNumberErr &&
                                     <div className= {classes.ErrorText}>{phoneNumberErr}</div>
                                 }
@@ -195,7 +195,7 @@ class SignupForm extends Component {
 
                                     onChange={this.handleChange}
                                     placeholder="dob: DD-MM-YYYY.."
-                                    className={dobErr ? ' showError' : ''} />
+                                    className={classes.Date} />
                                 {dobErr &&
                                     <div className= {classes.ErrorText}>{dobErr}</div>
                                 }
@@ -207,7 +207,7 @@ class SignupForm extends Component {
                                     value={this.state.username}
                                     onChange={this.handleChange}
                                     placeholder="Username.."
-                                    className={usernameErr ? ' showError' : ''} />
+                                    className={classes.Text} />
                                 {usernameErr &&
                                     <div className= {classes.ErrorText}>{usernameErr}</div>
                                 }
@@ -220,7 +220,7 @@ class SignupForm extends Component {
                                     value={this.state.password}
                                     onChange={this.handleChange}
                                     placeholder="Password.."
-                                    className={passwordErr ? ' showError' : ''} />
+                                    className={classes.Password} />
                                 {passwordErr &&
                                     <div className= {classes.ErrorText}>{passwordErr}</div>
                                 }
@@ -233,14 +233,16 @@ class SignupForm extends Component {
                                     value={this.state.passwordConf}
                                     onChange={this.handleChange}
                                     placeholder="Re-password"
-                                    className={passwordConfErr ? ' showError' : ''} />
+                                    className={classes.Password} />
                                 {passwordConfErr &&
                                     <div className= {classes.ErrorText}>{passwordConfErr}</div>
                                 }
 
                             </div>
-                            <input onClick={() => this.props.setShowForm(false)} type="button" value="Cancel" />
-                            <input type="submit" value="Submit" />
+                            <input onClick={() => this.props.setShowForm(false)} 
+                                className={classes.Button}
+                            type="button" value="Cancel" />
+                            <input type="submit" value="Submit" className={classes.Submit} />
                         </form>
                     </div>
                 </div>

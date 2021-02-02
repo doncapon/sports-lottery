@@ -88,6 +88,9 @@ const ForgotPassword = (props) => {
     }
 
     const { passwordErr, passwordConfErr } = formErrors;
+    const Email = [classes.Email];
+        if(emailIdErr)
+        {Email.push(classes.showError)}
 
     return (
         <Modal show={showModal} modalClosed={() => { }} >
@@ -97,13 +100,14 @@ const ForgotPassword = (props) => {
                         <div>
                             <div className={classes.formText}>Enter your email: </div>
                             <form onSubmit={(e) => handleSubmitEmail(e)}>
-                                <div>
+                                <div className= {classes.EmailWrapper}>
                                     <label htmlFor="emailId">Email</label>
                                     <input type="text" name="emailId"
                                         value={emailId}
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder="Your email id.."
-                                        className={emailIdErr ? ' showError' : ''} />
+                                        className={Email.join(" ")}
+                                        />
                                     {emailIdErr &&
                                         <div className={classes.ErrorText}>{emailIdErr}</div>
                                     }
@@ -112,7 +116,7 @@ const ForgotPassword = (props) => {
                                 <div className={classes.Buttons}>
                                     <button type="button" onClick={() => setShowModal(false)} className={classes.Button1}
                                     >Cancel</button>
-                                    <input type="submit"
+                                    <input type="submit" className={classes.Submit}
                                         value="Submit" />
                                 </div>
                             </form>
@@ -131,7 +135,7 @@ const ForgotPassword = (props) => {
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}
                                             placeholder="Password.."
-                                            className={passwordErr ? ' showError' : ''} />
+                                            className={classes.Password} />
                                         {passwordErr &&
                                             <div className={classes.ErrorText} >{passwordErr}</div>
                                         }
@@ -144,7 +148,7 @@ const ForgotPassword = (props) => {
                                                 value={passwordConf}
                                                 onChange={(e) => setPasswordConf(e.target.value)}
                                                 placeholder="Re-password"
-                                                className={passwordConfErr ? ' showError' : ''} />
+                                                className={classes.Password} />
                                             {passwordConfErr &&
                                                 <div className={classes.ErrorText}>{passwordConfErr}</div>
                                             }
@@ -154,7 +158,7 @@ const ForgotPassword = (props) => {
                                     <div className={classes.Buttons}>
                                         <button type="button" onClick={() => setShowModal(false)} className={classes.Button1}
                                         >Cancel</button>
-                                        <input type="submit"
+                                        <input type="submit" className={classes.Submit}
                                             value="Change" />
                                     </div>
                                 </form>

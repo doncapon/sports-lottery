@@ -1,22 +1,18 @@
 .formDiv {    
-    padding: 21px;    
      border-radius: 5px;    
-     background-color: #f2f2f2;    
-     overflow: scroll;
+     background: #f2f2f2;    
     } 
     label{
         display: none;
     } 
-    input[type=text], select  ,   input[type=password]  , input[type=number]    
+   .Text, select  ,  .Password  , .Number    
     {    
-      width: 100%;    
+      width: 90vw;    
       padding: 10px 20px;    
-      margin: 7px 0;    
+      margin: 5px 0;    
       display: inline-block;    
       border: 1px solid #ccc;    
-      border-radius: 4px;    
-      box-sizing: border-box;   
-      font-size: 12px; 
+      border-radius: 4px;  
     }    
         
     .Button {    
@@ -38,7 +34,8 @@
         
     }
     .Button{    
-      background-color: #45a049;    
+      background-color: green;  
+      width: 40vw;  
     }    
     .showError{    
       border-color: #a94442 !important;    
@@ -57,7 +54,7 @@
         margin-left: 2vw;
         font-weight: bold;
     } 
-    input[type=text], select  ,   input[type=password] ,  input[type=date]   , input[type=number]   
+   .Text, select  ,  .Password ,  .Date   , .Number   
     {    
       width: 40vw;
     }
@@ -80,16 +77,20 @@
 
 /* Larger devices */
 @media only screen and (min-width: 960px) {
-    input[type=text], select  ,   input[type=password] ,  input[type=date]   , input[type=number]   
+   .Text, select  ,  .Password ,  .Date   , .Number   
     {    
-      width: 30vw;
+      width: 70%;
     }
 
     .label{
         width: 7vw;
 
     }
+    .Button{  
+      width: 30%;
+    margin-left: 0;
 
+  }
     .Error{
       font-size: 15px;
       margin-left: 9vw;

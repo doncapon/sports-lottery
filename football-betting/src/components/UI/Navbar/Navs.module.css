@@ -31,4 +31,9 @@
     .LoginSection{
       display: flex;
     }
+    .Logout{
+      padding: 4px;
+      height: 30px;
+      margin-top: 10px;
+    }
   }

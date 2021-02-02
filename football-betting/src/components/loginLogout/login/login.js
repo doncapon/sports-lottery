@@ -61,7 +61,7 @@ const Login = (props) => {
         {showPopup ?
             !data.username ?
                 <div className={`alert alert-danger ${showPopup && data.username ? 'alert-shown' : 'alert-hidden'}`}>
-                    <strong>Failure!</strong> Could not log in!
+                    <strong>Failure!</strong> Please check username or password!
         </div>
                 : null
             : null

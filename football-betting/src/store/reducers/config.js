@@ -1,9 +1,9 @@
 const initialState = {
     
-    isFACup: false,
-    isFACupNextWeek: false,
-    daysOffset: 0,
-    daysOffsetNextWeek: 7,
+    isFACup: true,
+    isFACupNextWeek: true,
+    daysOffset: -14,
+    daysOffsetNextWeek: -7,
     hourToNextDay: 9,   //24 - kick-off time
     kickOffTime: '15:00:00+00:00',
 

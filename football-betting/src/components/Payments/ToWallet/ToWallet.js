@@ -15,7 +15,7 @@ class ToWallet extends Component {
 
         this.initialState = this.state;
     }
-    
+
     handleFormValidationEmail(emailId) {
 
         let emailError = '';
@@ -93,7 +93,6 @@ class ToWallet extends Component {
         const reference = '' + Math.floor((Math.random() * 1000000000) + 1);
         return (
             <div className="formDiv">
-                <div>
                     <form>
 
                         <div>
@@ -102,7 +101,7 @@ class ToWallet extends Component {
                                 value={this.state.emailId}
                                 onChange={this.handleChangeEmail}
                                 placeholder="Email Address"
-                                className={emailIdErr ? ' showError' : ''} />
+                                className={classes.Text} />
                             {emailIdErr &&
                                 <div className={classes.Error} style={{ color: "red" }}>{emailIdErr}</div>
                             }
@@ -115,14 +114,13 @@ class ToWallet extends Component {
                                 onChange={this.handleChangeAmount}
                                 value={this.state.amount}
                                 placeholder="Amount 100 Naira minimum"
-                                className={amountErr ? ' showError' : ''} />
+                                className={classes.Number} />
                             {amountErr &&
                                 <div className={classes.Error} style={{ color: "red" }}>{amountErr}</div>
                             }
                         </div>
 
                     </form>
-                </div>
                 <PaystackButton className={classes.Button}
                     reference={reference}
                     email={this.state.emailId}

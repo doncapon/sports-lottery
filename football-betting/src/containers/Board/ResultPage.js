@@ -22,15 +22,16 @@ class ResultPage extends Component {
     }
 
     render() {
-        
-        if(!this.props.isLoggedIn)
-        this.props.history.push("/play");
+
+        // if (!this.props.isLoggedIn)
+        //     this.props.history.push("/play");
+
         return !this.props.loading ? <Spinner /> : <div>
             <Results results={this.props.currentResults} basePrice={this.props.basePrice} gamesLength={this.props.gamesLength} thirteen={this.props.thirteen}
                 twelve={this.props.twelve} eleven={this.props.eleven} ten={this.props.ten}
                 thirteenPcs={this.props.thirteenPieces} twelvePcs={this.props.twelvePieces}
                 elevenPcs={this.props.elevenPieces} tenPcs={this.props.tenPieces}
-                isLoggedIn= {this.props.isLoggedIn}
+                isLoggedIn={this.props.isLoggedIn}
             />
         </div>
     }
@@ -41,7 +42,7 @@ const mapstateToProps = (state) => {
     return {
         slips: state.board.slips,
         gamesLength: state.board.gamesLength,
-        basePrice: state.board.basePrice,
+        basePrice: state.config.basePrice,
 
         loading: state.matchResults.loading,
         currentResults: state.matchResults.currentResults,

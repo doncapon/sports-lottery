@@ -26,8 +26,8 @@ class Transfers extends Component {
 
             </div>
             <div className={classes.Main}>
-                {this.props.isToWallet ? <div><ToWallet creditFunds={this.props.onCreditFunds} /></div>
-                    : <div> <ToBank funds = {this.props.funds} debitFunds = {this.props.onDebitFunds}/></div>}
+                {this.props.isToWallet ? <ToWallet creditFunds={this.props.onCreditFunds} />
+                    :  <ToBank funds = {this.props.funds} debitFunds = {this.props.onDebitFunds}/>}
             </div>
         </div>);
     }
