@@ -6,6 +6,7 @@ ul li:hover{
 }
 .Rest {
     padding: 10px 10px 5px;
+    padding-right: 2px;
 
 }
 .Rest:hover{
@@ -19,10 +20,10 @@ ul li:hover{
     color: purple;
 }
 
-li + li::before {
+.Rest:not(:last-child):after, .Selected:not(:last-child):after{
     content: " | ";
+    color: skyblue;
 }
-
 
 /* medium sized screens  */
 @media only screen and (min-width: 768px){
