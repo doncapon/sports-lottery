@@ -116,7 +116,7 @@ class ToWallet extends Component {
 
                     </div>
                     <div className= {classes.QuickButtons}>
-                        <div className= {classes.TransferText}>Quick transer</div>
+                        <div className= {classes.TransferText}>Amount option:</div>
                         <button type="button" onClick={(e) => this.QuickPayHandler(e)} className={classes.Quick}>₦ 500</button>
                         <button type="button" onClick={(e) => this.QuickPayHandler(e)} className={classes.Quick}>₦ 1000</button>
                         <button type="button" onClick={(e) => this.QuickPayHandler(e)} className={classes.Quick}>₦ 5000</button>
