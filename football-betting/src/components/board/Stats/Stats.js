@@ -45,7 +45,7 @@ const Stats = (props) => {
       );
     } else {
       showedObject = (
-        <div className="col-8" style={{ margin: "auto" }}>
+        <div className="col-12" style={{ margin: "auto" }}>
           <Odds
             home={winPercent.home}
             draw={winPercent.draws}
@@ -67,7 +67,7 @@ const Stats = (props) => {
                   onClick={(e) => HandleLinkClick(e)}
                 >
                   Odds
-                </div> {" | "}
+                </div>
 
                 <div
                   className={(selectedLink === 1) ? classes.Selected: classes.Rest}
@@ -75,7 +75,6 @@ const Stats = (props) => {
                 >
                   Form
                 </div>
-                {" | "}
             
                 <div
                   className={(selectedLink === 2) ? classes.Selected: classes.Rest}

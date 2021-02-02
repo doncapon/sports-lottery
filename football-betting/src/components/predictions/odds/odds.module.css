@@ -1,10 +1,42 @@
+.OddsWrapper {
+    font-size: 1.2em;
+    width: 50vw;
+    margin: 0 auto;
+}
 
 
+.Titles{
+    display: flex;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+}
 
+.TitleChild{
+    display: inline;
+    
+    margin-right: 20px;
+}
 
+.BodyValues{
+    color: gray;
+    display: flex;
+}
+
+.BodyInner{
+    margin-right: 70px;
+}
 /* medium sizes */
 @media only screen and (min-width: 768px ){
     .OddsWrapper {
         font-size: 1.4em;
     }
+    .TitleChild{
+        display: inline;
+        margin-right: 60px;
+    }
+    .BodyInner{
+        margin-right: 120px;
+    }
 }
+
