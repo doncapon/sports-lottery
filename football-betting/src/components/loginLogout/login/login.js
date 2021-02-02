@@ -29,6 +29,7 @@ const Login = (props) => {
             props.setIsLoggedIn(true);
             popUpFunc();
             props.setLoggedInUser(data);
+            props.deleteAndResetAll();
             history.push("/play");
 
         }).catch(err => {
