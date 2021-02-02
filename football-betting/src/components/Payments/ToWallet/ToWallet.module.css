@@ -14,7 +14,11 @@
       border: 1px solid #ccc;    
       border-radius: 4px;  
     }    
-        
+        .TransferText{
+          font-weight: bold;
+          float: left;
+          margin: 0;
+        }
     .Button {    
       width: 60%;    
       background-color: #4CAF50;    
@@ -32,6 +36,8 @@
     }
 .Quick{
   margin-left: 10px;
+  border: none;
+
 }
     span{
         font-size: 13px;;
@@ -100,5 +106,20 @@
     .Error{
       font-size: 15px;
       margin-left: 9vw;
+    }
+    .QuickButtons{
+      margin-left: 15px;
+      font-size: 12px;
+    }
+
+    .Quick{
+      margin-left: 5px;
+    }
+    .Number   {
+      margin-bottom: 20px;
+    }
+
+    .TransferText{
+      margin-left: 20px;
     }
 }

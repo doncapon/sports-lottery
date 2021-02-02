@@ -10,7 +10,8 @@ class ToWallet extends Component {
             amount: '',
             emailError: '',
             amountErr: '',
-            config: {}
+            config: {},
+            isTouched: false,
         };
 
         this.initialState = this.state;
@@ -69,14 +70,15 @@ class ToWallet extends Component {
         let { name, value } = e.target;
         this.handleFormValidationEmail(value)
 
-        this.setState({ [name]: value });
+        this.setState({ [name]: value , isTouched: true});
     }
     handleChangeAmount = (e) => {
         e.preventDefault();
 
         let { name, value } = e.target;
         this.handleFormValidationAmount(value)
-        this.setState({ [name]: value });
+        this.setState({ [name]: value, isTouched: true });
+        
     }
 
     handlePaystackSuccessAction = (reference) => {
@@ -114,7 +116,7 @@ class ToWallet extends Component {
 
                     </div>
                     <div className= {classes.QuickButtons}>
-                        Quick transer: 
+                        <div className= {classes.TransferText}>Quick transer</div>
                         <button type="button" onClick={(e) => this.QuickPayHandler(e)} className={classes.Quick}>₦ 500</button>
                         <button type="button" onClick={(e) => this.QuickPayHandler(e)} className={classes.Quick}>₦ 1000</button>
                         <button type="button" onClick={(e) => this.QuickPayHandler(e)} className={classes.Quick}>₦ 5000</button>
@@ -124,7 +126,7 @@ class ToWallet extends Component {
                         <input type="number" name="amount"
                             onChange={this.handleChangeAmount}
                             value={this.state.amount}
-                            placeholder="Amount: ₦500 - ₦50000 "
+                            placeholder="Amount: 500 - 50000 "
                             className={classes.Number} />
                         {amountErr &&
                             <div className={classes.Error} style={{ color: "red" }}>{amountErr}</div>
@@ -132,6 +134,7 @@ class ToWallet extends Component {
                     </div>
 
                 </form>
+                {!emailIdErr && !amountErr && this.state.isTouched?
                 <PaystackButton className={classes.Button}
                     reference={reference}
                     email={this.state.emailId}
@@ -140,6 +143,7 @@ class ToWallet extends Component {
                     text={'Pay Here'}
                     onSuccess={() => this.handlePaystackSuccessAction(reference)}
                     onClose={this.handlePaystackCloseAction} />
+                    : null}
             </div >
         )
     }
