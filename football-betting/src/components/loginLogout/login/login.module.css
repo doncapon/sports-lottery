@@ -1,9 +1,11 @@
-.alert-hidden{
+.alertHidden{
     display: none;
+    width: 30vw;
 }
 
-.alert-shown{
+.alertShown{
     display: block;
+    width: 90vw;
 }
 
 .Forgot{
@@ -22,4 +24,19 @@
     text-decoration: underline;
     color: #069;
 
+}
+
+/* medium screens */
+@media only screen and (min-width: 768px){
+    .alertShown{
+        width: 55vw;
+    }
+}
+
+/* Large devices */
+@media only screen and (min-width: 968px){
+
+    .alertShown{
+        width: 35vw;
+    }
 }
