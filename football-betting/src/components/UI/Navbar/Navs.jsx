@@ -3,7 +3,7 @@ import { Navbar, Nav, Dropdown, Button } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import Funds from '../../../components/board/funds/funds'
 import Login from '../../../components/loginLogout/login/login';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 //import Navbar from "reactjs-navbar";
 import logo from "./logo.JPG";
@@ -38,8 +38,8 @@ class Navs extends Component {
   };
   logout = () => {
     this.props.setIsLoggedIn(false);
-    if(this.props.slips !== null)
-    this.props.deleteAndResetAll();
+    if (this.props.slips !== null)
+      this.props.deleteAndResetAll();
     //  return <Redirect to="/" />
     this.props.history.push("/");
   }
@@ -201,8 +201,8 @@ class Navs extends Component {
               <Funds funds={this.props.funds} showFunds={this.props.showFunds} firstName={this.props.firstName}
                 toggleShowFunds={this.props.toggleShowFunds} setIsLoggedIn={this.props.setIsLoggedIn} />
             </div>
-            : <Login setPassword={this.props.setPassword} setIsLoggedIn= {this.props.setIsLoggedIn}
-              username={this.props.username}  setLoggedInUser= {this.props.setLoggedInUser} />
+            : <Login setPassword={this.props.setPassword} setIsLoggedIn={this.props.setIsLoggedIn} slips = {this.props.slips}
+              username={this.props.username} deleteAndResetAll={this.props.deleteAndResetAll} setLoggedInUser={this.props.setLoggedInUser} />
           }
 
         </Navbar.Collapse>
@@ -211,4 +211,4 @@ class Navs extends Component {
     );
   }
 }
-export default withRouter( Navs);
+export default withRouter(Navs);

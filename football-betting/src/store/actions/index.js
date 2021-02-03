@@ -36,7 +36,8 @@ export {
 
 export {
      setCurrentResult,
-     setUpWinners
+     setUpWinners,
+     setCurrentSlip
 } from './matchResults';
 
 

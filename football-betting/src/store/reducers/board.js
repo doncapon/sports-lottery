@@ -127,6 +127,7 @@ const initializeBoard = (state, action) => {
                 id: gameId + (i + 1),
                 amount: 0,
                 fixture_id: fixture.fixture_id,
+                status: fixture.status,
                 [gameId + (i + 1)]: {
                     team1_id: fixture.homeTeam.team_id,
                     team1: fixture.homeTeam.team_name,
@@ -135,6 +136,7 @@ const initializeBoard = (state, action) => {
                     sides: [{ selected: false }, { selected: false }, { selected: false }],
                 }
             };
+            
             games1.splice(i, i + 1, game);
         });
         let slipInner = Object.assign({}, { games: games1 });

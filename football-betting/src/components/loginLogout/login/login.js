@@ -1,7 +1,7 @@
 import { Button, FormControl, Form } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import React, { useState } from 'react';
-import axios from '../../../axios-users';
+import axios from '../../../axios-main';
 import classes from './login.module.css';
 
 const Login = (props) => {
@@ -17,7 +17,8 @@ const Login = (props) => {
             password: password,
         };
 
-        let res = await axios.post("login", loginData, { withCredentials: true });
+        let res = await axios.post("users/login", loginData, { withCredentials: true });
+        console.log(res);
         return await res.data;
     };
 
@@ -25,10 +26,12 @@ const Login = (props) => {
         e.preventDefault();
         login().then(data => {
             setData(data);
-
             props.setIsLoggedIn(true);
             popUpFunc();
             props.setLoggedInUser(data);
+            if(props.slips !== null)
+            props.deleteAndResetAll();
+            console.log("I got called")
             history.push("/play");
 
         }).catch(err => {
@@ -54,7 +57,7 @@ const Login = (props) => {
     }
     const handleForgot = () => {
         setForgot(false);
-        history.push("forgot-password");
+        history.push("/forgot-password");
     }
     let alerts = ["alert", "alert-danger"]
     showPopup ? alerts.push(classes.alertShown) : alerts.push(classes.alertHidden);

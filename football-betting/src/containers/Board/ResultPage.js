@@ -1,7 +1,5 @@
 import { connect } from 'react-redux';
 import React, { Component } from "react";
-import WithErrorHandler from '../../hoc/WithErrorHandler/withErrorHandler';
-import axios from "../../axios-fixtures";
 import * as actions from '../../store/actions/index';
 import Results from '../../components/gameHistory/results/results';
 import Spinner from '../../components/UI/Spinner/Spinner';
@@ -15,12 +13,10 @@ class ResultPage extends Component {
             this.props.tenPieces);
     }
     componentDidMount() {
-        if (!this.props.loading) {
-            let resultSlips = [this.props.slips[0]["slip_1"], this.props.slips[0]["slip_1"]]
-            this.props.onSetCurrentResult(resultSlips);
+        if (!this.props.loading){
+          this.props.onSetCurrentResult(this.props.slips[0]["slip_1"]);
         }
     }
-
     render() {
 
         // if (!this.props.isLoggedIn)
@@ -46,6 +42,7 @@ const mapstateToProps = (state) => {
 
         loading: state.matchResults.loading,
         currentResults: state.matchResults.currentResults,
+        currentSlip: state.matchResults.currentSlip,
 
         thirteen: state.matchResults.thirteen,
         twelve: state.matchResults.twelve,
@@ -62,6 +59,7 @@ const mapstateToProps = (state) => {
         twelvePercent: state.config.twelvePercent,
         elevenPercent: state.config.elevenPercent,
         tenPercent: state.config.tenPercent,
+        insertResult: state.config.insertResult,
 
         isLoggedIn: state.login.isLoggedIn
 
@@ -70,6 +68,8 @@ const mapstateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        onSetCurrentSlip: (slip) =>
+            dispatch(actions.setCurrentSlip(slip)),
         onSetCurrentResult: (fixture_id) =>
             dispatch(actions.setCurrentResult(fixture_id)),
         onSetUpWinners: (jackpot, thirteenpct, twelvepct, elevenpct, tenpct,
@@ -78,4 +78,4 @@ const mapDispatchToProps = (dispatch) => {
                 thirteenPieces, twelvePieces, elevenPieces, tenPieces)),
     }
 }
-export default connect(mapstateToProps, mapDispatchToProps)(WithErrorHandler(ResultPage, axios));
+export default connect(mapstateToProps, mapDispatchToProps)(ResultPage);

@@ -90,9 +90,9 @@ class App extends React.Component {
         <div className={classes.Navs}><Navs funds={this.props.funds}
           loggedIn={false} setIsLoggedIn={this.props.onSetIsLoggedIn}
           setLoggedInUser={this.props.onSetLoggedInUser} isLoggedIn={this.props.isLoggedIn} deleteAndResetAll={this.props.onDeleteAndResetAll}
-          username={this.props.username} password={this.props.password}
+          username={this.props.username} password={this.props.password} slips = {this.props.slips}
           showFunds={this.props.showFunds} firstName={this.props.user.name} setShowFunds={this.props.onSetShowFunds}
-          toggleShowFunds={this.props.onToggleShowFunds} slips = {this.props.slips}
+          toggleShowFunds={this.props.onToggleShowFunds}
           
           /></div>
 
@@ -129,7 +129,7 @@ const mapstateToProps = (state) => {
     user: state.login.user,
     username: state.login.username,
     password: state.login.password,
-    isLoggedIn: state.login.isLoggedIn
+    isLoggedIn: state.login.isLoggedIn,
 
   };
 };
