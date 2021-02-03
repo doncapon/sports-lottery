@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import * as actions from '../../../store/actions';
 import classes from './forgotPassword.module.css';
 import Modal from '../../UI/Modal/Modal';
-import axios from "../../../axios-users";
+import axios from "../../../axios-main";
 
 const ForgotPassword = (props) => {
     const [showModal, setShowModal] = useState(true);
@@ -58,7 +58,7 @@ const ForgotPassword = (props) => {
 
         if (handleFormValidationEmail()) {
             const emailBody = { email: emailId }
-            axios.put("forgot-password", emailBody)
+            axios.put("users/forgot-password", emailBody)
                 .then(response => {
                     setShowModal(false);
                     history.push("/");
@@ -75,7 +75,7 @@ const ForgotPassword = (props) => {
                 newPass: password,
                 resetLink: resetLink
             }
-            axios.put("reset-password", resetBody)
+            axios.put("users/reset-password", resetBody)
                 .then(response => {
                     return response.data;
                 })

@@ -11,11 +11,23 @@ const initialState = {
 
     loading: false
 }
+const setCurrentSlip = (state, action) =>{
+    return produce(state, draft =>{
+        let allFinished = true;
+        for(let i = 0 ; i < action.slip.games.length; i++){
+            if(action.slip.games[i].status !== "Match Finished"){
+                allFinished = false;
+                break;
+            }
+        }
+        
+        let currentSlip = {matchesFinished: allFinished, slip: action.slip};
+        draft.currentSlip = currentSlip;
 
-const intializeResults = (state, action) => {
+    });
+}
+const stopIintializeResults = (state, action) => {
     return produce(state, draft => {
-        draft.currentResults.splice(draft.currentResults.length,
-            (draft.currentResults.length + 1), action.payload);
         draft.loading = true;
     });
 }
@@ -31,10 +43,12 @@ const setUpWinners = (state, action) => {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case actionTypes.INITIALIZE_CURRENT_RESULT:
-            return intializeResults(state, action);
+        case actionTypes.STOP_RESULT_INITIALIZE:
+            return stopIintializeResults(state, action);
         case actionTypes.SETUP_WINNERS:
             return setUpWinners(state, action);
+        case actionTypes.SET_CURRENT_SLIP:
+            return setCurrentSlip(state, action);
         default:
             return state;
     }

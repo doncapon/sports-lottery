@@ -201,7 +201,7 @@ class Navs extends Component {
               <Funds funds={this.props.funds} showFunds={this.props.showFunds} firstName={this.props.firstName}
                 toggleShowFunds={this.props.toggleShowFunds} setIsLoggedIn={this.props.setIsLoggedIn} />
             </div>
-            : <Login setPassword={this.props.setPassword} setIsLoggedIn={this.props.setIsLoggedIn}
+            : <Login setPassword={this.props.setPassword} setIsLoggedIn={this.props.setIsLoggedIn} slips = {this.props.slips}
               username={this.props.username} deleteAndResetAll={this.props.deleteAndResetAll} setLoggedInUser={this.props.setLoggedInUser} />
           }
 

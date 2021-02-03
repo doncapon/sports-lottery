@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import classes from './signupForm.module.css'
-import axios from '../../../../axios-users';
+import axios from '../../../../axios-main';
 import { connect } from "react-redux";
 
 class SignupForm extends Component {
@@ -115,7 +115,7 @@ class SignupForm extends Component {
                 password: this.state.password,
                 email: this.state.emailId
             }
-            axios.post("register", registerData)
+            axios.post("users/register", registerData)
                 .then(response => {
                     alert('You have been successfully registered.')
                 })
