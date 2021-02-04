@@ -14,8 +14,9 @@ import IdleTimer from 'react-idle-timer';
 import Board from './containers/Board/Board';
 import Transfers from './containers/Transfers/Transfers';
 import ForgotPassword from './components/loginLogout/forgotPassword/forgotPassword';
-import signupForm from './components/loginLogout/signup/signupForm/signupForm';
 import Settings from './containers/Settings/Settings';
+import Signup from './containers/Signup/Signup';
+import ActivateNewUser from './containers/ActivateNewUser/ActivateNewUser';
 
 
 
@@ -100,11 +101,12 @@ class App extends React.Component {
         <Switch>
           <Route path="/transfers" component={Transfers} />
           <Route path="/results" component={ResultPage} />
-          <Route path="/signup" component={signupForm} />
+          <Route path="/signup" component={Signup} />
           <Route path="/forgot-password/:resetLink" component={ForgotPassword} />
           <Route path="/forgot-password" component={ForgotPassword} />
           <Route path="/settings" component={Settings} />
           <Route path="/play" component={Board} />
+          <Route path="/authentication/activate/:token" component={ActivateNewUser} />
           <Route exact path="/" component={Landing} />
           <Redirect to="/" />
         </Switch>
