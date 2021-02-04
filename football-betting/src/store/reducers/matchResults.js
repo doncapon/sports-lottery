@@ -11,18 +11,10 @@ const initialState = {
 
     loading: false
 }
-const setCurrentSlip = (state, action) =>{
+const fetchWeeklyResults = (state, action) =>{
     return produce(state, draft =>{
-        let allFinished = true;
-        for(let i = 0 ; i < action.slip.games.length; i++){
-            if(action.slip.games[i].status !== "Match Finished"){
-                allFinished = false;
-                break;
-            }
-        }
-        
-        let currentSlip = {matchesFinished: allFinished, slip: action.slip};
-        draft.currentSlip = currentSlip;
+       
+        draft.currentResults = action.payload;
 
     });
 }
@@ -47,8 +39,8 @@ const reducer = (state = initialState, action) => {
             return stopIintializeResults(state, action);
         case actionTypes.SETUP_WINNERS:
             return setUpWinners(state, action);
-        case actionTypes.SET_CURRENT_SLIP:
-            return setCurrentSlip(state, action);
+        case actionTypes.FETCH_RESULTS:
+            return fetchWeeklyResults(state, action);
         default:
             return state;
     }

@@ -37,7 +37,8 @@ export {
 export {
      setCurrentResult,
      setUpWinners,
-     setCurrentSlip
+     fetchWeeklyResults,
+     fetchResults
 } from './matchResults';
 
 

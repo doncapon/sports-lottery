@@ -172,11 +172,11 @@ const toggleShowHistory = (state, action) => {
 const getRandomInt = (max) => {
     return Math.floor(Math.random() * Math.floor(max));
 }
-const genrateSlip = (state, action) => {
+const generateSlip = (state, action) => {
     return produce(state, draft => {
         let arrayGames = [[]];
         let clonedGames = draft.slips[state.editIndex]["slip_" + (state.editIndex + 1)].games;
-        draft.slips[state.editIndex].slipPrice = action.basePrice
+        draft.slips[state.editIndex].slipPrice = action.basePrice;
         let gameRandom = getRandomInt(state.gamesLength);
         let rand2;
         for (let i = 0; i < 1; i++) {
@@ -642,10 +642,10 @@ const reducer = (state = initialStte, action) => {
             return deleteAndResetAll(state, action);
         case actionTypes.CALCULATE_SLIP_PRICE:
             return calulateGameAmount(state, action);
-        case actionTypes.CALCULAT_GRAND_tOTAL:
+        case actionTypes.CALCULATE_GRAND_tOTAL:
             return calculateGrandTtoalPriceOfAllSlips(state, action);
         case actionTypes.GENERATE_SLIP:
-            return genrateSlip(state, action);
+            return generateSlip(state, action);
         case actionTypes.SET_SHOW_FUNDS:
             return setShowFunds(state, action);
             case actionTypes.CREDIT_FUNDS:

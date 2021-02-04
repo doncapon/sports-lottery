@@ -182,6 +182,7 @@ class Navs extends Component {
           <Nav className="mr-auto">
             <Nav.Link to="/play" as={NavLink}>Play</Nav.Link>
             <Nav.Link to="/results" as={NavLink}>Result</Nav.Link>
+            <Nav.Link to="/settings" as={NavLink}>Settings</Nav.Link>
 
           </Nav>
           <Dropdown>

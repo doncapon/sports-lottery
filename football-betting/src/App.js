@@ -15,6 +15,7 @@ import Board from './containers/Board/Board';
 import Transfers from './containers/Transfers/Transfers';
 import ForgotPassword from './components/loginLogout/forgotPassword/forgotPassword';
 import signupForm from './components/loginLogout/signup/signupForm/signupForm';
+import Settings from './containers/Settings/Settings';
 
 
 
@@ -102,6 +103,7 @@ class App extends React.Component {
           <Route path="/signup" component={signupForm} />
           <Route path="/forgot-password/:resetLink" component={ForgotPassword} />
           <Route path="/forgot-password" component={ForgotPassword} />
+          <Route path="/settings" component={Settings} />
           <Route path="/play" component={Board} />
           <Route exact path="/" component={Landing} />
           <Redirect to="/" />
@@ -121,6 +123,7 @@ class App extends React.Component {
 const mapstateToProps = (state) => {
   return {
 
+    
     showFunds: state.board.showFunds,
     funds: state.board.funds,
     slips: state.board.slips,
