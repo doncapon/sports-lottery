@@ -7,11 +7,18 @@ export const genrateSlip = (amount, slipIndex, basePrice ) =>{
     return dispatch =>{
         dispatch(EmptyEditingISlip());
         dispatch(genrateSlip2(amount, basePrice));
-
         dispatch(setPurchaseAll());
         dispatch(calculateSpecificSlipPrice(slipIndex, basePrice));
         dispatch(calculateGrandTtoalPriceOfAllSlips());
 
+    }
+}
+
+export const genrateSlip2 = (amount, basePrice) =>{
+    return {
+        type: actionTypes.GENERATE_SLIP,
+        amount: amount,
+        basePrice: basePrice,
     }
 }
 
@@ -140,13 +147,7 @@ export const setReceipt = () =>{
     }
 }
 
-export const genrateSlip2 = (amount, basePrice) =>{
-    return {
-        type: actionTypes.GENERATE_SLIP,
-        amount: amount,
-        basePrice: basePrice
-    }
-}
+
 
 export const toggleShowHistory = (gameIndex) =>{
     return {
@@ -264,7 +265,7 @@ export const calulateGameAmount = (slipIndex, gameIndex,sideIndex) =>{
 
 export const calculateGrandTtoalPriceOfAllSlips = (slipIndex) =>{
     return { 
-        type : actionTypes.CALCULAT_GRAND_tOTAL,
+        type : actionTypes.CALCULATE_GRAND_tOTAL,
         slipIndex: slipIndex,
         
     };

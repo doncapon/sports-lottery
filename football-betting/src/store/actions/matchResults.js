@@ -2,17 +2,16 @@ import * as  actionTypes from './actionTypes';
 import axios from '../../axios-fixtures';
 import axiosMain from '../../axios-main';
 
-export const stopResultInitialize = (payload) => {
+export const stopResultInitialize = () => {
     return {
         type: actionTypes.STOP_RESULT_INITIALIZE,
-        payload: payload
     };
 }
 
-export const setCurrentSlip = (slip) => {
+export const fetchWeeklyResults = (payload) => {
     return {
-        type: actionTypes.SET_CURRENT_SLIP,
-        slip: slip
+        type: actionTypes.FETCH_RESULTS,
+        payload: payload
     }
 }
 
@@ -34,10 +33,21 @@ export const setUpWinners = (jackpot, thirteenPercent, twelvePercent, elevenPerc
     };
 }
 
+export const fetchResults = (startDate)=>{
+    return dispatch=>{
+        axios.get("match-result")
+        .then(response=>{
+            console.log(response)
+            dispatch (fetchWeeklyResults(response.data));
+            dispatch(stopResultInitialize());
+
+        });
+    }
+}
 
 export const setCurrentResult = (slipGame) => {
     return dispatch => {
-        const allRequests = slipGame.games.map(game => {
+         slipGame.games.map(game => {
             return axios.get("fixtures/id/" + game.fixture_id,
                 {
                     headers: {
@@ -48,31 +58,25 @@ export const setCurrentResult = (slipGame) => {
                 .then(response => {
                     let resultFixture = response.data.api.fixtures[0];
                     let returnResult = {
-                        // fixtureId: resultFixture.fixture_id,
+                        fixtureId: resultFixture.fixture_id,
                         homeGoals: resultFixture.goalsHomeTeam,
                         awayGoals: resultFixture.goalsAwayTeam,
                         score: resultFixture.score.fulltime, homeTeam: resultFixture.homeTeam.team_name
                         , awayTeam: resultFixture.awayTeam.team_name, gameDate: resultFixture.event_date
                     };
-                    console.log(returnResult);
-
-                    axiosMain.post("match-result", returnResult)
-                        .then(response => {
-                            console.log(response)
-                        })
-                        .catch(error => {
-                            console.log(error)
-                        });
+                    if (game.status === "Match Finished") {
+                        axiosMain.post("match-result", returnResult)
+                            .then(response => {
+                                console.log(response)
+                            })
+                            .catch(error => {
+                                console.log(error)
+                            });
+                    }
                 })
                 .catch(err => {
 
                 });
-
-
-
-        });
-        Promise.all(allRequests).then(value => {
-            dispatch(stopResultInitialize());
 
         });
 

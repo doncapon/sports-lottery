@@ -27,7 +27,6 @@ class Board extends Component {
           this.props.kickOffTime, kickOffDate);
       }
 
-   
   }
 
   togglePaymentButton = (paying, paid) => {
@@ -168,7 +167,7 @@ const mapstateToProps = (state) => {
     showFunds: state.board.showFunds,
     isShowReceipt: state.board.isShowReceipt,
     receipts: state.board.receipts,
-    basePrice: state.board.basePrice,
+    basePrice: state.config.basePrice,
     slips: state.board.slips,
     playingGames: state.board.playingGames,
     totalPrice: state.board.totalPrice,
@@ -211,8 +210,8 @@ const mapDispatchToProps = (dispatch) => {
     onEmptyEditingISlip: () => dispatch(actions.EmptyEditingISlip()),
     onCalculateOverAllPrice: (slip, game, side) =>
       dispatch(actions.calculateOverAllPrice(slip, game, side)),
-    onGenrateSlip: (amount, slipIndex) =>
-      dispatch(actions.genrateSlip(amount, slipIndex)),
+    onGenrateSlip: (amount, slipIndex, basePrice) =>
+      dispatch(actions.genrateSlip(amount, slipIndex, basePrice)),
     onToggleShowHistory: (gameIndex) =>
       dispatch(actions.toggleShowHistory(gameIndex)),
     onSetIsPaying: (isPaying) =>

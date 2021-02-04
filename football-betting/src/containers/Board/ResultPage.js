@@ -7,21 +7,20 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 class ResultPage extends Component {
     constructor(props) {
         super(props);
+        
         this.props.onSetUpWinners(this.props.jackpot, this.props.thirteenPercent
             , this.props.twelvePercent, this.props.elevenPercent, this.props.tenPercent,
             this.props.thirteenPieces, this.props.twelvePieces, this.props.elevenPieces,
             this.props.tenPieces);
+
     }
-    componentDidMount() {
-        if (!this.props.loading){
-          this.props.onSetCurrentResult(this.props.slips[0]["slip_1"]);
+
+    componentDidMount(){
+        if(!this.props.loading){
+            this.props.onFetchResults(null);
         }
     }
     render() {
-
-        // if (!this.props.isLoggedIn)
-        //     this.props.history.push("/play");
-
         return !this.props.loading ? <Spinner /> : <div>
             <Results results={this.props.currentResults} basePrice={this.props.basePrice} gamesLength={this.props.gamesLength} thirteen={this.props.thirteen}
                 twelve={this.props.twelve} eleven={this.props.eleven} ten={this.props.ten}
@@ -36,7 +35,6 @@ class ResultPage extends Component {
 
 const mapstateToProps = (state) => {
     return {
-        slips: state.board.slips,
         gamesLength: state.board.gamesLength,
         basePrice: state.config.basePrice,
 
@@ -68,10 +66,7 @@ const mapstateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onSetCurrentSlip: (slip) =>
-            dispatch(actions.setCurrentSlip(slip)),
-        onSetCurrentResult: (fixture_id) =>
-            dispatch(actions.setCurrentResult(fixture_id)),
+        onFetchResults: (startDate)=> dispatch(actions.fetchResults(startDate)),
         onSetUpWinners: (jackpot, thirteenpct, twelvepct, elevenpct, tenpct,
             thirteenPieces, twelvePieces, elevenPieces, tenPieces) =>
             dispatch(actions.setUpWinners(jackpot, thirteenpct, twelvepct, elevenpct, tenpct,
