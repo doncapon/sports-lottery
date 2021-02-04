@@ -1,21 +1,21 @@
 import React, { Component } from "react";
-import classes from './signupForm.module.css'
-import axios from '../../../../axios-main';
+import classes from './Signup.module.css'
+import axios from '../../axios-main';
 import { connect } from "react-redux";
+import  {calculateAge} from '../../shared/utility';
 
-class SignupForm extends Component {
+class Signup extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: '',
-            surname: '',
-            username: '',
-            password: '',
-            passwordConf: '',
-            emailId: '',
-            dob: '',
-            phoneNumber: '',
-            city: 'select',
+            name: 'admin1',
+            surname: 'shegz',
+            username: 'admin1',
+            password: 'admin1234',
+            passwordConf: 'admin1234',
+            emailId: 'olusegun.akintimehin@gmail.com',
+            dob: '25/09/1987',
+            phoneNumber: '08283763526',
             formErrors: {},
             apiError: ''
         };
@@ -25,7 +25,7 @@ class SignupForm extends Component {
     }
 
     handleFormValidation() {
-        const { name, emailId, dob, phoneNumber, username, password, passwordConf } = this.state;
+        const { name, surname, emailId, dob, phoneNumber, username, password, passwordConf } = this.state;
         let formErrors = {};
         let formIsValid = true;
 
@@ -33,6 +33,12 @@ class SignupForm extends Component {
         if (!name) {
             formIsValid = false;
             formErrors["nameErr"] = "Name is required.";
+        }
+
+        //Student surname     
+        if (!surname) {
+            formIsValid = false;
+            formErrors["surnameErr"] = "Surname is required.";
         }
 
         //username name     
@@ -73,7 +79,11 @@ class SignupForm extends Component {
             var pattern = /^(0[1-9]|1[0-9]|2[0-9]|3[0-1])\/(0[1-9]|1[0-2])\/([0-9]{4})$/;
             if (!pattern.test(dob)) {
                 formIsValid = false;
-                formErrors["dobErr"] = "Invalid date of birth";
+                formErrors["dobErr"] = "Invalid date of birth. follow format \"dd/mm/yyyy\"";
+            }
+            if(calculateAge(dob) < 18){
+                formIsValid = false;
+                formErrors["dobErr"] = "Sorry, you must be over 18";
             }
         }
 
@@ -85,7 +95,7 @@ class SignupForm extends Component {
             formErrors["phoneNumberErr"] = "Phone number is required.";
         }
         else {
-            var mobPattern = /^(?:(?:\\+|0{0,2})91(\s*[\\-]\s*)?|[0]?)?[789]\d{9}$/;
+            var mobPattern = /0\d{2}\d{4}\d{4}/;
             if (!mobPattern.test(phoneNumber)) {
                 formIsValid = false;
                 formErrors["phoneNumberErr"] = "Invalid phone number.";
@@ -98,7 +108,6 @@ class SignupForm extends Component {
 
     handleChange = (e) => {
         let { name, value } = e.target;
-
         this.setState({ [name]: value });
     }
 
@@ -117,16 +126,20 @@ class SignupForm extends Component {
             }
             axios.post("users/register", registerData)
                 .then(response => {
-                    alert('You have been successfully registered.')
+                    alert(response.data)
                 })
                 .catch(error => {
+                    alert("something went wrong", error.data)
                 })
         }
+    }
+    handleKeyUp=()=>{
+         this.setState({dob: this.state.dob.replace(/^(\d\d)(\d)$/g,'$1/$2').replace(/^(\d\d\/\d\d)(\d+)$/g,'$1/$2').replace(/[^\d\/]/g,'')});
     }
 
     render() {
 
-        const { nameErr, emailIdErr, dobErr, phoneNumberErr, usernameErr, passwordErr,
+        const { nameErr, surnameErr,emailIdErr, dobErr, phoneNumberErr, usernameErr, passwordErr,
             passwordConfErr } = this.state.formErrors;
         if (this.props.isLoggedIn) {
             return (
@@ -158,8 +171,8 @@ class SignupForm extends Component {
                                     onChange={this.handleChange}
                                     placeholder="Your Surame.."
                                     className={classes.Text} />
-                                {nameErr &&
-                                    <div className= {classes.ErrorText}>{nameErr}</div>
+                                {surnameErr &&
+                                    <div className= {classes.ErrorText}>{surnameErr}</div>
                                 }
 
                             </div>
@@ -181,6 +194,7 @@ class SignupForm extends Component {
                                 <input type="text" name="phoneNumber"
                                     onChange={this.handleChange}
                                     value={this.state.phoneNumber}
+                                    size="11" maxLength="11" 
                                     placeholder="Your phone number.."
                                     className={classes.Text} />
                                 {phoneNumberErr &&
@@ -190,11 +204,11 @@ class SignupForm extends Component {
                             <div>
                                 <label className={classes.Label} htmlFor="dob">Birth Date</label>
                                 <span htmlFor="dob">Birth Date</span>
-                                <input type="date" name="dob"
+                                <input type="text" name="dob"
                                     value={this.state.dob}
-
+                                    size="10" maxLength="10"  onKeyUp={this.handleKeyUp}
                                     onChange={this.handleChange}
-                                    placeholder="dob: DD-MM-YYYY.."
+                                    placeholder="dd/mm/yyyy"
                                     className={classes.Date} />
                                 {dobErr &&
                                     <div className= {classes.ErrorText}>{dobErr}</div>
@@ -257,4 +271,4 @@ const mapstateToProps = (state) => {
     }
 }
 
-export default connect(mapstateToProps)(SignupForm);
+export default connect(mapstateToProps)(Signup);
