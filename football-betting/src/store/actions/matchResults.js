@@ -58,6 +58,7 @@ export const setCurrentResult = (slipGame) => {
                 .then(response => {
                     let resultFixture = response.data.api.fixtures[0];
                     let returnResult = {
+                        status: returnResult.status,
                         fixtureId: resultFixture.fixture_id,
                         homeGoals: resultFixture.goalsHomeTeam,
                         awayGoals: resultFixture.goalsAwayTeam,
