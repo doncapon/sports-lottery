@@ -210,7 +210,7 @@ const generateSlip = (state, action) => {
                 arrayGames[newRand][sideRand] = 1;
                 attempt++;
             }
-        } else if (amount === "1000") {
+        } else if (amount === "960") {
             let attempt = 0;
             let InitialAttempt = 4;
 
