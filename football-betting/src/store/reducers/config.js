@@ -1,8 +1,11 @@
+import produce from 'immer';
+import * as actionTypes from '../actions/actionTypes';
+
 const initialState = {
     
-    isFACup: true,
+    isFACup: false,
     isFACupNextWeek: true,
-    daysOffset: -14,
+    daysOffset: 0,
     daysOffsetNextWeek: -7,
     hourToNextDay: 9,   //24 - kick-off time
     kickOffTime: '15:00:00+00:00',
@@ -20,12 +23,33 @@ const initialState = {
 
     basePrice: 20,
     insertResult: true,
+
+    resultsFrom: '31-01-2021',
+    currentResults: [],
+    loading: false
+
 }
 
+const fetchWeeklyResults = (state, action) =>{
+    return produce(state, draft =>{
+       
+        draft.currentResults = action.payload;
+
+    });
+}
+const stopIintializeResults = (state, action) => {
+    return produce(state, draft => {
+        draft.loading = true;
+    });
+}
 
 
 const reducer = (state = initialState , action)=>{
     switch (action.type) {
+        case actionTypes.FETCH_RESULTS:
+            return fetchWeeklyResults(state, action);
+        case actionTypes.STOP_RESULT_INITIALIZE:
+            return stopIintializeResults(state, action);
         default:
             return state;
     }

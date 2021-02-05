@@ -72,7 +72,6 @@ class ToBank extends Component {
     handlePaystackSuccessAction = (reference) => {
         // Implementation for whatever you want to do with reference and after success call.
         this.props.creditFunds(Number(this.state.amount));
-        console.log(reference);
     };
 
     handlePaystackCloseAction = () => {
@@ -110,19 +109,14 @@ class ToBank extends Component {
                                         source: "balance",
                                         amount: "" + this.state.amount * 100,
                                         recipient: value.recipient_code,
-                                        // reason: "Returns from BetSoka account"
-                                        reason: "Holiday Flexing"
+                                        reason: "Returns from BetSoka account"
                                     };
-
-
-                                    console.log(paymentData);
-
                                     axios.post("transfer", paymentData)
                                         .then(response => {
-                                            if (response.data.status === "success") {
+                                            console.log(response)
+                                            if (response.data.data.status === "success") {
                                                 this.props.debitFunds(this.state.amount);
-                                                alert('Withdraw successful. Funds wull be received within 24 hours.')
-                                                // this.setState(this.initialState)
+                                                alert(`${response.data.message}. Funds wull be received within 24 hours.`)
 
                                             }
 

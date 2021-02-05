@@ -2,18 +2,26 @@ import { connect } from 'react-redux';
 import React, { Component } from "react";
 import * as actions from '../../store/actions/index';
 import Results from '../../components/gameHistory/results/results';
+import { Spinner } from 'react-bootstrap';
 
 class ResultPage extends Component {
+
     constructor(props) {
         super(props);
+
         this.props.onSetUpWinners(this.props.jackpot, this.props.thirteenPercent
             , this.props.twelvePercent, this.props.elevenPercent, this.props.tenPercent,
             this.props.thirteenPieces, this.props.twelvePieces, this.props.elevenPieces,
             this.props.tenPieces);
+     
+    }
 
+    componentDidMount(){
+        if(!this.props.loading)
+        this.props.onFetchResults(this.props.resultsFrom);
     }
     render() {
-        return <div>
+        return  !this.props.loading? <Spinner /> : <div>
             <Results daysResults={this.props.currentResults} basePrice={this.props.basePrice} gamesLength={this.props.gamesLength} thirteen={this.props.thirteen}
                 twelve={this.props.twelve} eleven={this.props.eleven} ten={this.props.ten}
                 thirteenPcs={this.props.thirteenPieces} twelvePcs={this.props.twelvePieces}
@@ -27,17 +35,21 @@ class ResultPage extends Component {
 
 const mapstateToProps = (state) => {
     return {
+        //board
         gamesLength: state.board.gamesLength,
-        basePrice: state.config.basePrice,
 
-        loading: state.matchResults.loading,
-        currentResults: state.matchResults.currentResults,
-        currentSlip: state.matchResults.currentSlip,
 
+        //match results
         thirteen: state.matchResults.thirteen,
         twelve: state.matchResults.twelve,
         eleven: state.matchResults.eleven,
         ten: state.matchResults.ten,
+
+        //Config
+        basePrice: state.config.basePrice,
+        loading: state.config.loading,
+        currentResults: state.config.currentResults,
+        resultsFrom: state.config.resultsFrom,
 
         jackpot: state.config.jackpot,
         thirteenPieces: state.config.thirteenPieces,
@@ -51,6 +63,7 @@ const mapstateToProps = (state) => {
         tenPercent: state.config.tenPercent,
         insertResult: state.config.insertResult,
 
+        //Login
         isLoggedIn: state.login.isLoggedIn
 
     }

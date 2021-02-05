@@ -31,7 +31,6 @@ const Login = (props) => {
             props.setLoggedInUser(data);
             if(props.slips !== null)
             props.deleteAndResetAll();
-            console.log("I got called")
             history.push("/play");
 
         }).catch(err => {
@@ -71,15 +70,6 @@ const Login = (props) => {
             : null
 
         }
-        {/* {showPopup ?
-            data.username ?
-                <div className={`alert alert-success ${showPopup && data.username ? 'alert-shown' : 'alert-hidden'}`}>
-                    <strong>Success!</strong> Login successful!
-        </div>
-                : null
-            : null
-
-        } */}
         <Form inline onSubmit={(e) => HandleSubmit(e)}>
             <FormControl type="text" onChange={(e) => setUsername(e.target.value)}
                 value={username} placeholder="username" className="mr-sm-2" />
