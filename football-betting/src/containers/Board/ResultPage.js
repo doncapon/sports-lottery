@@ -2,30 +2,19 @@ import { connect } from 'react-redux';
 import React, { Component } from "react";
 import * as actions from '../../store/actions/index';
 import Results from '../../components/gameHistory/results/results';
-import Spinner from '../../components/UI/Spinner/Spinner';
-import _ from  'lodash';
 
 class ResultPage extends Component {
     constructor(props) {
         super(props);
-        
         this.props.onSetUpWinners(this.props.jackpot, this.props.thirteenPercent
             , this.props.twelvePercent, this.props.elevenPercent, this.props.tenPercent,
             this.props.thirteenPieces, this.props.twelvePieces, this.props.elevenPieces,
             this.props.tenPieces);
 
     }
-
-    componentDidMount(){
-        if(!this.props.loading){
-            this.props.onFetchResults(null);
-        }
-    }
     render() {
-        let groupedGameResults = _.mapValues(_.groupBy(this.props.currentResults, 'gameDay'));
-
-        return !this.props.loading ? <Spinner /> : <div>
-            <Results results={groupedGameResults} basePrice={this.props.basePrice} gamesLength={this.props.gamesLength} thirteen={this.props.thirteen}
+        return <div>
+            <Results daysResults={this.props.currentResults} basePrice={this.props.basePrice} gamesLength={this.props.gamesLength} thirteen={this.props.thirteen}
                 twelve={this.props.twelve} eleven={this.props.eleven} ten={this.props.ten}
                 thirteenPcs={this.props.thirteenPieces} twelvePcs={this.props.twelvePieces}
                 elevenPcs={this.props.elevenPieces} tenPcs={this.props.tenPieces}
