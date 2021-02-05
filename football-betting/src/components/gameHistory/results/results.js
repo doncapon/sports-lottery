@@ -4,23 +4,28 @@ import moment from 'moment';
 import Jackpot from "../jackpot/jackpot";
 
 const results = (props) => {
-    const findSelection = (goalHome, goalAway) => {
-        if (goalHome > goalAway) {
-            return "H";
-        } else if (goalHome < goalAway) {
-            return "A";
-        } else {
-            return "D";
+    const findSelection = (goalHome, goalAway, status) => {
+        if(status === "Match Finished"){
+            if (goalHome > goalAway) {
+                return "H";
+            } else if (goalHome < goalAway) {
+                return "A";
+            } else {
+                return "D";
+            }
+        }else{
+            return "-";
         }
+   
     }
-    let results = props.results[0].map((result, k) => {
-
+    let resultsTrannsformed = Object.keys(props.daysResults).map((key, k) => {
+        const results = props.daysResults[key];
         return <div className={classes.ResultsAndShare} key={k}>
             <div className={classes.ResultHead} >
-                <div>
-                    <span>{moment(result[0].gameDate).format("dddd")}</span>{" "}
-                    <span>{moment(result[0].gameDate).format("DD.MM.YYYY")}</span>
-                    <span>-</span>
+                <div className={classes.HeaderInner}>
+                    <div>{moment(key).format("dddd")}</div>{" "}
+                    <div>{moment(key).format("DD.MM.YYYY")}</div>
+                    <div>{" "}-{" "}</div>
                 </div>
                 <div>Match reults </div>
             </div>
@@ -33,7 +38,7 @@ const results = (props) => {
                         <div className={classes.MoveRight}>Correct</div>
                     </div >
                     <div className={classes.BodyMain}>
-                        {result.map((eachRes, i) => {
+                        {results.map((eachRes, i) => {
                             return <div key={i} className={classes.SelectionRow}>
                                 <div className={classes.Teams}>
                                     <div className={classes.RowNumber}>{i + 1} </div>
@@ -42,8 +47,8 @@ const results = (props) => {
                                         <div>{eachRes.awayTeam}</div>
                                     </div>
                                 </div>
-                                <div className={classes.Score}>{eachRes.score}</div>
-                                <div >{findSelection(eachRes.homeGoals, eachRes.awayGoals)}</div>
+                                <div className={classes.Score}>{eachRes.status === "Match Finished"?eachRes.score : "in progress"}</div>
+                                <div >{findSelection(eachRes.homeGoals, eachRes.awayGoals, eachRes.status)}</div>
                             </div>
                         })}
 
@@ -61,7 +66,7 @@ const results = (props) => {
 
         </div>
     })
-    return (<div className={classes.ResultsWrapper}>{results}</div>);
+    return (<div className={classes.ResultsWrapper}>{resultsTrannsformed}</div>);
 }
 
 export default results;

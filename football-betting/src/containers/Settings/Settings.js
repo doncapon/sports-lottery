@@ -6,7 +6,7 @@ import classes from './Settings.module.css';
 class Settings extends Component{
   
     handleSetButtonClick=()=>{
-        this.props.onSetCurrentResult(this.props.slips[0]["slip_1"]);
+        this.props.onSetCurrentResult(this.props.slips[0]["slip_1"], null);
     }
     render(){
         return(<div className= {classes.SettingsWrapper}>
@@ -24,8 +24,8 @@ const mapStateToProps = (state) =>{
 
 const mapDispatchToProps = (dispatch) =>{
     return {
-        onSetCurrentResult: (slip) =>
-            dispatch(actions.setCurrentResult(slip)),
+        onSetCurrentResult: (slip, startDate) =>
+            dispatch(actions.setCurrentResult(slip, startDate)),
     }
 }
 
