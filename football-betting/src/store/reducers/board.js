@@ -126,6 +126,7 @@ const initializeBoard = (state, action) => {
             let game = {
                 id: gameId + (i + 1),
                 amount: 0,
+                league: fixture.league.name,
                 fixture_id: fixture.fixture_id,
                 status: fixture.status,
                 [gameId + (i + 1)]: {
@@ -144,7 +145,7 @@ const initializeBoard = (state, action) => {
             id: (slipId + 1), purchasable: false, slipAmount: 0,
             slipPrice: 0, adding: false, removing: false, [slipId + 1]: slipInner
         });
-        newSlip.games = Object.assign([], games1);
+        newSlip.games = Object.assign([], games1.sort((a,b)=>a.fixture_id > b.fixture_id? 1: -1));
 
         newSlip.gameNumber = uuid();
         // let newSlips = [Object.assign({}, newSlip)];

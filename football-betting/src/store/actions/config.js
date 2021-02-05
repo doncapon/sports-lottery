@@ -20,13 +20,18 @@ export const fetchWeeklyResults = (payload) => {
 
 
 export const fetchResults = (startDate) => {
-    console.log("I got cold")
     return dispatch => {
+
         axiosMain.get("match-results/" + startDate)
             .then(response => {
-                console.log(startDate);
+                let finalResults  = [];
                 let groupedGameResults = _.groupBy(response.data, 'gameDay');
-                dispatch(fetchWeeklyResults(groupedGameResults))
+                Object.keys(groupedGameResults).forEach((keys , k)=>{
+                    let i = groupedGameResults[keys].sort((a,b)=>a.fixtureId > b.fixtureId? 1:-1);
+                                    
+                    finalResults.splice(finalResults.length, finalResults.length+1, i);
+                })
+                dispatch(fetchWeeklyResults(finalResults));
                 dispatch(stopResultInitialize());
             });
     }
@@ -58,10 +63,8 @@ export const setCurrentResult = (slipGame, startDate) => {
                     };
                     axiosMain.post("match-results", returnResult)
                         .then(response => {
-                            console.log(response)
                         })
                         .catch(error => {
-                            console.log(error)
                         });
                 })
                 .catch(err => {

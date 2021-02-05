@@ -18,16 +18,15 @@ const results = (props) => {
         }
    
     }
-    let resultsTrannsformed = Object.keys(props.daysResults).map((key, k) => {
-        const results = props.daysResults[key];
+    let resultsTrannsformed = props.daysResults.map((results, k) => {
         return <div className={classes.ResultsAndShare} key={k}>
             <div className={classes.ResultHead} >
                 <div className={classes.HeaderInner}>
-                    <div>{moment(key).format("dddd")}</div>{" "}
-                    <div>{moment(key).format("DD.MM.YYYY")}</div>
+                    <div>{moment(results[0].gameDay).format("dddd")}</div>{" "}
+                    <div>{moment(results[0].gameDay).format("DD.MM.YYYY")}</div>
                     <div>{" "}-{" "}</div>
                 </div>
-                <div>Match reults </div>
+                <div>Match results </div>
             </div>
             <div className={classes.Results}>
 

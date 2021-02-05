@@ -113,7 +113,6 @@ class ToBank extends Component {
                                     };
                                     axios.post("transfer", paymentData)
                                         .then(response => {
-                                            console.log(response)
                                             if (response.data.data.status === "success") {
                                                 this.props.debitFunds(this.state.amount);
                                                 alert(`${response.data.message}. Funds wull be received within 24 hours.`)
@@ -123,12 +122,10 @@ class ToBank extends Component {
                                         })
                                         .catch(error => {
                                             this.setState({ apiError: error })
-                                            console.log("From call ", this.state.apiError)
                                         })
                                 })
                                 .catch(error => {
                                     this.setState({ apiError: error })
-                                    console.log(error)
                                 });
                         }
                     })
