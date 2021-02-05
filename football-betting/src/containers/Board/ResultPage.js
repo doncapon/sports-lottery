@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import * as actions from '../../store/actions/index';
 import Results from '../../components/gameHistory/results/results';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import _ from  'lodash';
 
 class ResultPage extends Component {
     constructor(props) {
@@ -21,8 +22,10 @@ class ResultPage extends Component {
         }
     }
     render() {
+        let groupedGameResults = _.mapValues(_.groupBy(this.props.currentResults, 'gameDay'));
+
         return !this.props.loading ? <Spinner /> : <div>
-            <Results results={this.props.currentResults} basePrice={this.props.basePrice} gamesLength={this.props.gamesLength} thirteen={this.props.thirteen}
+            <Results results={groupedGameResults} basePrice={this.props.basePrice} gamesLength={this.props.gamesLength} thirteen={this.props.thirteen}
                 twelve={this.props.twelve} eleven={this.props.eleven} ten={this.props.ten}
                 thirteenPcs={this.props.thirteenPieces} twelvePcs={this.props.twelvePieces}
                 elevenPcs={this.props.elevenPieces} tenPcs={this.props.tenPieces}
