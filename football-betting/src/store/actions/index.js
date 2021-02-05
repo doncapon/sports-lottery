@@ -35,10 +35,7 @@ export {
 
 
 export {
-     setCurrentResult,
-     setUpWinners,
-     fetchWeeklyResults,
-     fetchResults
+     setUpWinners
 } from './matchResults';
 
 
@@ -46,3 +43,10 @@ export {
      setLoggedInUser,
      setIsLoggedIn,
 } from './login';
+
+
+export {
+     setCurrentResult,
+     fetchWeeklyResults,
+     fetchResults
+} from './config';
