@@ -18,7 +18,6 @@ const Login = (props) => {
         };
 
         let res = await axios.post("users/login", loginData, { withCredentials: true });
-        console.log(res);
         return await res.data;
     };
 

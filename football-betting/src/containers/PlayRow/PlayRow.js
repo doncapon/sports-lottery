@@ -34,7 +34,6 @@ class PlayRow extends Component {
       return (
         <div className={classes.PlayRow} key={k}>
           <div className={classes.TeamAndSelection} >
-
             <div className={classes.Teams} >
               <Team
                 team1={game[gameId + (k + 1)].team1}
