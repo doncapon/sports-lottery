@@ -1,6 +1,7 @@
 import * as  actionTypes from './actionTypes';
 import axios from '../../axios-fixtures';
 import axiosMain from '../../axios-main';
+import moment from 'moment';
 
 export const stopResultInitialize = () => {
     return {
@@ -35,9 +36,9 @@ export const setUpWinners = (jackpot, thirteenPercent, twelvePercent, elevenPerc
 
 export const fetchResults = (startDate)=>{
     return dispatch=>{
-        axios.get("match-result")
+        axiosMain.get("match-results")
         .then(response=>{
-            console.log(response)
+            console.log(response);
             dispatch (fetchWeeklyResults(response.data));
             dispatch(stopResultInitialize());
 
@@ -58,15 +59,19 @@ export const setCurrentResult = (slipGame) => {
                 .then(response => {
                     let resultFixture = response.data.api.fixtures[0];
                     let returnResult = {
-                        status: returnResult.status,
+                        status: resultFixture.status,
                         fixtureId: resultFixture.fixture_id,
                         homeGoals: resultFixture.goalsHomeTeam,
                         awayGoals: resultFixture.goalsAwayTeam,
-                        score: resultFixture.score.fulltime, homeTeam: resultFixture.homeTeam.team_name
-                        , awayTeam: resultFixture.awayTeam.team_name, gameDate: resultFixture.event_date
+                        score: resultFixture.score.fulltime, 
+                        homeTeam: resultFixture.homeTeam.team_name,
+                        awayTeam: resultFixture.awayTeam.team_name, 
+                        gameDate: resultFixture.event_date,
+                        gameDay: moment(resultFixture.event_date).format("DD-MM-YYYY")
                     };
+                    console.log(returnResult);
                     if (game.status === "Match Finished") {
-                        axiosMain.post("match-result", returnResult)
+                        axiosMain.post("match-results", returnResult)
                             .then(response => {
                                 console.log(response)
                             })

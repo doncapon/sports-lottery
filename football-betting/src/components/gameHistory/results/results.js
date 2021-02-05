@@ -5,7 +5,6 @@ import Jackpot from "../jackpot/jackpot";
 
 const results = (props) => {
     const findSelection = (goalHome, goalAway) => {
-
         if (goalHome > goalAway) {
             return "H";
         } else if (goalHome < goalAway) {

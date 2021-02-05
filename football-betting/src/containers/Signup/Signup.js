@@ -134,6 +134,7 @@ class Signup extends Component {
         }
     }
     handleKeyUp=()=>{
+         // eslint-disable-next-line
          this.setState({dob: this.state.dob.replace(/^(\d\d)(\d)$/g,'$1/$2').replace(/^(\d\d\/\d\d)(\d+)$/g,'$1/$2').replace(/[^\d\/]/g,'')});
     }
 
