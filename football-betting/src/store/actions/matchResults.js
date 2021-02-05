@@ -1,6 +1,9 @@
 import * as  actionTypes from './actionTypes';
 import axios from '../../axios-fixtures';
 import axiosMain from '../../axios-main';
+import moment from 'moment';
+import _ from  'lodash';
+
 
 export const stopResultInitialize = () => {
     return {
@@ -32,22 +35,23 @@ export const setUpWinners = (jackpot, thirteenPercent, twelvePercent, elevenPerc
         tenPieces: tenPieces
     };
 }
+export const fetchResults = (startDate) => {
+    return dispatch => {
+        axiosMain.get("match-results")
+            .then(response => {
+                console.log(response);
+                let groupedGameResults = _.groupBy(response.data, 'gameDay');
+                console.log("I was called so ",groupedGameResults)
+                dispatch(fetchWeeklyResults(groupedGameResults))
+                dispatch(stopResultInitialize());
 
-export const fetchResults = (startDate)=>{
-    return dispatch=>{
-        axios.get("match-result")
-        .then(response=>{
-            console.log(response)
-            dispatch (fetchWeeklyResults(response.data));
-            dispatch(stopResultInitialize());
-
-        });
+            });
     }
 }
 
-export const setCurrentResult = (slipGame) => {
+export const setCurrentResult = (slipGame, startDate) => {
     return dispatch => {
-         slipGame.games.map(game => {
+        const allRequest = slipGame.games.map(game => {
             return axios.get("fixtures/id/" + game.fixture_id,
                 {
                     headers: {
@@ -57,16 +61,20 @@ export const setCurrentResult = (slipGame) => {
                 })
                 .then(response => {
                     let resultFixture = response.data.api.fixtures[0];
+                    let gameDay = moment(resultFixture.event_date).format("YYYY-MM-DD") + "T00:00:00+00:00";
                     let returnResult = {
+                        status: resultFixture.status,
                         fixtureId: resultFixture.fixture_id,
                         homeGoals: resultFixture.goalsHomeTeam,
                         awayGoals: resultFixture.goalsAwayTeam,
-                        status: resultFixture.status,
-                        score: resultFixture.score.fulltime, homeTeam: resultFixture.homeTeam.team_name
-                        , awayTeam: resultFixture.awayTeam.team_name, gameDate: resultFixture.event_date
+                        score: resultFixture.score.fulltime,
+                        homeTeam: resultFixture.homeTeam.team_name,
+                        awayTeam: resultFixture.awayTeam.team_name,
+                        gameDate: resultFixture.event_date,
+                        gameDay: gameDay
                     };
                     if (game.status === "Match Finished") {
-                        axiosMain.post("match-result", returnResult)
+                        axiosMain.post("match-results", returnResult)
                             .then(response => {
                                 console.log(response)
                             })
@@ -80,6 +88,8 @@ export const setCurrentResult = (slipGame) => {
                 });
 
         });
-
+        Promise.all(allRequest).then(value=>{
+            dispatch(fetchResults(startDate))
+        })
     }
 }
