@@ -7,7 +7,7 @@ class ActivateNewUser extends Component {
 
     componentDidMount() {
         const { token } = this.props.match.params;
-        axios.post("users/email-activate", { "token": token })
+        axios.post("users/email-activate", { "token": token.trim() })
             .then(response => {
                 alert(response.data + ". Login");
             })

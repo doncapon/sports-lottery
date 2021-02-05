@@ -61,6 +61,7 @@ export const setCurrentResult = (slipGame) => {
                         fixtureId: resultFixture.fixture_id,
                         homeGoals: resultFixture.goalsHomeTeam,
                         awayGoals: resultFixture.goalsAwayTeam,
+                        status: resultFixture.status,
                         score: resultFixture.score.fulltime, homeTeam: resultFixture.homeTeam.team_name
                         , awayTeam: resultFixture.awayTeam.team_name, gameDate: resultFixture.event_date
                     };
