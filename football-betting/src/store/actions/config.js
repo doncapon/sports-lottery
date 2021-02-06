@@ -25,7 +25,7 @@ export const fetchResults = (startDate) => {
         axiosMain.get("match-results/" + startDate)
             .then(response => {
                 let finalResults  = [];
-                let groupedGameResults = _.groupBy(response.data, 'gameDay');
+                let groupedGameResults = _.groupBy(response.data.results, 'gameDay');
                 Object.keys(groupedGameResults).forEach((keys , k)=>{
                     let i = groupedGameResults[keys].sort((a,b)=>a.fixtureId > b.fixtureId? 1:-1);
                                     
