@@ -9,6 +9,9 @@ class Settings extends Component{
         this.props.onSetCurrentResult(this.props.slips[0]["slip_1"], null);
     }
     render(){
+        if(this.props.user.role !== "admin" || !this.props.isLoggedIn){
+            this.props.history.push("/");
+        }
         return(<div className= {classes.SettingsWrapper}>
             <Button onClick = {this.handleSetButtonClick} >Set Last Results</Button>
         </div>)
@@ -18,6 +21,9 @@ class Settings extends Component{
 const mapStateToProps = (state) =>{
     return {
         slips: state.board.slips,
+
+        user: state.login.user,
+        isLoggedIn: state.login.isLoggedIn
 
     }
 }
