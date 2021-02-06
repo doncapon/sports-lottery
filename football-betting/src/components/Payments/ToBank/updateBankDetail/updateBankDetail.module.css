@@ -124,7 +124,7 @@ option{
     .Text, select  ,   .Password , .Banks
       , .Number  
     {    
-      width: 30vw;
+      width: 25vw;
     }
 
     .label{
@@ -142,6 +142,8 @@ option{
   
   .Button1,.Button2, .Submit{   
       margin-left: 5px;
-      width: 12vw;
+      min-width: 0vw;
+
+      width: 10vw;
   }
 }
