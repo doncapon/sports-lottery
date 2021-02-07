@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import classes from './Signup.module.css'
 import axios from '../../axios-main';
 import { connect } from "react-redux";
-import  {calculateAge} from '../../shared/utility';
+import { calculateAge } from '../../shared/utility';
 
 class Signup extends Component {
     constructor(props) {
@@ -81,7 +81,7 @@ class Signup extends Component {
                 formIsValid = false;
                 formErrors["dobErr"] = "Invalid date of birth. follow format \"dd/mm/yyyy\"";
             }
-            if(calculateAge(dob) < 18){
+            if (calculateAge(dob) < 18) {
                 formIsValid = false;
                 formErrors["dobErr"] = "Sorry, you must be over 18";
             }
@@ -133,135 +133,132 @@ class Signup extends Component {
                 })
         }
     }
-    handleKeyUp=()=>{
-         // eslint-disable-next-line
-         this.setState({dob: this.state.dob.replace(/^(\d\d)(\d)$/g,'$1/$2').replace(/^(\d\d\/\d\d)(\d+)$/g,'$1/$2').replace(/[^\d\/]/g,'')});
+    handleKeyUp = () => {
+        // eslint-disable-next-line
+        this.setState({ dob: this.state.dob.replace(/^(\d\d)(\d)$/g, '$1/$2').replace(/^(\d\d\/\d\d)(\d+)$/g, '$1/$2').replace(/[^\d\/]/g, '') });
     }
 
     render() {
 
-        const { nameErr, surnameErr,emailIdErr, dobErr, phoneNumberErr, usernameErr, passwordErr,
+        const { nameErr, surnameErr, emailIdErr, dobErr, phoneNumberErr, usernameErr, passwordErr,
             passwordConfErr } = this.state.formErrors;
         if (this.props.isLoggedIn) {
-            return (
-                this.props.history.push("/")
-            )
+            this.props.history.push("/")
         }
-        return (
-            <div className={classes.Wrapper}>
-                <div className="formDiv">
-                    <h3 style={{ textAlign: "center" }} >Registration Form </ h3>
-                    <div>
-                        <form onSubmit={this.handleSubmit}>
-                            <div>
-                                <label className={classes.Label} htmlFor="name">Name</label>
-                                <input type="text" name="name"
-                                    value={this.state.name}
-                                    onChange={this.handleChange}
-                                    placeholder="Your name.."
-                                    className={classes.Text} />
-                                {nameErr &&
-                                    <div className= {classes.ErrorText}>{nameErr}</div>
-                                }
+        return (<div className={classes.Wrapper}>
+            <div className="formDiv">
+                <h3 style={{ textAlign: "center" }} >Registration Form </ h3>
+                <div>
+                    <form onSubmit={this.handleSubmit}>
+                        <div>
+                            <label className={classes.Label} htmlFor="name">Name</label>
+                            <input type="text" name="name"
+                                value={this.state.name}
+                                onChange={this.handleChange}
+                                placeholder="Your name.."
+                                className={classes.Text} />
+                            {nameErr &&
+                                <div className={classes.ErrorText}>{nameErr}</div>
+                            }
 
-                            </div>
-                            <div>
-                                <label className={classes.Label} htmlFor="surname">Surname</label>
-                                <input type="text" name="surname"
-                                    value={this.state.surname}
-                                    onChange={this.handleChange}
-                                    placeholder="Your Surame.."
-                                    className={classes.Text} />
-                                {surnameErr &&
-                                    <div className= {classes.ErrorText}>{surnameErr}</div>
-                                }
+                        </div>
+                        <div>
+                            <label className={classes.Label} htmlFor="surname">Surname</label>
+                            <input type="text" name="surname"
+                                value={this.state.surname}
+                                onChange={this.handleChange}
+                                placeholder="Your Surame.."
+                                className={classes.Text} />
+                            {surnameErr &&
+                                <div className={classes.ErrorText}>{surnameErr}</div>
+                            }
 
-                            </div>
+                        </div>
 
-                            <div>
-                                <label className={classes.Label} htmlFor="emailId">Email</label>
-                                <input type="text" name="emailId"
-                                    value={this.state.emailId}
-                                    onChange={this.handleChange}
-                                    placeholder="Your email id.."
-                                    className={classes.Text} />
-                                {emailIdErr &&
-                                    <div className= {classes.ErrorText}>{emailIdErr}</div>
-                                }
+                        <div>
+                            <label className={classes.Label} htmlFor="emailId">Email</label>
+                            <input type="text" name="emailId"
+                                value={this.state.emailId}
+                                onChange={this.handleChange}
+                                placeholder="Your email id.."
+                                className={classes.Text} />
+                            {emailIdErr &&
+                                <div className={classes.ErrorText}>{emailIdErr}</div>
+                            }
 
-                            </div>
-                            <div>
-                                <label className={classes.Label} htmlFor="phoneNumber">Phone Number</label>
-                                <input type="text" name="phoneNumber"
-                                    onChange={this.handleChange}
-                                    value={this.state.phoneNumber}
-                                    size="11" maxLength="11" 
-                                    placeholder="Your phone number.."
-                                    className={classes.Text} />
-                                {phoneNumberErr &&
-                                    <div className= {classes.ErrorText}>{phoneNumberErr}</div>
-                                }
-                            </div>
-                            <div>
-                                <label className={classes.Label} htmlFor="dob">Birth Date</label>
-                                <span htmlFor="dob">Birth Date</span>
-                                <input type="text" name="dob"
-                                    value={this.state.dob}
-                                    size="10" maxLength="10"  onKeyUp={this.handleKeyUp}
-                                    onChange={this.handleChange}
-                                    placeholder="dd/mm/yyyy"
-                                    className={classes.Date} />
-                                {dobErr &&
-                                    <div className= {classes.ErrorText}>{dobErr}</div>
-                                }
-                            </div>
+                        </div>
+                        <div>
+                            <label className={classes.Label} htmlFor="phoneNumber">Phone Number</label>
+                            <input type="text" name="phoneNumber"
+                                onChange={this.handleChange}
+                                value={this.state.phoneNumber}
+                                size="11" maxLength="11"
+                                placeholder="Your phone number.."
+                                className={classes.Text} />
+                            {phoneNumberErr &&
+                                <div className={classes.ErrorText}>{phoneNumberErr}</div>
+                            }
+                        </div>
+                        <div>
+                            <label className={classes.Label} htmlFor="dob">Birth Date</label>
+                            <span htmlFor="dob">Birth Date</span>
+                            <input type="text" name="dob"
+                                value={this.state.dob}
+                                size="10" maxLength="10" onKeyUp={this.handleKeyUp}
+                                onChange={this.handleChange}
+                                placeholder="dd/mm/yyyy"
+                                className={classes.Date} />
+                            {dobErr &&
+                                <div className={classes.ErrorText}>{dobErr}</div>
+                            }
+                        </div>
 
-                            <div>
-                                <label className={classes.Label} htmlFor="username">Username</label>
-                                <input type="text" name="username"
-                                    value={this.state.username}
-                                    onChange={this.handleChange}
-                                    placeholder="Username.."
-                                    className={classes.Text} />
-                                {usernameErr &&
-                                    <div className= {classes.ErrorText}>{usernameErr}</div>
-                                }
+                        <div>
+                            <label className={classes.Label} htmlFor="username">Username</label>
+                            <input type="text" name="username"
+                                value={this.state.username}
+                                onChange={this.handleChange}
+                                placeholder="Username.."
+                                className={classes.Text} />
+                            {usernameErr &&
+                                <div className={classes.ErrorText}>{usernameErr}</div>
+                            }
 
-                            </div>
+                        </div>
 
-                            <div>
-                                <label className={classes.Label} htmlFor="password">Password</label>
-                                <input type="password" name="password"
-                                    value={this.state.password}
-                                    onChange={this.handleChange}
-                                    placeholder="Password.."
-                                    className={classes.Password} />
-                                {passwordErr &&
-                                    <div className= {classes.ErrorText}>{passwordErr}</div>
-                                }
+                        <div>
+                            <label className={classes.Label} htmlFor="password">Password</label>
+                            <input type="password" name="password"
+                                value={this.state.password}
+                                onChange={this.handleChange}
+                                placeholder="Password.."
+                                className={classes.Password} />
+                            {passwordErr &&
+                                <div className={classes.ErrorText}>{passwordErr}</div>
+                            }
 
-                            </div>
+                        </div>
 
-                            <div>
-                                <label className={classes.Label} htmlFor="passwordConf">Confirm Password</label>
-                                <input type="password" name="passwordConf"
-                                    value={this.state.passwordConf}
-                                    onChange={this.handleChange}
-                                    placeholder="Re-password"
-                                    className={classes.Password} />
-                                {passwordConfErr &&
-                                    <div className= {classes.ErrorText}>{passwordConfErr}</div>
-                                }
+                        <div>
+                            <label className={classes.Label} htmlFor="passwordConf">Confirm Password</label>
+                            <input type="password" name="passwordConf"
+                                value={this.state.passwordConf}
+                                onChange={this.handleChange}
+                                placeholder="Re-password"
+                                className={classes.Password} />
+                            {passwordConfErr &&
+                                <div className={classes.ErrorText}>{passwordConfErr}</div>
+                            }
 
-                            </div>
-                            <input onClick={() => this.props.setShowForm(false)} 
-                                className={classes.Button}
+                        </div>
+                        <input onClick={() => this.props.setShowForm(false)}
+                            className={classes.Button}
                             type="button" value="Cancel" />
-                            <input type="submit" value="Submit" className={classes.Submit} />
-                        </form>
-                    </div>
+                        <input type="submit" value="Submit" className={classes.Submit} />
+                    </form>
                 </div>
-            </div >
+            </div>
+        </div >
         )
     }
 }

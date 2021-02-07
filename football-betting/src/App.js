@@ -91,9 +91,11 @@ class App extends React.Component {
           : null}
         <div className={classes.Navs}><Navs funds={this.props.funds}
           loggedIn={false} setIsLoggedIn={this.props.onSetIsLoggedIn}
-          setLoggedInUser={this.props.onSetLoggedInUser} isLoggedIn={this.props.isLoggedIn} deleteAndResetAll={this.props.onDeleteAndResetAll}
+          setLoggedInUser={this.props.onSetLoggedInUser} isLoggedIn={this.props.isLoggedIn}
+           deleteAndResetAll={this.props.onDeleteAndResetAll}
           username={this.props.username} password={this.props.password} slips = {this.props.slips}
-          showFunds={this.props.showFunds} firstName={this.props.user.name} setShowFunds={this.props.onSetShowFunds}
+          showFunds={this.props.showFunds} firstName={this.props.user.name}
+           setShowFunds={this.props.onSetShowFunds} user = {this.props.user}
           toggleShowFunds={this.props.onToggleShowFunds}
           
           /></div>

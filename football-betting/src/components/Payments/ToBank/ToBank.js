@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import './ToBank.module.css'
 import classes from "./ToBank.module.css";
-import axios from '../../../axios-paystack'; import UpdateBankDetail from "./updateBankDetail/updateBankDetail";
+import axios from '../../../axios-paystack'; 
+import UpdateBankDetail from "./updateBankDetail/updateBankDetail";
 import SignupModal from "../../UI/SignupModal/SignupModoal";
+import axiosMain from '../../../axios-main';
+import { Spinner } from "react-bootstrap";
 class ToBank extends Component {
     constructor(props) {
         super(props);
@@ -11,25 +14,44 @@ class ToBank extends Component {
             name: "",
             amount: '',
             account: "",
-            bank: '',
-            savedBankDetails: [
-                { name: '', account: "Use an exisitng bank", bank: '' },
-                { name: 'Olusegun Akintimehin', account: "0125732236", bank: '058' },
-                { name: 'akintigbola', account: "02374736264", bank: 'zenith' },
-            ],
+            bank: 'select',
+            savedBankDetails: [],
 
-            allowedBanks: [
-                { name: '--Select Bank--', value: 'select' },
-                { name: 'Guaranty Trust Bank', value: '058' },
-                { name: 'Zenith Bank', value: 'zenith' },
-                { name: 'Eco bank', value: 'echoCode' },
-            ],
+            allowedBanks: [],
             formErrors: {},
             config: {},
             apiError: '',
             saveError: '',
-            showUpdate: ''
+            showUpdate: '',
+            loading: false,
         };
+
+    }
+
+    componentDidMount(){
+        if(!this.state.loading){
+            console.log("This is the user" , this.props.user)
+
+            axiosMain.get("accounts/" + this.props.user._id)
+            .then(response =>{
+                console.log("I am here so ",response.data)
+                if(response.data === null){
+                    const accountDetail = {accountName: '', Bank: '', accountNumber: 'Use an exisitng bank' }
+                    axiosMain.post("accounts/"+ this.props.user._id, accountDetail)
+                }
+            })
+
+
+            axiosMain.get("bank-list")
+            .then(response =>{
+                this.setState({allowedBanks: response.data.bank})
+                this.setState({loading: true})
+
+            })
+            .catch(error =>{
+    
+            });
+        }
 
     }
 
@@ -191,19 +213,24 @@ class ToBank extends Component {
     }
     HandleSave = () => {
         let bankDetail = [...this.state.savedBankDetails];
-        if (this.state.name && this.state.bank && this.state.account !== 'select') {
-            let BankExist = bankDetail.find(detail => detail.account === this.state.account);
+        if (this.state.name && this.state.Bank && this.state.account !== 'select') {
+            let BankExist = bankDetail.find(detail => detail.accountNumber === this.state.account);
             if (BankExist === null) {
                 const params = "account_number=" + this.state.account + "&bank_code="
                     + this.state.bank;
                 axios.get("bank/resolve?" + params)
                     .then(response => {
                         if (response.data.message === "Account number resolved") {
-
-                            bankDetail.splice(bankDetail.length, bankDetail.length + 1,
-                                { name: this.state.name, account: this.state.account, bank: this.state.bank });
+                                const accountDetail = {accountName:  this.state.name, Bank: this.state.bank, accountNumber: this.state.account }
+                                axiosMain.post("accounts/"+ this.props.user._id, accountDetail)
+                                .then(response=>{
+                                    axiosMain.get("accounts/" + this.props.user._id)
+                                    .then(response =>{
+                                        this.setState({ savedBankDetails: response.data });
+                                    })
+                                })
+                            
                             this.setState({ saveError: '' })
-                            this.setState({ savedBankDetails: bankDetail })
                             alert("Bank details saved!");
                         }
                     })
@@ -233,23 +260,30 @@ class ToBank extends Component {
             banks.push(classes.showError);
         }
         const banksExist = [classes.BanksExist];
-
-        let bankDetails = [...this.state.savedBankDetails];
-        let options = bankDetails.map((detail, i) => (
-            <option key={i} value={detail.account}>{detail.account}</option>
-        ));
-
-        let banksallowed = [...this.state.allowedBanks];
-        let optionsAllowed = banksallowed.map((detail, i) => (
-            <option key={i} value={detail.value}>{detail.name}</option>
-        ));
-
+        let bankDetails;
+        let options ;
+        let banksallowed ;
+        let optionsAllowed;
+        if(this.state.loading){
+             bankDetails = [...this.state.savedBankDetails];
+             options = bankDetails.map((detail, i) => (
+                <option key={i} value={detail.accountNumber}>{detail.accountNumber}</option>
+            ));
+    
+            banksallowed = [...this.state.allowedBanks];
+            optionsAllowed = banksallowed.sort((a,b)=> a.bankName>b.bankName? 1: -1).map((detail, i) => (
+                <option key={i} value={detail.bankCode}>{detail.bankName}</option>
+            ));
+    
+        }
+        
         return (
             <div className={classes.ToBankWrapper}>
                 {this.state.showUpdate ? <SignupModal show={this.state.showUpdate}><UpdateBankDetail 
                 name= {this.state.name} bank = {this.state.bank} account ={this.state.account}
+                allowedBanks = {this.state.allowedBanks}
                 setShowUpdate = {this.setShowUpdate} /></SignupModal> :
-                    <div className="formDiv">
+                  this.state.loading?   <div className="formDiv">
                         <div>
                             <form onSubmit={this.handleSubmit}>
                                 <select name="savedBankDetails"
@@ -278,7 +312,7 @@ class ToBank extends Component {
                                     <input type="text" name="name"
                                         value={this.state.name}
                                         onChange={this.handleChange}
-                                        placeholder="Name: as in bank"
+                                        placeholder="Your Name: as in bank"
                                         className={classes.Text} />
                                     {nameErr &&
                                         <div style={{ color: "red" }}>{nameErr}</div>
@@ -318,10 +352,10 @@ class ToBank extends Component {
                                     <div className={classes.ButtonInner}>
                                         <button type="button" onClick={this.HandleSave} className={classes.Button1}
                                         >Save</button>
-
+                                        {this.state.name && this.state.bank !== "select" && this.state.account? 
                                         <button type="button" className={classes.Button2}
                                             onClick={() => this.setShowUpdate(true)}
-                                        >Update / Delete</button>
+                                        >Update / Delete</button>: null}
                                     </div>
                                     <input type="submit" className={classes.Submit}
                                         value="Withdraw" />
@@ -329,10 +363,13 @@ class ToBank extends Component {
                             </form>
                         </div>
                     </div>
+            :<Spinner />
+
                 }
             </div >
 
         )
+        
     }
 }
 

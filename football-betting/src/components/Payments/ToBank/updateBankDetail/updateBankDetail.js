@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Spinner } from 'react-bootstrap';
 import classes from './updateBankDetail.module.css';
 
 class UpdateBankDetail extends Component {
@@ -11,26 +12,26 @@ class UpdateBankDetail extends Component {
             account: "",
             bank: '',
 
-            allowedBanks: [
-                { name: '--Select Bank--', value: 'select' },
-                { name: 'Guaranty Trust Bank', value: '058' },
-                { name: 'Zenith Bank', value: 'zenith' },
-                { name: 'Eco bank', value: 'echoCode' },
-            ],
+            allowedBanks: [],
             formErrors: {},
             config: {},
             apiError: '',
             saveError: '',
-            showUpdate : ''
-        
+            showUpdate : '',
+            loading: false
 
         }
     }
 
     componentDidMount(){
+        if(!this.state.loading){
+            this.setState({allowedBanks: this.props.allowedBanks});
+            
         this.setState({name: this.props.name});
         this.setState({bank: this.props.bank});
         this.setState({account: this.props.account});
+        }
+        this.setState({loading: true});
     }
     handleChange = (e) => {
         let { name, value } = e.target;
@@ -79,11 +80,19 @@ class UpdateBankDetail extends Component {
         if (bankErr) {
             banks.push(classes.showError);
         }
-        let banksallowed = [...this.state.allowedBanks];
-        let optionsAllowed = banksallowed.map((detail, i) => (
-            <option key={i} value={detail.value}>{detail.name}</option>
-        ));
+
+        let banksallowed;
+        let optionsAllowed;
+        if(this.state.loading){
+            console.log(this.state.allowedBanks);
+            banksallowed = [...this.state.allowedBanks];
+            optionsAllowed = banksallowed.sort((a, b )=>a.bankName > b.bankName? 1: -1).map((detail, i) => (
+                <option key={i} value={detail.bankCode}>{detail.bankName}</option>
+            ));
+        }
+
         return (<div>
+            {this.state.loading?
             <form onSubmit={this.handleSubmit}>
                <h2>Update or Delete bank</h2>
                 <div>
@@ -138,7 +147,7 @@ class UpdateBankDetail extends Component {
                     <input type="submit" className={classes.Submit} onClick = {this.handleUpdate}
                         value="Update" />
                 </div>
-            </form>
+            </form>: <Spinner />}
         </div>);
     }
 }

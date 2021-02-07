@@ -40,7 +40,7 @@ class Navs extends Component {
     this.props.setIsLoggedIn(false);
     if (this.props.slips !== null)
       this.props.deleteAndResetAll();
-    //  return <Redirect to="/" />
+    this.props.setLoggedInUser({});
     this.props.history.push("/");
   }
   render() {
@@ -182,8 +182,10 @@ class Navs extends Component {
           <Nav className="mr-auto">
             <Nav.Link to="/play" as={NavLink}>Play</Nav.Link>
             <Nav.Link to="/results" as={NavLink}>Result</Nav.Link>
-            <Nav.Link to="/settings" as={NavLink}>Settings</Nav.Link>
-
+            {this.props.user.role === "admin" ?
+              <Nav.Link to="/settings" as={NavLink}>Settings</Nav.Link>
+              : null}
+  {console.log(this.props.user)}
           </Nav>
           <Dropdown>
             {/* <Dropdown.Toggle variant="success" id="dropdown-basic" style={{marginRight: "80px"}}>
@@ -202,7 +204,7 @@ class Navs extends Component {
               <Funds funds={this.props.funds} showFunds={this.props.showFunds} firstName={this.props.firstName}
                 toggleShowFunds={this.props.toggleShowFunds} setIsLoggedIn={this.props.setIsLoggedIn} />
             </div>
-            : <Login setPassword={this.props.setPassword} setIsLoggedIn={this.props.setIsLoggedIn} slips = {this.props.slips}
+            : <Login setPassword={this.props.setPassword} setIsLoggedIn={this.props.setIsLoggedIn} slips={this.props.slips}
               username={this.props.username} deleteAndResetAll={this.props.deleteAndResetAll} setLoggedInUser={this.props.setLoggedInUser} />
           }
 
