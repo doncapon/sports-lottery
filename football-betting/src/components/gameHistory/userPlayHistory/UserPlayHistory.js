@@ -21,6 +21,7 @@ class UserPlayHistory extends Component {
 
     }
     render() {
+        console.log(this.props.daysuserPlayHistory);
         let userPlayHistoryTrannsformed = this.props.daysuserPlayHistory.map((userPlayHistory, k) => {
             return <div className={classes.userPlayHistoryAndShare} key={k}>
                 <div className={classes.ResultHead} >

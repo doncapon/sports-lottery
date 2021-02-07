@@ -281,7 +281,6 @@ const calculateSpecificSlipPrice = (state, action) => {
             }
 
         }
-        console.log(totalPrice, slipAmount, action.basePrice)
         draft.slips[action.slipIndex].slipAmount = slipAmount;
         draft.slips[action.slipIndex].slipPrice = totalPrice;
     });
@@ -483,7 +482,6 @@ const calculateGrandTtoalPriceOfAllSlips = (state, action) => {
         let slips = state.slips;
         let totalPrice = 0;
         slips.forEach((slip, i) => {
-        console.log(slip.slipPrice);
 
             return totalPrice += slip.slipPrice;
         });
