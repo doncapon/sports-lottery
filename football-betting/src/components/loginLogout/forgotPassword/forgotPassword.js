@@ -24,6 +24,24 @@ const ForgotPassword = (props) => {
         if (!password) {
             formIsValid = false;
             formErros1["passwordErr"] = "Password is required.";
+        }else{
+            if (password.length < 8) {
+                formIsValid = false;
+                formErros1["passwordErr"] = "Password minumum length is 8 characters";
+            }
+
+            if(!/(?=.*?[A-Z])/.test(password)){
+                formIsValid = false;
+                formErros1["passwordErr"] = "Password must contain at least one Uppercase letter";
+            }
+            if(!/(?=.*?[a-z])/.test(password)){
+                formIsValid = false;
+                formErros1["passwordErr"] = "Password must contain at least one Lowercase letter";
+            }
+            if(!/(?=.*?[0-9])/.test(password)){
+                formIsValid = false;
+                formErros1["passwordErr"] = "Password must contain at least one number";
+            }
         }
 
         if (password !== passwordConf || passwordConf === "") {
@@ -82,7 +100,7 @@ const ForgotPassword = (props) => {
                 .then(value => {
                     setShowModal(false);
                     history.push("/");
-                    alert("Your password has been changed. try it!")
+                    alert("Your password has been changed. try lgin!")
                 });
         }
     }
@@ -91,7 +109,6 @@ const ForgotPassword = (props) => {
     const Email = [classes.Email];
         if(emailIdErr)
         {Email.push(classes.showError)}
-
     return (
         <Modal show={showModal} modalClosed={() => { }} >
             <div className={classes.PasswordWrapper}>

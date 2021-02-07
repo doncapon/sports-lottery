@@ -54,45 +54,82 @@ class ToBank extends Component {
         }
 
     }
+    validateName(name) {
+        let formIsValid = true;
+        let error = "";
+        //Name   
+        if (!name) {
+            formIsValid = false;
+            error = "Name is required.";
+        }
+
+        return { isValid: formIsValid, error: error }
+    }
+    validateAccount(account) {
+        let formIsValid = true;
+        let error = "";
+        //Account
+        if (!account) {
+            formIsValid = false;
+            error = "Account number is required.";
+        }
+
+        return { isValid: formIsValid, error: error }
+    }
+    validateAmount(amount) {
+        let formIsValid = true;
+        let error = "";
+        if (!amount) {
+            formIsValid = false;
+            error = "Amount is required.";
+        }
+        else {
+            if (Number(amount) < 500) {
+                formIsValid = false;
+                error = "Minimum amount allowed is 500";
+            }
+            if (Number(amount) > this.props.funds) {
+                formIsValid = false;
+                error = "Withrawal amount is more than your funds. correct";
+
+            }
+
+        }
+
+        return { isValid: formIsValid, error: error }
+    }
+
+    validateBank(bank) {
+        let formIsValid = true;
+        let error = "";
+        if (bank === '' || bank === "select") {
+            formIsValid = false;
+            error = "Select bank.";
+        }
+
+        return { isValid: formIsValid, error: error }
+    }
 
     handleFormValidation() {
         const { name, amount, account, bank } = this.state;
         let formErrors = {};
         let formIsValid = true;
 
-        //Name   
-        if (!name) {
-            formIsValid = false;
-            formErrors["nameErr"] = "Name id is required.";
-        }
+        //Name
+        formErrors["nameErr"] = this.validateName(name).error;
+        formIsValid = this.validateName(name).isValid;
 
-        if (!account) {
-            formIsValid = false;
-            formErrors["accountErr"] = "Account number is required.";
-        }
+        // Account
+        formIsValid = this.validateAccount(account).isValid;
+        formErrors["accountErr"] = this.validateAccount(account).error;
 
         //Amount    
-        if (!amount) {
-            formIsValid = false;
-            formErrors["amountErr"] = "Amount is required.";
-        }
-        else {
-            if (Number(amount) < 500) {
-                formIsValid = false;
-                formErrors["amountErr"] = "Minimum amount allowed is 500";
-            }
-            if (Number(amount) > this.props.funds) {
-                formIsValid = false;
-                formErrors["amountErr"] = "Withrawal amount is more than your funds. correct";
-
-            }
-
-        }
+        formIsValid = this.validateAmount(amount).isValid;
+        formErrors["amountErr"] = this.validateAmount(amount).error;
         //Bank
-        if (bank === '' || bank === "select") {
-            formIsValid = false;
-            formErrors["bankErr"] = "Select bank.";
-        }
+        formIsValid = this.validateBank(bank).isValid;
+        formErrors["bankErr"] = this.validateBank(bank).error;
+
         this.setState({ formErrors: formErrors });
 
         this.setState({ formErrors: formErrors });
@@ -109,7 +146,7 @@ class ToBank extends Component {
         //Name   
         if (!name) {
             formIsValid = false;
-            formErrors["nameErr"] = "Name id is required.";
+            formErrors["nameErr"] = "Name is required.";
         }
 
         if (!account) {
@@ -130,7 +167,20 @@ class ToBank extends Component {
 
     handleChange = (e) => {
         let { name, value } = e.target;
-        this.setState({ [name]: value });   
+        this.setState({ [name]: value });
+        const ele = document.activeElement.name;
+        let error = {};
+        if (ele === "name")
+            error["nameErr"] = this.validateName(value).error;
+        if (ele === "account")
+            error["accountErr"] = this.validateAccount(value).error;
+        if (ele === "amount")
+            error["amountErr"] = this.validateAmount(value).error;
+        if (ele === "account")
+            error["bankErr"] = this.validateBank(value).error;
+
+            this.setState({formErrors: error})
+
     }
 
 
@@ -195,17 +245,17 @@ class ToBank extends Component {
 
                                         })
                                         .catch(error => {
-                                            this.setState({ apiError: error , saveError: ''});
+                                            this.setState({ apiError: error, saveError: '' });
                                         })
                                 })
                                 .catch(error => {
-                                    this.setState({ apiError: error , saveError: '' });
+                                    this.setState({ apiError: error, saveError: '' });
 
                                 });
                         }
                     })
                     .catch(error => {
-                        this.setState({ apiError: error , saveError: ''})
+                        this.setState({ apiError: error, saveError: '' })
 
                     });
             }
@@ -242,7 +292,7 @@ class ToBank extends Component {
 
 
             } else {
-                this.setState({ saveError: "That bank detail already exists" , apiError: ''});
+                this.setState({ saveError: "That bank detail already exists", apiError: '' });
             }
         } else {
 
@@ -288,8 +338,8 @@ class ToBank extends Component {
                     setShowUpdate={this.setShowUpdate} /></SignupModal> :
                     this.state.loading ? <div className="formDiv">
                         <div>
-                            {this.state.apiError ? <div style={{ color: 'red' , fontSize: '20px'}}>Please check your bank details</div> : null}
-                            {this.state.saveError ? <div style={{ color: 'red',fontSize: '20px' }}>{this.state.saveError}</div> : null}
+                            {this.state.apiError ? <div style={{ color: 'red', fontSize: '20px' }}>Please check your bank details</div> : null}
+                            {this.state.saveError ? <div style={{ color: 'red', fontSize: '20px' }}>{this.state.saveError}</div> : null}
 
                             <form onSubmit={this.handleSubmit}>
                                 <select name="savedBankDetails"
