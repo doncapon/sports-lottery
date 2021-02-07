@@ -10,12 +10,12 @@ class Signup extends Component {
         this.state = {
             name: 'admin1',
             surname: 'shegz',
-            username: 'admin1',
-            password: 'admin1234',
-            passwordConf: 'admin1234',
+            username: 'donc',
+            password: 'Test1234',
+            passwordConf: 'Test1234',
             emailId: 'olusegun.akintimehin@gmail.com',
             dob: '25/09/1987',
-            phoneNumber: '08283763526',
+            phoneNumber: '08236462359',
             formErrors: {},
             apiError: ''
         };
@@ -24,83 +24,191 @@ class Signup extends Component {
         this.initialState = this.state;
     }
 
-    handleFormValidation() {
-        const { name, surname, emailId, dob, phoneNumber, username, password, passwordConf } = this.state;
-        let formErrors = {};
-        let formIsValid = true;
 
-        //Student name     
+    validateName(name) {
+        let formIsValid = true;
+        let error = "";
+        //Name   
         if (!name) {
             formIsValid = false;
-            formErrors["nameErr"] = "Name is required.";
+            error = "Name is required.";
         }
 
-        //Student surname     
+        return { isValid: formIsValid, error: error }
+    }
+    validateSurname(surname) {
+        let formIsValid = true;
+        let error = "";
+        //Name   
         if (!surname) {
             formIsValid = false;
-            formErrors["surnameErr"] = "Surname is required.";
+            error = "Surname is required.";
         }
 
-        //username name     
+        return { isValid: formIsValid, error: error }
+    }
+
+    validateUsername(username) {
+        let formIsValid = true;
+        let error = "";
+        //Name   
         if (!username) {
             formIsValid = false;
-            formErrors["usernameErr"] = "Username is required.";
-        }
-        //Passwod Validations   
-        if (!password) {
-            formIsValid = false;
-            formErrors["passwordErr"] = "Password is required.";
+            error = "Username is required.";
         }
 
+        return { isValid: formIsValid, error: error }
+    }
+
+    validatePassword(password) {
+        let formIsValid = true;
+        let error = "";
+        //Password
+        if (!password) {
+            formIsValid = false;
+            error = "Password is required.";
+        } else {
+            if (password.length < 8) {
+                formIsValid = false;
+                error = "Password minumum length is 8 characters";
+            }
+
+            if(!/(?=.*?[A-Z])/.test(password)){
+                formIsValid = false;
+                error = "Password must contain at least one Uppercase letter";
+            }
+            if(!/(?=.*?[a-z])/.test(password)){
+                formIsValid = false;
+                error = "Password must contain at least one Lowercase letter";
+            }
+            if(!/(?=.*?[0-9])/.test(password)){
+                formIsValid = false;
+                error = "Password must contain at least one number";
+            }
+            
+        }
+
+        return { isValid: formIsValid, error: error }
+    }
+
+    validatePasswordConf(password, passwordConf) {
+        let formIsValid = true;
+        let error = "";
+        //PasswordConf
         if (password !== passwordConf || passwordConf === "") {
             formIsValid = false;
-            formErrors["passwordConfErr"] = "Passwords dont match";
+            error = "Passwords dont match";
             if (passwordConf === "")
-                formErrors["passwordConfErr"] = "Re-Password is required";
+                error = "Re-Password is required";
         }
+
+        return { isValid: formIsValid, error: error }
+    }
+
+
+
+    validateEmailId(emailId) {
+        let formIsValid = true;
+        let error = "";
 
         //Email    
         if (!emailId) {
             formIsValid = false;
-            formErrors["emailIdErr"] = "Email id is required.";
+            error = "Email id is required.";
         }
-        else if (!(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(emailId))) {
+        else {
+            if (!(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(emailId))) {
 
-            formIsValid = false;
-            formErrors["emailIdErr"] = "Invalid email id.";
+                formIsValid = false;
+                error = "Invalid email id.";
+            }
         }
+        return { isValid: formIsValid, error: error }
+    }
 
-        //DOB    
+
+    validateDob(dob) {
+        let formIsValid = true;
+        let error = "";
+        //dob   
         if (!dob) {
             formIsValid = false;
-            formErrors["dobErr"] = "Date of birth is required.";
+            error = "Date of birth is required.";
         }
         else {
             var pattern = /^(0[1-9]|1[0-9]|2[0-9]|3[0-1])\/(0[1-9]|1[0-2])\/([0-9]{4})$/;
             if (!pattern.test(dob)) {
                 formIsValid = false;
-                formErrors["dobErr"] = "Invalid date of birth. follow format \"dd/mm/yyyy\"";
+                error = "Invalid date of birth. follow format \"dd/mm/yyyy\"";
             }
             if (calculateAge(dob) < 18) {
                 formIsValid = false;
-                formErrors["dobErr"] = "Sorry, you must be over 18";
+                error = "Sorry, you must be over 18";
             }
         }
 
+        return { isValid: formIsValid, error: error }
+    }
 
-
-        //Phone number    
+    validatePhoneNumber(phoneNumber) {
+        let formIsValid = true;
+        let error = "";
         if (!phoneNumber) {
             formIsValid = false;
-            formErrors["phoneNumberErr"] = "Phone number is required.";
+            error = "Phone number is required.";
         }
         else {
             var mobPattern = /0\d{2}\d{4}\d{4}/;
             if (!mobPattern.test(phoneNumber)) {
                 formIsValid = false;
-                formErrors["phoneNumberErr"] = "Invalid phone number.";
+                error = "Invalid phone number.";
             }
         }
+
+        return { isValid: formIsValid, error: error }
+    }
+
+
+
+
+    handleFormValidation() {
+        const { name, surname, emailId, dob, phoneNumber, username, password, passwordConf } = this.state;
+        let formErrors = {};
+        let formIsValid = true;
+
+
+        //Name
+        formErrors["nameErr"] = this.validateName(name).error;
+        formIsValid = this.validateName(name).isValid;
+
+        //Surname
+        formErrors["surnameErr"] = this.validateSurname(surname).error;
+        formIsValid = this.validateSurname(surname).isValid;
+
+        //username      
+        formErrors["usernameErr"] = this.validateUsername(username).error;
+        formIsValid = this.validateSurname(username).isValid;
+
+        //Passwod Validations  
+        formErrors["passwordErr"] = this.validatePassword(password).error;
+        formIsValid = this.validatePassword(password).isValid;
+
+        //PasswodConf Validation 
+        formErrors["passwordConfErr"] = this.validatePasswordConf(password, passwordConf).error;
+        formIsValid = this.validatePasswordConf(password, passwordConf).isValid;
+
+        //EmailId
+        formErrors["emailIdErr"] = this.validateEmailId(emailId).error;
+        formIsValid = this.validateEmailId(emailId).isValid;
+
+        //DOB    
+        formErrors["dobErr"] = this.validateDob(dob).error;
+        formIsValid = this.validateDob(dob).isValid;
+
+        //Phone number    
+        formErrors["phoneNumberErr"] = this.validatePhoneNumber(phoneNumber).error;
+        formIsValid = this.validatePhoneNumber(phoneNumber).isValid;
+
 
         this.setState({ formErrors: formErrors });
         return formIsValid;
@@ -109,6 +217,25 @@ class Signup extends Component {
     handleChange = (e) => {
         let { name, value } = e.target;
         this.setState({ [name]: value });
+        const ele = document.activeElement.name;
+        let error = {};
+        if (ele === "name")
+            error["nameErr"] = this.validateName(value).error;
+        if (ele === "surname")
+            error["surnameErr"] = this.validateSurname(value).error;
+        if (ele === "username")
+            error["usernameErr"] = this.validateUsername(value).error;
+        if (ele === "password")
+            error["passwordErr"] = this.validatePassword(value).error;
+        if (ele === "passwordConf")
+            error["passwordConfErr"] = this.validatePasswordConf(this.state.password, value).error;
+        if (ele === "emailId")
+            error["emailIdErr"] = this.validateEmailId(value).error;
+        if (ele === "dob")
+            error["dobErr"] = this.validateDob(value).error;
+        if (ele === "phoneNumber")
+            error["phoneNumberErr"] = this.validatePhoneNumber(value).error;
+        this.setState({ formErrors: error })
     }
 
     handleSubmit = (e) => {

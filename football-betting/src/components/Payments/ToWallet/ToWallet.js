@@ -103,7 +103,6 @@ class ToWallet extends Component {
         return (
             <div className="formDiv">
                 <form>
-
                     <div>
                         <label className={classes.label} htmlFor="emailId">Email</label>
                         <input type="text" name="emailId"
