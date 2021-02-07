@@ -14,6 +14,7 @@ import { ArrowRight } from "react-bootstrap-icons";
 import Receipts from '../../components/board/receipts/receipts/receipts';
 import {getNextPlayDate} from '../../shared/utility';
 import {addCommaToAmounts} from '../../shared/utility';
+
 class Board extends Component {
 
   constructor(props) {
@@ -61,6 +62,7 @@ class Board extends Component {
             predictions={this.props.predictions}
             toggleSelectedTile={this.props.ontoggleSelectedTile}
             slips={this.props.slips}
+            basePrice={this.props.basePrice}
             checkPurchasable={this.props.onIsPurchasing}
             setPurchaseAll={this.props.onSetPurchaseAll}
             playingGames={this.props.playingGames}
@@ -95,7 +97,7 @@ class Board extends Component {
             <Payment totalPrice={this.props.totalPrice} toggleshowShowReceipt={this.props.onToggleIsShowReceipt}
               isPaid={this.props.isPaid} closePayment={this.togglePaymentButton} isShowReceipt={this.props.isShowReceipt}
               gamesCount={this.props.slips.length} setIsPaying={this.props.onSetIsPaying}
-              receipts={this.props.receipts}
+              receipts={this.props.receipts} 
             />
             : null}
         </div>
@@ -208,8 +210,8 @@ const mapDispatchToProps = (dispatch) => {
     onDeleteAndResetAll: () => dispatch(actions.deleteAndResetAll()),
     onAddEmptySlip: () => dispatch(actions.addEmptySlip()),
     onEmptyEditingISlip: () => dispatch(actions.EmptyEditingISlip()),
-    onCalculateOverAllPrice: (slip, game, side) =>
-      dispatch(actions.calculateOverAllPrice(slip, game, side)),
+    onCalculateOverAllPrice: (slip, game, side, basePrice) =>
+      dispatch(actions.calculateOverAllPrice(slip, game, side, basePrice)),
     onGenrateSlip: (amount, slipIndex, basePrice) =>
       dispatch(actions.genrateSlip(amount, slipIndex, basePrice)),
     onToggleShowHistory: (gameIndex) =>

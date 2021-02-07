@@ -482,7 +482,8 @@ const calculateGrandTtoalPriceOfAllSlips = (state, action) => {
         let slips = state.slips;
         let totalPrice = 0;
         slips.forEach((slip, i) => {
-            totalPrice += slip.slipPrice;
+
+            return totalPrice += slip.slipPrice;
         });
 
         draft.totalPrice = totalPrice;

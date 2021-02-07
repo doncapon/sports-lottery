@@ -49,7 +49,7 @@ class ToWallet extends Component {
         else {
             if (amount < 500) {
                 formIsValid = false;
-                amountErr = "Minimum amount is 100 Naira";
+                amountErr = "Minimum amount is 500 Naira";
             }
             if (amount > 50000) {
                 formIsValid = false;
@@ -93,6 +93,7 @@ class ToWallet extends Component {
     }
     QuickPayHandler =(e)=>{
         this.setState({amount: e.target.innerHTML.split(" ")[1]})
+        this.handleFormValidationAmount(e.target.innerHTML.split(" ")[1])
     }
     render() {
 
@@ -134,7 +135,7 @@ class ToWallet extends Component {
                     </div>
 
                 </form>
-                {!emailIdErr && !amountErr && this.state.isTouched?
+                {!emailIdErr && !amountErr && this.state.emailId && this.state.amount?
                 <PaystackButton className={classes.Button}
                     reference={reference}
                     email={this.state.emailId}

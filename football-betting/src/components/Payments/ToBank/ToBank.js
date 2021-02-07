@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import './ToBank.module.css'
 import classes from "./ToBank.module.css";
-import axios from '../../../axios-paystack'; 
+import axios from '../../../axios-paystack';
 import UpdateBankDetail from "./updateBankDetail/updateBankDetail";
 import SignupModal from "../../UI/SignupModal/SignupModoal";
 import axiosMain from '../../../axios-main';
@@ -28,29 +28,29 @@ class ToBank extends Component {
 
     }
 
-    componentDidMount(){
-        if(!this.state.loading){
-            console.log("This is the user" , this.props.user)
+    componentDidMount() {
+        if (!this.state.loading) {
+            console.log("This is the user", this.props.user)
 
             axiosMain.get("accounts/" + this.props.user._id)
-            .then(response =>{
-                console.log("I am here so ",response.data)
-                if(response.data === null){
-                    const accountDetail = {accountName: '', Bank: '', accountNumber: 'Use an exisitng bank' }
-                    axiosMain.post("accounts/"+ this.props.user._id, accountDetail)
-                }
-            })
+                .then(response => {
+                    console.log("I am here so ", response.data)
+                    if (response.data === null) {
+                        const accountDetail = { accountName: '', Bank: '', accountNumber: 'Use an exisitng bank' }
+                        axiosMain.post("accounts/" + this.props.user._id, accountDetail)
+                    }
+                })
 
 
             axiosMain.get("bank-list")
-            .then(response =>{
-                this.setState({allowedBanks: response.data.bank})
-                this.setState({loading: true})
+                .then(response => {
+                    this.setState({ allowedBanks: response.data.bank })
+                    this.setState({ loading: true })
 
-            })
-            .catch(error =>{
-    
-            });
+                })
+                .catch(error => {
+
+                });
         }
 
     }
@@ -122,7 +122,6 @@ class ToBank extends Component {
             formErrors["bankErr"] = "Select bank.";
         }
         this.setState({ formErrors: formErrors });
-
         this.setState({ formErrors: formErrors });
 
         return formIsValid;
@@ -131,8 +130,9 @@ class ToBank extends Component {
 
     handleChange = (e) => {
         let { name, value } = e.target;
-        this.setState({ [name]: value });
+        this.setState({ [name]: value });   
     }
+
 
     handlePaystackSuccessAction = (reference) => {
         // Implementation for whatever you want to do with reference and after success call.
@@ -195,17 +195,17 @@ class ToBank extends Component {
 
                                         })
                                         .catch(error => {
-                                            this.setState({ apiError: error });
+                                            this.setState({ apiError: error , saveError: ''});
                                         })
                                 })
                                 .catch(error => {
-                                    this.setState({ apiError: error });
+                                    this.setState({ apiError: error , saveError: '' });
 
                                 });
                         }
                     })
                     .catch(error => {
-                        this.setState({ apiError: error })
+                        this.setState({ apiError: error , saveError: ''})
 
                     });
             }
@@ -213,7 +213,8 @@ class ToBank extends Component {
     }
     HandleSave = () => {
         let bankDetail = [...this.state.savedBankDetails];
-        if (this.state.name && this.state.Bank && this.state.account !== 'select') {
+        if (this.state.name && this.state.account && this.state.bank !== 'select') {
+            console.log("I am here 1")
             let BankExist = bankDetail.find(detail => detail.accountNumber === this.state.account);
             if (BankExist === null) {
                 const params = "account_number=" + this.state.account + "&bank_code="
@@ -221,36 +222,39 @@ class ToBank extends Component {
                 axios.get("bank/resolve?" + params)
                     .then(response => {
                         if (response.data.message === "Account number resolved") {
-                                const accountDetail = {accountName:  this.state.name, Bank: this.state.bank, accountNumber: this.state.account }
-                                axiosMain.post("accounts/"+ this.props.user._id, accountDetail)
-                                .then(response=>{
+                            const accountDetail = { accountName: this.state.name, Bank: this.state.bank, accountNumber: this.state.account }
+                            axiosMain.post("accounts/" + this.props.user._id, accountDetail)
+                                .then(response => {
                                     axiosMain.get("accounts/" + this.props.user._id)
-                                    .then(response =>{
-                                        this.setState({ savedBankDetails: response.data });
-                                    })
+                                        .then(response => {
+                                            this.setState({ savedBankDetails: response.data });
+                                        })
                                 })
-                            
-                            this.setState({ saveError: '' })
+
+                            this.setState({ saveError: '', apiError: '' })
                             alert("Bank details saved!");
                         }
                     })
                     .catch(error => {
-                        this.setState({ saveError: "Please check your card details" })
+                        this.setState({ saveError: "Please check your card details", apiError: '' })
 
                     })
 
 
             } else {
-                this.setState({ saveError: "Taht bank detail already exists" });
+                this.setState({ saveError: "That bank detail already exists" , apiError: ''});
             }
         } else {
-            this.setState({ saveError: "Please enter: name, bank and account to proceed" });
+
+            console.log("I am here 222")
+
+            this.setState({ saveError: "Please enter: valid name, bank and account to proceed", apiError: '' });
 
         }
 
     }
-    setShowUpdate=(value)=>{
-        this.setState({showUpdate: value})
+    setShowUpdate = (value) => {
+        this.setState({ showUpdate: value })
     }
     render() {
 
@@ -261,30 +265,32 @@ class ToBank extends Component {
         }
         const banksExist = [classes.BanksExist];
         let bankDetails;
-        let options ;
-        let banksallowed ;
+        let options;
+        let banksallowed;
         let optionsAllowed;
-        if(this.state.loading){
-             bankDetails = [...this.state.savedBankDetails];
-             options = bankDetails.map((detail, i) => (
+        if (this.state.loading) {
+            bankDetails = [...this.state.savedBankDetails];
+            options = bankDetails.map((detail, i) => (
                 <option key={i} value={detail.accountNumber}>{detail.accountNumber}</option>
             ));
-    
+
             banksallowed = [...this.state.allowedBanks];
-            optionsAllowed = banksallowed.sort((a,b)=> a.bankName>b.bankName? 1: -1).map((detail, i) => (
+            optionsAllowed = banksallowed.sort((a, b) => a.bankName > b.bankName ? 1 : -1).map((detail, i) => (
                 <option key={i} value={detail.bankCode}>{detail.bankName}</option>
             ));
-    
+
         }
-        
         return (
             <div className={classes.ToBankWrapper}>
-                {this.state.showUpdate ? <SignupModal show={this.state.showUpdate}><UpdateBankDetail 
-                name= {this.state.name} bank = {this.state.bank} account ={this.state.account}
-                allowedBanks = {this.state.allowedBanks}
-                setShowUpdate = {this.setShowUpdate} /></SignupModal> :
-                  this.state.loading?   <div className="formDiv">
+                {this.state.showUpdate ? <SignupModal show={this.state.showUpdate}><UpdateBankDetail
+                    name={this.state.name} bank={this.state.bank} account={this.state.account}
+                    allowedBanks={this.state.allowedBanks}
+                    setShowUpdate={this.setShowUpdate} /></SignupModal> :
+                    this.state.loading ? <div className="formDiv">
                         <div>
+                            {this.state.apiError ? <div style={{ color: 'red' , fontSize: '20px'}}>Please check your bank details</div> : null}
+                            {this.state.saveError ? <div style={{ color: 'red',fontSize: '20px' }}>{this.state.saveError}</div> : null}
+
                             <form onSubmit={this.handleSubmit}>
                                 <select name="savedBankDetails"
                                     value="Use an exisitng bank"
@@ -300,7 +306,7 @@ class ToBank extends Component {
                                         onChange={this.handleChange}
                                         value={this.state.amount}
 
-                                        placeholder="Amount: 100 Naira minimum"
+                                        placeholder="Amount: 500 Naira minimum"
                                         className={classes.Number} />
                                     {amountErr &&
                                         <div style={{ color: "red" }}>{amountErr}</div>
@@ -322,7 +328,7 @@ class ToBank extends Component {
 
 
                                 <div>
-                                    <label className={classes.label} htmlFor="name">Bank:</label>
+                                    <label className={classes.label} htmlFor="bank">Bank:</label>
                                     <select name="bank"
                                         value={this.state.bank}
                                         onChange={this.handleChange}
@@ -344,18 +350,16 @@ class ToBank extends Component {
                                     {accountErr &&
                                         <div style={{ color: "red" }}>{accountErr}</div>
                                     }
-                                    {this.state.apiError ? <div style={{ color: 'red' }}>Please check your bank details</div> : null}
-                                    {this.state.saveError ? <div style={{ color: 'red' }}>{this.state.saveError}</div> : null}
 
                                 </div>
                                 <div className={classes.Buttons}>
                                     <div className={classes.ButtonInner}>
                                         <button type="button" onClick={this.HandleSave} className={classes.Button1}
                                         >Save</button>
-                                        {this.state.name && this.state.bank !== "select" && this.state.account? 
-                                        <button type="button" className={classes.Button2}
-                                            onClick={() => this.setShowUpdate(true)}
-                                        >Update / Delete</button>: null}
+                                        {this.state.name && this.state.bank !== "select" && this.state.account ?
+                                            <button type="button" className={classes.Button2}
+                                                onClick={() => this.setShowUpdate(true)}
+                                            >Update / Delete</button> : null}
                                     </div>
                                     <input type="submit" className={classes.Submit}
                                         value="Withdraw" />
@@ -363,13 +367,13 @@ class ToBank extends Component {
                             </form>
                         </div>
                     </div>
-            :<Spinner />
+                        : <Spinner />
 
                 }
             </div >
 
         )
-        
+
     }
 }
 

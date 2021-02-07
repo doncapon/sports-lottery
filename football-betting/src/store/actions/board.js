@@ -222,10 +222,10 @@ export const EmptyEditingIndexSlip =()=>{
         type : actionTypes.EMPTY_EDITING_SLIP
     }
 }
-export const calculateOverAllPrice = (slipIndex, gameIndex, sideIndex)=>{
+export const calculateOverAllPrice = (slipIndex, gameIndex, sideIndex, basePrice)=>{
     return dispatch =>{
         dispatch(calulateGameAmount(slipIndex, gameIndex, sideIndex));
-        dispatch(calculateSpecificSlipPrice(slipIndex))
+        dispatch(calculateSpecificSlipPrice(slipIndex, basePrice))
         dispatch(calculateGrandTtoalPriceOfAllSlips(slipIndex));
     }
 }

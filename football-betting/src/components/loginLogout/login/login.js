@@ -18,7 +18,6 @@ const Login = (props) => {
         };
 
         let res = await axios.post("users/login", loginData, { withCredentials: true });
-        console.log(res);
         return await res.data;
     };
 
@@ -31,7 +30,6 @@ const Login = (props) => {
             props.setLoggedInUser(data);
             if(props.slips !== null)
             props.deleteAndResetAll();
-            console.log("I got called")
             history.push("/play");
 
         }).catch(err => {
