@@ -16,11 +16,11 @@ class PlayRow extends Component {
     this.props.toggleShowHistory(gameIndex);
 
   }
-  HandlerAdd = (slipIndex, gameIndex, sideIndex, side) => {
+  HandlerAdd = (slipIndex, gameIndex, sideIndex, side, basePrice) => {
     this.props.toggleSelectedTile(slipIndex, gameIndex, sideIndex, side);
     this.props.checkPurchasable(slipIndex);
     this.props.setPurchaseAll();
-    this.props.CalculateOverAllPrice(slipIndex, gameIndex, sideIndex);
+    this.props.CalculateOverAllPrice(slipIndex, gameIndex, sideIndex, basePrice);
     this.props.checkPurchasable(slipIndex);
 
   };
@@ -53,7 +53,8 @@ class PlayRow extends Component {
                           this.props.editIndex,
                           k,
                           0,
-                          game[gameId + (k + 1)].sides[0].selected
+                          game[gameId + (k + 1)].sides[0].selected,
+                          this.props.basePrice
                         )
                       }
                     />
@@ -68,7 +69,8 @@ class PlayRow extends Component {
                           this.props.editIndex,
                           k,
                           1,
-                          game[gameId + (k + 1)].sides[1].selected
+                          game[gameId + (k + 1)].sides[1].selected,
+                          this.props.basePrice
                         )
                       }
                     />
@@ -83,7 +85,8 @@ class PlayRow extends Component {
                           this.props.editIndex,
                           k,
                           2,
-                          game[gameId + (k + 1)].sides[2].selected
+                          game[gameId + (k + 1)].sides[2].selected,
+                          this.basePrice
                         )
                       }
                     />

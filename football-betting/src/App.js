@@ -17,7 +17,7 @@ import ForgotPassword from './components/loginLogout/forgotPassword/forgotPasswo
 import Settings from './containers/Settings/Settings';
 import Signup from './containers/Signup/Signup';
 import ActivateNewUser from './containers/ActivateNewUser/ActivateNewUser';
-
+import UserPlayHistory from './components/gameHistory/userPlayHistory/UserPlayHistory';
 
 
 class App extends React.Component {
@@ -107,6 +107,7 @@ class App extends React.Component {
           <Route path="/forgot-password/:resetLink" component={ForgotPassword} />
           <Route path="/forgot-password" component={ForgotPassword} />
           <Route path="/settings" component={Settings} />
+          <Route path="/history" component={UserPlayHistory} />
           <Route path="/play" component={Board} />
           <Route path="/authentication/activate/:token" component={ActivateNewUser} />
           <Route exact path="/" component={Landing} />
