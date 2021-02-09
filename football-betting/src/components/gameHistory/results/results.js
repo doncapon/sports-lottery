@@ -55,7 +55,7 @@ const results = (props) => {
 
                 </div>
                 <div className={classes.JackPotShare}>
-                    <Jackpot basePrice={props.basePrice} gamesLength={props.gamesLength} thirteen={props.thirteen}
+                    <Jackpot basePrice={props.basePrice} gamesLength={results.length} thirteen={props.thirteen}
                         twelve={props.twelve} eleven={props.eleven} ten={props.ten}
                         thirteenPcs={props.thirteenPcs} twelvePcs={props.twelvePcs}
                         elevenPcs={props.elevenPcs} tenPcs={props.tenPcs}
