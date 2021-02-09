@@ -24,7 +24,7 @@ const initialState = {
     basePrice: 20,
     insertResult: true,
 
-    resultsFrom: '31-01-2021',
+    resultsFrom: '01-01-2021',
     currentResults: [],
     loading: false
 

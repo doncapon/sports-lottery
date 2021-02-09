@@ -22,7 +22,7 @@ class ResultPage extends Component {
     }
     render() {
         return  !this.props.loading? <Spinner /> : <div>
-            <Results daysResults={this.props.currentResults} basePrice={this.props.basePrice} gamesLength={this.props.gamesLength} thirteen={this.props.thirteen}
+            <Results daysResults={this.props.currentResults} basePrice={this.props.basePrice} thirteen={this.props.thirteen}
                 twelve={this.props.twelve} eleven={this.props.eleven} ten={this.props.ten}
                 thirteenPcs={this.props.thirteenPieces} twelvePcs={this.props.twelvePieces}
                 elevenPcs={this.props.elevenPieces} tenPcs={this.props.tenPieces}
@@ -35,10 +35,6 @@ class ResultPage extends Component {
 
 const mapstateToProps = (state) => {
     return {
-        //board
-        gamesLength: state.board.gamesLength,
-
-
         //match results
         thirteen: state.matchResults.thirteen,
         twelve: state.matchResults.twelve,
