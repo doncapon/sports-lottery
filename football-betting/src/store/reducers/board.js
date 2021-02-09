@@ -151,6 +151,7 @@ const initializeBoard = (state, action) => {
         // let newSlips = [Object.assign({}, newSlip)];
         let newSlips = [];
         newSlips.splice(0, 1, newSlip);
+        draft.gamesLength = action.fixtures.length;
         draft.slips = Object.assign([], newSlips);
         draft.isPaying = false;
         draft.isPaid = false;
