@@ -117,17 +117,17 @@ class ToBank extends Component {
 
         //Name
         formErrors["nameErr"] = this.validateName(name).error;
-        formIsValid = this.validateName(name).isValid;
+        formIsValid = this.validateName(name).isValid && formIsValid;
 
         // Account
-        formIsValid = this.validateAccount(account).isValid;
+        formIsValid = this.validateAccount(account).isValid  && formIsValid;
         formErrors["accountErr"] = this.validateAccount(account).error;
 
         //Amount    
-        formIsValid = this.validateAmount(amount).isValid;
+        formIsValid = this.validateAmount(amount).isValid  && formIsValid;
         formErrors["amountErr"] = this.validateAmount(amount).error;
         //Bank
-        formIsValid = this.validateBank(bank).isValid;
+        formIsValid = this.validateBank(bank).isValid  && formIsValid;
         formErrors["bankErr"] = this.validateBank(bank).error;
 
         this.setState({ formErrors: formErrors });

@@ -3,7 +3,11 @@ import React, { Component } from "react";
 import moment from 'moment';
 import Jackpot from "../jackpot/jackpot";
 import * as actions from '../../../store/actions';
-import {connect } from 'react-redux';
+import { connect } from 'react-redux';
+import { CaretDownFill, CaretUpFill } from "react-bootstrap-icons";
+import Button from 'react-bootstrap/Button';
+import receipt from "../../board/receipts/receipt/receipt";
+
 
 class UserPlayHistory extends Component {
     findSelection = (goalHome, goalAway, status) => {
@@ -21,18 +25,20 @@ class UserPlayHistory extends Component {
 
     }
     render() {
-        console.log(this.props.daysuserPlayHistory);
+ 
         let userPlayHistoryTrannsformed = this.props.daysuserPlayHistory.map((userPlayHistory, k) => {
-            return <div className={classes.userPlayHistoryAndShare} key={k}>
-                <div className={classes.ResultHead} >
-                    <div className={classes.HeaderInner}>
-                        <div>{moment(userPlayHistory[0].gameDay).format("dddd")}</div>{" "}
-                        <div>{moment(userPlayHistory[0].gameDay).format("DD.MM.YYYY")}</div>
-                        <div>{" "}-{" "}</div>
-                    </div>
-                    <div>Match userPlayHistory </div>
+           return <div className={classes.userPlayHistoryAndShare} key={k}>
+                <div className={classes.MainHeader}>
+                    <div className={classes.DateHead}> Date resolved : {moment(userPlayHistory.gameDay).format("DD.MM.YYYY")}</div>
+                    <div className={classes.PriceHead}>Price: {userPlayHistory.slipPrice}</div>
+
+                    <Button className={classes.BtToggle} size="sm" onClick={()=>this.props.onToggleReceiptShowHistory(k)}>
+                    {!userPlayHistory.showHistory ? <CaretDownFill className={classes.Icon} /> : <CaretUpFill className={classes.Icon} />} </Button>
                 </div>
-                <div className={classes.userPlayHistory}>
+                <div className={classes.ResultHead} >
+                    
+                </div>
+                {/* <div className={classes.userPlayHistory}>
 
                     <div className={classes.ResultBody} >
                         <div className={classes.BodyHeader}>
@@ -65,7 +71,7 @@ class UserPlayHistory extends Component {
                             elevenPcs={this.props.elevenPcs} tenPcs={this.props.tenPcs}
                         />
                     </div>
-                </div>
+                </div> */}
 
             </div>
         })
@@ -113,11 +119,12 @@ const mapstateToprops = (state) => {
 
 const mapDispatchToprops = (dispatch) => {
     return {
-        onFetchResults: (startDate)=> dispatch(actions.fetchResults(startDate)),
+        onFetchResults: (startDate) => dispatch(actions.fetchResults(startDate)),
         onSetUpWinners: (jackpot, thirteenpct, twelvepct, elevenpct, tenpct,
             thirteenPieces, twelvePieces, elevenPieces, tenPieces) =>
-            dispatch(actions.setUpWinners(jackpot, thirteenpct, twelvepct, elevenpct, tenpct,
-                thirteenPieces, twelvePieces, elevenPieces, tenPieces)),
+        dispatch(actions.setUpWinners(jackpot, thirteenpct, twelvepct, elevenpct, tenpct,
+            thirteenPieces, twelvePieces, elevenPieces, tenPieces)),
+        onToggleReceiptShowHistory:(receiptIndex)=>dispatch(actions.toggleReceiptShowHistory(receiptIndex))
     }
 }
 export default connect(mapstateToprops, mapDispatchToprops)(UserPlayHistory);

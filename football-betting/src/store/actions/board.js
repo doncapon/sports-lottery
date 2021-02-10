@@ -141,12 +141,19 @@ export const toggleIsShowReceipt = () =>{
     }
 }
 
-export const setReceipt = () =>{
+export const setReceipt = (gameDay) =>{
     return {
         type: actionTypes.SET_RECEIPT,
+        gameDay: gameDay
     }
 }
 
+export const toggleReceiptShowHistory = (receiptIndex) =>{
+    return {
+        type: actionTypes.TOGGLE_SHOW_RECEIPT_HISTORY,
+        receiptIndex: receiptIndex
+    }
+}
 
 
 export const toggleShowHistory = (gameIndex) =>{

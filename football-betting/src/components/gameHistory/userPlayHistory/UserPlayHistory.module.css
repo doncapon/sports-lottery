@@ -1,137 +1,51 @@
 .userPlayHistoryWrapper{
     background: #ccc;
     font-weight: bold;
-    font-size: 1.2em;
+    font-size: 1em;
 }
-.HeaderInner{
+.MainHeader{
     display: flex;
-    word-spacing: 5px;
-}
-.ResultHead{
-    display: flex;
-    padding: 10px 0 5px;
-}
-.SelectionRow{
-    display: flex;
-    width: 100vw;
-    padding: 5px 0;
-}
-.Match{
-    width: 60vw;
-}
-.BodyHeader{
-    display: flex;
-    margin-left: 2.5px;
-    padding-bottom: 10px;
-
-}
-.ResultBody{
-    font-size: 0.8em;
-    margin-left: 4px;
-}
-.Teams{
-    display: flex;
-    width: 60vw;
-}
-.RowNumber{
-    width: 7vw;
-}
-.TeamNames{
-    display: flex;
-    float: left;
-    flex-wrap: wrap;
-}
-.homeTeam{
-    display: block;
-}
-.awayTeam{
-    display: block;
+    width: 90%;
+    margin: auto;
 }
 
-.MoveRight{
-    margin-left: 4vw;
+.DateHead{
+    width: 55vw;
+} 
+.PriceHead{
+    width: 17vw;
 }
-.BodyMain > div:nth-child(odd){
-    background: #eee;
-}
+.Icon{
+    width: 6vh;
+    height: 2vh;;
+  }
 
-.BodyMain> div:nth-child(even){
-    background: #c3eafa;
-}
 
-
-.Score{
-    width: 19vw;
-    margin-left: 5vw;
-}
-.JackPotShare{
-    font-size: 0.8em;
-    margin-left: 4px;
-}
 
 /* medium screens */
 @media only screen and (min-width: 768px){
     .userPlayHistoryWrapper{
-        font-size: 2.2em;
+        font-size: 1.4em;
     }
 
-    .MoveRight{
-        margin-left: 11vw;
+    .MainHeader{
+        width: 90%;
     }
-
-    .Match{
-        width: 60vw;
-        margin-left: 3vw;
-    }
-    .Teams{
-        margin-left: 3vw;
+    .DateHead{
+        width: 65vw;
+    } 
+    .PriceHead{
+        width: 17vw;
     }
 }
 
 
 /* Larger  screens */
 @media only screen and (min-width: 960px){
-    .userPlayHistoryWrapper{
-        width: 90%;
-        margin: auto;
-    font-size: 1.2em;
+  
+    .MainHeader{
+        width: 70%;
     }
-    .ResultHead{
-        margin-left: 3vw;
-    }
-    .userPlayHistory{
-        display: flex;
-        width: 90vw;
-    }
-    .ResultBody{
-        float: left;
-        width: 45vw;
-
-    }
-    .JackPotShare{
-        float: right;
-    }
-    .Match{
-        margin-left: 3vw;
-        width: 23vw;
-    }
-    .RowNumber{
-        width: 2vw;
-    }
-    .Teams{
-        width: 25vw;
-    }
-    .Score{
-    width: 10vw;
-    margin-left: 0;
-    }
-    .MoveRight{
-        margin-left: 8vw;
-    }
-    .SelectionRow{
-        width: 45vw;
-    }
-
  
 
 }

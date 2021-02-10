@@ -3,19 +3,20 @@ import classes from './Signup.module.css'
 import axios from '../../axios-main';
 import { connect } from "react-redux";
 import { calculateAge } from '../../shared/utility';
+import moment from 'moment'; 
 
 class Signup extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: 'admin1',
-            surname: 'shegz',
-            username: 'donc',
-            password: 'Test1234',
-            passwordConf: 'Test1234',
-            emailId: 'olusegun.akintimehin@gmail.com',
-            dob: '25/09/1987',
-            phoneNumber: '08236462359',
+            name: '',
+            surname: '',
+            username: '',
+            password: '',
+            passwordConf: '',
+            emailId: '',
+            dob: '',
+            phoneNumber: '',
             formErrors: {},
             apiError: ''
         };
@@ -117,7 +118,7 @@ class Signup extends Component {
             error = "Email id is required.";
         }
         else {
-            if (!(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(emailId))) {
+            if (!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(emailId.toLowerCase()))) {
 
                 formIsValid = false;
                 error = "Invalid email id.";
@@ -179,35 +180,35 @@ class Signup extends Component {
 
         //Name
         formErrors["nameErr"] = this.validateName(name).error;
-        formIsValid = this.validateName(name).isValid;
+        formIsValid = this.validateName(name).isValid && formIsValid;
 
         //Surname
         formErrors["surnameErr"] = this.validateSurname(surname).error;
-        formIsValid = this.validateSurname(surname).isValid;
+        formIsValid = this.validateSurname(surname).isValid && formIsValid;
 
         //username      
         formErrors["usernameErr"] = this.validateUsername(username).error;
-        formIsValid = this.validateSurname(username).isValid;
+        formIsValid = this.validateSurname(username).isValid && formIsValid;
 
         //Passwod Validations  
         formErrors["passwordErr"] = this.validatePassword(password).error;
-        formIsValid = this.validatePassword(password).isValid;
+        formIsValid = this.validatePassword(password).isValid && formIsValid;
 
         //PasswodConf Validation 
         formErrors["passwordConfErr"] = this.validatePasswordConf(password, passwordConf).error;
-        formIsValid = this.validatePasswordConf(password, passwordConf).isValid;
+        formIsValid = this.validatePasswordConf(password, passwordConf).isValid && formIsValid;
 
         //EmailId
         formErrors["emailIdErr"] = this.validateEmailId(emailId).error;
-        formIsValid = this.validateEmailId(emailId).isValid;
+        formIsValid = this.validateEmailId(emailId).isValid  && formIsValid;
 
         //DOB    
         formErrors["dobErr"] = this.validateDob(dob).error;
-        formIsValid = this.validateDob(dob).isValid;
+        formIsValid = this.validateDob(dob).isValid && formIsValid;
 
         //Phone number    
         formErrors["phoneNumberErr"] = this.validatePhoneNumber(phoneNumber).error;
-        formIsValid = this.validatePhoneNumber(phoneNumber).isValid;
+        formIsValid = this.validatePhoneNumber(phoneNumber).isValid && formIsValid;
 
 
         this.setState({ formErrors: formErrors });
@@ -240,23 +241,27 @@ class Signup extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-
+        let dateArray = this.state.dob.split('/');
+        let dob = dateArray[2]+ "-" + dateArray[1]+ "-"+ dateArray[0];
         if (this.handleFormValidation()) {
             const registerData = {
                 name: this.state.name,
                 surname: this.state.surname,
                 username: this.state.username,
                 phone: this.state.phoneNumber,
-                dob: this.state.dob,
+                dob:  moment(new Date(dob)).format("YYYY-MM-DD"),
                 password: this.state.password,
                 email: this.state.emailId
             }
+            console.log(registerData);
             axios.post("users/register", registerData)
                 .then(response => {
-                    alert(response.data)
+                    alert("Account registered. Please check your email for Activation.");
+                    this.props.history.push("/")
+
                 })
                 .catch(error => {
-                    alert("something went wrong", error.data)
+                    alert("something went wrong. Please try again. ", error.data)
                 })
         }
     }

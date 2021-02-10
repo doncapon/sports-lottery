@@ -37,7 +37,7 @@ class Board extends Component {
   }
   confirmPurchase = () => {
     this.props.onExecutePurchase();
-    this.props.onSetReceipt();
+    this.props.onSetReceipt(this.props.gameDate);
     this.togglePaymentButton(false, true)
   }
 
