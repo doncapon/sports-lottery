@@ -30,15 +30,15 @@ const ForgotPassword = (props) => {
                 formErros1["passwordErr"] = "Password minumum length is 8 characters";
             }
 
-            if(!/(?=.*?[A-Z])/.test(password)){
+            if(!/(?=.*?[A-Z])/.test(password) && formIsValid){
                 formIsValid = false;
                 formErros1["passwordErr"] = "Password must contain at least one Uppercase letter";
             }
-            if(!/(?=.*?[a-z])/.test(password)){
+            if(!/(?=.*?[a-z])/.test(password) && formIsValid){
                 formIsValid = false;
                 formErros1["passwordErr"] = "Password must contain at least one Lowercase letter";
             }
-            if(!/(?=.*?[0-9])/.test(password)){
+            if(!/(?=.*?[0-9])/.test(password) && formIsValid){
                 formIsValid = false;
                 formErros1["passwordErr"] = "Password must contain at least one number";
             }
