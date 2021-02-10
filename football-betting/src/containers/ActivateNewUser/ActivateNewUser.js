@@ -3,23 +3,31 @@ import React from "react";
 import axios from "../../axios-main";
 
 class ActivateNewUser extends Component {
-
-
+    state = {
+        loading: false
+    }
+    setloadingTotrue = () => {
+        this.setState({ loading: true });
+    }
     componentDidMount() {
-        const { token } = this.props.match.params;
-        axios.post("users/email-activate", { "token": token })
-            .then(response => {
-                alert(response.data + ". Login");
-            })
-            .catch(error => {
-                alert(error);
-            })
+        if (!this.state.loading) {
+            const { token } = this.props.match.params;
+            console.log(token);
+            axios.post("users/email-activate", { "token": token })
+                .then(response => {
+                    alert(response.data + ". Login");
+                })
+                .catch(error => {
+                    alert(error);
+                })
 
-        // this.props.history.push("/")
+            // this.props.history.push("/")
+        }
 
+        this.setloadingTotrue();
     }
     render() {
-        return (<div></div>)
+        return (<div>hello</div>)
     }
 }
 

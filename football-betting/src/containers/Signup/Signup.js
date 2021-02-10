@@ -11,8 +11,8 @@ class Signup extends Component {
             name: 'admin1',
             surname: 'shegz',
             username: 'donc',
-            password: 'Test1234',
-            passwordConf: 'Test1234',
+            password: 'Emmanuel1987',
+            passwordConf: 'Emmanuel1987',
             emailId: 'olusegun.akintimehin@gmail.com',
             dob: '25/09/1987',
             phoneNumber: '08236462359',
@@ -247,12 +247,14 @@ class Signup extends Component {
                 surname: this.state.surname,
                 username: this.state.username,
                 phone: this.state.phoneNumber,
-                dob: this.state.dob,
+                dob: this.state.dob.replace(/\//g, '-'),
                 password: this.state.password,
                 email: this.state.emailId
             }
+            // console.log(registerData);
             axios.post("users/register", registerData)
                 .then(response => {
+                    console.log(response)
                     alert(response.data)
                 })
                 .catch(error => {

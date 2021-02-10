@@ -92,7 +92,7 @@ class PlayRow extends Component {
                     />
                   </div>
                   <div className={classes.Toggler} >
-                    <Button className={classes.BtnToggle} size="sm" onClick={() => this.HandlePredictions(k, game.fixture_id)}>
+                    <Button className={classes.BtToggle} size="sm" onClick={() => this.HandlePredictions(k, game.fixture_id)}>
                       {!game.showHistory ? <CaretDownFill className={classes.Icon} /> : <CaretUpFill className={classes.Icon} />} </Button>
                   </div>
                 </div>

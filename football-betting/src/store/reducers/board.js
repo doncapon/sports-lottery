@@ -90,9 +90,22 @@ const toggleIsShowReceipt = (state, action) => {
         draft.isShowReceipt = !draft.isShowReceipt
     });
 }
+const toggleReceiptShowHistory = (state, action) =>{
+    return produce(state, draft=>{
+        draft.receipts[action.receiptIndex].showHistory =
+         !draft.receipts[action.receiptIndex].showHistory;
+    })
+}
 const setReceipt = (state, action) => {
     return produce(state, draft => {
-        draft.receipts = _.cloneDeep(draft.slips);
+        let slips = _.cloneDeep(draft.slips);
+        let gameDay = action.gameDay;
+
+        slips.forEach(slip =>{
+            slip.gameDay = gameDay;
+            slip.showHistory = false;
+        })
+        draft.receipts = slips;
         for(let i = 0; i < draft.slips.length; i++){
             draft.slips[i].gameNumber = uuid();
         }
@@ -656,6 +669,8 @@ const reducer = (state = initialStte, action) => {
                 return debitFunds(state, action);
             case actionTypes.SET_ISTOWALLET:
                 return setIsToWallet(state, action);
+            case actionTypes.TOGGLE_SHOW_RECEIPT_HISTORY:
+                return toggleReceiptShowHistory(state, action);
         default:
             return state;
     }

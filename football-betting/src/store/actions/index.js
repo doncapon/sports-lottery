@@ -25,7 +25,8 @@ export {
      setShowFunds,
      creditFunds,
      setIsToWallet,
-     debitFunds
+     debitFunds,
+     toggleReceiptShowHistory
 } from './board';
 
 export {
