@@ -21,6 +21,7 @@ class ActivateNewUser extends Component {
                     alert(error);
                 })
 
+
             // this.props.history.push("/")
         }
 
