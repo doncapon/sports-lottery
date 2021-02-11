@@ -15,13 +15,16 @@
     .Label{
         display: none;
     } 
-
+.LabelSmall{
+  font-size: 2vh;
+  margin: 0;
+}
     .ErrorText{
       color: red;
     }
     .Text, .Select  ,   .Password, .Date 
     {    
-      width: 80%;    
+      width: 90%;    
       padding: 2px 20px;    
       margin: 2px auto  ;    
       display: inline-block;    

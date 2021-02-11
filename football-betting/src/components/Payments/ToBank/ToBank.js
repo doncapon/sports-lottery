@@ -32,7 +32,7 @@ class ToBank extends Component {
         if (!this.state.loading) {
             console.log("This is the user", this.props.user)
 
-            axiosMain.get("accounts/" + this.props.user._id)
+            axiosMain.get("users/"+this.props.user._id+"/accounts/")
                 .then(response => {
                     console.log("I am here so ", response.data)
                     if (response.data === null) {
