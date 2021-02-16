@@ -3,20 +3,20 @@ import classes from './Signup.module.css'
 import axios from '../../axios-main';
 import { connect } from "react-redux";
 import { calculateAge } from '../../shared/utility';
-import moment from 'moment'; 
+import firebase from '../../config/firebase/firebase';
+import passwordHash from 'password-hash';
 
 class Signup extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: '',
-            surname: '',
-            username: '',
-            password: '',
-            passwordConf: '',
-            emailId: '',
-            dob: '',
-            phoneNumber: '',
+            name: 'Olusegun',
+            surname: 'Akintimehin',
+            password: 'Emmanuel1987',
+            passwordConf: 'Emmanuel1987',
+            emailId: 'lordshegz@gmail.com',
+            dob: '25/09/1987',
+            phoneNumber: '01234567891',
             formErrors: {},
             apiError: ''
         };
@@ -25,6 +25,35 @@ class Signup extends Component {
         this.initialState = this.state;
     }
 
+    createUser = async () => {
+        try {
+
+            const userCredential = await firebase
+                .auth()
+                .createUserWithEmailAndPassword(
+                    this.state.emailId,
+                    this.state.password
+                );
+
+            const userId = userCredential.user.uid;
+            await firebase
+                .database()
+                .ref('users/' + userId + '/')
+                .set({
+                    name: this.state.name,
+                    surname: this.state.surname,
+                    password: passwordHash.generate(this.state.password),
+                    phoneNumber: this.state.phoneNumber,
+                    email: this.state.emailId,
+                    dob: this.state.dob,
+                    role: "user"
+                });
+            return userId;  //As per your comment below
+
+        } catch (error) {
+            return error;
+        }
+    };
 
     validateName(name) {
         let formIsValid = true;
@@ -49,18 +78,6 @@ class Signup extends Component {
         return { isValid: formIsValid, error: error }
     }
 
-    validateUsername(username) {
-        let formIsValid = true;
-        let error = "";
-        //Name   
-        if (!username) {
-            formIsValid = false;
-            error = "Username is required.";
-        }
-
-        return { isValid: formIsValid, error: error }
-    }
-
     validatePassword(password) {
         let formIsValid = true;
         let error = "";
@@ -69,24 +86,24 @@ class Signup extends Component {
             formIsValid = false;
             error = "Password is required.";
         } else {
-            if (password.length < 8) {
+            if (password.length < 8 && formIsValid) {
                 formIsValid = false;
                 error = "Password minumum length is 8 characters";
             }
 
-            if(!/(?=.*?[A-Z])/.test(password)){
+            if (!/(?=.*?[A-Z])/.test(password) && formIsValid) {
                 formIsValid = false;
                 error = "Password must contain at least one Uppercase letter";
             }
-            if(!/(?=.*?[a-z])/.test(password)){
+            if (!/(?=.*?[a-z])/.test(password) && formIsValid) {
                 formIsValid = false;
                 error = "Password must contain at least one Lowercase letter";
             }
-            if(!/(?=.*?[0-9])/.test(password)){
+            if (!/(?=.*?[0-9])/.test(password) && formIsValid) {
                 formIsValid = false;
                 error = "Password must contain at least one number";
             }
-            
+
         }
 
         return { isValid: formIsValid, error: error }
@@ -138,11 +155,14 @@ class Signup extends Component {
         }
         else {
             var pattern = /^(0[1-9]|1[0-9]|2[0-9]|3[0-1])\/(0[1-9]|1[0-2])\/([0-9]{4})$/;
-            if (!pattern.test(dob)) {
+            if (!pattern.test(dob) && formIsValid) {
                 formIsValid = false;
                 error = "Invalid date of birth. follow format \"dd/mm/yyyy\"";
             }
-            if (calculateAge(dob) < 18) {
+
+            dob = dob.split("/");
+            dob = dob[2] + "-" + dob[1] + "-" + dob[0];
+            if (calculateAge(dob) < 18 && formIsValid) {
                 formIsValid = false;
                 error = "Sorry, you must be over 18";
             }
@@ -172,12 +192,10 @@ class Signup extends Component {
 
 
 
-    handleFormValidation() {
-        const { name, surname, emailId, dob, phoneNumber, username, password, passwordConf } = this.state;
+    handleFormValidation = () => {
+        const { name, surname, emailId, dob, phoneNumber, password, passwordConf } = this.state;
         let formErrors = {};
         let formIsValid = true;
-
-
         //Name
         formErrors["nameErr"] = this.validateName(name).error;
         formIsValid = this.validateName(name).isValid && formIsValid;
@@ -185,10 +203,6 @@ class Signup extends Component {
         //Surname
         formErrors["surnameErr"] = this.validateSurname(surname).error;
         formIsValid = this.validateSurname(surname).isValid && formIsValid;
-
-        //username      
-        formErrors["usernameErr"] = this.validateUsername(username).error;
-        formIsValid = this.validateSurname(username).isValid && formIsValid;
 
         //Passwod Validations  
         formErrors["passwordErr"] = this.validatePassword(password).error;
@@ -200,7 +214,7 @@ class Signup extends Component {
 
         //EmailId
         formErrors["emailIdErr"] = this.validateEmailId(emailId).error;
-        formIsValid = this.validateEmailId(emailId).isValid  && formIsValid;
+        formIsValid = this.validateEmailId(emailId).isValid && formIsValid;
 
         //DOB    
         formErrors["dobErr"] = this.validateDob(dob).error;
@@ -224,8 +238,6 @@ class Signup extends Component {
             error["nameErr"] = this.validateName(value).error;
         if (ele === "surname")
             error["surnameErr"] = this.validateSurname(value).error;
-        if (ele === "username")
-            error["usernameErr"] = this.validateUsername(value).error;
         if (ele === "password")
             error["passwordErr"] = this.validatePassword(value).error;
         if (ele === "passwordConf")
@@ -241,28 +253,54 @@ class Signup extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        let dateArray = this.state.dob.split('/');
-        let dob = dateArray[2]+ "-" + dateArray[1]+ "-"+ dateArray[0];
+        let userByPhone;
         if (this.handleFormValidation()) {
-            const registerData = {
-                name: this.state.name,
-                surname: this.state.surname,
-                username: this.state.username,
-                phone: this.state.phoneNumber,
-                dob:  moment(new Date(dob)).format("YYYY-MM-DD"),
-                password: this.state.password,
-                email: this.state.emailId
-            }
-            console.log(registerData);
-            axios.post("users/register", registerData)
+            this.setState({ formErrors: {} })
+            
+            let promise = axios.get("/users.json")
                 .then(response => {
-                    alert("Account registered. Please check your email for Activation.");
-                    this.props.history.push("/")
+                    let isExist = false;
+                    if (response.data !== null) {
+                        let keys = Object.keys(response.data);
+                        for (let i = 0; i < keys.length; i++) {
+                            if (response.data[keys[i]].phoneNumber === this.state.phoneNumber) {
+                                isExist = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (response.data === null) {
+                        isExist = false;
+                    }
+                    if (isExist) {
+                        let formERror = this.state.formErrors;
+                        if (response.data)
+                            formERror["phoneNumberErr"] = "Phone number is already in use";
+                        this.setState({ formErrors: formERror });
 
+                    }
+                    userByPhone = isExist;
+                    return response.data;
+
+                });
+            Promise.all([ promise])
+                .then(value => {
+                    if (!userByPhone && !this.state.formErrors["phoneNumberErr"]) {
+                        this.createUser()
+                            .then(response => {
+                                if (response.message) {
+                                    let formERror = this.state.formErrors;
+                                    formERror["emailIdErr"] = response.message;
+                                    this.setState({ formErrors: formERror });
+                                } else {
+                                    firebase.auth().currentUser.sendEmailVerification({url: process.env.REACT_APP_HOME});
+                                    alert("Account registered. Please click link in sent to your email to activate.");
+                                    this.props.history.push("/");
+                                }
+                            })
+                    }
                 })
-                .catch(error => {
-                    alert("something went wrong. Please try again. ", error.data)
-                })
+
         }
     }
     handleKeyUp = () => {
@@ -272,7 +310,7 @@ class Signup extends Component {
 
     render() {
 
-        const { nameErr, surnameErr, emailIdErr, dobErr, phoneNumberErr, usernameErr, passwordErr,
+        const { nameErr, surnameErr, emailIdErr, dobErr, phoneNumberErr, passwordErr,
             passwordConfErr } = this.state.formErrors;
         if (this.props.isLoggedIn) {
             this.props.history.push("/")
@@ -281,7 +319,7 @@ class Signup extends Component {
             <div className="formDiv">
                 <h3 style={{ textAlign: "center" }} >Registration Form </ h3>
                 <div>
-                    <form onSubmit={this.handleSubmit}>
+                    <form className={classes.Form} onSubmit={this.handleSubmit}>
                         <div>
                             <label className={classes.Label} htmlFor="name">Name</label>
                             <input type="text" name="name"
@@ -346,19 +384,6 @@ class Signup extends Component {
                         </div>
 
                         <div>
-                            <label className={classes.Label} htmlFor="username">Username</label>
-                            <input type="text" name="username"
-                                value={this.state.username}
-                                onChange={this.handleChange}
-                                placeholder="Username.."
-                                className={classes.Text} />
-                            {usernameErr &&
-                                <div className={classes.ErrorText}>{usernameErr}</div>
-                            }
-
-                        </div>
-
-                        <div>
                             <label className={classes.Label} htmlFor="password">Password</label>
                             <input type="password" name="password"
                                 value={this.state.password}
@@ -383,7 +408,7 @@ class Signup extends Component {
                             }
 
                         </div>
-                        <input onClick={() => this.props.setShowForm(false)}
+                        <input onClick={() => this.props.history.push("/")}
                             className={classes.Button}
                             type="button" value="Cancel" />
                         <input type="submit" value="Submit" className={classes.Submit} />

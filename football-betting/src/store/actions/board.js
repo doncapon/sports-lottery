@@ -25,14 +25,7 @@ export const genrateSlip2 = (amount, basePrice) =>{
 export const setBoard=(isFaCup , kickOffTime , kickOffDate ) =>{
     // let kickOffDate = getNextPlayDate( daysOffset, hourstoNext);
     return dispatch =>{
-        axios.get("fixtures/date/"+ kickOffDate
-         ,
-        {
-            headers: {
-                'x-rapidapi-key': '8275c582bamshd83a3179dd00459p19f0b2jsn94c889368579',
-                'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
-              }
-        })
+        axios.get("fixtures/date/"+ kickOffDate)
         .then(response =>{
 
             let dateTime = ( kickOffDate +"T"+kickOffTime);

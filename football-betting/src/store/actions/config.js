@@ -1,9 +1,9 @@
 
 import axios from '../../axios-fixtures';
-import axiosMain from '../../axios-main';
 import moment from 'moment';
 import * as  actionTypes from './actionTypes';
 import _ from 'lodash';
+import firebase from "../../config/firebase/firebase";
 
 export const stopResultInitialize = () => {
     return {
@@ -19,34 +19,39 @@ export const fetchWeeklyResults = (payload) => {
 }
 
 
-export const fetchResults = (startDate) => {
+export const fetchResults = (nnumberOfGames = 26) => {
     return dispatch => {
+        let matchRef = firebase.database().ref().child("match-results").orderByChild('gameDay')
+        .limitToLast(nnumberOfGames);
+        matchRef.on('value', (snapshot) => {
+            const resultData = snapshot.val();
+            let finalResults = [];
+            let groupedGameResults = _.groupBy(resultData, 'gameDay');
+            let result = Object.keys(groupedGameResults).map((key) => [key, groupedGameResults[key]]);
 
-        axiosMain.get("match-results/" + startDate)
-            .then(response => {
-                let finalResults  = [];
-                let groupedGameResults = _.groupBy(response.data.results, 'gameDay');
-                Object.keys(groupedGameResults).forEach((keys , k)=>{
-                    let i = groupedGameResults[keys].sort((a,b)=>a.fixtureId > b.fixtureId? 1:-1);
-                                    
-                    finalResults.splice(finalResults.length, finalResults.length+1, i);
-                })
-                dispatch(fetchWeeklyResults(finalResults));
-                dispatch(stopResultInitialize());
-            });
+            let newArr = [];
+            for(let i =  result.length -1 ; i >=0; i--){
+                newArr.push(result[i]);
+            }
+            newArr.forEach((arr, k)=>{
+                let i   = arr[1].sort((a, b) => a.fixtureId > b.fixtureId ? 1 : -1);
+                finalResults.splice(finalResults.length, finalResults.length + 1, i);
+               
+            })
+
+            dispatch(fetchWeeklyResults(finalResults));
+            dispatch(stopResultInitialize());
+
+               
+
+        });
     }
 }
 
 export const setCurrentResult = (slipGame, startDate) => {
     return dispatch => {
         slipGame.games.map(game => {
-            return axios.get("fixtures/id/" + game.fixture_id,
-                {
-                    headers: {
-                        'x-rapidapi-key': '8275c582bamshd83a3179dd00459p19f0b2jsn94c889368579',
-                        'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
-                    }
-                })
+            return axios.get("fixtures/id/" + game.fixture_id)
                 .then(response => {
                     let resultFixture = response.data.api.fixtures[0];
                     let gameDay = moment(resultFixture.event_date).format("YYYY-MM-DD") + "T00:00:00+00:00";
@@ -61,11 +66,22 @@ export const setCurrentResult = (slipGame, startDate) => {
                         gameDate: resultFixture.event_date,
                         gameDay: gameDay
                     };
-                    axiosMain.post("match-results", returnResult)
-                        .then(response => {
-                        })
-                        .catch(error => {
-                        });
+
+                    let userRef = firebase.database().ref('match-results/' + resultFixture.fixture_id);
+                    userRef.on('value', (snapshot) => {
+                        const resultData = snapshot.val();
+                        if (resultData === null) {
+                            firebase.database().ref('match-results/' + resultFixture.fixture_id).set({
+                                returnResult
+                            });
+                        } else {
+                            let updates = {};
+                            updates['match-results/' + resultFixture.fixture_id] = returnResult;
+                            firebase.database().ref().update(updates)
+                        }
+                    })
+
+
                 })
                 .catch(err => {
 

@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import Funds from '../../../components/board/funds/funds'
 import Login from '../../../components/loginLogout/login/login';
 import { withRouter } from 'react-router-dom';
+import firebase from '../../../config/firebase/firebase';
 
 //import Navbar from "reactjs-navbar";
 import logo from "./logo.JPG";
@@ -14,11 +15,16 @@ class Navs extends Component {
     isLoading: false,
   };
   logout = () => {
-    this.props.setIsLoggedIn(false);
-    if (this.props.slips !== null)
-      this.props.deleteAndResetAll();
-    this.props.setLoggedInUser({});
-    this.props.history.push("/");
+    firebase.auth().signOut().then(() => {
+
+      this.props.setIsLoggedIn(false);
+      if (this.props.slips !== null)
+        this.props.deleteAndResetAll();
+      this.props.setLoggedInUser({});
+      this.props.history.push("/");
+    }).catch((error) => {
+      // An error happened.
+    });
   }
   render() {
     return (
@@ -34,6 +40,7 @@ class Navs extends Component {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
+            <Nav.Link to="/" as={NavLink}>Home</Nav.Link>
             <Nav.Link to="/play" as={NavLink}>Play</Nav.Link>
             <Nav.Link to="/results" as={NavLink}>Result</Nav.Link>
             {this.props.user.role === "admin" ?

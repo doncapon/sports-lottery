@@ -34,7 +34,6 @@ export {
 } from './prediction';
 
 
-
 export {
      setUpWinners
 } from './matchResults';
@@ -51,3 +50,9 @@ export {
      fetchWeeklyResults,
      fetchResults
 } from './config';
+
+
+export {
+     fetchBanks,
+     resetSavedBanks
+} from './banks';

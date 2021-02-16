@@ -2,58 +2,38 @@ import React, { Component } from "react";
 import './ToBank.module.css'
 import classes from "./ToBank.module.css";
 import axios from '../../../axios-paystack';
-import UpdateBankDetail from "./updateBankDetail/updateBankDetail";
+import DeleteBankDetail from "./deleteBankDetail/deleteBankDetail";
 import SignupModal from "../../UI/SignupModal/SignupModoal";
-import axiosMain from '../../../axios-main';
 import { Spinner } from "react-bootstrap";
+import firebase from '../../../config/firebase/firebase';
+import * as actions from '../../../store/actions/index';
+import { connect } from "react-redux";
 class ToBank extends Component {
+    state = {
+        name: "Olusegun Akintimehin",
+        amount: '',
+        account: "0125732236",
+        bank: '058',
+
+        formErrors: {},
+        config: {},
+        apiError: '',
+        saveError: '',
+        showUpdate: '',
+
+        loding: false,
+    }
     constructor(props) {
         super(props);
-
-        this.state = {
-            name: "",
-            amount: '',
-            account: "",
-            bank: 'select',
-            savedBankDetails: [],
-
-            allowedBanks: [],
-            formErrors: {},
-            config: {},
-            apiError: '',
-            saveError: '',
-            showUpdate: '',
-            loading: false,
-        };
 
     }
 
     componentDidMount() {
-        if (!this.state.loading) {
-            console.log("This is the user", this.props.user)
-
-            axiosMain.get("accounts/" + this.props.user._id)
-                .then(response => {
-                    console.log("I am here so ", response.data)
-                    if (response.data === null) {
-                        const accountDetail = { accountName: '', Bank: '', accountNumber: 'Use an exisitng bank' }
-                        axiosMain.post("accounts/" + this.props.user._id, accountDetail)
-                    }
-                })
-
-
-            axiosMain.get("bank-list")
-                .then(response => {
-                    this.setState({ allowedBanks: response.data.bank })
-                    this.setState({ loading: true })
-
-                })
-                .catch(error => {
-
-                });
-        }
-
+        if (!this.state.loading)
+            this.props.onFetchBanks();
+        this.setState({ loading: true })
     }
+
     validateName(name) {
         let formIsValid = true;
         let error = "";
@@ -120,14 +100,14 @@ class ToBank extends Component {
         formIsValid = this.validateName(name).isValid && formIsValid;
 
         // Account
-        formIsValid = this.validateAccount(account).isValid  && formIsValid;
+        formIsValid = this.validateAccount(account).isValid && formIsValid;
         formErrors["accountErr"] = this.validateAccount(account).error;
 
         //Amount    
-        formIsValid = this.validateAmount(amount).isValid  && formIsValid;
+        formIsValid = this.validateAmount(amount).isValid && formIsValid;
         formErrors["amountErr"] = this.validateAmount(amount).error;
         //Bank
-        formIsValid = this.validateBank(bank).isValid  && formIsValid;
+        formIsValid = this.validateBank(bank).isValid && formIsValid;
         formErrors["bankErr"] = this.validateBank(bank).error;
 
         this.setState({ formErrors: formErrors });
@@ -168,6 +148,7 @@ class ToBank extends Component {
     handleChange = (e) => {
         let { name, value } = e.target;
         this.setState({ [name]: value });
+
         const ele = document.activeElement.name;
         let error = {};
         if (ele === "name")
@@ -179,7 +160,7 @@ class ToBank extends Component {
         if (ele === "account")
             error["bankErr"] = this.validateBank(value).error;
 
-            this.setState({formErrors: error})
+        this.setState({ formErrors: error })
 
     }
 
@@ -196,15 +177,18 @@ class ToBank extends Component {
     handleSubmit2 = (e) => {
         e.preventDefault();
 
-        let bankDetails = [...this.state.savedBankDetails];
-        let cardTobeSaved = bankDetails.filter(detail => detail.account === e.target.value)[0];
+        let bankDetails = [...this.props.savedBanks];
+        let cardTobeSaved = bankDetails.filter(detail => detail.accountNumber === e.target.value)[0];
 
-        this.setState({ account: cardTobeSaved.account });
+        this.setState({ account: cardTobeSaved.accountNumber });
         this.setState({ bank: cardTobeSaved.bank });
-        this.setState({ name: cardTobeSaved.name });
+        this.setState({ name: cardTobeSaved.accountName });
+
+        this.setState({ savedAccountNumber: e.target.value });
+
         setTimeout(() => {
-            this.saveBankValidation();
-        }, 500);
+        this.saveBankValidation();
+        }, 100);
     }
     handleSubmit = (e) => {
         e.preventDefault();
@@ -261,53 +245,65 @@ class ToBank extends Component {
             }
         }
     }
+
     HandleSave = () => {
-        let bankDetail = [...this.state.savedBankDetails];
-        if (this.state.name && this.state.account && this.state.bank !== 'select') {
-            console.log("I am here 1")
-            let BankExist = bankDetail.find(detail => detail.accountNumber === this.state.account);
-            if (BankExist === null) {
-                const params = "account_number=" + this.state.account + "&bank_code="
-                    + this.state.bank;
-                axios.get("bank/resolve?" + params)
-                    .then(response => {
-                        if (response.data.message === "Account number resolved") {
-                            const accountDetail = { accountName: this.state.name, Bank: this.state.bank, accountNumber: this.state.account }
-                            axiosMain.post("accounts/" + this.props.user._id, accountDetail)
-                                .then(response => {
-                                    axiosMain.get("accounts/" + this.props.user._id)
-                                        .then(response => {
-                                            this.setState({ savedBankDetails: response.data });
-                                        })
-                                })
+        let bankDetail = [...this.props.savedBanks];
+        let name = this.state.name;
+        let account = this.state.account;
+        let bank = this.state.bank;
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in.
+                if (name && account && bank !== 'select') {
+                    let BankExist = bankDetail.find(detail => detail.accountNumber === account);
+                    if (!BankExist) {
+                        const params = "account_number=" + account + "&bank_code="
+                            + bank;
+                        axios.get("bank/resolve?" + params)
+                            .then(response => {
+                                if (response.data.message === "Account number resolved") {
+                                    const accountDetail = { accountName: name, bank: bank, accountNumber: account }
+                                    firebase.database().ref('bank-accounts/' + user.uid + "/" + accountDetail.accountNumber).set(
+                                        accountDetail
+                                    );
+                                    var accountRef = firebase.database().ref('bank-accounts/' + user.uid);
+                                    accountRef.on('value', (snapshot) => {
+                                        const data = snapshot.val();
+                                        this.props.onResetSavedBanks(data);
+                                    });
+                                    this.setState({ saveError: '', apiError: '' })
+                                    alert("Bank details saved!");
+                                } else {
+                                    alert("invalid card details")
+                                }
+                            })
+                            .catch(error => {
+                                this.setState({ saveError: "Please check your card details", apiError: '' })
 
-                            this.setState({ saveError: '', apiError: '' })
-                            alert("Bank details saved!");
-                        }
-                    })
-                    .catch(error => {
-                        this.setState({ saveError: "Please check your card details", apiError: '' })
-
-                    })
+                            })
 
 
+                    } else {
+                        this.setState({ saveError: "That bank detail already exists", apiError: '' });
+                    }
+                } else {
+                    this.setState({ saveError: "Please enter: valid name, bank and account to proceed", apiError: '' });
+                }
             } else {
-                this.setState({ saveError: "That bank detail already exists", apiError: '' });
+                // No user is signed in.
+                alert("please login")
             }
-        } else {
-
-            console.log("I am here 222")
-
-            this.setState({ saveError: "Please enter: valid name, bank and account to proceed", apiError: '' });
-
-        }
+        })
+        setTimeout(() => {
+            window.location.reload();
+        }, 500);
 
     }
+
     setShowUpdate = (value) => {
         this.setState({ showUpdate: value })
     }
     render() {
-
         const { nameErr, amountErr, accountErr, bankErr } = this.state.formErrors;
         const banks = [classes.Banks];
         if (bankErr) {
@@ -319,31 +315,33 @@ class ToBank extends Component {
         let banksallowed;
         let optionsAllowed;
         if (this.state.loading) {
-            bankDetails = [...this.state.savedBankDetails];
-            options = bankDetails.map((detail, i) => (
-                <option key={i} value={detail.accountNumber}>{detail.accountNumber}</option>
-            ));
+            bankDetails = [...this.props.savedBanks];
+            options = bankDetails.sort((a, b) => a.accountNumber > b.accountNumber ? 1 : -1)
+                .map((detail, i) => (
+                    <option key={i} value={detail.accountNumber}>{detail.accountNumber}</option>
+                ));
 
-            banksallowed = [...this.state.allowedBanks];
-            optionsAllowed = banksallowed.sort((a, b) => a.bankName > b.bankName ? 1 : -1).map((detail, i) => (
-                <option key={i} value={detail.bankCode}>{detail.bankName}</option>
-            ));
+            banksallowed = [...this.props.allowedBanks];
+
+            optionsAllowed = banksallowed.sort((a, b) => a.bankName > b.bankName ? 1 : -1)
+                .map((detail, i) => (
+                    <option key={i} value={detail.bankCode}>{detail.bankName}</option>
+                ));
 
         }
         return (
             <div className={classes.ToBankWrapper}>
-                {this.state.showUpdate ? <SignupModal show={this.state.showUpdate}><UpdateBankDetail
+                {this.state.showUpdate ? <SignupModal show={this.state.showUpdate}><DeleteBankDetail
                     name={this.state.name} bank={this.state.bank} account={this.state.account}
-                    allowedBanks={this.state.allowedBanks}
+                    allowedBanks={this.props.allowedBanks} savedBanks={this.props.savedBanks}
                     setShowUpdate={this.setShowUpdate} /></SignupModal> :
                     this.state.loading ? <div className="formDiv">
                         <div>
                             {this.state.apiError ? <div style={{ color: 'red', fontSize: '20px' }}>Please check your bank details</div> : null}
-                            {this.state.saveError ? <div style={{ color: 'red', fontSize: '20px' }}>{this.state.saveError}</div> : null}
 
                             <form onSubmit={this.handleSubmit}>
-                                <select name="savedBankDetails"
-                                    value="Use an exisitng bank"
+                                <select name="savedAccountNumber"
+                                    value={this.state.savedAccountNumber}
                                     onChange={this.handleSubmit2}
                                     multiple={false}
                                     className={banksExist.join(" ")} >
@@ -400,17 +398,16 @@ class ToBank extends Component {
                                     {accountErr &&
                                         <div style={{ color: "red" }}>{accountErr}</div>
                                     }
-
+                                    {this.state.saveError ? <div style={{ color: 'red', fontSize: '20px' }}>{this.state.saveError}</div> : null}
                                 </div>
                                 <div className={classes.Buttons}>
-                                    <div className={classes.ButtonInner}>
-                                        <button type="button" onClick={this.HandleSave} className={classes.Button1}
-                                        >Save</button>
-                                        {this.state.name && this.state.bank !== "select" && this.state.account ?
-                                            <button type="button" className={classes.Button2}
-                                                onClick={() => this.setShowUpdate(true)}
-                                            >Update / Delete</button> : null}
-                                    </div>
+                                    <button type="button" onClick={this.HandleSave} className={classes.Button1}
+                                    >Save</button>
+                                    {this.state.name && this.state.bank !== "select" && this.state.account ?
+                                        <button type="button" className={classes.Button2}
+                                            onClick={() => this.setShowUpdate(true)}
+                                        >Delete</button> : null}
+
                                     <input type="submit" className={classes.Submit}
                                         value="Withdraw" />
                                 </div>
@@ -418,7 +415,6 @@ class ToBank extends Component {
                         </div>
                     </div>
                         : <Spinner />
-
                 }
             </div >
 
@@ -427,4 +423,18 @@ class ToBank extends Component {
     }
 }
 
-export default ToBank;
+const mapStateToProps = (state) => {
+    return {
+        savedBanks: state.banks.savedBanks,
+        allowedBanks: state.banks.allowedBanks,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onFetchBanks: () => dispatch(actions.fetchBanks()),
+        onResetSavedBanks: (payload) => dispatch(actions.resetSavedBanks(payload))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ToBank);

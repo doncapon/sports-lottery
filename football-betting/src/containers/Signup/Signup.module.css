@@ -30,7 +30,9 @@
       box-sizing: border-box;   
       font-size: 12px; 
     }    
-        
+    .Date {
+      width: 62%;
+    }
     .Text{
     }
     .Submit {    
@@ -86,7 +88,7 @@
       width: 75%;
     }
  
-
+ 
     form > div> div{
         margin-left: 25%;
         font-size: 10px;;

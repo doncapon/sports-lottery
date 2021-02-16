@@ -44,7 +44,7 @@ export function uuid() {
 
  export const calculateAge = (dob1) => {
     const today = new Date();
-    const birthDate = new Date(moment(dob1).format("DD-MM-YYYY"));  // create a date object directly from `dob1` argument
+    const birthDate = new Date(dob1+ "T00:00:00Z");  // create a date object directly from `dob1` argument
     let age_now = today.getFullYear() - birthDate.getFullYear();
     const m = today.getMonth() - birthDate.getMonth();
     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) 

@@ -7,6 +7,7 @@ class Settings extends Component{
   
     handleSetButtonClick=()=>{
         this.props.onSetCurrentResult(this.props.slips[0]["slip_1"], null);
+        alert("results hae been set or updated")
     }
     render(){
         if(this.props.user.role !== "admin" || !this.props.isLoggedIn){

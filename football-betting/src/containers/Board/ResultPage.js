@@ -18,7 +18,7 @@ class ResultPage extends Component {
 
     componentDidMount(){
         if(!this.props.loading)
-        this.props.onFetchResults(this.props.resultsFrom);
+        this.props.onFetchResults(this.props.numberofResultsDisplayed);
     }
     render() {
         return  !this.props.loading? <Spinner /> : <div>
@@ -45,7 +45,7 @@ const mapstateToProps = (state) => {
         basePrice: state.config.basePrice,
         loading: state.config.loading,
         currentResults: state.config.currentResults,
-        resultsFrom: state.config.resultsFrom,
+        numberofResultsDisplayed: state.config.numberofResultsDisplayed,
 
         jackpot: state.config.jackpot,
         thirteenPieces: state.config.thirteenPieces,

@@ -3,7 +3,7 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
-export const IdleTimeoutModal = ({showModal, handleClose, handleLogout, remainingTime}) => {
+export const IdleTimeoutModal = ({showModal, handleClose, handleLogout}) => {
 
     return (
         <Modal show={showModal} onHide={handleClose}>

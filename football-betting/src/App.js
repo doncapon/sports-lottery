@@ -18,7 +18,7 @@ import Settings from './containers/Settings/Settings';
 import Signup from './containers/Signup/Signup';
 import ActivateNewUser from './containers/ActivateNewUser/ActivateNewUser';
 import UserPlayHistory from './components/gameHistory/userPlayHistory/UserPlayHistory';
-
+import firebase from "./config/firebase/firebase";
 
 class App extends React.Component {
 
@@ -69,9 +69,11 @@ class App extends React.Component {
   }
 
   handleLogout() {
-    this.setState({ showModal: false })
-    this.props.onSetIsLoggedIn(false);
-    this.props.history.push("/")
+    firebase.auth().signOut().then(() => {
+      this.setState({ showModal: false })
+      this.props.onSetIsLoggedIn(false);
+      this.props.history.push("/")
+    })
   }
 
   render() {
@@ -92,13 +94,13 @@ class App extends React.Component {
         <div className={classes.Navs}><Navs funds={this.props.funds}
           loggedIn={false} setIsLoggedIn={this.props.onSetIsLoggedIn}
           setLoggedInUser={this.props.onSetLoggedInUser} isLoggedIn={this.props.isLoggedIn}
-           deleteAndResetAll={this.props.onDeleteAndResetAll}
-          username={this.props.username} password={this.props.password} slips = {this.props.slips}
+          deleteAndResetAll={this.props.onDeleteAndResetAll}
+          username={this.props.username} password={this.props.password} slips={this.props.slips}
           showFunds={this.props.showFunds} firstName={this.props.user.name}
-           setShowFunds={this.props.onSetShowFunds} user = {this.props.user}
+          setShowFunds={this.props.onSetShowFunds} user={this.props.user}
           toggleShowFunds={this.props.onToggleShowFunds}
-          
-          /></div>
+
+        /></div>
 
         <Switch>
           <Route path="/transfers" component={Transfers} />
@@ -128,7 +130,7 @@ class App extends React.Component {
 const mapstateToProps = (state) => {
   return {
 
-    
+
     showFunds: state.board.showFunds,
     funds: state.board.funds,
     slips: state.board.slips,
