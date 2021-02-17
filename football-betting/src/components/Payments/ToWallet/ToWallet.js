@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import './ToWallet.module.css'
 import { PaystackButton } from 'react-paystack';
 import classes from "./ToWallet.module.css";
+import firebase from '../../../config/firebase/firebase';
 class ToWallet extends Component {
     constructor(props) {
         super(props);
@@ -12,6 +13,7 @@ class ToWallet extends Component {
             amountErr: '',
             config: {},
             isTouched: false,
+            loading: false
         };
 
         this.initialState = this.state;
@@ -51,11 +53,11 @@ class ToWallet extends Component {
                 formIsValid = false;
                 amountErr = "Minimum amount is 500 Naira";
             }
-            if (amount > 50000  && formIsValid) {
+            if (amount > 50000 && formIsValid) {
                 formIsValid = false;
                 amountErr = "Maximum amount is 50000 Naira";
             }
-            if (amount % 1 !== 0  && formIsValid) {
+            if (amount % 1 !== 0 && formIsValid) {
                 amountErr = "No decimals allowed, remove dot(.)";
 
             }
@@ -70,7 +72,7 @@ class ToWallet extends Component {
         let { name, value } = e.target;
         this.handleFormValidationEmail(value)
 
-        this.setState({ [name]: value , isTouched: true});
+        this.setState({ [name]: value, isTouched: true });
     }
     handleChangeAmount = (e) => {
         e.preventDefault();
@@ -78,21 +80,23 @@ class ToWallet extends Component {
         let { name, value } = e.target;
         this.handleFormValidationAmount(value)
         this.setState({ [name]: value, isTouched: true });
-        
+
     }
 
     handlePaystackSuccessAction = (reference) => {
-        // Implementation for whatever you want to do with reference and after success call.
-        this.props.creditFunds(Number(this.state.amount));
-        console.log(reference);
+        let userId = firebase.auth().currentUser.uid;
+        let userRef = firebase.database().ref("users").child(userId);
+        userRef.child('funds').transaction((funds)=> {
+            return funds+ Number(this.state.amount)
+        })
     };
 
     handlePaystackCloseAction = () => {
         // implementation for  whatever you want to do when the Paystack dialog closed.
         console.log('closed')
     }
-    QuickPayHandler =(e)=>{
-        this.setState({amount: e.target.innerHTML.split(" ")[1]})
+    QuickPayHandler = (e) => {
+        this.setState({ amount: e.target.innerHTML.split(" ")[1] })
         this.handleFormValidationAmount(e.target.innerHTML.split(" ")[1])
     }
     render() {
@@ -115,8 +119,8 @@ class ToWallet extends Component {
                         }
 
                     </div>
-                    <div className= {classes.QuickButtons}>
-                        <div className= {classes.TransferText}>Amount option:</div>
+                    <div className={classes.QuickButtons}>
+                        <div className={classes.TransferText}>Amount option:</div>
                         <button type="button" onClick={(e) => this.QuickPayHandler(e)} className={classes.Quick}>₦ 500</button>
                         <button type="button" onClick={(e) => this.QuickPayHandler(e)} className={classes.Quick}>₦ 1000</button>
                         <button type="button" onClick={(e) => this.QuickPayHandler(e)} className={classes.Quick}>₦ 5000</button>
@@ -134,15 +138,15 @@ class ToWallet extends Component {
                     </div>
 
                 </form>
-                {!emailIdErr && !amountErr && this.state.emailId && this.state.amount?
-                <PaystackButton className={classes.Button}
-                    reference={reference}
-                    email={this.state.emailId}
-                    amount={this.state.amount * 100}
-                    publicKey={process.env.REACT_APP_PAYSTACT_PUBLIC_KEY}
-                    text={'Pay Here'}
-                    onSuccess={() => this.handlePaystackSuccessAction(reference)}
-                    onClose={this.handlePaystackCloseAction} />
+                {!emailIdErr && !amountErr && this.state.emailId && this.state.amount ?
+                    <PaystackButton className={classes.Button}
+                        reference={reference}
+                        email={this.state.emailId}
+                        amount={this.state.amount * 100}
+                        publicKey={process.env.REACT_APP_PAYSTACT_PUBLIC_KEY}
+                        text={'Pay Here'}
+                        onSuccess={() => this.handlePaystackSuccessAction(reference)}
+                        onClose={this.handlePaystackCloseAction} />
                     : null}
             </div >
         )

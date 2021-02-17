@@ -41,7 +41,6 @@ const initialStte = {
     isStarted: false,
     gamesLength: null,
     isPaying: false,
-    funds: 15500,
     isPaid: false,
     isShowReceipt: false,
     gameDate: null,
@@ -56,17 +55,6 @@ const setIsToWallet = (state, action) =>{
     return produce(state, draft=>{
         draft.isToWallet = action.isToWallet;
     });
-}
-const creditFunds = (state, action) =>{
-    return produce(state, draft=>{
-        draft.funds += action.funds;
-    })
-}
-
-const debitFunds = (state, action) =>{
-    return produce(state, draft=>{
-        draft.funds -= action.funds;
-    })
 }
 
 const resetReduxBoard = (state, action) =>{
@@ -109,11 +97,6 @@ const setReceipt = (state, action) => {
         for(let i = 0; i < draft.slips.length; i++){
             draft.slips[i].gameNumber = uuid();
         }
-    })
-}
-const executePurchase = (state, action) => {
-    return produce(state, draft => {
-        draft.funds -= draft.totalPrice;
     })
 }
 const setIsPaid = (state, action) => {
@@ -619,8 +602,6 @@ const reducer = (state = initialStte, action) => {
             return toggleIsShowReceipt(state, action);
         case actionTypes.SET_RECEIPT:
             return setReceipt(state, action);
-        case actionTypes.EXECUTE_PURCHASE:
-            return executePurchase(state, action);
         case actionTypes.CALCULATE_EDIT_INDEX_PRICE:
             return calculateSpecificSlipPrice(state, action);
         case actionTypes.SET_ISPAID:
@@ -663,10 +644,6 @@ const reducer = (state = initialStte, action) => {
             return generateSlip(state, action);
         case actionTypes.SET_SHOW_FUNDS:
             return setShowFunds(state, action);
-            case actionTypes.CREDIT_FUNDS:
-                return creditFunds(state, action);
-            case actionTypes.DEBIT_FUNDS:
-                return debitFunds(state, action);
             case actionTypes.SET_ISTOWALLET:
                 return setIsToWallet(state, action);
             case actionTypes.TOGGLE_SHOW_RECEIPT_HISTORY:

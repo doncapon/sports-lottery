@@ -94,22 +94,6 @@ export const setIsToWallet = (isToWallet)=>{
     }
 }
 
-export const creditFunds = (funds)=>{
-    return {
-        type: actionTypes.CREDIT_FUNDS,
-        funds: funds
-
-    }
-}
-
-export const debitFunds = (funds)=>{
-    return {
-        type: actionTypes.DEBIT_FUNDS,
-        funds: funds
-
-    }
-}
-
 export const resetReduxBoard=()=>{
     return {
         type: actionTypes.RESET_BOARD
@@ -166,12 +150,6 @@ export const setIsPaying = (isPaying)=>{
     return {
         type: actionTypes.SET_ISPAYING,
         isPaying: isPaying
-    }
-}
-
-export const executePurchase= ()=>{
-    return {
-        type: actionTypes.EXECUTE_PURCHASE
     }
 }
 export const setIsPaid = (isPaid)=>{

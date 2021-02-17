@@ -18,14 +18,11 @@ export {
      toggleShowHistory,
      setIsPaying,
      setIsPaid,
-     executePurchase,
      setReceipt,
      toggleIsShowReceipt,
      toggleShowFunds,
      setShowFunds,
-     creditFunds,
      setIsToWallet,
-     debitFunds,
      toggleReceiptShowHistory
 } from './board';
 

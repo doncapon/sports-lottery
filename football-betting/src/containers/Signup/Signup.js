@@ -46,7 +46,8 @@ class Signup extends Component {
                     phoneNumber: this.state.phoneNumber,
                     email: this.state.emailId,
                     dob: this.state.dob,
-                    role: "user"
+                    role: "user",
+                    funds: 0
                 });
             return userId;  //As per your comment below
 

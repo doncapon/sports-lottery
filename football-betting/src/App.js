@@ -91,7 +91,7 @@ class App extends React.Component {
             debounce={250}
             timeout={this.state.timeout} />
           : null}
-        <div className={classes.Navs}><Navs funds={this.props.funds}
+        <div className={classes.Navs}><Navs 
           loggedIn={false} setIsLoggedIn={this.props.onSetIsLoggedIn}
           setLoggedInUser={this.props.onSetLoggedInUser} isLoggedIn={this.props.isLoggedIn}
           deleteAndResetAll={this.props.onDeleteAndResetAll}
@@ -132,7 +132,6 @@ const mapstateToProps = (state) => {
 
 
     showFunds: state.board.showFunds,
-    funds: state.board.funds,
     slips: state.board.slips,
 
     loginMessage: state.login.loginMessage,

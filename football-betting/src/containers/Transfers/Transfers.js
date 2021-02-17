@@ -26,12 +26,8 @@ class Transfers extends Component {
 
             </div>
             <div className={classes.Main}>
-                {this.props.isToWallet ? <ToWallet creditFunds={this.props.onCreditFunds}
-                        user ={this.props.user}
-                    />
-                    :  <ToBank funds = {this.props.funds} debitFunds = {this.props.onDebitFunds}
-                        user ={this.props.user}
-                        />}
+                {this.props.isToWallet ? <ToWallet />
+                    :  <ToBank user = {this.props.user} />}
             </div>
         </div>);
     }
@@ -43,7 +39,6 @@ const mapstateToProps = (state) => {
     return {
 
         isToWallet: state.board.isToWallet,
-        funds: state.board.funds,
 
         isLoggedIn: state.login.isLoggedIn,
         user: state.login.user,
@@ -53,8 +48,6 @@ const mapstateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onCreditFunds: (funds) => dispatch(actions.creditFunds(funds)),
-        onDebitFunds: (funds) => dispatch(actions.debitFunds(funds)),
         onSetIsToWallet: (isToWallet) => dispatch(actions.setIsToWallet(isToWallet)),
     }
 }

@@ -50,7 +50,7 @@ class Navs extends Component {
           {this.props.isLoggedIn ?
             <div className={classes.LoginSection}>
               <Button className={classes.Logout} onClick={this.logout} variant="danger">Logout</Button>
-              <Funds funds={this.props.funds} showFunds={this.props.showFunds} firstName={this.props.firstName}
+              <Funds showFunds={this.props.showFunds} firstName={this.props.firstName}
                 toggleShowFunds={this.props.toggleShowFunds} setIsLoggedIn={this.props.setIsLoggedIn} />
             </div>
             : <Login setPassword={this.props.setPassword} setIsLoggedIn={this.props.setIsLoggedIn} slips={this.props.slips}

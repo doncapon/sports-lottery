@@ -8,13 +8,15 @@ import { Spinner } from "react-bootstrap";
 import firebase from '../../../config/firebase/firebase';
 import * as actions from '../../../store/actions/index';
 import { connect } from "react-redux";
+
 class ToBank extends Component {
     state = {
         name: "Olusegun Akintimehin",
         amount: '',
         account: "0125732236",
         bank: '058',
-
+        
+        funds: 0,
         formErrors: {},
         config: {},
         apiError: '',
@@ -29,8 +31,10 @@ class ToBank extends Component {
     }
 
     componentDidMount() {
-        if (!this.state.loading)
+        if (!this.state.loading){
             this.props.onFetchBanks();
+            this.setState({funds: this.props.user.funds})
+        }
         this.setState({ loading: true })
     }
 
@@ -68,7 +72,7 @@ class ToBank extends Component {
                 formIsValid = false;
                 error = "Minimum amount allowed is 500";
             }
-            if (Number(amount) > this.props.funds) {
+            if (Number(amount) > this.state.funds) {
                 formIsValid = false;
                 error = "Withrawal amount is more than your funds. correct";
 
@@ -166,8 +170,14 @@ class ToBank extends Component {
 
 
     handlePaystackSuccessAction = (reference) => {
-        // Implementation for whatever you want to do with reference and after success call.
-        this.props.creditFunds(Number(this.state.amount));
+        firebase.database().onAuthStateChanged((user) => {
+            if (user) {
+                user.funds += this.state.amount;
+                let updates = {};
+                updates["users/" + user.uid] = user;
+                firebase.database().ref().update(updates);
+            }
+        })
     };
 
     handlePaystackCloseAction = () => {
@@ -187,7 +197,7 @@ class ToBank extends Component {
         this.setState({ savedAccountNumber: e.target.value });
 
         setTimeout(() => {
-        this.saveBankValidation();
+            this.saveBankValidation();
         }, 100);
     }
     handleSubmit = (e) => {
@@ -202,7 +212,7 @@ class ToBank extends Component {
                 currency: "NGN"
             }
             const params = "account_number=" + this.state.account + "&bank_code=" + this.state.bank;
-            if (this.state.amount <= this.props.funds && this.state.amount > 0) {
+            if (this.state.amount <= this.state.funds && this.state.amount > 0) {
                 axios.get("bank/resolve?" + params)
                     .then(response => {
                         if (response.data.message === "Account number resolved") {
@@ -222,7 +232,12 @@ class ToBank extends Component {
                                     axios.post("transfer", paymentData)
                                         .then(response => {
                                             if (response.data.data.status === "success") {
-                                                this.props.debitFunds(this.state.amount);
+                                                let userId = firebase.auth().currentUser.uid;
+                                                let userRef = firebase.database().ref("users").child(userId);
+                                                userRef.child('funds').transaction((funds) => {
+                                                    return funds - Number(this.state.amount)
+                                                })
+
                                                 alert(`${response.data.message}. Funds wull be received within 24 hours.`)
 
                                             }

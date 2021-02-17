@@ -14,9 +14,14 @@ import { ArrowRight } from "react-bootstrap-icons";
 import Receipts from '../../components/board/receipts/receipts/receipts';
 import {getNextPlayDate} from '../../shared/utility';
 import {addCommaToAmounts} from '../../shared/utility';
+import firebase from '../../config/firebase/firebase';
 
 class Board extends Component {
 
+  state ={
+    funds : 0,
+    loading: false
+  }
   constructor(props) {
     super(props);
     let kickOffDate;
@@ -30,15 +35,40 @@ class Board extends Component {
 
   }
 
+  componentDidMount(){
+    if(!this.state.loading){
+      let funds = firebase.auth().onAuthStateChanged((user)=>{
+        if(user){
+          let userRef = firebase.database().ref("users/"+ user.uid);
+          userRef.on("value", snapshot=>{
+            let dbUser = snapshot.val();
+            this.setState({funds: dbUser.funds});
+            
+          })
+
+        }
+      });
+      console.log("i am not ", funds);
+    }
+    this.setState({loading: true})
+  }
   togglePaymentButton = (paying, paid) => {
     this.props.onSetIsPaying(paying);
     this.props.onSetIsPaid(paid);
 
   }
   confirmPurchase = () => {
-    this.props.onExecutePurchase();
+    this.ExecutePurchase();
     this.props.onSetReceipt(this.props.gameDate);
     this.togglePaymentButton(false, true)
+  }
+  ExecutePurchase=()=>{
+    
+ let userId = firebase.auth().currentUser.uid;
+ let userRef = firebase.database().ref("users").child(userId);
+ userRef.child('funds').transaction((funds) => {
+     return funds - this.props.totalPrice
+ })
   }
 
   render() {
@@ -86,9 +116,9 @@ class Board extends Component {
             removeSlipSingle={this.props.onRemoveRowFromBetSlip}
             purchaseAll={this.props.purchaseAll}
             setEditIndex={this.props.onSetEditIndex}
-            addBetSlip={this.props.onAddRowToslips}
+            addBetSlip={this.props.ononCopyBetslip}
             editIndex={this.props.editIndex}
-            funds ={this.props.funds}
+            funds ={this.state.funds}
             totalPrice = {this.props.totalPrice}
           />
         </div>
@@ -106,7 +136,7 @@ class Board extends Component {
             <div>
               <div className={classes.PayButtons}>
                 <Button
-                  disabled={!this.props.purchaseAll || this.props.funds < this.props.totalPrice}
+                  disabled={!this.props.purchaseAll || this.state.funds < this.props.totalPrice}
                   variant="success"
                   className={classes.PayButton}
                   onClick={() => this.togglePaymentButton(true, false)}
@@ -118,7 +148,7 @@ class Board extends Component {
                   { this.props.purchaseAll ? "₦" + addCommaToAmounts(this.props.totalPrice.toString(10)) : "₦0"}
 
                 </Button>
-                {this.props.funds < this.props.totalPrice ? <div>
+                {this.state.funds < this.props.totalPrice ? <div>
                   <div style={{ color: 'red', textAlign: 'center', background: 'grey', padding: '10px 0', marginBottom: '10px' }}>Sorry, you do not have enough funds to make the purchase</div>
                   <div><Button className= {classes.TransferButton}> <ArrowRight style={{ fontWeight: 'bolder' }} size="20" /> GO TO FUNDS TRANSFER</Button></div>
                 </div> : null}
@@ -178,7 +208,6 @@ const mapstateToProps = (state) => {
     isStarted: state.board.isStarted,
     isPaying: state.board.isPaying,
     isPaid: state.board.isPaid,
-    funds: state.board.funds,
     predictions: state.pred.predictions,
   };
 };
@@ -189,12 +218,11 @@ const mapDispatchToProps = (dispatch) => {
     // onToggleShowFunds: () => dispatch(actions.toggleShowFunds()),
     onToggleIsShowReceipt: () => dispatch(actions.toggleIsShowReceipt()),
     onSetReceipt: () => dispatch(actions.setReceipt()),
-    onExecutePurchase: () => dispatch(actions.executePurchase()),
     ontoggleSelectedTile: (slipIndex, gameIndex, sideIndex, side) =>
       dispatch(
         actions.toggleSelectedTile(slipIndex, gameIndex, sideIndex, side)
       ),
-    onAddRowToslips: (postion) => dispatch(actions.copyBetslip(postion)),
+    ononCopyBetslip: (postion) => dispatch(actions.copyBetslip(postion)),
     onRemoveRowFromBetSlip: (deleteId) =>
       dispatch(actions.removeRowFromBetSlip(deleteId)),
     onIsPurchasing: (index) => dispatch(actions.checkPurchasable(index)),
