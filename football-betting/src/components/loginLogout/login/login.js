@@ -25,8 +25,6 @@ const Login = (props) => {
                         props.setIsLoggedIn(dbUser);
                         popUpFunc();
                         props.setLoggedInUser(dbUser);
-                        if (props.slips !== null)
-                            props.deleteAndResetAll();
                         history.push("/play");
                       });
                 }

@@ -12,45 +12,45 @@ import axios from '../../axios-fixtures';
 import Payment from '../../components/board/payment/payment';
 import { ArrowRight } from "react-bootstrap-icons";
 import Receipts from '../../components/board/receipts/receipts/receipts';
-import {getNextPlayDate} from '../../shared/utility';
-import {addCommaToAmounts} from '../../shared/utility';
+import { getNextPlayDate } from '../../shared/utility';
+import { addCommaToAmounts } from '../../shared/utility';
 import firebase from '../../config/firebase/firebase';
 
 class Board extends Component {
 
-  state ={
-    funds : 0,
+  state = {
+    funds: 0,
     loading: false
   }
   constructor(props) {
     super(props);
     let kickOffDate;
-    kickOffDate = getNextPlayDate( this.props.daysOffset,
+    kickOffDate = getNextPlayDate(this.props.daysOffset,
       this.props.hourToNextDay);
 
-      if(!this.props.loading){
-        this.props.onSetBoard(this.props.isFACup, 
-          this.props.kickOffTime, kickOffDate);
-      }
+    if (!this.props.loading) {
+      this.props.onSetBoard(this.props.isFACup,
+        this.props.kickOffTime, kickOffDate);
+    }
 
   }
 
-  componentDidMount(){
-    if(!this.state.loading){
-      let funds = firebase.auth().onAuthStateChanged((user)=>{
-        if(user){
-          let userRef = firebase.database().ref("users/"+ user.uid);
-          userRef.on("value", snapshot=>{
+  componentDidMount() {
+    if (!this.state.loading) {
+      let funds = firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          let userRef = firebase.database().ref("users/" + user.uid);
+          userRef.on("value", snapshot => {
             let dbUser = snapshot.val();
-            this.setState({funds: dbUser.funds});
-            
+            this.setState({ funds: dbUser.funds });
+
           })
 
         }
       });
       console.log("i am not ", funds);
     }
-    this.setState({loading: true})
+    this.setState({ loading: true })
   }
   togglePaymentButton = (paying, paid) => {
     this.props.onSetIsPaying(paying);
@@ -62,13 +62,13 @@ class Board extends Component {
     this.props.onSetReceipt(this.props.gameDate);
     this.togglePaymentButton(false, true)
   }
-  ExecutePurchase=()=>{
-    
- let userId = firebase.auth().currentUser.uid;
- let userRef = firebase.database().ref("users").child(userId);
- userRef.child('funds').transaction((funds) => {
-     return funds - this.props.totalPrice
- })
+  ExecutePurchase = () => {
+
+    let userId = firebase.auth().currentUser.uid;
+    let userRef = firebase.database().ref("users").child(userId);
+    userRef.child('funds').transaction((funds) => {
+      return funds - this.props.totalPrice
+    })
   }
 
   render() {
@@ -80,7 +80,7 @@ class Board extends Component {
           <TopBoard
             isStarted={this.props.isStarted}
             clicked={this.props.onEmptyEditingISlip}
-            genrateSlip={this.props.onGenrateSlip}
+            generateSlip={this.props.ongenerateSlip}
             editIndex={this.props.editIndex}
             basePrice={this.props.basePrice}
           />
@@ -118,8 +118,8 @@ class Board extends Component {
             setEditIndex={this.props.onSetEditIndex}
             addBetSlip={this.props.ononCopyBetslip}
             editIndex={this.props.editIndex}
-            funds ={this.state.funds}
-            totalPrice = {this.props.totalPrice}
+            funds={this.state.funds}
+            totalPrice={this.props.totalPrice}
           />
         </div>
         <div className={classes.Payment} >
@@ -127,7 +127,7 @@ class Board extends Component {
             <Payment totalPrice={this.props.totalPrice} toggleshowShowReceipt={this.props.onToggleIsShowReceipt}
               isPaid={this.props.isPaid} closePayment={this.togglePaymentButton} isShowReceipt={this.props.isShowReceipt}
               gamesCount={this.props.slips.length} setIsPaying={this.props.onSetIsPaying}
-              receipts={this.props.receipts} 
+              receipts={this.props.receipts}
             />
             : null}
         </div>
@@ -136,7 +136,7 @@ class Board extends Component {
             <div>
               <div className={classes.PayButtons}>
                 <Button
-                  disabled={!this.props.purchaseAll || this.state.funds < this.props.totalPrice}
+                  disabled={firebase.auth().currentUser &&this.state.funds < this.props.totalPrice}
                   variant="success"
                   className={classes.PayButton}
                   onClick={() => this.togglePaymentButton(true, false)}
@@ -144,13 +144,13 @@ class Board extends Component {
                 >
                   PAY
                   {" "}
-                  
-                  { this.props.purchaseAll ? "₦" + addCommaToAmounts(this.props.totalPrice.toString(10)) : "₦0"}
+
+                  {"₦" + addCommaToAmounts(this.props.totalPrice.toString(10))}
 
                 </Button>
                 {this.state.funds < this.props.totalPrice ? <div>
                   <div style={{ color: 'red', textAlign: 'center', background: 'grey', padding: '10px 0', marginBottom: '10px' }}>Sorry, you do not have enough funds to make the purchase</div>
-                  <div><Button className= {classes.TransferButton}> <ArrowRight style={{ fontWeight: 'bolder' }} size="20" /> GO TO FUNDS TRANSFER</Button></div>
+                  <div><Button className={classes.TransferButton}> <ArrowRight style={{ fontWeight: 'bolder' }} size="20" /> GO TO FUNDS TRANSFER</Button></div>
                 </div> : null}
               </div>
             </div>
@@ -163,7 +163,7 @@ class Board extends Component {
                 className={classes.ConfrimePayments}
               >
                 CONFIRM {" "}
-                  { this.props.purchaseAll ? "₦" + addCommaToAmounts(this.props.totalPrice.toString(10)) : "₦0"}
+                {this.props.purchaseAll ? "₦" + addCommaToAmounts(this.props.totalPrice.toString(10)) : "₦0"}
               </Button>
 
               </div>
@@ -213,7 +213,7 @@ const mapstateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    onSetBoard: ( isFACup ,kicOffTime, kickOfftime) => dispatch(actions.setBoard( isFACup ,kicOffTime,kickOfftime)),
+    onSetBoard: (isFACup, kicOffTime, kickOfftime) => dispatch(actions.setBoard(isFACup, kicOffTime, kickOfftime)),
     onResetReduxBoard: () => dispatch(actions.resetReduxBoard()),
     // onToggleShowFunds: () => dispatch(actions.toggleShowFunds()),
     onToggleIsShowReceipt: () => dispatch(actions.toggleIsShowReceipt()),
@@ -240,8 +240,8 @@ const mapDispatchToProps = (dispatch) => {
     onEmptyEditingISlip: () => dispatch(actions.EmptyEditingISlip()),
     onCalculateOverAllPrice: (slip, game, side, basePrice) =>
       dispatch(actions.calculateOverAllPrice(slip, game, side, basePrice)),
-    onGenrateSlip: (amount, slipIndex, basePrice) =>
-      dispatch(actions.genrateSlip(amount, slipIndex, basePrice)),
+    ongenerateSlip: (amount, slipIndex, basePrice) =>
+      dispatch(actions.generateSlip(amount, slipIndex, basePrice)),
     onToggleShowHistory: (gameIndex) =>
       dispatch(actions.toggleShowHistory(gameIndex)),
     onSetIsPaying: (isPaying) =>

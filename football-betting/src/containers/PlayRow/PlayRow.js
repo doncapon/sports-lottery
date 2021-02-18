@@ -96,9 +96,7 @@ class PlayRow extends Component {
                       {!game.showHistory ? <CaretDownFill className={classes.Icon} /> : <CaretUpFill className={classes.Icon} />} </Button>
                   </div>
                 </div>
-
               }
-
             </div>
           </div>
           {(game.showHistory && this.props.predictions !== null) ? <div className="">

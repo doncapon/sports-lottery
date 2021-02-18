@@ -91,15 +91,14 @@ class App extends React.Component {
             debounce={250}
             timeout={this.state.timeout} />
           : null}
-        <div className={classes.Navs}><Navs 
+        <div className={classes.Navs}><Navs
           loggedIn={false} setIsLoggedIn={this.props.onSetIsLoggedIn}
           setLoggedInUser={this.props.onSetLoggedInUser} isLoggedIn={this.props.isLoggedIn}
           deleteAndResetAll={this.props.onDeleteAndResetAll}
           username={this.props.username} password={this.props.password} slips={this.props.slips}
           showFunds={this.props.showFunds} firstName={this.props.user.name}
           setShowFunds={this.props.onSetShowFunds} user={this.props.user}
-          toggleShowFunds={this.props.onToggleShowFunds}
-
+          toggleShowFunds={this.props.onToggleShowFunds} setEditIndex={this.props.onSetEditIndex}
         /></div>
 
         <Switch>
@@ -140,6 +139,10 @@ const mapstateToProps = (state) => {
     password: state.login.password,
     isLoggedIn: state.login.isLoggedIn,
 
+    isFaCup: state.config.isFaCup,
+    kickOffTime: state.config.kickOffTime,
+    kickOffDate: state.config.kickOffDate
+
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -150,6 +153,13 @@ const mapDispatchToProps = (dispatch) => {
     onSetLoggedInUser: (username, password) => dispatch(actions.setLoggedInUser(username, password)),
     onDeleteAndResetAll: () => dispatch(actions.deleteAndResetAll()),
     onSetShowFunds: () => dispatch(actions.setShowFunds()),
+    onResetReduxBoard: () =>
+      dispatch(actions.resetReduxBoard()),
+
+    onSetEditIndex: (value) =>
+      dispatch(actions.setEditIndex(value)),
+    onSetBoard: (isFaCup, kickOffTime, kickOffDate) =>
+      dispatch(actions.setBoard(isFaCup, kickOffTime, kickOffDate)),
 
   };
 };

@@ -16,11 +16,9 @@ class Navs extends Component {
   };
   logout = () => {
     firebase.auth().signOut().then(() => {
-
-      this.props.setIsLoggedIn(false);
-      if (this.props.slips !== null)
-        this.props.deleteAndResetAll();
+      this.props.deleteAndResetAll();
       this.props.setLoggedInUser({});
+      this.props.setIsLoggedIn(false);
       this.props.history.push("/");
     }).catch((error) => {
       // An error happened.

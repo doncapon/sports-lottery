@@ -3,10 +3,10 @@ import axios from '../../axios-fixtures';
 // import { getNextPlayDate } from '../../shared/utility';
 
 
-export const genrateSlip = (amount, slipIndex, basePrice ) =>{
+export const generateSlip = (amount, slipIndex, basePrice ) =>{
     return dispatch =>{
         dispatch(EmptyEditingISlip());
-        dispatch(genrateSlip2(amount, basePrice));
+        dispatch(generateSlip2(amount, basePrice));
         dispatch(setPurchaseAll());
         dispatch(calculateSpecificSlipPrice(slipIndex, basePrice));
         dispatch(calculateGrandTtoalPriceOfAllSlips());
@@ -14,7 +14,7 @@ export const genrateSlip = (amount, slipIndex, basePrice ) =>{
     }
 }
 
-export const genrateSlip2 = (amount, basePrice) =>{
+export const generateSlip2 = (amount, basePrice) =>{
     return {
         type: actionTypes.GENERATE_SLIP,
         amount: amount,
@@ -204,7 +204,7 @@ export const calculateOverAllPrice = (slipIndex, gameIndex, sideIndex, basePrice
     return dispatch =>{
         dispatch(calulateGameAmount(slipIndex, gameIndex, sideIndex));
         dispatch(calculateSpecificSlipPrice(slipIndex, basePrice))
-        dispatch(calculateGrandTtoalPriceOfAllSlips(slipIndex));
+        dispatch(calculateGrandTtoalPriceOfAllSlips());
     }
 }
 
@@ -241,14 +241,18 @@ export const calulateGameAmount = (slipIndex, gameIndex,sideIndex) =>{
 }
 
 
-export const calculateGrandTtoalPriceOfAllSlips = (slipIndex) =>{
+export const calculateGrandTtoalPriceOfAllSlips = () =>{
     return { 
         type : actionTypes.CALCULATE_GRAND_tOTAL,
-        slipIndex: slipIndex,
         
     };
 }
-
+export const setBoardLoading= (loading)=>{
+    return {
+        type: actionTypes.SET_BOARD_LOADING,
+        loading: loading
+    }
+}
 
 export const setEditIndex= (index)=>{
     return {

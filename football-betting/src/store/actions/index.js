@@ -14,7 +14,7 @@ export {
      calculateGrandTtoalPriceOfAllSlips,
      addEmptySlip,
      EmptyEditingISlip,
-     genrateSlip,
+     generateSlip,
      toggleShowHistory,
      setIsPaying,
      setIsPaid,
@@ -23,7 +23,8 @@ export {
      toggleShowFunds,
      setShowFunds,
      setIsToWallet,
-     toggleReceiptShowHistory
+     toggleReceiptShowHistory,
+     setBoardLoading
 } from './board';
 
 export {

@@ -1,7 +1,7 @@
 import * as actionTypes from "../actions/actionTypes";
 import produce from 'immer';
 import _ from "lodash";
-import {uuid} from '../../shared/utility'
+import { uuid } from '../../shared/utility'
 import moment from 'moment';
 
 const initialStte = {
@@ -46,19 +46,19 @@ const initialStte = {
     gameDate: null,
     gameDateRaw: null,
     isToWallet: true,
-    
-    showFunds:  true,
+
+    showFunds: true,
 
 };
 
-const setIsToWallet = (state, action) =>{
-    return produce(state, draft=>{
+const setIsToWallet = (state, action) => {
+    return produce(state, draft => {
         draft.isToWallet = action.isToWallet;
     });
 }
 
-const resetReduxBoard = (state, action) =>{
-    return produce(state, draft=>{
+const resetReduxBoard = (state, action) => {
+    return produce(state, draft => {
         draft.slips = null;
     })
 }
@@ -78,10 +78,17 @@ const toggleIsShowReceipt = (state, action) => {
         draft.isShowReceipt = !draft.isShowReceipt
     });
 }
-const toggleReceiptShowHistory = (state, action) =>{
-    return produce(state, draft=>{
+const toggleReceiptShowHistory = (state, action) => {
+    return produce(state, draft => {
         draft.receipts[action.receiptIndex].showHistory =
-         !draft.receipts[action.receiptIndex].showHistory;
+            !draft.receipts[action.receiptIndex].showHistory;
+    })
+}
+
+const setBoardLoading = (state, action) => {
+    console.log("i am here");
+    return produce(state, draft => {
+        draft.loading = action.loading
     })
 }
 const setReceipt = (state, action) => {
@@ -89,12 +96,12 @@ const setReceipt = (state, action) => {
         let slips = _.cloneDeep(draft.slips);
         let gameDay = action.gameDay;
 
-        slips.forEach(slip =>{
+        slips.forEach(slip => {
             slip.gameDay = gameDay;
             slip.showHistory = false;
         })
         draft.receipts = slips;
-        for(let i = 0; i < draft.slips.length; i++){
+        for (let i = 0; i < draft.slips.length; i++) {
             draft.slips[i].gameNumber = uuid();
         }
     })
@@ -133,7 +140,7 @@ const initializeBoard = (state, action) => {
                     sides: [{ selected: false }, { selected: false }, { selected: false }],
                 }
             };
-            
+
             games1.splice(i, i + 1, game);
         });
         let slipInner = Object.assign({}, { games: games1 });
@@ -141,7 +148,7 @@ const initializeBoard = (state, action) => {
             id: (slipId + 1), purchasable: false, slipAmount: 0,
             slipPrice: 0, adding: false, removing: false, [slipId + 1]: slipInner
         });
-        newSlip.games = Object.assign([], games1.sort((a,b)=>a.fixture_id > b.fixture_id? 1: -1));
+        newSlip.games = Object.assign([], games1.sort((a, b) => a.fixture_id > b.fixture_id ? 1 : -1));
 
         newSlip.gameNumber = uuid();
         // let newSlips = [Object.assign({}, newSlip)];
@@ -360,7 +367,7 @@ const copyBetslip = (state, action) => {
             removing: false, [newId]: newslip
         });
 
-        draft.slips[draft.slips.length-1].gameNumber = uuid();
+        draft.slips[draft.slips.length - 1].gameNumber = uuid();
         draft.isPaying = false;
         draft.isPaid = false;
         draft.isShowReceipt = false;
@@ -399,7 +406,7 @@ const addEmptySlip = (state, action) => {
         draft.isPaying = false;
         draft.isPaid = false;
         draft.isShowReceipt = false;
-        
+
     });
 }
 
@@ -428,7 +435,7 @@ const deleteAndResetAll = (state, action) => {
             clonedSlips[0].purchasable = false
             clonedSlips[0].slipPrice = 0;
             clonedSlips[0].slipAmount = 0;
-            
+
         }
 
 
@@ -437,6 +444,7 @@ const deleteAndResetAll = (state, action) => {
         draft.purchaseAll = false;
         draft.isPaying = false;
         draft.isShowReceipt = false;
+        draft.editIndex = 0;
 
 
     })
@@ -478,8 +486,8 @@ const calculateGrandTtoalPriceOfAllSlips = (state, action) => {
         let slips = state.slips;
         let totalPrice = 0;
         slips.forEach((slip, i) => {
-
-            return totalPrice += slip.slipPrice;
+            if (slip.purchasable)
+                totalPrice += slip.slipPrice;
         });
 
         draft.totalPrice = totalPrice;
@@ -594,8 +602,10 @@ const setPurchaseAll = (state, action) => {
 
 const reducer = (state = initialStte, action) => {
     switch (action.type) {
-        case actionTypes.RESET_BOARD:
+        case actionTypes.RESET_BOARD: 
             return resetReduxBoard(state, action);
+        case actionTypes.SET_BOARD_LOADING:
+            return setBoardLoading(state, action);
         case actionTypes.TOGGLE_SHOWFUNDS:
             return toggleShowFunds(state, action);
         case actionTypes.TOGGLE_SHOW_RECEIPT:
@@ -644,10 +654,10 @@ const reducer = (state = initialStte, action) => {
             return generateSlip(state, action);
         case actionTypes.SET_SHOW_FUNDS:
             return setShowFunds(state, action);
-            case actionTypes.SET_ISTOWALLET:
-                return setIsToWallet(state, action);
-            case actionTypes.TOGGLE_SHOW_RECEIPT_HISTORY:
-                return toggleReceiptShowHistory(state, action);
+        case actionTypes.SET_ISTOWALLET:
+            return setIsToWallet(state, action);
+        case actionTypes.TOGGLE_SHOW_RECEIPT_HISTORY:
+            return toggleReceiptShowHistory(state, action);
         default:
             return state;
     }
