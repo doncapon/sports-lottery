@@ -86,7 +86,7 @@ class PlayRow extends Component {
                           k,
                           2,
                           game[gameId + (k + 1)].sides[2].selected,
-                          this.basePrice
+                          this.props.basePrice
                         )
                       }
                     />
