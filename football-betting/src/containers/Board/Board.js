@@ -149,7 +149,7 @@ class Board extends Component {
             <div>
               <div className={classes.PayButtons}>
                 <Button
-                  disabled={!this.props.purchaseAll|| (firebase.auth().currentUser &&this.state.funds < this.props.totalPrice)}
+                  disabled={this.props.totalPrice <= 0|| (firebase.auth().currentUser &&this.state.funds < this.props.totalPrice)}
                   variant="success"
                   className={classes.PayButton}
                   onClick={() => this.togglePaymentButton(true, false)}
@@ -158,7 +158,7 @@ class Board extends Component {
                   PAY
                   {" "}
 
-                  {this.props.purchaseAll? "₦" + addCommaToAmounts(this.props.totalPrice.toString(10)): "0₦"}
+                  { "₦" + addCommaToAmounts(this.props.totalPrice.toString(10))}
 
                 </Button>
                 {(this.state.funds < this.props.totalPrice && firebase.auth().currentUser) ? <div>

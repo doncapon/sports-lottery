@@ -42,6 +42,7 @@ class Navs extends Component {
           <Nav className="mr-auto">
             <Nav.Link to="/" as={NavLink}>Home</Nav.Link>
             <Nav.Link to="/play" as={NavLink}>Play</Nav.Link>
+            {firebase.auth().currentUser? <Nav.Link to="/history" as={NavLink}>My Games</Nav.Link>: null}
             <Nav.Link to="/results" as={NavLink}>Result</Nav.Link>
             {this.props.user.role === "admin" ?
               <Nav.Link to="/settings" as={NavLink}>Settings</Nav.Link>
