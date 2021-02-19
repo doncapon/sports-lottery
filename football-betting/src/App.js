@@ -99,6 +99,7 @@ class App extends React.Component {
           showFunds={this.props.showFunds} firstName={this.props.user.name}
           setShowFunds={this.props.onSetShowFunds} user={this.props.user}
           toggleShowFunds={this.props.onToggleShowFunds} setEditIndex={this.props.onSetEditIndex}
+          setIsPaying = {this.props.onSetIsPaying} setIsPaid = {this.props.onSetIsPaid}
         /></div>
 
         <Switch>
@@ -149,8 +150,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
 
     onSetIsLoggedIn: (value) => dispatch(actions.setIsLoggedIn(value)),
-    onToggleShowFunds: () => dispatch(actions.toggleShowFunds()),
     onSetLoggedInUser: (username, password) => dispatch(actions.setLoggedInUser(username, password)),
+    onToggleShowFunds: () => dispatch(actions.toggleShowFunds()),
     onDeleteAndResetAll: () => dispatch(actions.deleteAndResetAll()),
     onSetShowFunds: () => dispatch(actions.setShowFunds()),
     onResetReduxBoard: () =>
@@ -160,6 +161,11 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions.setEditIndex(value)),
     onSetBoard: (isFaCup, kickOffTime, kickOffDate) =>
       dispatch(actions.setBoard(isFaCup, kickOffTime, kickOffDate)),
+      
+    onSetIsPaying: (isPaying) =>
+    dispatch(actions.setIsPaying(isPaying)),
+  onSetIsPaid: (isPaid) =>
+    dispatch(actions.setIsPaid(isPaid)),
 
   };
 };

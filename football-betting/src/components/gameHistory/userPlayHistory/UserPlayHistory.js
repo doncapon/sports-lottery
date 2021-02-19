@@ -6,10 +6,51 @@ import * as actions from '../../../store/actions';
 import { connect } from 'react-redux';
 import { CaretDownFill, CaretUpFill } from "react-bootstrap-icons";
 import Button from 'react-bootstrap/Button';
-import receipt from "../../board/receipts/receipt/receipt";
-
+import firebase from '../../../config/firebase/firebase';
+import _ from "lodash";
+import { Spinner } from "react-bootstrap";
 
 class UserPlayHistory extends Component {
+    state ={
+        matchesPlayed: [],
+        loading: false,
+        showHistory: []
+    }
+    componentDidMount(){
+        if(!this.state.loading){
+            firebase.auth().onAuthStateChanged((user) =>{
+                if(user){
+                    let playedRef = firebase.database().ref("game-history").child(user.uid);
+                    playedRef.on("value" , (snapshot) =>{
+                        let data = snapshot.val();
+                        let grouped = _.groupBy(data, 'gameNumber');
+                        let groupedArray = Object.keys(grouped).map(keys=> grouped[keys])
+                        this.setState({matchesPlayed : groupedArray});
+                        let myShow = []
+                        Object.keys(grouped).map(grp => {
+                            myShow.push(false)
+                        });
+                        this.setState({showHistory: myShow})
+                    })
+
+                  
+                }else{
+
+                }
+          
+            })
+           
+        }
+
+        this.setState({loading: true})
+    }
+
+    toggleShowHistory =(index)=>{
+        let smallShow = [...this.state.showHistory];
+        smallShow[index] =  !smallShow[index];
+        this.setState({showHistory: smallShow});
+
+    }
     findSelection = (goalHome, goalAway, status) => {
         if (status === "Match Finished") {
             if (goalHome > goalAway) {
@@ -25,15 +66,16 @@ class UserPlayHistory extends Component {
 
     }
     render() {
- 
-        let userPlayHistoryTrannsformed = this.props.daysuserPlayHistory.map((userPlayHistory, k) => {
+        let userPlayHistoryTrannsformed =this.state.loading? this.state.matchesPlayed.map((match, k) => {
            return <div className={classes.userPlayHistoryAndShare} key={k}>
+               {console.log("SFSDf" , match)}
                 <div className={classes.MainHeader}>
-                    <div className={classes.DateHead}> Date resolved : {moment(userPlayHistory.gameDay).format("DD.MM.YYYY")}</div>
-                    <div className={classes.PriceHead}>Price: {userPlayHistory.slipPrice}</div>
+                    <div className={classes.DateHead}> Date resolved : {moment(match.gameDay).format("DD.MM.YYYY")}</div>
+                    <div className={classes.PriceHead}>Price: {match[0].slipPrice}</div>
 
-                    <Button className={classes.BtToggle} size="sm" onClick={()=>this.props.onToggleReceiptShowHistory(k)}>
-                    {!userPlayHistory.showHistory ? <CaretDownFill className={classes.Icon} /> : <CaretUpFill className={classes.Icon} />} </Button>
+                    <Button className={classes.BtToggle} size="sm" onClick = {()=>this.toggleShowHistory(k)}>
+                    {!this.state.showHistory[k] ? <CaretDownFill className={classes.Icon} /> :
+                     <CaretUpFill className={classes.Icon} />} </Button>
                 </div>
                 <div className={classes.ResultHead} >
                     
@@ -75,6 +117,7 @@ class UserPlayHistory extends Component {
 
             </div>
         })
+        :<Spinner />
 
         return (<div className={classes.userPlayHistoryWrapper}>{userPlayHistoryTrannsformed}</div>);
     }
@@ -124,7 +167,6 @@ const mapDispatchToprops = (dispatch) => {
             thirteenPieces, twelvePieces, elevenPieces, tenPieces) =>
         dispatch(actions.setUpWinners(jackpot, thirteenpct, twelvepct, elevenpct, tenpct,
             thirteenPieces, twelvePieces, elevenPieces, tenPieces)),
-        onToggleReceiptShowHistory:(receiptIndex)=>dispatch(actions.toggleReceiptShowHistory(receiptIndex))
     }
 }
 export default connect(mapstateToprops, mapDispatchToprops)(UserPlayHistory);

@@ -3,7 +3,7 @@ import produce from 'immer';
 import _ from "lodash";
 import { uuid } from '../../shared/utility'
 import moment from 'moment';
-
+import firebase from '../../config/firebase/firebase'; 
 const initialStte = {
 
     slips: null,
@@ -86,7 +86,6 @@ const toggleReceiptShowHistory = (state, action) => {
 }
 
 const setBoardLoading = (state, action) => {
-    console.log("i am here");
     return produce(state, draft => {
         draft.loading = action.loading
     })
@@ -98,12 +97,28 @@ const setReceipt = (state, action) => {
 
         slips.forEach(slip => {
             slip.gameDay = gameDay;
-            slip.showHistory = false;
+            slip.correctResult = 0;
         })
         draft.receipts = slips;
+        let history = [];
         for (let i = 0; i < draft.slips.length; i++) {
             draft.slips[i].gameNumber = uuid();
+            for(let k = 0 ; k < draft.slips[i]["slip_" +(i+1)].games.length; k++){
+                history.splice(history.length , history.length + 1, {
+                    slipPrice: draft.slips[i].slipPrice,
+                    gameNumber: draft.slips[i].gameNumber,
+                    rows: draft.slips[i].slipAmount,
+                    fixture_id: draft.slips[i]["slip_" +(i+1)].games[k].fixture_id,
+                    datePlayed: moment(Date.now()).format("YYYY-MM-DD"),
+                    selections: draft.slips[i]["slip_" +(i+1)].games[k]["game_" + (k+1)].sides,
+                    correctRows: 0                
+                });
+            }
+          
         }
+        let user = firebase.auth().currentUser;
+        let historyRef = firebase.database().ref("game-history").child(user.uid);
+        historyRef.set(history);
     })
 }
 const setIsPaid = (state, action) => {

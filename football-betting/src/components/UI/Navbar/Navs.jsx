@@ -19,6 +19,8 @@ class Navs extends Component {
       this.props.deleteAndResetAll();
       this.props.setLoggedInUser({});
       this.props.setIsLoggedIn(false);
+      this.props.setIsPaying(false);
+      this.props.setIsPaid(false);
       this.props.history.push("/");
     }).catch((error) => {
       // An error happened.

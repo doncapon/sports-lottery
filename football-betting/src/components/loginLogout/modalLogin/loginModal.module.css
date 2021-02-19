@@ -1,0 +1,67 @@
+.alertHidden{
+    display: none;
+    width: 30vw;
+}
+
+.alertShown{
+    display: block;
+    width: 90vw;
+}
+
+.FormControl{
+    display: block;
+    text-align: left;
+}
+.Label{
+    width: 10vw;
+}
+.Input{
+    margin-bottom: 20px;
+}
+
+
+.Forgot{
+
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    /*input has OS specific font-family*/
+    text-decoration: underline;
+    cursor: pointer;
+    color: blue;
+    margin-right: 5px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+/* medium screens */
+@media only screen and (min-width: 768px){
+    .alertShown{
+        width: 55vw;
+    }
+    .Label{
+        font-size: 20px;
+        width: 16vw;
+    }
+    .FormControl{
+        display: flex;
+        padding-left: 0px;
+        margin-left: 0px;
+
+    }
+    .Input, .Input2{
+        width: 45vw;
+        height: 30px;
+    }
+    .Input2{
+        margin-bottom: 10px;
+    }
+}
+
+/* Large devices */
+@media only screen and (min-width: 968px){
+
+    .alertShown{
+        width: 35vw;
+    }
+}

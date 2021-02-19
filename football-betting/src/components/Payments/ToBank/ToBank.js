@@ -15,7 +15,7 @@ class ToBank extends Component {
         amount: '',
         account: "0125732236",
         bank: '058',
-        
+
         funds: 0,
         formErrors: {},
         config: {},
@@ -25,15 +25,10 @@ class ToBank extends Component {
 
         loding: false,
     }
-    constructor(props) {
-        super(props);
-
-    }
-
     componentDidMount() {
-        if (!this.state.loading){
+        if (!this.state.loading) {
             this.props.onFetchBanks();
-            this.setState({funds: this.props.user.funds})
+            this.setState({ funds: this.props.user.funds })
         }
         this.setState({ loading: true })
     }
@@ -288,8 +283,12 @@ class ToBank extends Component {
                                     });
                                     this.setState({ saveError: '', apiError: '' })
                                     alert("Bank details saved!");
+                                    setTimeout(() => {
+                                        window.location.reload();
+                                    }, 500);
                                 } else {
-                                    alert("invalid card details")
+                                    this.setState({ saveError: "Please check your card details", apiError: '' })
+
                                 }
                             })
                             .catch(error => {
@@ -309,9 +308,6 @@ class ToBank extends Component {
                 alert("please login")
             }
         })
-        setTimeout(() => {
-            window.location.reload();
-        }, 500);
 
     }
 

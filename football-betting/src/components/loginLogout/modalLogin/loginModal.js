@@ -1,24 +1,24 @@
-import { Button, FormControl, Form } from 'react-bootstrap';
-import { useHistory , useLocation} from 'react-router-dom';
+import { Button } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
 import React, { useState } from 'react';
-import classes from './login.module.css';
+import classes from './loginModal.module.css';
 import firebase from '../../../config/firebase/firebase';
 
-const Login = (props) => {
+const LoginModal = (props) => {
     const [showPopup, setShowPopUp] = useState(false);
     const [email, setEmail] = useState('lordshegz@gmail.com');
     const [password, setPassword] = useState('Emmanuel1987');
     const [userData, setUserData] = useState({});
     const [forgot, setForgot] = useState(false);
     let history = useHistory();
-    let location = useLocation();
+
     const login = (email, password) => {
 
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then((userCredential) => {
                 // Signed in
                 var user = userCredential.user;
-                if(user.emailVerified){
+                if (user.emailVerified) {
                     let userRef = firebase.database().ref("users/" + user.uid);
                     userRef.on('value', (snapshot) => {
                         const dbUser = snapshot.val();
@@ -26,14 +26,10 @@ const Login = (props) => {
                         props.setIsLoggedIn(true);
                         popUpFunc();
                         props.setLoggedInUser(dbUser);
-
-                        if(location.pathname === "/")
-                        props.deleteAndResetAll();
-
                         history.push("/play");
-                      });
+                    });
                 }
-              
+
             })
             .catch((error) => {
                 setUserData(error);
@@ -41,24 +37,23 @@ const Login = (props) => {
                 setForgot(true);
                 props.setIsLoggedIn(false);
             });
-
-        // const loginuserData = {
-        //     email: email,
-        //     password: password,
-        // };
-
-        // let res = await axios.post("users/login", loginuserData, { withCredentials: true });
-        // return await res.userData;
     };
 
 
     const HandleSubmit = (e) => {
         e.preventDefault();
         login(email, password);
+        if(firebase.auth().currentUser){
+            
+        props.cancelLoginPopup();
+        props.setIsPaying(true);
+        props.setIsPaid(true)
+        }else{
+        }
     }
 
-    const HandleSignup = () => {
-        history.push("/signup");
+    const HandleCancel = () => {
+        props.cancelLoginPopup();
     }
     const popUpFunc = () => {
         setShowPopUp(true);
@@ -84,21 +79,30 @@ const Login = (props) => {
             : null
 
         }
-        <Form inline onSubmit={(e) => HandleSubmit(e)}>
-            <FormControl type="email" onChange={(e) => setEmail(e.target.value)}
-                value={email} placeholder="email" className="mr-sm-2" />
-            <FormControl type="password" onChange={(e) => setPassword(e.target.value)}
-                value={password} placeholder="password" className="mr-sm-2" />
+         <form onSubmit={(e) => HandleSubmit(e)}>
+             <h3>Login</h3>
+            <div  className={classes.FormControl}>
+                <div className={classes.Label}  >Email:</div>
+                <input name="email" type="email" onChange={(e) => setEmail(e.target.value)}
+                    value={email} placeholder="email" className= {classes.Input} />
+                <br />
+            </div>
+            <div  className={classes.FormControl}>
+                <div className={classes.Label}>Password:</div>
+                <input name="password" type="password" onChange={(e) => setPassword(e.target.value)}
+                    value={password} placeholder="password"  className= {classes.Input2}/>
+            </div>
             {forgot ?
                 <Button className={classes.Forgot} onClick={handleForgot} >forgot password?</Button>
                 : null}
-            <Button type="submit" variant="outline-light">Login</Button>
+                
+            <Button onClick={HandleCancel} variant="outline-danger">Cancel</Button>
+            <Button type="submit" variant="success">Login</Button>
 
-            <Button onClick={HandleSignup} variant="outline-light">SignUp</Button>
-        </Form>
+        </form> 
     </div>);
 }
 
 
 
-export default Login;
+export default LoginModal;

@@ -15,12 +15,15 @@ import Receipts from '../../components/board/receipts/receipts/receipts';
 import { getNextPlayDate } from '../../shared/utility';
 import { addCommaToAmounts } from '../../shared/utility';
 import firebase from '../../config/firebase/firebase';
+import Modal from "../../components/UI/Modal/Modal";
+import LoginModal from '../../components/loginLogout/modalLogin/loginModal';
 
 class Board extends Component {
 
   state = {
     funds: 0,
-    loading: false
+    loading: false,
+    showModalSignin: false
   }
   constructor(props) {
     super(props);
@@ -37,7 +40,7 @@ class Board extends Component {
 
   componentDidMount() {
     if (!this.state.loading) {
-      let funds = firebase.auth().onAuthStateChanged((user) => {
+      firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           let userRef = firebase.database().ref("users/" + user.uid);
           userRef.on("value", snapshot => {
@@ -48,15 +51,25 @@ class Board extends Component {
 
         }
       });
-      console.log("i am not ", funds);
     }
     this.setState({ loading: true })
   }
   togglePaymentButton = (paying, paid) => {
+    if(firebase.auth().currentUser){
+      
     this.props.onSetIsPaying(paying);
     this.props.onSetIsPaid(paid);
+    }else{
+       this.setState({showModalSignin: true})
+    }
 
   }
+
+  cancelLoginPopup = ()=>{
+    this.setState({showModalSignin: false})
+
+  }
+
   confirmPurchase = () => {
     this.ExecutePurchase();
     this.props.onSetReceipt(this.props.gameDate);
@@ -136,7 +149,7 @@ class Board extends Component {
             <div>
               <div className={classes.PayButtons}>
                 <Button
-                  disabled={firebase.auth().currentUser &&this.state.funds < this.props.totalPrice}
+                  disabled={!this.props.purchaseAll|| (firebase.auth().currentUser &&this.state.funds < this.props.totalPrice)}
                   variant="success"
                   className={classes.PayButton}
                   onClick={() => this.togglePaymentButton(true, false)}
@@ -145,13 +158,19 @@ class Board extends Component {
                   PAY
                   {" "}
 
-                  {"₦" + addCommaToAmounts(this.props.totalPrice.toString(10))}
+                  {this.props.purchaseAll? "₦" + addCommaToAmounts(this.props.totalPrice.toString(10)): "0₦"}
 
                 </Button>
-                {this.state.funds < this.props.totalPrice ? <div>
+                {(this.state.funds < this.props.totalPrice && firebase.auth().currentUser) ? <div>
                   <div style={{ color: 'red', textAlign: 'center', background: 'grey', padding: '10px 0', marginBottom: '10px' }}>Sorry, you do not have enough funds to make the purchase</div>
                   <div><Button className={classes.TransferButton}> <ArrowRight style={{ fontWeight: 'bolder' }} size="20" /> GO TO FUNDS TRANSFER</Button></div>
                 </div> : null}
+                <Modal show= {this.state.showModalSignin} modalClosed = {this.cancelLoginPopup}> 
+                  <LoginModal setLoggedInUser= {this.props.onSetLoggedInUser}
+                   setIsPaying = {this.props.onSetIsPaying} setIsLoggedIn={this.props.onSetIsLoggedIn} 
+                  setIsPaid={this.props.onSetIsPaid} cancelLoginPopup = {this.cancelLoginPopup}
+                  />
+                  </Modal>
               </div>
             </div>
 
@@ -251,7 +270,9 @@ const mapDispatchToProps = (dispatch) => {
 
     onFetchPredictionsAll: (FixturesList, gameIndex) =>
       dispatch(actions.fetchPredictionsAll(FixturesList, gameIndex)),
-
+      onSetIsLoggedIn: (value) => dispatch(actions.setIsLoggedIn(value)),
+      onSetLoggedInUser: (username, password) => dispatch(actions.setLoggedInUser(username, password)),
+     
   };
 };
 

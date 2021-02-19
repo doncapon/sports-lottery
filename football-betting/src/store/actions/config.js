@@ -19,10 +19,10 @@ export const fetchWeeklyResults = (payload) => {
 }
 
 
-export const fetchResults = (nnumberOfGames = 26) => {
+export const fetchResults = (numberOfGames = 26) => {
     return dispatch => {
         let matchRef = firebase.database().ref().child("match-results").orderByChild('gameDay')
-        .limitToLast(nnumberOfGames);
+        .limitToLast(numberOfGames);
         matchRef.on('value', (snapshot) => {
             const resultData = snapshot.val();
             let finalResults = [];

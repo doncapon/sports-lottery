@@ -52,6 +52,7 @@ const ForgotPassword = (props) => {
     return (
         <Modal show={showModal} modalClosed={() => { }} >
             <div className={classes.PasswordWrapper}>
+                <h5>Request password!</h5>
                     <div className="formDiv">
                         <div>
                             <div className={classes.formText}>Enter your email: </div>
