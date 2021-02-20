@@ -8,48 +8,64 @@ import { CaretDownFill, CaretUpFill } from "react-bootstrap-icons";
 import Button from 'react-bootstrap/Button';
 import firebase from '../../../config/firebase/firebase';
 import _ from "lodash";
-import { Spinner } from "react-bootstrap";
-
+import Spinner from '../../../components/UI/Spinner/Spinner';
 class UserPlayHistory extends Component {
-    state ={
+    state = {
         matchesPlayed: [],
+        matchResults: [],
         loading: false,
         showHistory: []
     }
-    componentDidMount(){
-        if(!this.state.loading){
-            firebase.auth().onAuthStateChanged((user) =>{
-                if(user){
+    componentDidMount() {
+        if (!this.state.loading) {
+            firebase.auth().onAuthStateChanged((user) => {
+                if (user) {
                     let playedRef = firebase.database().ref("game-history").child(user.uid);
-                    playedRef.on("value" , (snapshot) =>{
+                    playedRef.on("value", (snapshot) => {
                         let data = snapshot.val();
                         let grouped = _.groupBy(data, 'gameNumber');
-                        let groupedArray = Object.keys(grouped).map(keys=> grouped[keys])
-                        this.setState({matchesPlayed : groupedArray});
+                        let groupedArray = Object.keys(grouped).map(keys => grouped[keys]);
+
+                        let matchResults = [];
+                        groupedArray.forEach((matches, i) => {
+                                let inner = []
+                                matches.forEach((match, k) => {
+                                let matchRef = firebase.database().ref("match-results").child(match.fixture_id);
+                                matchRef.once("value", snapshot => {
+                                    inner.splice(inner.length,
+                                        inner.length + 1, snapshot.val())
+                                });
+                                matchResults.splice(matchResults.length,
+                                    matchResults.length + 1, inner)
+                            })
+                        })
                         let myShow = []
                         Object.keys(grouped).map(grp => {
                             myShow.push(false)
                         });
-                        this.setState({showHistory: myShow})
+
+                        this.setState({ matchesPlayed: groupedArray });
+                        this.setState({ showHistory: myShow })
                     })
 
-                  
-                }else{
+
+                } else {
 
                 }
-          
-            })
-           
-        }
 
-        this.setState({loading: true})
+            })
+
+        }
+        setTimeout(() => {
+            this.setState({ loading: true })
+            
+        }, 1000);
     }
 
-    toggleShowHistory =(index)=>{
+    toggleShowHistory = (index) => {
         let smallShow = [...this.state.showHistory];
-        smallShow[index] =  !smallShow[index];
-        this.setState({showHistory: smallShow});
-
+        smallShow[index] = !smallShow[index];
+        this.setState({ showHistory: smallShow });
     }
     findSelection = (goalHome, goalAway, status) => {
         if (status === "Match Finished") {
@@ -65,20 +81,30 @@ class UserPlayHistory extends Component {
         }
 
     }
-    render() {
-        let userPlayHistoryTrannsformed =this.state.loading? this.state.matchesPlayed.map((match, k) => {
-           return <div className={classes.userPlayHistoryAndShare} key={k}>
-               {console.log("SFSDf" , match)}
-                <div className={classes.MainHeader}>
-                    <div className={classes.DateHead}> Date resolved : {moment(match.gameDay).format("DD.MM.YYYY")}</div>
-                    <div className={classes.PriceHead}>Price: {match[0].slipPrice}</div>
+    // getResults = (fixtureId) => {
+    //     let matchRef = firebase.database().ref("match-results").child(fixtureId);
+    //     matchRef.on("value", snapshot => {
+    //         return snapshot.val();
+    //     });
+    // }
 
-                    <Button className={classes.BtToggle} size="sm" onClick = {()=>this.toggleShowHistory(k)}>
-                    {!this.state.showHistory[k] ? <CaretDownFill className={classes.Icon} /> :
-                     <CaretUpFill className={classes.Icon} />} </Button>
+    render() {
+        let matchRef;
+        let userPlayHistoryTrannsformed = this.state.loading && this.state.matchResults.length> 0? this.state.matchesPlayed.map((match, k) => {
+            return <div className={classes.userPlayHistoryAndShare} key={k}>
+                {"match-ref ",console.log( this.state.matchResults)};
+                {matchRef = this.state.matchResults.filter(res => res.fixtureId === match[0].fixture_id)[0]}
+                <div className={classes.MainHeader}>
+                    <div className={classes.DateHead}>Entry date : {moment(match.gameDay).format("DD.MM.YYYY")}</div>
+                    <div className={classes.PriceHead}>Price: {match[0].slipPrice}</div>
+                    <div className={classes.DateHead}>Evaluation date : {moment(matchRef.gameDay).format("DD.MM.YYYY")}</div>
+
+                    <Button className={classes.BtToggle} size="sm" onClick={() => this.toggleShowHistory(k)}>
+                        {!this.state.showHistory[k] ? <CaretDownFill className={classes.Icon} /> :
+                            <CaretUpFill className={classes.Icon} />} </Button>
                 </div>
                 <div className={classes.ResultHead} >
-                    
+
                 </div>
                 {/* <div className={classes.userPlayHistory}>
 
@@ -117,7 +143,7 @@ class UserPlayHistory extends Component {
 
             </div>
         })
-        :<Spinner />
+            : <Spinner />
 
         return (<div className={classes.userPlayHistoryWrapper}>{userPlayHistoryTrannsformed}</div>);
     }
@@ -165,8 +191,8 @@ const mapDispatchToprops = (dispatch) => {
         onFetchResults: (startDate) => dispatch(actions.fetchResults(startDate)),
         onSetUpWinners: (jackpot, thirteenpct, twelvepct, elevenpct, tenpct,
             thirteenPieces, twelvePieces, elevenPieces, tenPieces) =>
-        dispatch(actions.setUpWinners(jackpot, thirteenpct, twelvepct, elevenpct, tenpct,
-            thirteenPieces, twelvePieces, elevenPieces, tenPieces)),
+            dispatch(actions.setUpWinners(jackpot, thirteenpct, twelvepct, elevenpct, tenpct,
+                thirteenPieces, twelvePieces, elevenPieces, tenPieces)),
     }
 }
 export default connect(mapstateToprops, mapDispatchToprops)(UserPlayHistory);

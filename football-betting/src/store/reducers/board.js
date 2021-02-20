@@ -3,7 +3,7 @@ import produce from 'immer';
 import _ from "lodash";
 import { uuid } from '../../shared/utility'
 import moment from 'moment';
-import firebase from '../../config/firebase/firebase'; 
+import firebase from '../../config/firebase/firebase';
 const initialStte = {
 
     slips: null,
@@ -100,25 +100,28 @@ const setReceipt = (state, action) => {
             slip.correctResult = 0;
         })
         draft.receipts = slips;
-        let history = [];
+        let slip = {};
         for (let i = 0; i < draft.slips.length; i++) {
             draft.slips[i].gameNumber = uuid();
-            for(let k = 0 ; k < draft.slips[i]["slip_" +(i+1)].games.length; k++){
-                history.splice(history.length , history.length + 1, {
-                    slipPrice: draft.slips[i].slipPrice,
-                    gameNumber: draft.slips[i].gameNumber,
-                    rows: draft.slips[i].slipAmount,
-                    fixture_id: draft.slips[i]["slip_" +(i+1)].games[k].fixture_id,
-                    datePlayed: moment(Date.now()).format("YYYY-MM-DD"),
-                    selections: draft.slips[i]["slip_" +(i+1)].games[k]["game_" + (k+1)].sides,
-                    correctRows: 0                
+            slip.slipPrice = draft.slips[i].slipPrice;
+            slip.gameNumber = draft.slips[i].gameNumber;
+            slip.gameRows = draft.slips[i].slipAmount;
+            let slipGames = [];
+            slip.correctRows= 0;
+            slip.datePlayed= moment(Date.now()).format("YYYY-MM-DD");
+            for (let k = 0; k < draft.slips[i]["slip_" + (i + 1)].games.length; k++) {
+                slipGames.splice(slipGames.length, slipGames.length + 1, {
+                    fixture_id: draft.slips[i]["slip_" + (i + 1)].games[k].fixture_id,
+                    selections: draft.slips[i]["slip_" + (i + 1)].games[k]["game_" + (k + 1)].sides,
+                    
                 });
             }
-          
+            slip.games = Object.assign([],slipGames);
+            slip.evaluationDate = draft.slips[i].gameDate;
+            let user = firebase.auth().currentUser;
+            let historyRef = firebase.database().ref("game-history").child(user.uid).child(slip.gameNumber);
+            historyRef.set(slip);
         }
-        let user = firebase.auth().currentUser;
-        let historyRef = firebase.database().ref("game-history").child(user.uid);
-        historyRef.set(history);
     })
 }
 const setIsPaid = (state, action) => {
@@ -164,9 +167,8 @@ const initializeBoard = (state, action) => {
             slipPrice: 0, adding: false, removing: false, [slipId + 1]: slipInner
         });
         newSlip.games = Object.assign([], games1.sort((a, b) => a.fixture_id > b.fixture_id ? 1 : -1));
-
+        newSlip.gameDate =  moment(action.fixtures[0].event_date).format("DD-MM-YYYY");
         newSlip.gameNumber = uuid();
-        // let newSlips = [Object.assign({}, newSlip)];
         let newSlips = [];
         newSlips.splice(0, 1, newSlip);
         draft.gamesLength = action.fixtures.length;
@@ -374,15 +376,16 @@ const copyBetslip = (state, action) => {
     return produce(state, draft => {
         const oldId = "slip_" + (action.position + 1);
         const newId = "slip_" + (draft.slips.length + 1);
+        let slip = _.cloneDeep(draft.slips[action.position]);
         let newslip = _.cloneDeep(draft.slips[action.position][oldId]);
-
         draft.slips.splice(draft.slips.length, 0, {
-            id: newId, purchasable: true,
+            id: newId, purchasable: true, slipAmount : slip.slipAmount,
             slipPrice: state.slips[action.position].slipPrice, adding: false,
             removing: false, [newId]: newslip
         });
 
         draft.slips[draft.slips.length - 1].gameNumber = uuid();
+        draft.slips[draft.slips.length - 1].gameDate = slip.gameDate;
         draft.isPaying = false;
         draft.isPaid = false;
         draft.isShowReceipt = false;
@@ -412,6 +415,7 @@ const addEmptySlip = (state, action) => {
         clonedSlip.adding = false;
         clonedSlip.removing = false;
         clonedSlip.slipPrice = 0;
+        clonedSlip.gameDate = draft.gameDate;
         clonedSlip.gameNumber = uuid();
         clonedSlip.id = newId;
         clonedSlip[newId] = clonedSlip[oldId];
@@ -617,7 +621,7 @@ const setPurchaseAll = (state, action) => {
 
 const reducer = (state = initialStte, action) => {
     switch (action.type) {
-        case actionTypes.RESET_BOARD: 
+        case actionTypes.RESET_BOARD:
             return resetReduxBoard(state, action);
         case actionTypes.SET_BOARD_LOADING:
             return setBoardLoading(state, action);
