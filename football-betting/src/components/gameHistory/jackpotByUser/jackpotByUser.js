@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import classes from './jackpot.module.css';
+import classes from './jackpotByUser.module.css';
 import { addCommaToAmounts } from '../../../shared/utility';
 import firebase from '../../../config/firebase/firebase';
-import Spinner from '../../../components/UI/Spinner/Spinner';
+import Spinner from '../../UI/Spinner/Spinner';
 
 class Jackpot extends Component {
     constructor(props) {

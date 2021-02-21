@@ -2,7 +2,7 @@ import classes from "./UserPlayHistory.module.css";
 import React, { Component } from "react";
 import ReactDOM from 'react-dom';
 import moment from 'moment';
-import Jackpot from "../jackpot/jackpot";
+import Jackpot from "../jackpotByUser/jackpotByUser";
 import * as actions from '../../../store/actions';
 import { connect } from 'react-redux';
 import { CaretDownFill, CaretUpFill } from "react-bootstrap-icons";
@@ -10,7 +10,7 @@ import Button from 'react-bootstrap/Button';
 import firebase from '../../../config/firebase/firebase';
 import _ from "lodash";
 import Spinner from '../../../components/UI/Spinner/Spinner';
-import {addCommaToAmounts} from '../../../shared/utility';
+import { addCommaToAmounts } from '../../../shared/utility';
 class UserPlayHistory extends Component {
     constructor(props) {
         super(props);
@@ -151,61 +151,62 @@ class UserPlayHistory extends Component {
 
                 let matchRes = matchResults.filter(res => res.fixtureId === match[0].fixture_id)[0];
                 return <div className={classes.userPlayHistoryAndShare} key={k}>
-                        <div className={classes.MainHeader}>
-                            <div className={classes.DateHead}>Entry date : {moment(match.gameDay).format("DD.MM.YYYY")}</div>
-                            <div className={classes.PriceHead}>Price: {"₦" +addCommaToAmounts(""+match[0].slipPrice)}</div>
-                            <div className={classes.DateHead}>Evaluation date : {moment(match[0].evaluationDate).format("DD.MM.YYYY")}</div>
-                            <Button className={classes.BtToggle} size="sm" onClick={() => this.toggleShowHistory(k)}>
-                                {!this.state.showHistory[k] ? <CaretDownFill className={classes.Icon} /> :
-                                    <CaretUpFill className={classes.Icon} />} </Button>
-                        </div>
-                        {this.state.showHistory[k] ?
-                            <div className={classes.ResultHead} >
-                                {
-                                    matchRes.length > 0 ? <div className={classes.userPlayHistory}>
+                    <div className={classes.MainHeader}>
+                        <div className={classes.DateHead}>Entry date : {moment(match.gameDay).format("DD.MM.YYYY")}</div>
+                        <div className={classes.PriceHead}>Price: {"₦" + addCommaToAmounts("" + match[0].slipPrice)}</div>
+                        <div className={classes.DateHead}>Evaluation date : {moment(match[0].evaluationDate).format("DD.MM.YYYY")}</div>
+                        <Button className={classes.BtToggle} size="sm" onClick={() => this.toggleShowHistory(k)}>
+                            {!this.state.showHistory[k] ? <CaretDownFill className={classes.Icon} /> :
+                                <CaretUpFill className={classes.Icon} />} </Button>
+                    </div>
+                    {this.state.showHistory[k] ?
+                        <div className={classes.ResultHead} >
+                            {
+                                matchRes.length > 0 ? <div className={classes.userPlayHistory}>
 
-                                        <div className={classes.ResultBody} >
-                                            <div className={classes.BodyHeader}>
-                                                <div className={classes.Head1}>Match</div>
-                                                <div className={classes.Head}>Result</div>
-                                                <div className={classes.Head}>Selection</div>
-                                            </div >
-                                            <div className={classes.BodyMain}>
-                                                {matchRes.map((eachRes, i) => {
-                                                    return <div key={i} className={classes.SelectionRow}>
-                                                        <div className={classes.Teams}>
-                                                            <div className={classes.RowNumber}>{i + 1} </div>
-                                                            <div className={classes.TeamNames}>
-                                                                <div>{eachRes.homeTeam + "  -  "}</div>
-                                                                <div>{eachRes.awayTeam}</div>
-                                                            </div>
-                                                        </div>
-                                                        <div className={classes.ScoreResult}>
-                                                            <div className={classes.Score}>{eachRes.status === "Match Finished" ? eachRes.score : "-"}</div>
-                                                            <div >{this.findSelection(eachRes.homeGoals, eachRes.awayGoals, eachRes.status) || "-"}</div>
-                                                        </div>
-                                                        <div className={classes.Selections}>
-                                                            {match[0].games[i].selections.map((select, y) =>
-                                                                <div key={y} className={this.findSelection(eachRes.homeGoals, eachRes.awayGoals, eachRes.status) === this.determineSelection(select.selected, y) ?
-                                                                    classes.Winner : classes.Selected} >{this.determineSelection(select.selected, y)}</div>)}
+                                    <div className={classes.ResultBody} >
+                                        <div className={classes.BodyHeader}>
+                                            <div className={classes.Head1}>Match</div>
+                                            <div className={classes.Head}>Result</div>
+                                            <div className={classes.Head}>Selection</div>
+                                        </div >
+                                        <div className={classes.BodyMain}>
+                                            {matchRes.map((eachRes, i) => {
+                                                return <div key={i} className={classes.SelectionRow}>
+                                                    <div className={classes.Teams}>
+                                                        <div className={classes.RowNumber}>{i + 1} </div>
+                                                        <div className={classes.TeamNames}>
+                                                            <div>{eachRes.homeTeam + "  -  "}</div>
+                                                            <div>{eachRes.awayTeam}</div>
                                                         </div>
                                                     </div>
-                                                })}
-
-                                            </div>
+                                                    <div className={classes.ScoreResult}>
+                                                        <div className={classes.Score}>{eachRes.status === "Match Finished" ? eachRes.score : "-"}</div>
+                                                        <div >{this.findSelection(eachRes.homeGoals, eachRes.awayGoals, eachRes.status) || "-"}</div>
+                                                    </div>
+                                                    <div className={classes.Selections}>
+                                                        {match[0].games[i].selections.map((select, y) =>
+                                                            <div key={y} className={this.findSelection(eachRes.homeGoals, eachRes.awayGoals, eachRes.status) === this.determineSelection(select.selected, y) ?
+                                                                classes.Winner : classes.Selected} >{this.determineSelection(select.selected, y)}</div>)}
+                                                    </div>
+                                                </div>
+                                            })}
 
                                         </div>
-                                        <div className={classes.JackPotShare}>
-                                            <Jackpot basePrice={this.props.basePrice} gamesLength={this.props.gamesLength} thirteen={this.props.thirteen}
-                                                twelve={this.props.twelve} eleven={this.props.eleven} ten={this.props.ten}
-                                                thirteenPcs={this.props.thirteenPcs} twelvePcs={this.props.twelvePcs}
-                                                elevenPcs={this.props.elevenPcs} tenPcs={this.props.tenPcs}
-                                            />
-                                        </div>
-                                    </div> : <Spinner />
-                                }
-                            </div>
-                            : null}
+
+                                    </div>
+                                    <div className={classes.JackPotShare}>
+                                        {console.log("ddsd" ,match[0])}
+                                        <Jackpot basePrice={this.props.basePrice} gameDay={moment(match[0].evaluationDate).format("YYYY-MM-DD")}
+                                            thirteenPercent={this.props.thirteenPercent} gamesLength={match[0].games.length}
+                                            twelvePercent={this.props.twelvePercent} elevenPercent={this.props.elevenPercent}
+                                            tenPercent={this.props.tenPercent}
+                                        />
+                                    </div>
+                                </div> : <Spinner />
+                            }
+                        </div>
+                        : null}
 
                 </div>
             })
@@ -234,12 +235,6 @@ const mapstateToprops = (state) => {
         daysuserPlayHistory: state.board.receipts,
         resultsFrom: state.config.resultsFrom,
 
-        jackpot: state.config.jackpot,
-        thirteenPieces: state.config.thirteenPieces,
-        twelvePieces: state.config.twelvePieces,
-        elevenPieces: state.config.elevenPieces,
-        tenPieces: state.config.tenPieces,
-
         thirteenPercent: state.config.thirteenPercent,
         twelvePercent: state.config.twelvePercent,
         elevenPercent: state.config.elevenPercent,
@@ -255,10 +250,6 @@ const mapstateToprops = (state) => {
 const mapDispatchToprops = (dispatch) => {
     return {
         onFetchResults: (startDate) => dispatch(actions.fetchResults(startDate)),
-        onSetUpWinners: (jackpot, thirteenpct, twelvepct, elevenpct, tenpct,
-            thirteenPieces, twelvePieces, elevenPieces, tenPieces) =>
-            dispatch(actions.setUpWinners(jackpot, thirteenpct, twelvepct, elevenpct, tenpct,
-                thirteenPieces, twelvePieces, elevenPieces, tenPieces)),
     }
 }
 export default connect(mapstateToprops, mapDispatchToprops)(UserPlayHistory);
