@@ -117,7 +117,9 @@ const setReceipt = (state, action) => {
                 });
             }
             slip.games = Object.assign([],slipGames);
-            slip.evaluationDate = draft.slips[i].gameDate;
+            let evDateSplit = draft.slips[i].gameDate.split("-");
+            let evaDate = evDateSplit[2]+"-"+ evDateSplit[1] +"-"+ evDateSplit[0]
+            slip.evaluationDate = evaDate;
             let user = firebase.auth().currentUser;
             let historyRef = firebase.database().ref("game-history").child(user.uid).child(slip.gameNumber);
             historyRef.set(slip);

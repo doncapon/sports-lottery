@@ -47,7 +47,6 @@ const LoginModal = (props) => {
             
         props.cancelLoginPopup();
         props.setIsPaying(true);
-        props.setIsPaid(true)
         }else{
         }
     }

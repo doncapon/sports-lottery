@@ -1,16 +1,29 @@
 .userPlayHistoryWrapper{
-    background: #ccc;
     font-weight: bold;
     font-size: 1em;
+    width: 100%;
+    margin: auto;
+
+}
+.MainHeader:nth-child(even){
+    background-color: blue;
 }
 .MainHeader{
     display: flex;
-    width: 90%;
-    margin: auto;
-}
+    background: #ccc;
+    font-size: 12px;
+    border-bottom: 2px solid grey ;
 
+}
+.BodyMain>div:nth-child(odd){
+    background-color: #eee;
+}
+.BodyMain>div:nth-child(even){
+    background:  #c3eafa;
+
+}
 .DateHead{
-    width: 55vw;
+    width: 25vw;
 } 
 .PriceHead{
     width: 17vw;
@@ -20,7 +33,57 @@
     height: 2vh;;
   }
 
+.ResultHead{
+    background: white;
 
+}
+
+.BodyHeader{
+    display: flex;
+}
+
+.Head1{
+    margin-right:36vw;
+    margin-left: 2vw
+}
+.Head{
+    margin-right: 10vw;
+}
+.SelectionRow{
+    display: flex;
+}
+
+
+.Teams{
+    display: flex;
+    width: 53vw;
+}
+
+.TeamNames{
+    display: inline;
+}
+.RowNumber{
+    width: 4vw;
+    margin-left: 1vw;
+}
+
+.ScoreResult{
+    display: flex;
+    width: 25vw;
+}
+.Score{
+    width: 10vw;
+}
+.Selections{
+    display: flex;
+}
+.Selected, .Winner{
+    margin-right: 1vw;
+    height: 5vh;
+}
+.Winner{
+    border: 2px solid green;
+}
 
 /* medium screens */
 @media only screen and (min-width: 768px){

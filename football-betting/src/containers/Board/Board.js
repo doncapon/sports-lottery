@@ -55,6 +55,7 @@ class Board extends Component {
     this.setState({ loading: true })
   }
   togglePaymentButton = (paying, paid) => {
+    console.log("current user",firebase.auth().currentUser)
     if(firebase.auth().currentUser){
       
     this.props.onSetIsPaying(paying);
