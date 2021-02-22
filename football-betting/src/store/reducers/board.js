@@ -106,9 +106,10 @@ const setReceipt = (state, action) => {
             slip.slipPrice = draft.slips[i].slipPrice;
             slip.gameNumber = draft.slips[i].gameNumber;
             slip.gameRows = draft.slips[i].slipAmount;
+            slip.basePrice = draft.slips[i].basePrice;
             let slipGames = [];
             slip.correctRows= 0;
-            slip.datePlayed= moment(Date.now()).format("YYYY-MM-DD");
+            slip.datePlayed= moment(Date.now()).format("YYYY-MM-DD HH:mm:ss");
             for (let k = 0; k < draft.slips[i]["slip_" + (i + 1)].games.length; k++) {
                 slipGames.splice(slipGames.length, slipGames.length + 1, {
                     fixture_id: draft.slips[i]["slip_" + (i + 1)].games[k].fixture_id,
@@ -165,12 +166,13 @@ const initializeBoard = (state, action) => {
         });
         let slipInner = Object.assign({}, { games: games1 });
         let newSlip = Object.assign({}, {
-            id: (slipId + 1), purchasable: false, slipAmount: 0,
+            id: (slipId + 1), purchasable: false, slipAmount: 0, basePrice: action.basePrice,
             slipPrice: 0, adding: false, removing: false, [slipId + 1]: slipInner
         });
         newSlip.games = Object.assign([], games1.sort((a, b) => a.fixture_id > b.fixture_id ? 1 : -1));
         newSlip.gameDate =  moment(action.fixtures[0].event_date).format("DD-MM-YYYY");
         newSlip.gameNumber = uuid();
+        newSlip.basePrice = action.basePrice;
         let newSlips = [];
         newSlips.splice(0, 1, newSlip);
         draft.gamesLength = action.fixtures.length;
@@ -278,6 +280,7 @@ const generateSlip = (state, action) => {
                 .games[i].amount = arrayGames[i][0] + arrayGames[i][1] + arrayGames[i][2]
         }
         draft.slips[state.editIndex].purchasable = true;
+        draft.slips[state.editIndex].basePrice = action.basePrice;
         draft.slips[state.editIndex].gameNumber = uuid();
         draft.isPaying = false;
         draft.isPaid = false;
@@ -381,7 +384,7 @@ const copyBetslip = (state, action) => {
         let slip = _.cloneDeep(draft.slips[action.position]);
         let newslip = _.cloneDeep(draft.slips[action.position][oldId]);
         draft.slips.splice(draft.slips.length, 0, {
-            id: newId, purchasable: true, slipAmount : slip.slipAmount,
+            id: newId, purchasable: true, slipAmount : slip.slipAmount, basePrice: slip.basePrice,
             slipPrice: state.slips[action.position].slipPrice, adding: false,
             removing: false, [newId]: newslip
         });
@@ -419,6 +422,7 @@ const addEmptySlip = (state, action) => {
         clonedSlip.slipPrice = 0;
         clonedSlip.gameDate = draft.gameDate;
         clonedSlip.gameNumber = uuid();
+        clonedSlip.basePrice = action.basePrice;
         clonedSlip.id = newId;
         clonedSlip[newId] = clonedSlip[oldId];
         delete [clonedSlip[oldId]];
@@ -436,7 +440,6 @@ const deleteAndResetAll = (state, action) => {
         const clonedSlips = _.cloneDeep(state.slips);
 
         if (state.slips.length > 1) {
-
             clonedSlips.splice(1, state.slips.length);
         }
 

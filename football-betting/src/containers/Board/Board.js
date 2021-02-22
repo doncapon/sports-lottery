@@ -33,7 +33,7 @@ class Board extends Component {
 
     if (!this.props.loading) {
       this.props.onSetBoard(this.props.isFACup,
-        this.props.kickOffTime, kickOffDate);
+        this.props.kickOffTime, kickOffDate, this.props.basePrice);
     }
 
   }
@@ -134,6 +134,7 @@ class Board extends Component {
             editIndex={this.props.editIndex}
             funds={this.state.funds}
             totalPrice={this.props.totalPrice}
+            basePrice= {this.props.basePrice}
           />
         </div>
         <div className={classes.Payment} >
@@ -233,7 +234,8 @@ const mapstateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    onSetBoard: (isFACup, kicOffTime, kickOfftime) => dispatch(actions.setBoard(isFACup, kicOffTime, kickOfftime)),
+    onSetBoard: (isFACup, kicOffTime, kickOfftime, basePrice) =>
+     dispatch(actions.setBoard(isFACup, kicOffTime, kickOfftime, basePrice)),
     onResetReduxBoard: () => dispatch(actions.resetReduxBoard()),
     // onToggleShowFunds: () => dispatch(actions.toggleShowFunds()),
     onToggleIsShowReceipt: () => dispatch(actions.toggleIsShowReceipt()),
@@ -256,7 +258,7 @@ const mapDispatchToProps = (dispatch) => {
     onSetTotalPrice: () =>
       dispatch(actions.calculateGrandTtoalPriceOfAllSlips()),
     onDeleteAndResetAll: () => dispatch(actions.deleteAndResetAll()),
-    onAddEmptySlip: () => dispatch(actions.addEmptySlip()),
+    onAddEmptySlip: (basePrice) => dispatch(actions.addEmptySlip(basePrice)),
     onEmptyEditingISlip: () => dispatch(actions.EmptyEditingISlip()),
     onCalculateOverAllPrice: (slip, game, side, basePrice) =>
       dispatch(actions.calculateOverAllPrice(slip, game, side, basePrice)),

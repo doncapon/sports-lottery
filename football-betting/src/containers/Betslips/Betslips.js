@@ -47,7 +47,7 @@ const Betslips = React.memo(
       setActivePage(k);
     };
     const addEmptySlip = () => {
-      props.addEmptySlip();
+      props.addEmptySlip(props.basePrice);
       setEditIndex(props.slips.length);
 
       props.setPurchaseAll();

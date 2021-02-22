@@ -1,6 +1,5 @@
 import classes from "./UserPlayHistory.module.css";
 import React, { Component } from "react";
-import ReactDOM from 'react-dom';
 import moment from 'moment';
 import Jackpot from "../jackpotByUser/jackpotByUser";
 import * as actions from '../../../store/actions';
@@ -17,6 +16,7 @@ class UserPlayHistory extends Component {
         this.state = {
             matchesPlayed: [],
             matchResults: [],
+            winAmount: [],
             loading: false,
             showHistory: []
         }
@@ -52,18 +52,34 @@ class UserPlayHistory extends Component {
 
         let matchResults = [];
         matchesPlayed.forEach((matches, i) => {
-            let inner = []
+            let inner = [];
             matches[0].games.forEach((match, k) => {
-                let matchRes = firebase.database().ref("match-results").child(match.fixture_id);
-                matchRes.once("value", snapshot => {
-                    inner.splice(inner.length,
-                        inner.length + 1, snapshot.val())
+                let matchResRef = firebase.database().ref("match-results").child(match.fixture_id);
+                matchResRef.once("value", snapshot => {
+                    let data = Object.assign({}, snapshot.val());
+                    inner.push(data)
                 });
                 matchResults.splice(matchResults.length,
                     matchResults.length + 1, inner)
             })
         })
         this.setState({ matchResults: matchResults });
+    }
+    setWinAmount = () => {
+
+        if (this.state.winAmount.length <= 0) {
+
+            let matchesPlayed = [...this.state.matchesPlayed];
+            let matchResults = [...this.state.matchResults];
+            let winAmount = [];
+            if (this.state.winAmount.length <= 0 && matchResults.length > 0) {
+                for (let i = 0; i < matchesPlayed.length; i++) {
+                    let matchRes = matchResults.filter(res => res.fixtureId === matchesPlayed[i][0].fixture_id)[0]
+                    winAmount.push(this.calculateWins(matchesPlayed[i][0], matchRes));
+                }
+                this.setState({ winAmount: winAmount });
+            }
+        }
     }
     componentDidMount() {
         if (!this.state.loading) {
@@ -79,9 +95,10 @@ class UserPlayHistory extends Component {
                         Object.keys(grouped).map(grp =>
                             myShow.push(false)
                         );
+
                         this.setMatchResults(groupedArray)
                         this.setState({ matchesPlayed: groupedArray });
-                        this.setState({ showHistory: myShow })
+                        this.setState({ showHistory: myShow });
                     });
                 } else {
 
@@ -96,16 +113,18 @@ class UserPlayHistory extends Component {
         if (this.state.matchResults.length !== prevState.matchResults.length) {
             let groupedArray = [...this.state.matchesPlayed]
             this.setMatchResults(groupedArray);
-
-            let height = ReactDOM.findDOMNode(this).offsetHeight;
-            if (this.state.height !== height) {
-                this.setState({ internalHeight: height });
-            }
+            this.setWinAmount();
         }
     }
+    componentWillUnmount() {
+        firebase.database().ref("game-history").off('value', this.someCallback);
+        firebase.database().ref("match-results").off('value', this.someCallback);
+      }
     shouldComponentUpdate(nextProps, nextState) {
+        console.log("yam", this.state.matchResults.awayGoals);
         if (this.state.matchResults.length === nextState.matchResults.length
-            && this.state.matchResults.length > 0 && this.state.matchResults[0].awayGoals) {
+            && this.state.matchResults.length > 0 && this.state.matchResults[0].awayGoals
+        ) {
             return false;
         }
         return true;
@@ -115,7 +134,7 @@ class UserPlayHistory extends Component {
         smallShow[index] = !smallShow[index];
         this.setState({ showHistory: smallShow });
     }
-    findSelection = (goalHome, goalAway, status) => {
+    translateResult = (goalHome, goalAway, status) => {
         if (status === "Match Finished") {
             if (goalHome > goalAway) {
                 return "H";
@@ -143,12 +162,63 @@ class UserPlayHistory extends Component {
         }
     }
 
+    calculateWins = (match, matchRes) => {
+        let allFisinished = true;
+        let win = "No wins";
+        console.log("shdfhdsf", matchRes);
+        for (let i = 0; i < matchRes.length; i++) {
+            if (matchRes[i].status !== "Match Finished") {
+                allFisinished = false;
+                break;
+            }
+
+        }
+        if (allFisinished) {
+            let sideWon = 0;
+            for (let i = 0; i < matchRes.length; i++) {
+                for (let k = 0; k < 3; k++) {
+                    if (this.translateResult(matchRes[i].homeGoals, matchRes[i].awayGoals, matchRes[i].status)
+                        === this.determineSelection(match.games[i].selections[k].selected, k)
+                    ) {
+                        sideWon++;
+                    }
+                }
+
+            }
+
+
+            let searchTerm = "";
+            if (sideWon === 10) {
+                searchTerm = "ten";
+            } else if (sideWon === 11) {
+                searchTerm = "eleven"
+            } else if (sideWon === 12) {
+                searchTerm = "twelve"
+            } else if (sideWon === 13) {
+                searchTerm = "thirteen"
+            } else {
+                return "No wins";
+            }
+
+            let potRef = firebase.database().ref("jackpot-win").child(match.evaluationDate).child(searchTerm);
+            potRef.on("value", snapshot => {
+                let data = snapshot.val();
+                win = "₦" + addCommaToAmounts("" + data)
+            });
+
+        }
+        return win;
+    }
+
     render() {
+        if(!this.props.isLoggedIn)
+        this.props.history.push("/");
+
         let matchesPlayed = [...this.state.matchesPlayed];
         let matchResults = [...this.state.matchResults];
+        let winAmount = [...this.state.winAmount];
         let userPlayHistoryTrannsformed = this.state.loading && this.state.matchResults.length > 0 ?
             matchesPlayed.map((match, k) => {
-
                 let matchRes = matchResults.filter(res => res.fixtureId === match[0].fixture_id)[0];
                 return <div className={classes.userPlayHistoryAndShare} key={k}>
                     <div className={classes.MainHeader}>
@@ -167,8 +237,8 @@ class UserPlayHistory extends Component {
                                     <div className={classes.ResultBody} >
                                         <div className={classes.BodyHeader}>
                                             <div className={classes.Head1}>Match</div>
-                                            <div className={classes.Head}>Result</div>
-                                            <div className={classes.Head}>Selection</div>
+                                            <div className={classes.Head}>Score</div>
+                                            <div className={classes.Head}>Your Result</div>
                                         </div >
                                         <div className={classes.BodyMain}>
                                             {matchRes.map((eachRes, i) => {
@@ -182,26 +252,35 @@ class UserPlayHistory extends Component {
                                                     </div>
                                                     <div className={classes.ScoreResult}>
                                                         <div className={classes.Score}>{eachRes.status === "Match Finished" ? eachRes.score : "-"}</div>
-                                                        <div >{this.findSelection(eachRes.homeGoals, eachRes.awayGoals, eachRes.status) || "-"}</div>
+                                                        <div >{this.translateResult(eachRes.homeGoals, eachRes.awayGoals, eachRes.status)}</div>
                                                     </div>
                                                     <div className={classes.Selections}>
                                                         {match[0].games[i].selections.map((select, y) =>
-                                                            <div key={y} className={this.findSelection(eachRes.homeGoals, eachRes.awayGoals, eachRes.status) === this.determineSelection(select.selected, y) ?
+                                                            <div key={y} className={this.translateResult(eachRes.homeGoals, eachRes.awayGoals, eachRes.status) ===
+                                                                this.determineSelection(select.selected, y) ?
                                                                 classes.Winner : classes.Selected} >{this.determineSelection(select.selected, y)}</div>)}
                                                     </div>
+
                                                 </div>
                                             })}
-
                                         </div>
-
+                                        <div>Wins: {this.calculateWins(match[0], matchRes)}</div>
                                     </div>
                                     <div className={classes.JackPotShare}>
-                                        {console.log("ddsd" ,match[0])}
                                         <Jackpot basePrice={this.props.basePrice} gameDay={moment(match[0].evaluationDate).format("YYYY-MM-DD")}
                                             thirteenPercent={this.props.thirteenPercent} gamesLength={match[0].games.length}
                                             twelvePercent={this.props.twelvePercent} elevenPercent={this.props.elevenPercent}
                                             tenPercent={this.props.tenPercent}
                                         />
+                                    </div>
+                                    <div className={classes.Footer}>
+                                        <h6>Game Info</h6>
+                                        <div className={classes.FooterPrices}>
+                                            <div className={classes.FooterPriceInner}>Price: {"₦" + addCommaToAmounts("" + match[0].slipPrice)}</div>
+                                            <div>Row Price: {"₦" + addCommaToAmounts("" + match[0].basePrice)}</div>
+                                        </div>
+                                        <div>Played on : {moment(match[0].datePlayed).format("DD.MM.YYYY HH:mm")}</div>
+                                        <div>Game Id: {match[0].gameNumber}</div>
                                     </div>
                                 </div> : <Spinner />
                             }

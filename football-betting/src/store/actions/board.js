@@ -22,7 +22,7 @@ export const generateSlip2 = (amount, basePrice) =>{
     }
 }
 
-export const setBoard=(isFaCup , kickOffTime , kickOffDate ) =>{
+export const setBoard=(isFaCup , kickOffTime , kickOffDate, basePrice ) =>{
     // let kickOffDate = getNextPlayDate( daysOffset, hourstoNext);
     return dispatch =>{
         axios.get("fixtures/date/"+ kickOffDate)
@@ -74,7 +74,7 @@ export const setBoard=(isFaCup , kickOffTime , kickOffDate ) =>{
                 let leagueTwoFixture = EnglandFixtures.filter(fixture => fixture.league.name === "League Two");
                 wantedFixtures = wantedFixtures.concat(leagueTwoFixture.splice(0, (13 - counterAFterLeagueOne)));
             }
-            dispatch(initializeBoard(wantedFixtures));
+            dispatch(initializeBoard(wantedFixtures, basePrice));
         }).catch(error =>{
 
         });
@@ -208,16 +208,18 @@ export const calculateOverAllPrice = (slipIndex, gameIndex, sideIndex, basePrice
     }
 }
 
-export const initializeBoard = (fixtures) =>{
+export const initializeBoard = (fixtures, basePrice) =>{
     return { 
         type : actionTypes.INITIALIZE_BOARD,
-        fixtures: fixtures
+        fixtures: fixtures,
+        basePrice: basePrice
     };
 }
 
-export const addEmptySlip = () =>{
+export const addEmptySlip = (basePrice) =>{
     return { 
         type : actionTypes.ADD_EMPTY_SLIP,
+        basePrice: basePrice
     };
 }
 

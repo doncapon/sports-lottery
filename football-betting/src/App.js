@@ -159,8 +159,8 @@ const mapDispatchToProps = (dispatch) => {
 
     onSetEditIndex: (value) =>
       dispatch(actions.setEditIndex(value)),
-    onSetBoard: (isFaCup, kickOffTime, kickOffDate) =>
-      dispatch(actions.setBoard(isFaCup, kickOffTime, kickOffDate)),
+    // onSetBoard: (isFaCup, kickOffTime, kickOffDate, basePrice) =>
+    //   dispatch(actions.setBoard(isFaCup, kickOffTime, kickOffDate,basePrice)),
       
     onSetIsPaying: (isPaying) =>
     dispatch(actions.setIsPaying(isPaying)),
