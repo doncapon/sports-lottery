@@ -18,7 +18,8 @@ class UserPlayHistory extends Component {
             matchResults: [],
             winAmount: [],
             loading: false,
-            showHistory: []
+            showHistory: [],
+            numOfHits: []
         }
 
         this.setMatchResults = this.setMatchResults.bind(this);
@@ -75,12 +76,32 @@ class UserPlayHistory extends Component {
             if (this.state.winAmount.length <= 0 && matchResults.length > 0) {
                 for (let i = 0; i < matchesPlayed.length; i++) {
                     let matchRes = matchResults.filter(res => res.fixtureId === matchesPlayed[i][0].fixture_id)[0]
-                    winAmount.push(this.calculateWins(matchesPlayed[i][0], matchRes));
+                    winAmount.push(this.calculateWins(matchesPlayed[i][0], matchRes).win);
                 }
                 this.setState({ winAmount: winAmount });
             }
         }
     }
+
+    setNumberOfHits = () => {
+
+        if (this.state.winAmount.length <= 0) {
+
+            let matchesPlayed = [...this.state.matchesPlayed];
+            let matchResults = [...this.state.matchResults];
+            let numOfHits = [];
+            if (this.state.winAmount.length <= 0 && matchResults.length > 0) {
+                for (let i = 0; i < matchesPlayed.length; i++) {
+                    let matchRes = matchResults.filter(res => res.fixtureId === matchesPlayed[i][0].fixture_id)[0]
+                    numOfHits.push(this.calculateWins(matchesPlayed[i][0], matchRes).hits);
+                    console.log("number of hits ", numOfHits)
+
+                }
+                this.setState({ numOfHits: numOfHits });
+            }
+        }
+    }
+
     componentDidMount() {
         if (!this.state.loading) {
             firebase.auth().onAuthStateChanged((user) => {
@@ -114,12 +135,13 @@ class UserPlayHistory extends Component {
             let groupedArray = [...this.state.matchesPlayed]
             this.setMatchResults(groupedArray);
             this.setWinAmount();
+            this.setNumberOfHits();
         }
     }
     componentWillUnmount() {
         firebase.database().ref("game-history").off('value', this.someCallback);
         firebase.database().ref("match-results").off('value', this.someCallback);
-      }
+    }
     shouldComponentUpdate(nextProps, nextState) {
         console.log("yam", this.state.matchResults.awayGoals);
         if (this.state.matchResults.length === nextState.matchResults.length
@@ -165,6 +187,8 @@ class UserPlayHistory extends Component {
     calculateWins = (match, matchRes) => {
         let allFisinished = true;
         let win = "No wins";
+        let sideWon = 0;
+
         console.log("shdfhdsf", matchRes);
         for (let i = 0; i < matchRes.length; i++) {
             if (matchRes[i].status !== "Match Finished") {
@@ -174,7 +198,7 @@ class UserPlayHistory extends Component {
 
         }
         if (allFisinished) {
-            let sideWon = 0;
+
             for (let i = 0; i < matchRes.length; i++) {
                 for (let k = 0; k < 3; k++) {
                     if (this.translateResult(matchRes[i].homeGoals, matchRes[i].awayGoals, matchRes[i].status)
@@ -185,8 +209,6 @@ class UserPlayHistory extends Component {
                 }
 
             }
-
-
             let searchTerm = "";
             if (sideWon === 10) {
                 searchTerm = "ten";
@@ -205,14 +227,13 @@ class UserPlayHistory extends Component {
                 let data = snapshot.val();
                 win = "₦" + addCommaToAmounts("" + data)
             });
-
         }
-        return win;
+        return { win: win, hits: sideWon };
     }
 
     render() {
-        if(!this.props.isLoggedIn)
-        this.props.history.push("/");
+        if (!this.props.isLoggedIn)
+            this.props.history.push("/");
 
         let matchesPlayed = [...this.state.matchesPlayed];
         let matchResults = [...this.state.matchResults];
@@ -263,7 +284,8 @@ class UserPlayHistory extends Component {
                                                 </div>
                                             })}
                                         </div>
-                                        <div>Wins: {this.calculateWins(match[0], matchRes)}</div>
+                                        <div>Number of hits:  {this.calculateWins(match[0], matchRes).hits}</div>
+                                        <div>Amount won: {this.calculateWins(match[0], matchRes).win}</div>
                                     </div>
                                     <div className={classes.JackPotShare}>
                                         <Jackpot basePrice={this.props.basePrice} gameDay={moment(match[0].evaluationDate).format("YYYY-MM-DD")}
