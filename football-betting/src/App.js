@@ -72,7 +72,8 @@ class App extends React.Component {
     firebase.auth().signOut().then(() => {
       this.setState({ showModal: false })
       this.props.onSetIsLoggedIn(false);
-      this.props.history.push("/")
+      this.props.history.push("/");
+      firebase.database().ref("users").off();
     })
   }
 
@@ -91,11 +92,10 @@ class App extends React.Component {
             debounce={250}
             timeout={this.state.timeout} />
           : null}
-        <div className={classes.Navs}><Navs
-          loggedIn={false} setIsLoggedIn={this.props.onSetIsLoggedIn}
-          setLoggedInUser={this.props.onSetLoggedInUser} isLoggedIn={this.props.isLoggedIn}
-          deleteAndResetAll={this.props.onDeleteAndResetAll}
-          username={this.props.username} password={this.props.password} slips={this.props.slips}
+        <div className={classes.Navs}><Navs setForgot= {this.props.onSetForgot}
+          isLoggedIn={this.props.isLoggedIn} login= {this.props.onLogin} logout= {this.props.onLogout}
+          deleteAndResetAll={this.props.onDeleteAndResetAll}  loading = {this.props.loading}
+          slips={this.props.slips} forgotPassword={this.props.forgotPassword}
           showFunds={this.props.showFunds} firstName={this.props.user.name}
           setShowFunds={this.props.onSetShowFunds} user={this.props.user}
           toggleShowFunds={this.props.onToggleShowFunds} setEditIndex={this.props.onSetEditIndex}
@@ -136,9 +136,9 @@ const mapstateToProps = (state) => {
 
     loginMessage: state.login.loginMessage,
     user: state.login.user,
-    username: state.login.username,
-    password: state.login.password,
     isLoggedIn: state.login.isLoggedIn,
+    forgotPassword: state.login.forgotPassword,
+    loading: state.login.loading,
 
     isFaCup: state.config.isFaCup,
     kickOffTime: state.config.kickOffTime,
@@ -148,10 +148,11 @@ const mapstateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-
+    onLogout: ()=> dispatch(actions.logout()),
     onSetIsLoggedIn: (value) => dispatch(actions.setIsLoggedIn(value)),
-    onSetLoggedInUser: (username, password) => dispatch(actions.setLoggedInUser(username, password)),
-    onToggleShowFunds: () => dispatch(actions.toggleShowFunds()),
+    onSetForgot: (value) => dispatch(actions.setForgot(value)),
+    onLogin: (email, password) => dispatch(actions.login(email, password)),
+   onToggleShowFunds: () => dispatch(actions.toggleShowFunds()),
     onDeleteAndResetAll: () => dispatch(actions.deleteAndResetAll()),
     onSetShowFunds: () => dispatch(actions.setShowFunds()),
     onResetReduxBoard: () =>

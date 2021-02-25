@@ -30,6 +30,10 @@ const ForgotPassword = (props) => {
         setEmailErr(formErrors);
         return formIsValid;
     }
+    const forgetRedirect=()=>{
+        setShowModal(false);
+        history.push("/");
+    }
     const handleSubmitEmail = (e) => {
         e.preventDefault();
 
@@ -50,7 +54,7 @@ const ForgotPassword = (props) => {
         if(emailIdErr)
         {Email.push(classes.showError)}
     return (
-        <Modal show={showModal} modalClosed={() => { }} >
+        <Modal show={showModal} modalClosed={forgetRedirect} >
             <div className={classes.PasswordWrapper}>
                 <h5>Request password!</h5>
                     <div className="formDiv">
@@ -71,7 +75,7 @@ const ForgotPassword = (props) => {
 
                                 </div>
                                 <div className={classes.Buttons}>
-                                    <button type="button" onClick={() => setShowModal(false)} className={classes.Button1}
+                                    <button type="button" onClick={forgetRedirect} className={classes.Button1}
                                     >Cancel</button>
                                     <input type="submit" className={classes.Submit}
                                         value="Submit" />

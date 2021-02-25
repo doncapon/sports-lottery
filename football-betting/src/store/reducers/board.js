@@ -98,7 +98,7 @@ const setReceipt = (state, action) => {
         slips.forEach(slip => {
             slip.gameDay = gameDay;
             slip.correctResult = 0;
-        })
+        });
         draft.receipts = slips;
         let slip = {};
         for (let i = 0; i < draft.slips.length; i++) {
@@ -286,6 +286,7 @@ const generateSlip = (state, action) => {
         draft.isPaid = false;
         draft.isShowReceipt = false;
 
+
     })
 }
 
@@ -459,6 +460,7 @@ const deleteAndResetAll = (state, action) => {
             clonedSlips[0].purchasable = false
             clonedSlips[0].slipPrice = 0;
             clonedSlips[0].slipAmount = 0;
+            clonedSlips[0].gameNumber = uuid();
 
         }
 

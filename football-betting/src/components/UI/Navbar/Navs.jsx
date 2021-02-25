@@ -15,18 +15,19 @@ class Navs extends Component {
     isLoading: false,
   };
   logout = () => {
-    firebase.auth().signOut().then(() => {
-      this.props.deleteAndResetAll();
-      this.props.setLoggedInUser({});
-      this.props.setIsLoggedIn(false);
-      this.props.setIsPaying(false);
-      this.props.setIsPaid(false);
-      this.props.history.push("/");
-    }).catch((error) => {
-      // An error happened.
-    });
+    this.props.logout();
+    this.props.setIsPaying(false);
+    this.props.setIsPaid(false);
+
+    this.props.deleteAndResetAll();
+    this.props.history.push("/");
   }
+
   render() {
+    let firstName = this.props.firstName;
+    if (firstName > 0) {
+      firstName = this.props.firstName.charAt(0).toUpperCase() + this.props.firstName.slice(1)
+    }
     return (
       <Navbar bg="success" expand="lg">
         <Navbar.Brand href="/">
@@ -42,20 +43,22 @@ class Navs extends Component {
           <Nav className="mr-auto">
             <Nav.Link to="/" as={NavLink}>Home</Nav.Link>
             <Nav.Link to="/play" as={NavLink}>Play</Nav.Link>
-            {firebase.auth().currentUser? <Nav.Link to="/history" as={NavLink}>My Games</Nav.Link>: null}
+            {firebase.auth().currentUser ? <Nav.Link to="/history" as={NavLink}>My Games</Nav.Link> : null}
             <Nav.Link to="/results" as={NavLink}>Result</Nav.Link>
             {this.props.user.role === "admin" ?
               <Nav.Link to="/settings" as={NavLink}>Settings</Nav.Link>
               : null}
           </Nav>
-          {this.props.isLoggedIn ?
+          {this.props.isLoggedIn && this.props.user.funds?
             <div className={classes.LoginSection}>
               <Button className={classes.Logout} onClick={this.logout} variant="danger">Logout</Button>
-              <Funds showFunds={this.props.showFunds} firstName={this.props.firstName}
+              <Funds showFunds={this.props.showFunds} firstName={firstName} user= {this.props.user}
                 toggleShowFunds={this.props.toggleShowFunds} setIsLoggedIn={this.props.setIsLoggedIn} />
             </div>
-            : <Login setPassword={this.props.setPassword} setIsLoggedIn={this.props.setIsLoggedIn} slips={this.props.slips}
-              username={this.props.username} deleteAndResetAll={this.props.deleteAndResetAll} setLoggedInUser={this.props.setLoggedInUser} />
+            : <Login slips={this.props.slips} deleteAndResetAll={this.props.deleteAndResetAll} user= {this.props.user}
+              login={this.props.login} setForgot={this.props.setForgot} forgotPassword={this.props.forgotPassword}
+              loading= {this.props.loading} isLoggedIn = {this.props.isLoggedIn}
+            />
           }
 
         </Navbar.Collapse>

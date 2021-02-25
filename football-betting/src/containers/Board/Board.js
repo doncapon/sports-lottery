@@ -21,7 +21,6 @@ import LoginModal from '../../components/loginLogout/modalLogin/loginModal';
 class Board extends Component {
 
   state = {
-    funds: 0,
     loading: false,
     showModalSignin: false
   }
@@ -36,23 +35,6 @@ class Board extends Component {
         this.props.kickOffTime, kickOffDate, this.props.basePrice);
     }
 
-  }
-
-  componentDidMount() {
-    if (!this.state.loading) {
-      firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-          let userRef = firebase.database().ref("users/" + user.uid);
-          userRef.on("value", snapshot => {
-            let dbUser = snapshot.val();
-            this.setState({ funds: dbUser.funds });
-
-          })
-
-        }
-      });
-    }
-    this.setState({ loading: true })
   }
   togglePaymentButton = (paying, paid) => {
     console.log("current user",firebase.auth().currentUser)
@@ -81,6 +63,7 @@ class Board extends Component {
     let userId = firebase.auth().currentUser.uid;
     let userRef = firebase.database().ref("users").child(userId);
     userRef.child('funds').transaction((funds) => {
+      this.props.onSetFunds(funds-this.props.totalPrice)
       return funds - this.props.totalPrice
     })
   }
@@ -234,6 +217,7 @@ const mapstateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
+    onSetFunds: (funds) => dispatch(actions.setFunds(funds)),
     onSetBoard: (isFACup, kicOffTime, kickOfftime, basePrice) =>
      dispatch(actions.setBoard(isFACup, kicOffTime, kickOfftime, basePrice)),
     onResetReduxBoard: () => dispatch(actions.resetReduxBoard()),

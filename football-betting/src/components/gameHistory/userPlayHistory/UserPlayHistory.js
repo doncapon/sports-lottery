@@ -216,13 +216,12 @@ class UserPlayHistory extends Component {
 
         let matchesPlayed = [...this.state.matchesPlayed];
         let matchResults = [...this.state.matchResults];
-        let winAmount = [...this.state.winAmount];
         let userPlayHistoryTrannsformed = this.state.loading && this.state.matchResults.length > 0 ?
             matchesPlayed.map((match, k) => {
                 let matchRes = matchResults.filter(res => res.fixtureId === match[0].fixture_id)[0];
                 return <div className={classes.userPlayHistoryAndShare} key={k}>
                     <div className={classes.MainHeader}>
-                        <div className={classes.DateHead}>Entry date : {moment(match.gameDay).format("DD.MM.YYYY")}</div>
+                        <div className={classes.DateHead}>Entry date : {moment(match[0].datePlayed).format("DD.MM.YYYY")}</div>
                         <div className={classes.PriceHead}>Price: {"₦" + addCommaToAmounts("" + match[0].slipPrice)}</div>
                         <div className={classes.DateHead}>Evaluation date : {moment(match[0].evaluationDate).format("DD.MM.YYYY")}</div>
                         <Button className={classes.BtToggle} size="sm" onClick={() => this.toggleShowHistory(k)}>

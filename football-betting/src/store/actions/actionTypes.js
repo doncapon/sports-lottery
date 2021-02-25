@@ -57,6 +57,10 @@ export const SET_IS_LOGGED_IN = 'SET_IS_LOGGED_IN';
 export const SET_LOGGEDIN_USER = 'SET_LOGGEDIN_USER';
 export const SET_USERNAME = 'SET_USERNAME';
 export const SET_PASSWORD = 'SET_PASSWORD';
+export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';
+export const SET_FORGOT_PASSWORD = 'SET_FORGOT_PASSWORD';
+export const SET_FUNDS = 'SET_FUNDS';
 
 //RECEIPT
 

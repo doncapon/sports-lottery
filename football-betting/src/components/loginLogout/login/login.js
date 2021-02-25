@@ -1,60 +1,41 @@
 import { Button, FormControl, Form } from 'react-bootstrap';
-import { useHistory , useLocation} from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import React, { useState } from 'react';
 import classes from './login.module.css';
-import firebase from '../../../config/firebase/firebase';
 
 const Login = (props) => {
     const [showPopup, setShowPopUp] = useState(false);
     const [email, setEmail] = useState('lordshegz@gmail.com');
     const [password, setPassword] = useState('Emmanuel1987');
-    const [userData, setUserData] = useState({});
-    const [forgot, setForgot] = useState(false);
+    const [alerts, setAlerts] = useState([]);
     let history = useHistory();
     let location = useLocation();
-    const login = (email, password) => {
+    const login = () => {
+        if (!props.loading) {
+            props.login(email, password);
+            if (props.user !== null) {
 
-        firebase.auth().signInWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                // Signed in
-                var user = userCredential.user;
-                if(user.emailVerified){
-                    let userRef = firebase.database().ref("users/" + user.uid);
-                    userRef.on('value', (snapshot) => {
-                        const dbUser = snapshot.val();
-                        setUserData(user);
-                        props.setIsLoggedIn(true);
-                        popUpFunc();
-                        props.setLoggedInUser(dbUser);
+                if (location.pathname === "/" && props.slips !== null)
+                    props.deleteAndResetAll();
 
-                        if(location.pathname === "/")
-                        props.deleteAndResetAll();
-
-                        history.push("/play");
-                      });
+                history.push("/play");
+            }
+                if(!props.isLoggedIn){
+                    setAlerts(["alert", "alert-danger"])
+                    popUpFunc();       
+                }else{
+                    setAlerts(["alert", "alert-success"])
+                    popUpFunc(); 
                 }
-              
-            })
-            .catch((error) => {
-                setUserData(error);
-                popUpFunc();
-                setForgot(true);
-                props.setIsLoggedIn(false);
-            });
+         
 
-        // const loginuserData = {
-        //     email: email,
-        //     password: password,
-        // };
+        }
 
-        // let res = await axios.post("users/login", loginuserData, { withCredentials: true });
-        // return await res.userData;
     };
-
 
     const HandleSubmit = (e) => {
         e.preventDefault();
-        login(email, password);
+        login();
     }
 
     const HandleSignup = () => {
@@ -65,22 +46,25 @@ const Login = (props) => {
 
         setTimeout(() => {
             setShowPopUp(false);
-        }, 2000);
+        }, 3000);
         setShowPopUp(true);
     }
     const handleForgot = () => {
-        setForgot(false);
+        props.setForgot(false);
         history.push("/forgot-password");
     }
-    let alerts = ["alert", "alert-danger"]
+    console.log("alerts", alerts);
     showPopup ? alerts.push(classes.alertShown) : alerts.push(classes.alertHidden);
     return (<div>
+        {console.log("emaile", props.user.email)}
         {showPopup ?
-            !userData.email ?
+            alerts[1] === "alert-danger" ?
                 <div className={alerts.join(" ")}>
                     <strong>Failure!</strong> Please check email or password!
                 </div>
-                : null
+                : <div className={alerts.join(" ")}>
+                    <strong>Success!</strong> Login successful!
+            </div>
             : null
 
         }
@@ -89,7 +73,7 @@ const Login = (props) => {
                 value={email} placeholder="email" className="mr-sm-2" />
             <FormControl type="password" onChange={(e) => setPassword(e.target.value)}
                 value={password} placeholder="password" className="mr-sm-2" />
-            {forgot ?
+            {props.forgotPassword ?
                 <Button className={classes.Forgot} onClick={handleForgot} >forgot password?</Button>
                 : null}
             <Button type="submit" variant="outline-light">Login</Button>

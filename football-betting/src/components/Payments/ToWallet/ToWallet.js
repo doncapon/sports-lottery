@@ -3,6 +3,8 @@ import './ToWallet.module.css'
 import { PaystackButton } from 'react-paystack';
 import classes from "./ToWallet.module.css";
 import firebase from '../../../config/firebase/firebase';
+import { connect} from 'react-redux';
+import * as actions from '../../../store/actions/index';
 class ToWallet extends Component {
     constructor(props) {
         super(props);
@@ -87,6 +89,7 @@ class ToWallet extends Component {
         let userId = firebase.auth().currentUser.uid;
         let userRef = firebase.database().ref("users").child(userId);
         userRef.child('funds').transaction((funds)=> {
+            this.props.onSetFunds(funds+ Number(this.state.amount))
             return funds+ Number(this.state.amount)
         })
     };
@@ -153,4 +156,9 @@ class ToWallet extends Component {
     }
 }
 
-export default ToWallet;
+const mapDispatchToProps = (dispatch) => {
+    return {
+      onSetFunds: (funds) => dispatch(actions.setFunds(funds))
+    }
+}
+export default connect(null, mapDispatchToProps)(ToWallet);

@@ -230,6 +230,7 @@ class ToBank extends Component {
                                                 let userId = firebase.auth().currentUser.uid;
                                                 let userRef = firebase.database().ref("users").child(userId);
                                                 userRef.child('funds').transaction((funds) => {
+                                                    this.props.onSetFunds( funds - Number(this.state.amount)                                                    )
                                                     return funds - Number(this.state.amount)
                                                 })
 
@@ -444,7 +445,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         onFetchBanks: () => dispatch(actions.fetchBanks()),
-        onResetSavedBanks: (payload) => dispatch(actions.resetSavedBanks(payload))
+        onResetSavedBanks: (payload) => dispatch(actions.resetSavedBanks(payload)),
+        onSetFunds: (funds) => dispatch(actions.setFunds(funds))
     }
 }
 

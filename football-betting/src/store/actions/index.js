@@ -40,6 +40,10 @@ export {
 export {
      setLoggedInUser,
      setIsLoggedIn,
+     login,
+     setForgot,
+     logout,
+     setFunds
 } from './login';
 
 
