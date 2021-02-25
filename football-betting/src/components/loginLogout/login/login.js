@@ -53,10 +53,8 @@ const Login = (props) => {
         props.setForgot(false);
         history.push("/forgot-password");
     }
-    console.log("alerts", alerts);
     showPopup ? alerts.push(classes.alertShown) : alerts.push(classes.alertHidden);
     return (<div>
-        {console.log("emaile", props.user.email)}
         {showPopup ?
             alerts[1] === "alert-danger" ?
                 <div className={alerts.join(" ")}>

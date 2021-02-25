@@ -82,7 +82,6 @@ class UpdateBankDetail extends Component {
                     if(account && account.accountName === this.state.name && account.bank === this.state.bank){
                         let bankRef = firebase.database().ref('bank-accounts/'+ user.uid+ "/"+ account.accountNumber);
                         bankRef.remove();
-                        console.log("yeah man" , bankRef);
                     }else{
                         alert("Account does not exist")
                     }

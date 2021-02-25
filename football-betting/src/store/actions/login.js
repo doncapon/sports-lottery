@@ -54,7 +54,6 @@ export const logout = () => {
                         let userRef = firebase.database().ref("users/" + user.uid);
                         userRef.on('value', (snapshot) => {
                             const dbUser = snapshot.val();
-                            console.log("userfndf" , dbUser)
                             dispatch(setLoggedInUser(user));
                             dispatch(setIsLoggedIn(true));
                             dispatch(setLoggedInUser(dbUser));

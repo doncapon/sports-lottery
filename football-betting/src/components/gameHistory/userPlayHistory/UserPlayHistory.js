@@ -94,8 +94,6 @@ class UserPlayHistory extends Component {
                 for (let i = 0; i < matchesPlayed.length; i++) {
                     let matchRes = matchResults.filter(res => res.fixtureId === matchesPlayed[i][0].fixture_id)[0]
                     numOfHits.push(this.calculateWins(matchesPlayed[i][0], matchRes).hits);
-                    console.log("number of hits ", numOfHits)
-
                 }
                 this.setState({ numOfHits: numOfHits });
             }
@@ -120,6 +118,8 @@ class UserPlayHistory extends Component {
                         this.setMatchResults(groupedArray)
                         this.setState({ matchesPlayed: groupedArray });
                         this.setState({ showHistory: myShow });
+                        this.setNumberOfHits();
+                        this.setWinAmount();
                     });
                 } else {
 
@@ -134,8 +134,6 @@ class UserPlayHistory extends Component {
         if (this.state.matchResults.length !== prevState.matchResults.length) {
             let groupedArray = [...this.state.matchesPlayed]
             this.setMatchResults(groupedArray);
-            this.setWinAmount();
-            this.setNumberOfHits();
         }
     }
     componentWillUnmount() {
@@ -143,7 +141,6 @@ class UserPlayHistory extends Component {
         firebase.database().ref("match-results").off('value', this.someCallback);
     }
     shouldComponentUpdate(nextProps, nextState) {
-        console.log("yam", this.state.matchResults.awayGoals);
         if (this.state.matchResults.length === nextState.matchResults.length
             && this.state.matchResults.length > 0 && this.state.matchResults[0].awayGoals
         ) {
@@ -189,7 +186,6 @@ class UserPlayHistory extends Component {
         let win = "No wins";
         let sideWon = 0;
 
-        console.log("shdfhdsf", matchRes);
         for (let i = 0; i < matchRes.length; i++) {
             if (matchRes[i].status !== "Match Finished") {
                 allFisinished = false;
@@ -198,7 +194,6 @@ class UserPlayHistory extends Component {
 
         }
         if (allFisinished) {
-
             for (let i = 0; i < matchRes.length; i++) {
                 for (let k = 0; k < 3; k++) {
                     if (this.translateResult(matchRes[i].homeGoals, matchRes[i].awayGoals, matchRes[i].status)
@@ -219,7 +214,7 @@ class UserPlayHistory extends Component {
             } else if (sideWon === 13) {
                 searchTerm = "thirteen"
             } else {
-                return "No wins";
+                return {win: "No wins", hits: sideWon};
             }
 
             let potRef = firebase.database().ref("jackpot-win").child(match.evaluationDate).child(searchTerm);
