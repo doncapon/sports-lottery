@@ -31,8 +31,7 @@ class Board extends Component {
       this.props.hourToNextDay);
 
     if (!this.props.loading) {
-      this.props.onSetBoard(this.props.isFACup,
-        this.props.kickOffTime, kickOffDate, this.props.basePrice);
+      this.props.onSetBoard(kickOffDate, this.props.basePrice);
     }
 
   }
@@ -189,7 +188,6 @@ class Board extends Component {
 const mapstateToProps = (state) => {
   return {
     hourToNextDay: state.config.hourToNextDay,
-    isFACup: state.config.isFACup,
     isFACupNextWeek: state.config.isFACupNextWeek,
     daysOffset: state.config.daysOffset,
     daysOffsetNextWeek: state.config.daysOffsetNextWeek,

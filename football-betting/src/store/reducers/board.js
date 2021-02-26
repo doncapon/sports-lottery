@@ -146,18 +146,19 @@ const initializeBoard = (state, action) => {
         let slipId = "slip_";
         let games1 = [];
         let gameId = "game_";
+   
         action.fixtures.forEach((fixture, i) => {
             let game = {
                 id: gameId + (i + 1),
                 amount: 0,
-                league: fixture.league.name,
+                league: fixture.leagueName,
                 fixture_id: fixture.fixture_id,
                 status: fixture.status,
                 [gameId + (i + 1)]: {
-                    team1_id: fixture.homeTeam.team_id,
-                    team1: fixture.homeTeam.team_name,
-                    team2_id: fixture.awayTeam.team_id,
-                    team2: fixture.awayTeam.team_name, isValid: false,
+                    team1_id: fixture.homeTeam_id,
+                    team1: fixture.homeTeam,
+                    team2_id: fixture.awayTeam_id,
+                    team2: fixture.awayTeam, isValid: false,
                     sides: [{ selected: false }, { selected: false }, { selected: false }],
                 }
             };

@@ -50,7 +50,8 @@ export {
 export {
      setCurrentResult,
      fetchWeeklyResults,
-     fetchResults
+     fetchResults,
+     configureBoard
 } from './config';
 
 

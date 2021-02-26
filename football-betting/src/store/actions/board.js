@@ -1,5 +1,5 @@
 import * as actionTypes from './actionTypes';
-import axios from '../../axios-fixtures';
+import firebase from '../../config/firebase/firebase'; 
 // import { getNextPlayDate } from '../../shared/utility';
 
 
@@ -22,62 +22,17 @@ export const generateSlip2 = (amount, basePrice) =>{
     }
 }
 
-export const setBoard=(isFaCup , kickOffTime , kickOffDate, basePrice ) =>{
+export const setBoard=( kickOffDate, basePrice) =>{
     // let kickOffDate = getNextPlayDate( daysOffset, hourstoNext);
     return dispatch =>{
-        axios.get("fixtures/date/"+ kickOffDate)
-        .then(response =>{
-
-            let dateTime = ( kickOffDate +"T"+kickOffTime);
-            let fixtureAtTime = response.data.api.fixtures.filter(
-                fixture =>fixture.event_date === dateTime);
-            let EnglandFixtures =fixtureAtTime.filter(fixture =>fixture.league.country === "England" );
-            
-            
-            let PremierShipOrFACup;
-            if(!isFaCup)    {
-                PremierShipOrFACup = EnglandFixtures.filter(fixture => fixture.league.name === "Premier League");
-            }else{
-                PremierShipOrFACup = EnglandFixtures.filter(fixture => fixture.league.name === "FA Cup");
-            }
-            
-
-            let Championship = EnglandFixtures.filter(fixture => fixture.league.name === "Championship");
-            let countWanted;
-
-            if((Championship.length + PremierShipOrFACup.length) < 13)
-            countWanted = Championship.length + PremierShipOrFACup.length;
-            else
-            countWanted = 13;
-
-            let premCount= 7;
-            let ChamCount = 6;
-            if(countWanted === 13){
-                if(Championship.length < 6)
-                    premCount = countWanted - Championship.length;
-                if(PremierShipOrFACup.length < 7)
-                    ChamCount = countWanted - PremierShipOrFACup.length;
-            }else{
-                if(Championship.length < 5)
-                    premCount = countWanted - Championship.length;
-                if(PremierShipOrFACup < 6)
-                    Championship = countWanted - PremierShipOrFACup.length;
-            }
-            let wantedFixtures = PremierShipOrFACup.splice(0, premCount).concat(Championship.splice(0, ChamCount));
-            let countAfter = wantedFixtures.length;
-            if(wantedFixtures.length < 13){
-                let leagueOneFixture = EnglandFixtures.filter(fixture => fixture.league.name === "League One");
-                wantedFixtures = wantedFixtures.concat(leagueOneFixture.splice(0, (13 - countAfter)));
-            }
-            let counterAFterLeagueOne = wantedFixtures.length;
-            if(wantedFixtures.length < 13){
-                let leagueTwoFixture = EnglandFixtures.filter(fixture => fixture.league.name === "League Two");
-                wantedFixtures = wantedFixtures.concat(leagueTwoFixture.splice(0, (13 - counterAFterLeagueOne)));
-            }
+        let boardRef = firebase.database().ref("board").child(kickOffDate);
+        let wantedFixtures = [];
+        boardRef.on("value", snapshot=>{
+            let data = snapshot.val();
+            wantedFixtures = data;
+        })
             dispatch(initializeBoard(wantedFixtures, basePrice));
-        }).catch(error =>{
 
-        });
     };
 }
 export const setFixtureIds = ()=>{
