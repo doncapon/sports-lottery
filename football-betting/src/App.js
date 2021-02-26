@@ -52,6 +52,7 @@ class App extends React.Component {
   _onIdle(e) {
     const isTimedOut = this.state.isTimedOut
     if (isTimedOut) {
+      this.props.onLogout();
       this.props.onSetIsLoggedIn(false);
       this.props.history.push("/");
 

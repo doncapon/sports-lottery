@@ -31,7 +31,9 @@ export const setBoard=( kickOffDate, basePrice) =>{
             let data = snapshot.val();
             wantedFixtures = data;
         })
+        setTimeout(() => {
             dispatch(initializeBoard(wantedFixtures, basePrice));
+        }, 1000);
 
     };
 }
