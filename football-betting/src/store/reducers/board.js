@@ -122,6 +122,7 @@ const setReceipt = (state, action) => {
             let evaDate = evDateSplit[2]+"-"+ evDateSplit[1] +"-"+ evDateSplit[0]
             slip.evaluationDate = evaDate;
             let user = firebase.auth().currentUser;
+            slip.userId=user.uid;
             let historyRef = firebase.database().ref("game-history").child(user.uid).child(slip.gameNumber);
             historyRef.set(slip);
         }
@@ -184,7 +185,7 @@ const initializeBoard = (state, action) => {
         draft.gameDateRaw = action.fixtures[0].event_date;
         draft.gameDate = moment(action.fixtures[0].event_date).format("DD-MM-YYYY");
         draft.loading = true;
-
+        
     });
 }
 const toggleShowHistory = (state, action) => {

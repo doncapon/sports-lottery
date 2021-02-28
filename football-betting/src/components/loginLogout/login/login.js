@@ -17,18 +17,7 @@ const Login = (props) => {
 
                 if (location.pathname === "/" && props.slips !== null)
                     props.deleteAndResetAll();
-
-                history.push("/play");
             }
-                if(!props.isLoggedIn){
-                    setAlerts(["alert", "alert-danger"])
-                    popUpFunc();       
-                }else{
-                    setAlerts(["alert", "alert-success"])
-                    popUpFunc(); 
-                }
-         
-
         }
 
     };
@@ -36,6 +25,16 @@ const Login = (props) => {
     const HandleSubmit = (e) => {
         e.preventDefault();
         login();
+        setTimeout(() => {
+            if (!props.isLoggedIn) {
+                setAlerts(["alert", "alert-danger"])
+                popUpFunc();
+            } else {
+                setAlerts(["alert", "alert-success"])
+                popUpFunc();
+                history.push("/play");
+            }
+        }, 3000);
     }
 
     const HandleSignup = () => {
@@ -46,7 +45,7 @@ const Login = (props) => {
 
         setTimeout(() => {
             setShowPopUp(false);
-        }, 3000);
+        }, 2000);
         setShowPopUp(true);
     }
     const handleForgot = () => {

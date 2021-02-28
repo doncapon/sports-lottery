@@ -28,6 +28,7 @@ export function uuid() {
   }
 
   export function addCommaToAmounts(nStr){
+ 
     nStr += '';
     const x = nStr.split('.');
     let x1 = x[0];
@@ -39,9 +40,11 @@ export function uuid() {
     let num = x1+x2;
     if(num.includes("."))
     num = num.substr(0, num.indexOf(".") + 3)
+    if(num.substr(num.indexOf('.')+1, num.length).length === 1){
+        num += "0";
+    }
     return (num);
   }
-
  export const calculateAge = (dob1) => {
     const today = new Date();
     const birthDate = new Date(dob1+ "T00:00:00Z");  // create a date object directly from `dob1` argument
@@ -52,4 +55,10 @@ export function uuid() {
         age_now--;
     }
     return age_now;
+  }
+
+  export const dateInYYYYMMDD=(date) =>{
+      let y = date.split("-");
+      let q = y[2] + "-" + y[1]+ "-" + y[0];
+      return q;
   }

@@ -12,8 +12,7 @@ import axios from '../../axios-fixtures';
 import Payment from '../../components/board/payment/payment';
 import { ArrowRight } from "react-bootstrap-icons";
 import Receipts from '../../components/board/receipts/receipts/receipts';
-import { getNextPlayDate } from '../../shared/utility';
-import { addCommaToAmounts } from '../../shared/utility';
+import { addCommaToAmounts ,dateInYYYYMMDD} from '../../shared/utility';
 import firebase from '../../config/firebase/firebase';
 import Modal from "../../components/UI/Modal/Modal";
 import LoginModal from '../../components/loginLogout/modalLogin/loginModal';
@@ -21,33 +20,29 @@ import LoginModal from '../../components/loginLogout/modalLogin/loginModal';
 class Board extends Component {
 
   state = {
-    loading: false,
     showModalSignin: false
   }
   constructor(props) {
     super(props);
-    let kickOffDate;
-    kickOffDate = getNextPlayDate(this.props.daysOffset,
-      this.props.hourToNextDay);
-
     if (!this.props.loading) {
-      this.props.onSetBoard(kickOffDate, this.props.basePrice);
+      this.props.onSetBoard(this.props.basePrice);
     }
 
   }
+
   togglePaymentButton = (paying, paid) => {
-    if(firebase.auth().currentUser){
-      
-    this.props.onSetIsPaying(paying);
-    this.props.onSetIsPaid(paid);
-    }else{
-       this.setState({showModalSignin: true})
+    if (firebase.auth().currentUser) {
+
+      this.props.onSetIsPaying(paying);
+      this.props.onSetIsPaid(paid);
+    } else {
+      this.setState({ showModalSignin: true })
     }
 
   }
 
-  cancelLoginPopup = ()=>{
-    this.setState({showModalSignin: false})
+  cancelLoginPopup = () => {
+    this.setState({ showModalSignin: false })
 
   }
 
@@ -59,13 +54,19 @@ class Board extends Component {
   ExecutePurchase = () => {
 
     let userId = firebase.auth().currentUser.uid;
+    this.updateJackpot(this.props.totalPrice);
     let userRef = firebase.database().ref("users").child(userId);
     userRef.child('funds').transaction((funds) => {
-      this.props.onSetFunds(funds-this.props.totalPrice)
-      return funds - this.props.totalPrice
-    })
-  }
+      this.props.onSetFunds(funds - this.props.totalPrice)
 
+      return funds - this.props.totalPrice
+    });
+  }
+updateJackpot =(totalPrice)=>{
+  firebase.database().ref("jackpots").child(dateInYYYYMMDD(this.props.gameDate)).child("jackpot").transaction(Jackpots=>{
+    return Jackpots  + totalPrice;
+  })
+}
   render() {
     return (this.props.loading ? (<div className={classes.Board}>
 
@@ -115,7 +116,7 @@ class Board extends Component {
             editIndex={this.props.editIndex}
             funds={this.state.funds}
             totalPrice={this.props.totalPrice}
-            basePrice= {this.props.basePrice}
+            basePrice={this.props.basePrice}
           />
         </div>
         <div className={classes.Payment} >
@@ -132,7 +133,7 @@ class Board extends Component {
             <div>
               <div className={classes.PayButtons}>
                 <Button
-                  disabled={this.props.totalPrice <= 0|| (firebase.auth().currentUser &&this.state.funds < this.props.totalPrice)}
+                  disabled={this.props.totalPrice <= 0 || (firebase.auth().currentUser && this.state.funds < this.props.totalPrice)}
                   variant="success"
                   className={classes.PayButton}
                   onClick={() => this.togglePaymentButton(true, false)}
@@ -141,19 +142,19 @@ class Board extends Component {
                   PAY
                   {" "}
 
-                  { "₦" + addCommaToAmounts(this.props.totalPrice.toString(10))}
+                  {"₦" + addCommaToAmounts(this.props.totalPrice.toString(10))}
 
                 </Button>
                 {(this.state.funds < this.props.totalPrice && firebase.auth().currentUser) ? <div>
                   <div style={{ color: 'red', textAlign: 'center', background: 'grey', padding: '10px 0', marginBottom: '10px' }}>Sorry, you do not have enough funds to make the purchase</div>
                   <div><Button className={classes.TransferButton}> <ArrowRight style={{ fontWeight: 'bolder' }} size="20" /> GO TO FUNDS TRANSFER</Button></div>
                 </div> : null}
-                <Modal show= {this.state.showModalSignin} modalClosed = {this.cancelLoginPopup}> 
-                  <LoginModal setLoggedInUser= {this.props.onSetLoggedInUser}
-                   setIsPaying = {this.props.onSetIsPaying} setIsLoggedIn={this.props.onSetIsLoggedIn} 
-                  setIsPaid={this.props.onSetIsPaid} cancelLoginPopup = {this.cancelLoginPopup}
+                <Modal show={this.state.showModalSignin} modalClosed={this.cancelLoginPopup}>
+                  <LoginModal setLoggedInUser={this.props.onSetLoggedInUser}
+                    setIsPaying={this.props.onSetIsPaying} setIsLoggedIn={this.props.onSetIsLoggedIn}
+                    setIsPaid={this.props.onSetIsPaid} cancelLoginPopup={this.cancelLoginPopup}
                   />
-                  </Modal>
+                </Modal>
               </div>
             </div>
 
@@ -215,8 +216,8 @@ const mapstateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onSetFunds: (funds) => dispatch(actions.setFunds(funds)),
-    onSetBoard: (isFACup, kicOffTime, kickOfftime, basePrice) =>
-     dispatch(actions.setBoard(isFACup, kicOffTime, kickOfftime, basePrice)),
+    onSetBoard: (basePrice) =>
+      dispatch(actions.setBoard(basePrice)),
     onResetReduxBoard: () => dispatch(actions.resetReduxBoard()),
     // onToggleShowFunds: () => dispatch(actions.toggleShowFunds()),
     onToggleIsShowReceipt: () => dispatch(actions.toggleIsShowReceipt()),
@@ -254,9 +255,9 @@ const mapDispatchToProps = (dispatch) => {
 
     onFetchPredictionsAll: (FixturesList, gameIndex) =>
       dispatch(actions.fetchPredictionsAll(FixturesList, gameIndex)),
-      onSetIsLoggedIn: (value) => dispatch(actions.setIsLoggedIn(value)),
-      onSetLoggedInUser: (username, password) => dispatch(actions.setLoggedInUser(username, password)),
-     
+    onSetIsLoggedIn: (value) => dispatch(actions.setIsLoggedIn(value)),
+    onSetLoggedInUser: (username, password) => dispatch(actions.setLoggedInUser(username, password)),
+
   };
 };
 

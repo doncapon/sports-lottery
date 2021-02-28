@@ -198,7 +198,7 @@ class UserPlayHistory extends Component {
                 for (let k = 0; k < 3; k++) {
                     if (this.translateResult(matchRes[i].homeGoals, matchRes[i].awayGoals, matchRes[i].status)
                         === this.determineSelection(match.games[i].selections[k].selected, k)
-                    ) {
+                    ){
                         sideWon++;
                     }
                 }
@@ -212,9 +212,9 @@ class UserPlayHistory extends Component {
             } else if (sideWon === 12) {
                 searchTerm = "twelve"
             } else if (sideWon === 13) {
-                searchTerm = "thirteen"
+                searchTerm = "thirteen";
             } else {
-                return {win: "No wins", hits: sideWon};
+                return "No wins";
             }
 
             let potRef = firebase.database().ref("jackpot-win").child(match.evaluationDate).child(searchTerm);
@@ -223,7 +223,7 @@ class UserPlayHistory extends Component {
                 win = "₦" + addCommaToAmounts("" + data)
             });
         }
-        return { win: win, hits: sideWon };
+        return win;
     }
 
     render() {
@@ -279,14 +279,15 @@ class UserPlayHistory extends Component {
                                                 </div>
                                             })}
                                         </div>
-                                        <div>Number of hits:  {this.calculateWins(match[0], matchRes).hits}</div>
-                                        <div>Amount won: {this.calculateWins(match[0], matchRes).win}</div>
+                                        <div>Number of hits:  {match[0].hits}</div>
+                                        <div>Amount won: {this.calculateWins(match[0], matchRes)}</div>
+                                        {/* <div>Number of hits:  {this.calculateWins(match[0], matchRes).hits}</div>
+                                        <div>Amount won: {this.calculateWins(match[0], matchRes).win}</div> */}
                                     </div>
                                     <div className={classes.JackPotShare}>
-                                        <Jackpot basePrice={this.props.basePrice} gameDay={moment(match[0].evaluationDate).format("YYYY-MM-DD")}
-                                            thirteenPercent={this.props.thirteenPercent} gamesLength={match[0].games.length}
-                                            twelvePercent={this.props.twelvePercent} elevenPercent={this.props.elevenPercent}
-                                            tenPercent={this.props.tenPercent}
+                                        <Jackpot basePrice={this.props.basePrice} gameDay=
+                                        {moment(match[0].evaluationDate).format("YYYY-MM-DD")}
+                                             gamesLength={match[0].games.length}
                                         />
                                     </div>
                                     <div className={classes.Footer}>
@@ -317,23 +318,12 @@ const mapstateToprops = (state) => {
         //board
         gamesLength: state.board.gamesLength,
 
-
-        //match results
-        thirteen: state.matchResults.thirteen,
-        twelve: state.matchResults.twelve,
-        eleven: state.matchResults.eleven,
-        ten: state.matchResults.ten,
-
         //Config
         basePrice: state.config.basePrice,
         loading: state.config.loading,
         daysuserPlayHistory: state.board.receipts,
         resultsFrom: state.config.resultsFrom,
 
-        thirteenPercent: state.config.thirteenPercent,
-        twelvePercent: state.config.twelvePercent,
-        elevenPercent: state.config.elevenPercent,
-        tenPercent: state.config.tenPercent,
         insertResult: state.config.insertResult,
 
         //Login

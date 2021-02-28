@@ -158,7 +158,7 @@ const mapDispatchToProps = (dispatch) => {
     onSetShowFunds: () => dispatch(actions.setShowFunds()),
     onResetReduxBoard: () =>
       dispatch(actions.resetReduxBoard()),
-
+      
     onSetEditIndex: (value) =>
       dispatch(actions.setEditIndex(value)),
     // onSetBoard: (isFaCup, kickOffTime, kickOffDate, basePrice) =>

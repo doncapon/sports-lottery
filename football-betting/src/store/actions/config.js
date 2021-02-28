@@ -21,7 +21,6 @@ export const fetchWeeklyResults = (payload) => {
 
 export const configureBoard =(isFaCup , kickOffTime , kickOffDate) =>{
     // let kickOffDate = getNextPlayDate( daysOffset, hourstoNext);
-    console.log("dude got called", isFaCup,kickOffDate, kickOffTime);
     return dispatch =>{
         axios.get("fixtures/date/"+ kickOffDate)
         .then(response =>{
@@ -81,27 +80,27 @@ export const configureBoard =(isFaCup , kickOffTime , kickOffDate) =>{
                  awayTeam_id: wantedFixtures[i].awayTeam.team_id, awayTeam:wantedFixtures[i].awayTeam.team_name,
                  event_date: wantedFixtures[i].event_date})
             }
-            console.log("yaba daba doo",fixturesToPush)
 
             let boardRef = firebase.database().ref("board").child(kickOffDate);
+            let data ;
             boardRef.on("value", snapshot=>{
-                let data = snapshot.val();
+                data =snapshot.val();
                 if(!data){
                     firebase.database().ref("board").child(kickOffDate).set(fixturesToPush);
                     alert("Setup successful");
-
-                }else{
-                    alert("record for that day already exists");
                 }
             })
+            if(data){
+                alert("record for that day already exists");
+            }
         }).catch(error =>{
-
+            alert("Something went wrong")
         });
     };
 }
 
 
-export const fetchResults = (numberOfGames = 26) => {
+export const fetchResults = (numberOfGames = 39) => {
     return dispatch => {
         let matchRef = firebase.database().ref().child("match-results").orderByChild('gameDay')
         .limitToLast(numberOfGames);
@@ -120,17 +119,19 @@ export const fetchResults = (numberOfGames = 26) => {
                 finalResults.splice(finalResults.length, finalResults.length + 1, i);
                
             })
-
-            dispatch(fetchWeeklyResults(finalResults));
-            dispatch(stopResultInitialize());
+            if(finalResults.length > 0 ){
+                dispatch(fetchWeeklyResults(finalResults));
+                dispatch(stopResultInitialize());
+            }else{
+                alert("Content Not Found");
+            }
+            
         });
     }
 }
 
-export const setCurrentResult = (slipGame, startDate) => {
+export const setCurrentResult = (slipGame) => {
     return dispatch => {
-        console.log("Calling")
-
         slipGame.games.map(game => {
             return axios.get("fixtures/id/" + game.fixture_id)
                 .then(response => {

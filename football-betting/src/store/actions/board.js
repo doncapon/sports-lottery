@@ -22,18 +22,19 @@ export const generateSlip2 = (amount, basePrice) =>{
     }
 }
 
-export const setBoard=( kickOffDate, basePrice) =>{
-    // let kickOffDate = getNextPlayDate( daysOffset, hourstoNext);
+export const setBoard=(basePrice) =>{
     return dispatch =>{
-        let boardRef = firebase.database().ref("board").child(kickOffDate);
+        let boardRef = firebase.database().ref("board").limitToFirst(1);
         let wantedFixtures = [];
         boardRef.on("value", snapshot=>{
             let data = snapshot.val();
-            wantedFixtures = data;
+            Object.keys(data).map(key => {
+               return  wantedFixtures = data[key];
+            })
         })
         setTimeout(() => {
             dispatch(initializeBoard(wantedFixtures, basePrice));
-        }, 1000);
+        }, 2000);
 
     };
 }

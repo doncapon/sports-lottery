@@ -24,7 +24,7 @@ export {
      setShowFunds,
      setIsToWallet,
      toggleReceiptShowHistory,
-     setBoardLoading
+     setBoardLoading,
 } from './board';
 
 export {
