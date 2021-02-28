@@ -211,20 +211,34 @@
         margin: 0;
     }
     .View {
-        font-size: 2em;
-        margin-top: 0vh;
-        margin-left: 0;
-        width: 0vw;
-        font-size: 1.8vh;
+        margin: 0;
+        padding: 0;
+        margin-top: 1.8vh;
+        width: 15vw;
+        font-size: 2.8vh;
     }
     .AllButton,
     .WinsButton {
-        width: 15vw;
+        width: 18vw;
         margin-right: 5vw;
         height: 7vh;
-        font-size: 2em;
+        font-size: 2.5em;
         margin-left: 0px;
         padding-left: 0px;
+    }
+    .OrderByWrap{
+        margin-top: 10px;
+        width: 100vw;
+    }
+    .OrderBy{
+        height: 7vh;
+        font-size: 1.5em;
+        margin-left: 15vw;
+        width: 60%;
+    }
+    .Buttons{
+        margin: 0;
+        padding: 0;
     }
 }
 
@@ -279,4 +293,33 @@
     .Winner {
         border: 3px solid green;
     }
+    .OrderByHeader {
+        width: 70%;
+        margin: auto;
+    }
+    .View {
+        width: 6vw;
+        font-size: 2.8vh;
+    }
+    .AllButton,
+    .WinsButton {
+        width: 10vw;
+        margin-right: 2vw;
+        height: 7vh;
+    }
+    .OrderByWrap{
+        margin-top: 10px;
+        width: 100vw;
+    }
+    .OrderBy{
+        height: 7vh;
+        font-size: 0.8em;
+        margin-left: 6vw;
+        width: 25%;
+    }
+    .Buttons{
+        margin: 0;
+        padding: 0;
+    }
+
 }

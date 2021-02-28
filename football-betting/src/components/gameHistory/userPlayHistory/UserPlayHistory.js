@@ -342,17 +342,16 @@ class UserPlayHistory extends Component {
                         <div className={classes.View}>
                             VIEW
                         </div>
-                        <div ><input className={classes.AllButton} type="button" value="All" onClick={this.handleAll} />
+                        <div className={classes.Buttons} ><input className={classes.AllButton} type="button" value="All" onClick={this.handleAll} />
                             <input className={classes.WinsButton} type="button" value="Wins only" onClick={this.handleWinsOnly} />
                         </div>
                     </div>
-                    <div>
-                        <div> <select onChange={this.submitHandler} >
+                    <div className={classes.OrderByWrap}>
+                        <select className={classes.OrderBy} onChange={this.submitHandler} >
                             <option value="select">ORDER BY</option>
                             <option value="datePlayed">Entry date</option>
                             <option value="evaluationDate" >Evaluation date</option>
                         </select>
-                        </div>
                     </div>
                 </form>
             </div>
