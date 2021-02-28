@@ -3,8 +3,8 @@
 }
 .Correct span, .Pieces span{
     color: grey;
-
 }
+
 .Main > div:nth-child(even){
     background:  #c3eafa;
 }

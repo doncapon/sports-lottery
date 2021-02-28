@@ -198,7 +198,7 @@ class UserPlayHistory extends Component {
                 for (let k = 0; k < 3; k++) {
                     if (this.translateResult(matchRes[i].homeGoals, matchRes[i].awayGoals, matchRes[i].status)
                         === this.determineSelection(match.games[i].selections[k].selected, k)
-                    ){
+                    ) {
                         sideWon++;
                     }
                 }
@@ -236,10 +236,10 @@ class UserPlayHistory extends Component {
             matchesPlayed.map((match, k) => {
                 let matchRes = matchResults.filter(res => res.fixtureId === match[0].fixture_id)[0];
                 return <div className={classes.userPlayHistoryAndShare} key={k}>
-                    <div className={classes.MainHeader}>
+                    <div className={classes.MainHeader} onClick={() => this.toggleShowHistory(k)} >
                         <div className={classes.DateHead}>Entry date : {moment(match[0].datePlayed).format("DD.MM.YYYY")}</div>
                         <div className={classes.PriceHead}>Price: {"₦" + addCommaToAmounts("" + match[0].slipPrice)}</div>
-                        <div className={classes.DateHead}>Evaluation date : {moment(match[0].evaluationDate).format("DD.MM.YYYY")}</div>
+                        <div className={classes.DateHead1}>Evaluation date : {moment(match[0].evaluationDate).format("DD.MM.YYYY")}</div>
                         <Button className={classes.BtToggle} size="sm" onClick={() => this.toggleShowHistory(k)}>
                             {!this.state.showHistory[k] ? <CaretDownFill className={classes.Icon} /> :
                                 <CaretUpFill className={classes.Icon} />} </Button>
@@ -253,7 +253,7 @@ class UserPlayHistory extends Component {
                                         <div className={classes.BodyHeader}>
                                             <div className={classes.Head1}>Match</div>
                                             <div className={classes.Head}>Score</div>
-                                            <div className={classes.Head}>Your Result</div>
+                                            <div className={classes.Head2}>Your Result</div>
                                         </div >
                                         <div className={classes.BodyMain}>
                                             {matchRes.map((eachRes, i) => {
@@ -279,15 +279,15 @@ class UserPlayHistory extends Component {
                                                 </div>
                                             })}
                                         </div>
-                                        <div>Number of hits:  {match[0].hits}</div>
-                                        <div>Amount won: {this.calculateWins(match[0], matchRes)}</div>
-                                        {/* <div>Number of hits:  {this.calculateWins(match[0], matchRes).hits}</div>
-                                        <div>Amount won: {this.calculateWins(match[0], matchRes).win}</div> */}
+                                        <div className={classes.AmountWon}>
+                                            <div>Number of hits:  {match[0].hits}</div>
+                                            <div>Amount won: {this.calculateWins(match[0], matchRes)}</div>
+                                        </div>
                                     </div>
                                     <div className={classes.JackPotShare}>
                                         <Jackpot basePrice={this.props.basePrice} gameDay=
-                                        {moment(match[0].evaluationDate).format("YYYY-MM-DD")}
-                                             gamesLength={match[0].games.length}
+                                            {moment(match[0].evaluationDate).format("YYYY-MM-DD")}
+                                            gamesLength={match[0].games.length}
                                         />
                                     </div>
                                     <div className={classes.Footer}>

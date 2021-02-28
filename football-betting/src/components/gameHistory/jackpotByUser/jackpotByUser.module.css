@@ -5,6 +5,9 @@
     color: grey;
 
 }
+.Main{
+    padding-left: 2vw;
+}
 .Main > div:nth-child(even){
     background:  #c3eafa;
 }
@@ -26,15 +29,16 @@ h6{
 }
 
 .Correct{
-    width: 30vw;
+    width: 27vw;
     float: left;
     display: flex;
 }
 
 .Pieces{
-    width: 38vw;
+    width: 35vw;
     display: flex;
     text-align: right;
+    float: right;
 }
 
 .Pot{
@@ -75,7 +79,7 @@ h6{
 /* Larger  screens */
 @media only screen and (min-width: 960px){
     .Jackpot{
-        width:  72vw;
+        width:  100%;
         margin: auto;
         font-size: 1.2em;
     }

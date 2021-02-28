@@ -13,6 +13,7 @@
     background: #ccc;
     font-size: 12px;
     border-bottom: 2px solid grey ;
+    padding: 1vh 0;
 
 }
 .BodyMain>div:nth-child(odd){
@@ -24,7 +25,11 @@
 }
 .DateHead{
     width: 25vw;
+    margin-left: 5vw;
 } 
+.DateHead1{
+    width: 35vw;
+}
 .PriceHead{
     width: 17vw;
 }
@@ -51,6 +56,8 @@
 }
 .SelectionRow{
     display: flex;
+    padding-top: 1vh;
+
 }
 
 
@@ -80,6 +87,7 @@
 .Selected, .Winner{
     margin-right: 1vw;
     height: 5vh;
+    padding: 0 2px;
 }
 .Winner{
     border: 2px solid green;
@@ -87,6 +95,7 @@
 
 .Footer{
     font-size: 12px;
+    margin-left: 2vw;
 }
 
 .FooterPrices{
@@ -95,20 +104,56 @@
 .FooterPriceInner{
     margin-right: 5vw;
 }
+.AmountWon{
+    margin-left: 2vw;
+}
+
 /* medium screens */
 @media only screen and (min-width: 768px){
-    .userPlayHistoryWrapper{
+     .userPlayHistoryWrapper{
         font-size: 1.4em;
-    }
-
-    .MainHeader{
-        width: 90%;
     }
     .DateHead{
         width: 65vw;
     } 
     .PriceHead{
         width: 17vw;
+    } 
+    .MainHeader{
+        font-size: 1.2em;
+    }
+    .DateHead{
+        width: 30vw;
+    }
+    .BodyHeader{
+        padding: 2vh 0;
+    }
+    .SelectionRow{
+        padding: 1vh;
+    }
+    .TeamNames{
+        display: flex;
+    }
+    .Head1{
+        margin-left: 5vw;
+        width: 20vw;
+    }
+    .Head{
+        width: 10vw;
+    }
+    .RowNumber{
+        width: 4vw;
+    }
+    .Teams{
+        width: 60vw;
+    }
+    .Selected, .Winner{
+        margin-right: 0.8vw;
+        height: 3.5vh;
+        padding: 0 0.5vw;
+    }
+    .Footer{
+        font-size: 1em;
     }
 }
 
@@ -117,8 +162,51 @@
 @media only screen and (min-width: 960px){
   
     .MainHeader{
-        width: 70%;
+        width: 100%;
+        margin: auto;
+        font-size: 0.9em;
+        padding: 0.5vh 0;
+        border-bottom: 3px solid grey;
     }
- 
+    .DateHead{
+        margin-left: 2vw;
+        width: 15vw;
+    }
+    .PriceHead{
+        width: 20vw;
+    }
+    .DateHead1{
+        width: 30vw;
+    }
+    .userPlayHistoryAndShare{
+        
+        width: 70%;
+        margin: auto;
+    }
+    .Head1{
+        width: 0vw;
+    }
+    .Head{
+        width: 7vw;
+    }
+    .Score{
+        width: 5vw;
+    }
+    .RowNumber{
+        width: 2vw;
+    }
+    .Teams{
+        width: 40vw;
+    }
+    .ScoreResult{
+        width: 17vw;
+    }
 
+    .Selected, .Winner{
+        height: 7vh;
+        padding: 0 2px;
+    }
+    .Winner{
+        border: 3px solid green;
+    }
 }
