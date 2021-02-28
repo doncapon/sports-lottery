@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import classes from './Signup.module.css'
 import axios from '../../axios-main';
 import { connect } from "react-redux";
-import { calculateAge } from '../../shared/utility';
+import { calculateAge, capitalizeFirstLetter } from '../../shared/utility';
 import firebase from '../../config/firebase/firebase';
 import passwordHash from 'password-hash';
 
@@ -10,13 +10,13 @@ class Signup extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: 'Olusegun',
-            surname: 'Akintimehin',
-            password: 'Emmanuel1987',
-            passwordConf: 'Emmanuel1987',
-            emailId: 'lordshegz@gmail.com',
-            dob: '25/09/1987',
-            phoneNumber: '01234567891',
+            name: '',
+            surname: '',
+            password: '',
+            passwordConf: '',
+            emailId: '',
+            dob: '',
+            phoneNumber: '',
             formErrors: {},
             apiError: ''
         };
@@ -40,8 +40,8 @@ class Signup extends Component {
                 .database()
                 .ref('users/' + userId + '/')
                 .set({
-                    name: this.state.name,
-                    surname: this.state.surname,
+                    name: capitalizeFirstLetter(this.state.name),
+                    surname: capitalizeFirstLetter(this.state.surname),
                     password: passwordHash.generate(this.state.password),
                     phoneNumber: this.state.phoneNumber,
                     email: this.state.emailId,

@@ -13,11 +13,6 @@ const Login = (props) => {
     const login = () => {
         if (!props.loading) {
             props.login(email, password);
-            if (props.user !== null) {
-
-                if (location.pathname === "/" && props.slips !== null)
-                    props.deleteAndResetAll();
-            }
         }
 
     };
