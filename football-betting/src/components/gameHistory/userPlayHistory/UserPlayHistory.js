@@ -225,7 +225,34 @@ class UserPlayHistory extends Component {
         }
         return win;
     }
+    submitHandler = (e) => {
+        let value = e.target.value;
+        let matchesPlayed = [...this.state.matchesPlayed];
+        let matchesTransformed = matchesPlayed.sort((a, b) => {
 
+            return a[0][value] < b[0][value] ? 1 : -1
+        });
+        this.setState({ matchesPlayed: matchesTransformed });
+    }
+    handleWinsOnly = () => {
+        let matchesPlayed = [...this.state.matchesPlayed];
+        let matchFiltered = matchesPlayed.filter(match => match[0].hits >= 10);
+        this.setState({ matchesPlayed: matchFiltered });
+
+    }
+    handleAll = () => {
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                let playedRef = firebase.database().ref("game-history").child(user.uid);
+                playedRef.on("value", (snapshot) => {
+                    let data = snapshot.val();
+                    let grouped = _.groupBy(data, 'gameNumber');
+                    let groupedArray = Object.keys(grouped).map(keys => grouped[keys]);
+                    this.setState({ matchesPlayed: groupedArray })
+                });
+            }
+        });
+    }
     render() {
         if (!this.props.isLoggedIn)
             this.props.history.push("/");
@@ -308,7 +335,28 @@ class UserPlayHistory extends Component {
             })
             : <Spinner />
 
-        return (<div className={classes.userPlayHistoryWrapper}>{userPlayHistoryTrannsformed}</div>);
+        return (<div className={classes.userPlayHistoryWrapper}>
+            <div className={classes.OrderByHeader}>
+                <form>
+                    <div className={classes.WinsOnly}>
+                        <div className={classes.View}>
+                            VIEW
+                        </div>
+                        <div ><input className={classes.AllButton} type="button" value="All" onClick={this.handleAll} />
+                            <input className={classes.WinsButton} type="button" value="Wins only" onClick={this.handleWinsOnly} />
+                        </div>
+                    </div>
+                    <div>
+                        <div> <select onChange={this.submitHandler} >
+                            <option value="select">ORDER BY</option>
+                            <option value="datePlayed">Entry date</option>
+                            <option value="evaluationDate" >Evaluation date</option>
+                        </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            {userPlayHistoryTrannsformed}</div>);
     }
 }
 

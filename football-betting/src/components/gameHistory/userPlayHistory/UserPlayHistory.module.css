@@ -1,212 +1,282 @@
-.userPlayHistoryWrapper{
+.userPlayHistoryWrapper {
     font-weight: bold;
     font-size: 1em;
     width: 100%;
     margin: auto;
-
 }
-.MainHeader:nth-child(even){
+
+.MainHeader:nth-child(even) {
     background-color: blue;
 }
-.MainHeader{
+
+.MainHeader {
     display: flex;
     background: #ccc;
     font-size: 12px;
-    border-bottom: 2px solid grey ;
+    border-bottom: 2px solid grey;
     padding: 1vh 0;
-
 }
-.BodyMain>div:nth-child(odd){
+
+.BodyMain>div:nth-child(odd) {
     background-color: #eee;
 }
-.BodyMain>div:nth-child(even){
-    background:  #c3eafa;
 
+.BodyMain>div:nth-child(even) {
+    background: #c3eafa;
 }
-.DateHead{
+
+.DateHead {
     width: 25vw;
     margin-left: 5vw;
-} 
-.DateHead1{
+}
+
+.DateHead1 {
     width: 35vw;
 }
-.PriceHead{
+
+.PriceHead {
     width: 17vw;
 }
-.Icon{
+
+.Icon {
     width: 6vh;
-    height: 2vh;;
-  }
-
-.ResultHead{
-    background: white;
-
+    height: 2vh;
+    ;
 }
 
-.BodyHeader{
+.ResultHead {
+    background: white;
+}
+
+.BodyHeader {
     display: flex;
 }
 
-.Head1{
-    margin-right:36vw;
+.Head1 {
+    margin-right: 36vw;
     margin-left: 2vw
 }
-.Head{
+
+.Head {
     margin-right: 10vw;
 }
-.SelectionRow{
+
+.SelectionRow {
     display: flex;
     padding-top: 1vh;
-
 }
 
-
-.Teams{
+.Teams {
     display: flex;
     width: 53vw;
 }
 
-.TeamNames{
+.TeamNames {
     display: inline;
 }
-.RowNumber{
+
+.RowNumber {
     width: 7vw;
     margin-left: 1vw;
 }
 
-.ScoreResult{
+.ScoreResult {
     display: flex;
     width: 25vw;
 }
-.Score{
+
+.Score {
     width: 10vw;
 }
-.Selections{
+
+.Selections {
     display: flex;
 }
-.Selected, .Winner{
+
+.Selected,
+.Winner {
     margin-right: 1vw;
     height: 5vh;
     padding: 0 2px;
 }
-.Winner{
+
+.Winner {
     border: 2px solid green;
 }
 
-.Footer{
+.Footer {
     font-size: 12px;
     margin-left: 2vw;
 }
 
-.FooterPrices{
+.FooterPrices {
     display: flex;
 }
-.FooterPriceInner{
+
+.FooterPriceInner {
     margin-right: 5vw;
 }
-.AmountWon{
+
+.AmountWon {
     margin-left: 2vw;
 }
 
+.OrderByHeader {
+    background: white;
+    padding-left: 2vw;
+}
+
+.WinsOnly {
+    display: flex;
+    padding-top: 2vh;
+}
+
+.View {
+    width: 13vw;
+    margin-top: 1.5vh
+}
+
+.AllButton,
+.WinsButton {
+    width: 23vw;
+    margin-right: 5vw;
+    height: 5vh;
+    font-size: 1.3em;
+}
+
+.WinsButton {
+    color: white;
+    background: skyblue;
+}
+
+
 /* medium screens */
-@media only screen and (min-width: 768px){
-     .userPlayHistoryWrapper{
+
+@media only screen and (min-width: 768px) {
+    .userPlayHistoryWrapper {
         font-size: 1.4em;
     }
-    .DateHead{
+    .DateHead {
         width: 65vw;
-    } 
-    .PriceHead{
+    }
+    .PriceHead {
         width: 17vw;
-    } 
-    .MainHeader{
+    }
+    .MainHeader {
         font-size: 1.2em;
     }
-    .DateHead{
+    .DateHead {
         width: 30vw;
     }
-    .BodyHeader{
+    .BodyHeader {
         padding: 2vh 0;
     }
-    .SelectionRow{
+    .SelectionRow {
         padding: 1vh;
     }
-    .TeamNames{
+    .TeamNames {
         display: flex;
     }
-    .Head1{
+    .Head1 {
         margin-left: 5vw;
         width: 20vw;
     }
-    .Head{
+    .Head {
         width: 10vw;
     }
-    .RowNumber{
+    .RowNumber {
         width: 4vw;
     }
-    .Teams{
+    .Teams {
         width: 60vw;
     }
-    .Selected, .Winner{
+    .Selected,
+    .Winner {
         margin-right: 0.8vw;
         height: 3.5vh;
         padding: 0 0.5vw;
     }
-    .Footer{
+    .Footer {
         font-size: 1em;
+    }
+    .OrderByHeader {
+        background: white;
+        padding-left: 2vw;
+        width: 100%;
+    }
+    .WinsOnly {
+        display: flex;
+        padding: 0px;
+        padding-top: 2vh;
+        margin: 0;
+    }
+    .View {
+        font-size: 2em;
+        margin-top: 0vh;
+        margin-left: 0;
+        width: 0vw;
+        font-size: 1.8vh;
+    }
+    .AllButton,
+    .WinsButton {
+        width: 15vw;
+        margin-right: 5vw;
+        height: 7vh;
+        font-size: 2em;
+        margin-left: 0px;
+        padding-left: 0px;
     }
 }
 
 
 /* Larger  screens */
-@media only screen and (min-width: 960px){
-  
-    .MainHeader{
+
+@media only screen and (min-width: 960px) {
+    .MainHeader {
         width: 100%;
         margin: auto;
         font-size: 0.9em;
         padding: 0.5vh 0;
         border-bottom: 3px solid grey;
     }
-    .DateHead{
+    .DateHead {
         margin-left: 2vw;
         width: 15vw;
     }
-    .PriceHead{
+    .PriceHead {
         width: 20vw;
     }
-    .DateHead1{
+    .DateHead1 {
         width: 30vw;
     }
-    .userPlayHistoryAndShare{
-        
+    .userPlayHistoryAndShare {
         width: 70%;
         margin: auto;
     }
-    .Head1{
+    .Head1 {
         width: 0vw;
     }
-    .Head{
+    .Head {
         width: 7vw;
     }
-    .Score{
+    .Score {
         width: 5vw;
     }
-    .RowNumber{
+    .RowNumber {
         width: 2vw;
     }
-    .Teams{
+    .Teams {
         width: 40vw;
     }
-    .ScoreResult{
+    .ScoreResult {
         width: 17vw;
     }
-
-    .Selected, .Winner{
+    .Selected,
+    .Winner {
         height: 7vh;
         padding: 0 2px;
     }
-    .Winner{
+    .Winner {
         border: 3px solid green;
     }
 }
