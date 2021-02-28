@@ -1,15 +1,5 @@
 import moment from 'moment'
-
-
-export const updateObject = (oldObject, updatedProperties) => {
-    return {
-        ...oldObject,
-        ...updatedProperties
-    };
-};
-
 export const getNextPlayDate=(daysOffset, hoursToGo)=>{
-
     const i = 6;
     const d = new Date();
     d.setTime(d.getTime() + (hoursToGo *60*60*1000));
@@ -61,4 +51,8 @@ export function uuid() {
       let y = date.split("-");
       let q = y[2] + "-" + y[1]+ "-" + y[0];
       return q;
+  }
+
+  export const capitalizeFirstLetter =(str)=>{
+    return str.charAt(0).toUpperCase() + str.slice(1);
   }

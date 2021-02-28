@@ -18,7 +18,6 @@ const Funds = (props) => {
     } else {
         titleLarge += "\xa0\xa0\xa0" +
             "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0" +
-
             " wallet hidden";
     }
 

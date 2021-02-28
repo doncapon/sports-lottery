@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import Funds from '../../../components/board/funds/funds'
 import Login from '../../../components/loginLogout/login/login';
 import { withRouter } from 'react-router-dom';
+import { capitalizeFirstLetter } from '../../../shared/utility';
 import firebase from '../../../config/firebase/firebase';
 
 //import Navbar from "reactjs-navbar";
@@ -25,8 +26,8 @@ class Navs extends Component {
 
   render() {
     let firstName = this.props.firstName;
-    if (firstName > 0) {
-      firstName = this.props.firstName.charAt(0).toUpperCase() + this.props.firstName.slice(1)
+    if (firstName.length > 0) {
+      firstName = capitalizeFirstLetter(firstName)
     }
     return (
       <Navbar bg="success" expand="lg">
