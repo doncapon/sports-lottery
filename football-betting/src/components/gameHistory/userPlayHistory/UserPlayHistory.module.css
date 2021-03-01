@@ -313,9 +313,10 @@
     }
     .OrderBy{
         height: 7vh;
-        font-size: 0.8em;
+        font-size: 0.7em;
         margin-left: 6vw;
         width: 25%;
+        padding-bottom: 2vh;
     }
     .Buttons{
         margin: 0;
