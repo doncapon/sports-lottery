@@ -33,7 +33,9 @@
     text-align: left;
     margin-bottom: 20px;
 }
-
+.Forgot:hover{
+    color: salmon;
+}
 /* medium screens */
 @media only screen and (min-width: 768px){
     .alertShown{
