@@ -35,19 +35,9 @@ class Board extends Component {
   }
   componentDidMount(){
     if(!this.state.loading){
-      let funds;
-      firebase.auth().onAuthStateChanged((user)=>{
-        if(user){
-
-          firebase.database().ref("users").child(user.uid).child("funds")
-          .on("value", snapshot=>{
-            funds = snapshot.val();
-          })
-          console.log("funds sdf ",funds);
-          while(funds === null)
-          this.setState({funds: funds});
-        }
-      })
+      setTimeout(()=>{
+        this.setState({funds: this.props.user.funds});
+      }, 1000);
     }
     this.setState({loading: true});
   }
@@ -168,6 +158,7 @@ updateJackpot =(totalPrice)=>{
                   {"₦" + addCommaToAmounts(this.props.totalPrice.toString(10))}
 
                 </Button>
+                {console.log("funding" , this.state.funds)}
                 {(this.state.funds < this.props.totalPrice && this.props.isLoggedIn) ? <div>
                   <div style={{ color: 'red', textAlign: 'center', background: 'grey', padding: '10px 0', marginBottom: '10px' }}>Sorry, you do not have enough funds to make the purchase</div>
                   <div><Button className={classes.TransferButton} onClick={()=>(this.props.history.push("/transfers"))}> <ArrowRight style={{ fontWeight: 'bolder' }} size="20" /> GO TO FUNDS TRANSFER</Button></div>
@@ -237,6 +228,7 @@ const mapstateToProps = (state) => {
 
     isLoggedIn: state.login.isLoggedIn,
     user: state.login.user
+
   };
 };
 const mapDispatchToProps = (dispatch) => {

@@ -133,7 +133,9 @@
         padding-bottom: 50px;     
     }
 
-
+    .ConfrimePayments{
+        height: 13vh;
+    }
 
 }
 
