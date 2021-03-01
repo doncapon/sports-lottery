@@ -30,7 +30,7 @@ export function uuid() {
     let num = x1+x2;
     if(num.includes("."))
     num = num.substr(0, num.indexOf(".") + 3)
-    if(num.substr(num.indexOf('.')+1, num.length).length === 1){
+    if(num.includes(".") && num.substr(num.indexOf('.')+1, num.length).length === 1){
         num += "0";
     }
     return (num);

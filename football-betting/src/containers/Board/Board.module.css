@@ -64,6 +64,10 @@
 
 /* medium screens */
 @media only screen and (min-width: 768px){
+    .Board{
+        padding-bottom: 20vh;
+
+    }
     .TopBoard {
         height: 250px;
     }
@@ -102,6 +106,7 @@
         position: relative;
         width: 100% ;
         background: #eee;
+        padding-bottom: 30vh;
     }
     .TopBoard {
         height: 220px;

@@ -47,7 +47,7 @@ class Navs extends Component {
               <Nav.Link to="/settings" as={NavLink}>Settings</Nav.Link>
               : null}
           </Nav>
-          {this.props.isLoggedIn && this.props.user.funds?
+          {this.props.isLoggedIn && this.props.user.funds >= 0?
             <div className={classes.LoginSection}>
               <Button className={classes.Logout} onClick={this.logout} variant="danger">Logout</Button>
               <Funds showFunds={this.props.showFunds} firstName={firstName} user= {this.props.user}

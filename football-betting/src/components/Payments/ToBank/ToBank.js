@@ -11,10 +11,10 @@ import { connect } from "react-redux";
 
 class ToBank extends Component {
     state = {
-        name: "Olusegun Akintimehin",
+        name: "",
         amount: '',
-        account: "0125732236",
-        bank: '058',
+        account: "",
+        bank: '',
 
         funds: 0,
         formErrors: {},

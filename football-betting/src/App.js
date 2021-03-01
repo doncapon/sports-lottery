@@ -143,7 +143,9 @@ const mapstateToProps = (state) => {
 
     isFaCup: state.config.isFaCup,
     kickOffTime: state.config.kickOffTime,
-    kickOffDate: state.config.kickOffDate
+    kickOffDate: state.config.kickOffDate,
+
+    user: state.login.user
 
   };
 };
