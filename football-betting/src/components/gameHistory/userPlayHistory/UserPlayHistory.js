@@ -227,12 +227,14 @@ class UserPlayHistory extends Component {
     }
     submitHandler = (e) => {
         let value = e.target.value;
-        let matchesPlayed = [...this.state.matchesPlayed];
-        let matchesTransformed = matchesPlayed.sort((a, b) => {
+        if(value !== "select"){
+            let matchesPlayed = [...this.state.matchesPlayed];
+            let matchesTransformed = matchesPlayed.sort((a, b) => {
 
-            return a[0][value] < b[0][value] ? 1 : -1
-        });
-        this.setState({ matchesPlayed: matchesTransformed });
+                return a[0][value] < b[0][value] ? 1 : -1
+            });
+            this.setState({ matchesPlayed: matchesTransformed });
+        }
     }
     handleWinsOnly = () => {
         let matchesPlayed = [...this.state.matchesPlayed];
