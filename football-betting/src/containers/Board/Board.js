@@ -12,7 +12,7 @@ import axios from '../../axios-fixtures';
 import Payment from '../../components/board/payment/payment';
 import { ArrowRight } from "react-bootstrap-icons";
 import Receipts from '../../components/board/receipts/receipts/receipts';
-import { addCommaToAmounts ,dateInYYYYMMDD} from '../../shared/utility';
+import { addCommaToAmounts, dateInYYYYMMDD } from '../../shared/utility';
 import firebase from '../../config/firebase/firebase';
 import Modal from "../../components/UI/Modal/Modal";
 import LoginModal from '../../components/loginLogout/modalLogin/loginModal';
@@ -20,7 +20,6 @@ import LoginModal from '../../components/loginLogout/modalLogin/loginModal';
 class Board extends Component {
 
   state = {
-    funds: 0,
     showModalSignin: false,
     funds: 0,
     loading: false
@@ -28,18 +27,20 @@ class Board extends Component {
   constructor(props) {
     super(props);
     if (!this.props.loading) {
+      console.log("i got called");
       this.props.onSetBoard(this.props.basePrice);
-      this.state.funds= this.props.user.funds;
+      this.state.funds = this.props.user.funds;
+
     }
 
   }
-  componentDidMount(){
-    if(!this.state.loading){
-      setTimeout(()=>{
-        this.setState({funds: this.props.user.funds});
+  componentDidMount() {
+    if (!this.state.loading) {
+      setTimeout(() => {
+        this.setState({ funds: this.props.user.funds });
       }, 1000);
     }
-    this.setState({loading: true});
+    this.setState({ loading: true });
   }
 
   togglePaymentButton = (paying, paid) => {
@@ -75,11 +76,11 @@ class Board extends Component {
       return funds - this.props.totalPrice
     });
   }
-updateJackpot =(totalPrice)=>{
-  firebase.database().ref("jackpots").child(dateInYYYYMMDD(this.props.gameDate)).child("jackpot").transaction(Jackpots=>{
-    return Jackpots  + totalPrice;
-  })
-}
+  updateJackpot = (totalPrice) => {
+    firebase.database().ref("jackpots").child(dateInYYYYMMDD(this.props.gameDate)).child("jackpot").transaction(Jackpots => {
+      return Jackpots + totalPrice;
+    })
+  }
   render() {
     return (this.props.loading ? (<div className={classes.Board}>
 
@@ -158,10 +159,12 @@ updateJackpot =(totalPrice)=>{
                   {"₦" + addCommaToAmounts(this.props.totalPrice.toString(10))}
 
                 </Button>
-                {console.log("funding" , this.state.funds)}
+                {console.log("funding", this.state.funds)}
                 {(this.state.funds < this.props.totalPrice && this.props.isLoggedIn) ? <div>
-                  <div style={{ color: 'red', textAlign: 'center', background: 'grey', padding: '10px 0', marginBottom: '10px' }}>Sorry, you do not have enough funds to make the purchase</div>
-                  <div><Button className={classes.TransferButton} onClick={()=>(this.props.history.push("/transfers"))}> <ArrowRight style={{ fontWeight: 'bolder' }} size="20" /> GO TO FUNDS TRANSFER</Button></div>
+                  <div style={{ color: 'red', textAlign: 'center', background: 
+                  'grey', padding: '10px 0', marginBottom: '10px' }}>Sorry, you do not have enough funds to make the purchase</div>
+                  <div><Button className={classes.TransferButton} 
+                  onClick={() => (this.props.history.push("/transfers"))}> <ArrowRight style={{ fontWeight: 'bolder' }} size="20" /> GO TO FUNDS TRANSFER</Button></div>
                 </div> : null}
                 <Modal show={this.state.showModalSignin} modalClosed={this.cancelLoginPopup}>
                   <LoginModal setLoggedInUser={this.props.onSetLoggedInUser}

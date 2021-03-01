@@ -147,7 +147,13 @@ class ToBank extends Component {
     handleChange = (e) => {
         let { name, value } = e.target;
         this.setState({ [name]: value });
+        if (name === "account") {
+            console.log( "blah " , value,)
+            value = value.replace(/[^0-9]+/, '');
+            console.log( "blah " , value,)
+            this.setState({account: value});
 
+        }
         const ele = document.activeElement.name;
         let error = {};
         if (ele === "name")
@@ -230,7 +236,7 @@ class ToBank extends Component {
                                                 let userId = firebase.auth().currentUser.uid;
                                                 let userRef = firebase.database().ref("users").child(userId);
                                                 userRef.child('funds').transaction((funds) => {
-                                                    this.props.onSetFunds( funds - Number(this.state.amount)                                                    )
+                                                    this.props.onSetFunds(funds - Number(this.state.amount))
                                                     return funds - Number(this.state.amount)
                                                 })
 
@@ -306,7 +312,7 @@ class ToBank extends Component {
                 }
             } else {
                 // No user is signed in.
-                alert("please login")
+                // alert("please login")
             }
         })
 
@@ -315,6 +321,7 @@ class ToBank extends Component {
     setShowUpdate = (value) => {
         this.setState({ showUpdate: value })
     }
+
     render() {
         const { nameErr, amountErr, accountErr, bankErr } = this.state.formErrors;
         const banks = [classes.Banks];
@@ -401,10 +408,10 @@ class ToBank extends Component {
                                 </div>
                                 <div>
                                     <label className={classes.label} htmlFor="name">Account</label>
-                                    <input type="number" name="account"
+                                    <input type="text" name="account"
                                         value={this.state.account}
                                         onChange={this.handleChange}
-
+                                        maxLength="10"
                                         placeholder="Account Number"
                                         className={classes.Number} />
                                     {accountErr &&

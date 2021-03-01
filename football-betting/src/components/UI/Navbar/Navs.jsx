@@ -14,6 +14,21 @@ class Navs extends Component {
   state = {
     isLoading: false,
   };
+  componentDidMount(){
+    if(!this.state.isLoading){
+      setTimeout(() => {
+        if (this.props.user.funds <= 0) {
+          this.props.setIsPaying(false);
+          this.props.setIsPaid(false);
+    
+        }
+  
+        this.setState({isLoading: true})
+        
+      }, 2000);
+    }
+    
+  }
   logout = () => {
     this.props.logout();
     this.props.setIsPaying(false);
