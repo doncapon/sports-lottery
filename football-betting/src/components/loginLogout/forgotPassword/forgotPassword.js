@@ -32,6 +32,7 @@ const ForgotPassword = (props) => {
     }
     const forgetRedirect=()=>{
         setShowModal(false);
+        history.push("/");
     }
     const handleSubmitEmail = (e) => {
         e.preventDefault();
