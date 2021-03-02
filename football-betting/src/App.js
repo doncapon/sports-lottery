@@ -103,7 +103,7 @@ class App extends React.Component {
           toggleShowFunds={this.props.onToggleShowFunds} setEditIndex={this.props.onSetEditIndex}
           setIsPaying = {this.props.onSetIsPaying} setIsPaid = {this.props.onSetIsPaid}
         /></div>
-        <CountDown/>
+        {/* <CountDown/> */}
         <Switch>
           <Route path="/transfers" component={Transfers} />
           <Route path="/results" component={ResultPage} />

@@ -10,7 +10,7 @@ class Landing extends Component {
             <div className={classes.LandingWrapper}>
             
             
-
+            <CountDown/>
 
             </div>
         );
