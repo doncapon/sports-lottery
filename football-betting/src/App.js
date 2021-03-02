@@ -19,6 +19,7 @@ import Signup from './containers/Signup/Signup';
 import ActivateNewUser from './containers/ActivateNewUser/ActivateNewUser';
 import UserPlayHistory from './components/gameHistory/userPlayHistory/UserPlayHistory';
 import firebase from "./config/firebase/firebase";
+import CountDown from './components/UI/CountDown/CountDown';
 
 class App extends React.Component {
 
@@ -102,7 +103,7 @@ class App extends React.Component {
           toggleShowFunds={this.props.onToggleShowFunds} setEditIndex={this.props.onSetEditIndex}
           setIsPaying = {this.props.onSetIsPaying} setIsPaid = {this.props.onSetIsPaid}
         /></div>
-
+        <CountDown/>
         <Switch>
           <Route path="/transfers" component={Transfers} />
           <Route path="/results" component={ResultPage} />
@@ -114,6 +115,7 @@ class App extends React.Component {
           <Route path="/play" component={Board} />
           <Route path="/authentication/activate/:token" component={ActivateNewUser} />
           <Route exact path="/" component={Landing} />
+          {/* <Route exact path="/" component={CountDown} /> */}
           <Redirect to="/" />
         </Switch>
         {this.props.isLoggedIn ?
