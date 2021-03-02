@@ -148,6 +148,16 @@ class UserPlayHistory extends Component {
         }
         return true;
     }
+    rseetShowHistory=()=>{
+        let smallShow = [...this.state.showHistory];
+        let newHistory = []
+        smallShow.forEach(history => {
+            history = false;
+            newHistory.push(history);
+        });
+        this.setState({ showHistory: newHistory });
+
+    }
     toggleShowHistory = (index) => {
         let smallShow = [...this.state.showHistory];
         smallShow[index] = !smallShow[index];
@@ -237,12 +247,14 @@ class UserPlayHistory extends Component {
         }
     }
     handleWinsOnly = () => {
+        this.rseetShowHistory();
         let matchesPlayed = [...this.state.matchesPlayed];
         let matchFiltered = matchesPlayed.filter(match => match[0].hits >= 10);
         this.setState({ matchesPlayed: matchFiltered });
 
     }
     handleAll = () => {
+        this.rseetShowHistory();
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 let playedRef = firebase.database().ref("game-history").child(user.uid);
