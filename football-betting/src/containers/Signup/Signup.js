@@ -18,7 +18,9 @@ class Signup extends Component {
             dob: '',
             phoneNumber: '',
             formErrors: {},
-            apiError: ''
+            apiError: '',
+            passwordType: 'password',
+            showText: 'Show password?'
         };
 
 
@@ -190,9 +192,6 @@ class Signup extends Component {
         return { isValid: formIsValid, error: error }
     }
 
-
-
-
     handleFormValidation = () => {
         const { name, surname, emailId, dob, phoneNumber, password, passwordConf } = this.state;
         let formErrors = {};
@@ -257,7 +256,7 @@ class Signup extends Component {
         let userByPhone;
         if (this.handleFormValidation()) {
             this.setState({ formErrors: {} })
-            
+
             let promise = axios.get("/users.json")
                 .then(response => {
                     let isExist = false;
@@ -284,7 +283,7 @@ class Signup extends Component {
                     return response.data;
 
                 });
-            Promise.all([ promise])
+            Promise.all([promise])
                 .then(value => {
                     if (!userByPhone && !this.state.formErrors["phoneNumberErr"]) {
                         this.createUser()
@@ -294,7 +293,7 @@ class Signup extends Component {
                                     formERror["emailIdErr"] = response.message;
                                     this.setState({ formErrors: formERror });
                                 } else {
-                                    firebase.auth().currentUser.sendEmailVerification({url: process.env.REACT_APP_HOME});
+                                    firebase.auth().currentUser.sendEmailVerification({ url: process.env.REACT_APP_HOME });
                                     alert("Account registered. Please click link in sent to your email to activate.");
                                     this.props.history.push("/");
                                 }
@@ -308,6 +307,15 @@ class Signup extends Component {
         // eslint-disable-next-line
         this.setState({ dob: this.state.dob.replace(/^(\d\d)(\d)$/g, '$1/$2').replace(/^(\d\d\/\d\d)(\d+)$/g, '$1/$2').replace(/[^\d\/]/g, '') });
     }
+    togglePasswordShow = ()=>{
+        if(this.state.passwordType === "password"){
+            this.setState({passwordType: "text"})
+            this.setState({showText: 'Hide password?'});
+        }else{
+            this.setState({passwordType: "password"})
+            this.setState({showText: 'Show password?'});
+        }
+    }
 
     render() {
 
@@ -317,7 +325,7 @@ class Signup extends Component {
             this.props.history.push("/")
         }
         return (<div className={classes.Wrapper}>
-            <div className="formDiv">
+            <div className={classes.formDiv}>
                 <h3 style={{ textAlign: "center" }} >Registration Form </ h3>
                 <div>
                     <form className={classes.Form} onSubmit={this.handleSubmit}>
@@ -385,11 +393,14 @@ class Signup extends Component {
                         </div>
 
                         <div>
+                        <div onClick={this.togglePasswordShow} className={classes.TogglePassword}>{this.state.showText}</div>
+
                             <label className={classes.Label} htmlFor="password">Password</label>
-                            <input type="password" name="password"
+                            
+                            <input type={this.state.passwordType} name="password"
                                 value={this.state.password}
                                 onChange={this.handleChange}
-                                placeholder="Password.."
+                                placeholder="Password..."
                                 className={classes.Password} />
                             {passwordErr &&
                                 <div className={classes.ErrorText}>{passwordErr}</div>

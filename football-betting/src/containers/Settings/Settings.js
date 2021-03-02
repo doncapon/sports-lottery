@@ -78,7 +78,6 @@ class Settings extends Component {
     calculaterWiinerAmount = () => {
         let jackpotRef = firebase.database().ref("jackpots").child(
             dateInYYYYMMDD(this.props.gameDate));
-        console.log("gameDate", this.props.gameDate);
         jackpotRef.on("value", snapshot => {
             let data = snapshot.val();
             let thirteen = 0;
@@ -146,7 +145,6 @@ class Settings extends Component {
                         }, 2000);
 
                         if (!matchesPlayed.isEvaluated) {
-                            console.log("I got vfjhg")
                             if (hits === 10) {
                                 setTimeout(() => {
                                     firebase.database().ref("jackpots").child(matchesPlayed.evaluationDate).child("tenUser").transaction(tenUsers => {

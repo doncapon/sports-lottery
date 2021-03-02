@@ -14,28 +14,33 @@ class Navs extends Component {
   state = {
     isLoading: false,
   };
-  componentDidMount(){
-    if(!this.state.isLoading){
+  componentDidMount() {
+    if (!this.state.isLoading) {
       setTimeout(() => {
-        if (this.props.user.funds <= 0) {
-          this.props.setIsPaying(false);
-          this.props.setIsPaid(false);
-    
-        }
+        if (firebase.auth().onAuthStateChanged(user => {
+          if (user) {
+            if (this.props.user.funds <= 0) {
+              this.props.setIsPaying(false);
+              this.props.setIsPaid(false);
   
-        this.setState({isLoading: true})
+            }
+  
+            this.setState({ isLoading: true })
+          }
+        })) {
         
+        }
       }, 2000);
     }
-    
+
   }
   logout = () => {
     this.props.logout();
     this.props.setIsPaying(false);
     this.props.setIsPaid(false);
 
-      if (this.props.slips !== null && this.props.slips.length > 0)    
-    this.props.deleteAndResetAll();
+    if (this.props.slips !== null && this.props.slips.length > 0)
+      this.props.deleteAndResetAll();
     this.props.history.push("/");
   }
 
@@ -62,15 +67,15 @@ class Navs extends Component {
               <Nav.Link to="/settings" as={NavLink}>Settings</Nav.Link>
               : null}
           </Nav>
-          {this.props.isLoggedIn && this.props.user.funds >= 0?
+          {this.props.isLoggedIn && this.props.user.funds >= 0 ?
             <div className={classes.LoginSection}>
               <Button className={classes.Logout} onClick={this.logout} variant="danger">Logout</Button>
-              <Funds showFunds={this.props.showFunds} firstName={firstName} user= {this.props.user}
+              <Funds showFunds={this.props.showFunds} firstName={firstName} user={this.props.user}
                 toggleShowFunds={this.props.toggleShowFunds} setIsLoggedIn={this.props.setIsLoggedIn} />
             </div>
-            : <Login slips={this.props.slips} deleteAndResetAll={this.props.deleteAndResetAll} user= {this.props.user}
+            : <Login slips={this.props.slips} deleteAndResetAll={this.props.deleteAndResetAll} user={this.props.user}
               login={this.props.login} setForgot={this.props.setForgot} forgotPassword={this.props.forgotPassword}
-              loading= {this.props.loading} isLoggedIn = {this.props.isLoggedIn}
+              loading={this.props.loading} isLoggedIn={this.props.isLoggedIn}
             />
           }
 

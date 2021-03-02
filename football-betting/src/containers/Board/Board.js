@@ -27,7 +27,6 @@ class Board extends Component {
   constructor(props) {
     super(props);
     if (!this.props.loading) {
-      console.log("i got called");
       this.props.onSetBoard(this.props.basePrice);
       this.state.funds = this.props.user.funds;
 
@@ -159,7 +158,6 @@ class Board extends Component {
                   {"₦" + addCommaToAmounts(this.props.totalPrice.toString(10))}
 
                 </Button>
-                {console.log("funding", this.state.funds)}
                 {(this.state.funds < this.props.totalPrice && this.props.isLoggedIn) ? <div>
                   <div style={{ color: 'red', textAlign: 'center', background: 
                   'grey', padding: '10px 0', marginBottom: '10px' }}>Sorry, you do not have enough funds to make the purchase</div>

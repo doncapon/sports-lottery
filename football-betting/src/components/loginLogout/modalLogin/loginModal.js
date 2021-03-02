@@ -12,7 +12,7 @@ const LoginModal = (props) => {
     const [forgot, setForgot] = useState(false);
     let history = useHistory();
 
-    const login = (email, password) => {
+    const login = () => {
 
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then((userCredential) => {
@@ -26,7 +26,23 @@ const LoginModal = (props) => {
                         props.setIsLoggedIn(true);
                         popUpFunc();
                         props.setLoggedInUser(dbUser);
+
+
+                            firebase.database().ref("users").child(user.uid).child("funds")
+                                .on("value", snapshot => {
+                                    if (snapshot.val() > 0) {
+                                        props.setIsPaying(true);
+
+                                    } else {
+                                        props.setIsPaying(false);
+
+                                    }
+                                })
+
+
+                        props.cancelLoginPopup();
                         history.push("/play");
+                        window.location.reload();
                     });
                 }
 
@@ -42,13 +58,8 @@ const LoginModal = (props) => {
 
     const HandleSubmit = (e) => {
         e.preventDefault();
-        login(email, password);
-        if(firebase.auth().currentUser){
-            
-        props.cancelLoginPopup();
-        props.setIsPaying(true);
-        }else{
-        }
+        login();
+
     }
 
     const HandleCancel = () => {
@@ -68,7 +79,7 @@ const LoginModal = (props) => {
     }
     let alerts = ["alert", "alert-danger"]
     showPopup ? alerts.push(classes.alertShown) : alerts.push(classes.alertHidden);
-    return (<div>
+    return (<div className={classes.Wrapper}>
         {showPopup ?
             !userData.email ?
                 <div className={alerts.join(" ")}>
@@ -76,29 +87,30 @@ const LoginModal = (props) => {
                 </div>
                 : null
             : null
-
         }
-         <form onSubmit={(e) => HandleSubmit(e)}>
-             <h3>Login</h3>
-            <div  className={classes.FormControl}>
-                <div className={classes.Label}  >Email:</div>
-                <input name="email" type="email" onChange={(e) => setEmail(e.target.value)}
-                    value={email} placeholder="email" className= {classes.Input} />
-                <br />
-            </div>
-            <div  className={classes.FormControl}>
-                <div className={classes.Label}>Password:</div>
-                <input name="password" type="password" onChange={(e) => setPassword(e.target.value)}
-                    value={password} placeholder="password"  className= {classes.Input2}/>
-            </div>
-            {forgot ?
-                <Button className={classes.Forgot} onClick={handleForgot} >forgot password?</Button>
-                : null}
-                
-            <Button onClick={HandleCancel} variant="outline-danger">Cancel</Button>
-            <Button type="submit" variant="success">Login</Button>
-
-        </form> 
+        <div>
+            <form onSubmit={(e) => HandleSubmit(e)} className={classes.Form}>
+                <h3>Login</h3>
+                <div className={classes.FormControl}>
+                    <div className={classes.Label}  >Email:</div>
+                    <input name="email" type="email" onChange={(e) => setEmail(e.target.value)}
+                        value={email} placeholder="email" className={classes.Input} />
+                    <br />
+                </div>
+                <div className={classes.FormControl}>
+                    <div className={classes.Label}>Password:</div>
+                    <input name="password" type="password" onChange={(e) => setPassword(e.target.value)}
+                        value={password} placeholder="password" className={classes.Input2} />
+                </div>
+                {forgot ?
+                    <Button className={classes.Forgot} onClick={handleForgot} >forgot password?</Button>
+                    : null}
+                <div className={classes.Buttons}>
+                    <Button onClick={HandleCancel} variant="outline-danger">Cancel</Button>
+                    <Button type="submit" variant="success">Login</Button>
+                </div>
+            </form>
+        </div>
     </div>);
 }
 

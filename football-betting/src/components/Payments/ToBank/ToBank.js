@@ -148,11 +148,8 @@ class ToBank extends Component {
         let { name, value } = e.target;
         this.setState({ [name]: value });
         if (name === "account") {
-            console.log( "blah " , value,)
             value = value.replace(/[^0-9]+/, '');
-            console.log( "blah " , value,)
             this.setState({account: value});
-
         }
         const ele = document.activeElement.name;
         let error = {};
