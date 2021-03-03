@@ -1,11 +1,13 @@
 import React from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
-import Auxy from '../../../hoc/Auxy/Auxy'
-import classes from './CountDown.module.css';
-
+import Auxy from "../../../hoc/Auxy/Auxy";
+import classes from "./CountDown.module.css";
+import moment from 'moment';
 const minuteSeconds = 60;
 const hourSeconds = 3600;
 const daySeconds = 86400;
+
+
 
 const timerProps = {
   isPlaying: true,
@@ -30,63 +32,68 @@ const CountDown = (props) => {
 
   const remainingTime = endTime - stratTime;
   const days = Math.ceil(remainingTime / daySeconds);
+  console.log(days)
   const daysDuration = days * daySeconds;
-
+  let day = moment(props.gameDateRaw).format("D");
+  let hour = moment(props.gameDateRaw).format("HH");
+  let mins = moment(props.gameDateRaw).format("mm");
+  let secs = moment(props.gameDateRaw).format("ss");
+  console.log(Number(day))
+  console.log("game count",props.gamedate)
   return (
-      <Auxy>
-       <h1 style={{textAlign: "center"}}>Countdown to Game Day</h1>
-    <div className={classes.count}>
-   
-      <CountdownCircleTimer
-        {...timerProps}
-        colors={[["#7E2E84"]]}
-        duration={daysDuration}
-        initialRemainingTime={remainingTime}
-      >
-        {({ elapsedTime }) =>
-          renderTime("days", getTimeDays(daysDuration - elapsedTime))
-        }
-      </CountdownCircleTimer>
-      <CountdownCircleTimer
-        {...timerProps}
-        colors={[["#D14081"]]}
-        duration={daySeconds}
-        initialRemainingTime={remainingTime % daySeconds}
-        onComplete={(totalElapsedTime) => [
-          remainingTime - totalElapsedTime > hourSeconds,
-        ]}
-      >
-        {({ elapsedTime }) =>
-          renderTime("hours", getTimeHours(daySeconds - elapsedTime))
-        }
-      </CountdownCircleTimer>
-      <CountdownCircleTimer
-        {...timerProps}
-        colors={[["#EF798A"]]}
-        duration={hourSeconds}
-        initialRemainingTime={remainingTime % hourSeconds}
-        onComplete={(totalElapsedTime) => [
-          remainingTime - totalElapsedTime > minuteSeconds,
-        ]}
-      >
-        {({ elapsedTime }) =>
-          renderTime("minutes", getTimeMinutes(hourSeconds - elapsedTime))
-        }
-      </CountdownCircleTimer>
-      <CountdownCircleTimer
-        {...timerProps}
-        colors={[["#218380"]]}
-        duration={minuteSeconds}
-        initialRemainingTime={remainingTime % minuteSeconds}
-        onComplete={(totalElapsedTime) => [
-          remainingTime - totalElapsedTime > 0,
-        ]}
-      >
-        {({ elapsedTime }) =>
-          renderTime("seconds", getTimeSeconds(elapsedTime))
-        }
-      </CountdownCircleTimer>
-    </div>
+    <Auxy>
+      <h1 style={{ textAlign: "center" }}>Countdown to Game Day</h1>
+      <div className={classes.count}>
+        <CountdownCircleTimer
+          {...timerProps}
+          colors={[["#7E2E84"]]}
+          duration={daysDuration}
+          initialRemainingTime={remainingTime}
+        >
+          {({ elapsedTime }) =>
+            renderTime("days", getTimeDays(daysDuration - elapsedTime))
+          }
+        </CountdownCircleTimer>
+        <CountdownCircleTimer
+          {...timerProps}
+          colors={[["#D14081"]]}
+          duration={daySeconds}
+          initialRemainingTime={remainingTime % daySeconds}
+          onComplete={(totalElapsedTime) => [
+            remainingTime - totalElapsedTime > hourSeconds,
+          ]}
+        >
+          {({ elapsedTime }) =>
+            renderTime("hours", getTimeHours(daySeconds - elapsedTime))
+          }
+        </CountdownCircleTimer>
+        <CountdownCircleTimer
+          {...timerProps}
+          colors={[["#EF798A"]]}
+          duration={hourSeconds}
+          initialRemainingTime={remainingTime % hourSeconds}
+          onComplete={(totalElapsedTime) => [
+            remainingTime - totalElapsedTime > minuteSeconds,
+          ]}
+        >
+          {({ elapsedTime }) =>
+            renderTime("minutes", getTimeMinutes(hourSeconds - elapsedTime))
+          }
+        </CountdownCircleTimer>
+        <CountdownCircleTimer
+          {...timerProps}
+          colors={[["#218380"]]}
+          duration={minuteSeconds}
+          initialRemainingTime={remainingTime % minuteSeconds}
+          onComplete={(totalElapsedTime) => [
+            remainingTime - totalElapsedTime > 0,
+          ]}
+        >
+          {({ elapsedTime }) =>
+            renderTime("seconds", getTimeSeconds(elapsedTime))
+          }
+        </CountdownCircleTimer>
+      </div>
     </Auxy>
   );
 };
