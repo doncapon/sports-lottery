@@ -14,14 +14,12 @@ class ActivateNewUser extends Component {
             const { token } = this.props.match.params;
             axios.post("users/email-activate", { "token": token })
                 .then(response => {
-                    alert(response.data + ". Login");
+                    alert("Your Account has been activated. Login");
                 })
                 .catch(error => {
-                    alert(error);
+                    alert("Something went wrong. " + error);
                 })
-
-
-            // this.props.history.push("/")
+            this.props.history.push("/")
         }
 
         this.setloadingTotrue();

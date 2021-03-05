@@ -305,7 +305,6 @@ class Signup extends Component {
                             })
                     }
                 })
-
         }
     }
     handleKeyUp = () => {
@@ -385,7 +384,7 @@ class Signup extends Component {
                         </div>
                         <div>
                             <label className={classes.Label} htmlFor="dob">Birth Date</label>
-                            <span htmlFor="dob">Birth Date</span>
+                            <span className={classes.LabelSmall} htmlFor="dob">Birth Date</span>
                             <input type="text" name="dob"
                                 value={this.state.dob}
                                 size="10" maxLength="10" onKeyUp={this.handleKeyUp}
