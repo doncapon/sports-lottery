@@ -256,12 +256,13 @@ class Signup extends Component {
             console.log(registerData);
             axios.post("users/register", registerData)
                 .then(response => {
-                    alert("Account registered. Please check your email for Activation.");
+                    alert("Account registered. Please check your email for Activation link.");
                     this.props.history.push("/")
 
                 })
                 .catch(error => {
                     alert("something went wrong. Please try again. ", error.data)
+                    console.log(error)
                 })
         }
     }
@@ -333,7 +334,7 @@ class Signup extends Component {
                         </div>
                         <div>
                             <label className={classes.Label} htmlFor="dob">Birth Date</label>
-                            <span htmlFor="dob">Birth Date</span>
+                            <span className={classes.LabelSmall} htmlFor="dob">Birth Date</span>
                             <input type="text" name="dob"
                                 value={this.state.dob}
                                 size="10" maxLength="10" onKeyUp={this.handleKeyUp}
