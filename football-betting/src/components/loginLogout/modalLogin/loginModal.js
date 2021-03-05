@@ -6,8 +6,8 @@ import firebase from '../../../config/firebase/firebase';
 
 const LoginModal = (props) => {
     const [showPopup, setShowPopUp] = useState(false);
-    const [email, setEmail] = useState('lordshegz@gmail.com');
-    const [password, setPassword] = useState('Emmanuel1987');
+    const [email, setEmail] = useState('"');
+    const [password, setPassword] = useState('');
     const [userData, setUserData] = useState({});
     const [forgot, setForgot] = useState(false);
     let history = useHistory();
