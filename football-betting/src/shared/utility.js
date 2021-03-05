@@ -1,15 +1,5 @@
 import moment from 'moment'
-
-
-export const updateObject = (oldObject, updatedProperties) => {
-    return {
-        ...oldObject,
-        ...updatedProperties
-    };
-};
-
 export const getNextPlayDate=(daysOffset, hoursToGo)=>{
-
     const i = 6;
     const d = new Date();
     d.setTime(d.getTime() + (hoursToGo *60*60*1000));
@@ -28,6 +18,7 @@ export function uuid() {
   }
 
   export function addCommaToAmounts(nStr){
+ 
     nStr += '';
     const x = nStr.split('.');
     let x1 = x[0];
@@ -39,12 +30,14 @@ export function uuid() {
     let num = x1+x2;
     if(num.includes("."))
     num = num.substr(0, num.indexOf(".") + 3)
+    if(num.includes(".") && num.substr(num.indexOf('.')+1, num.length).length === 1){
+        num += "0";
+    }
     return (num);
   }
-
  export const calculateAge = (dob1) => {
     const today = new Date();
-    const birthDate = new Date(moment(dob1).format("DD-MM-YYYY"));  // create a date object directly from `dob1` argument
+    const birthDate = new Date(dob1+ "T00:00:00Z");  // create a date object directly from `dob1` argument
     let age_now = today.getFullYear() - birthDate.getFullYear();
     const m = today.getMonth() - birthDate.getMonth();
     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) 
@@ -52,4 +45,14 @@ export function uuid() {
         age_now--;
     }
     return age_now;
+  }
+
+  export const dateInYYYYMMDD=(date) =>{
+      let y = date.split("-");
+      let q = y[2] + "-" + y[1]+ "-" + y[0];
+      return q;
+  }
+
+  export const capitalizeFirstLetter =(str)=>{
+    return str.charAt(0).toUpperCase() + str.slice(1);
   }

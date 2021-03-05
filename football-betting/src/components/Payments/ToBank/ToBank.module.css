@@ -27,6 +27,7 @@ option{
 
 .SubmitInner{
   height: 20vh;
+  width: 100vw;
 }
     .Buttons{
         width: 100vw;
@@ -43,6 +44,7 @@ option{
       cursor: pointer;  
       font-size: 20px;  
       margin-left: 2px;
+      width: 27%;
 
     } 
  .Submit{
@@ -92,6 +94,7 @@ option{
     .Button1, .Button2,.Submit{    
       min-width: 15vw;
       margin-left: 5px;
+      width: 12vw;
       
     }
     
@@ -121,10 +124,11 @@ option{
 
 /* Larger devices */
 @media only screen and (min-width: 960px) {
-    .Text, select  ,   .Password , .Banks
+    .Text, select  ,   .Password , .Banks, .BanksExist
       , .Number  
     {    
       width: 30vw;
+      height: 7vh;
     }
 
     .label{
@@ -142,6 +146,11 @@ option{
   
   .Button1,.Button2, .Submit{   
       margin-left: 5px;
+      min-width: 0;
       width: 12vw;
+  }
+
+  .Button{
+    width: 5%;
   }
 }

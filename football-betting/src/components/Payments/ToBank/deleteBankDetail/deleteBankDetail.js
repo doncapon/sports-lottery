@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Spinner } from 'react-bootstrap';
-import classes from './updateBankDetail.module.css';
+import classes from './deleteBankDetail.module.css';
+import firebase from  '../../../../config/firebase/firebase';
 
 class UpdateBankDetail extends Component {
     constructor(props) {
@@ -8,7 +9,6 @@ class UpdateBankDetail extends Component {
 
         this.state = {
             name: "",
-            amount: '',
             account: "",
             bank: '',
 
@@ -72,39 +72,26 @@ class UpdateBankDetail extends Component {
 
     }
 
-    saveBankValidation() {
-        const { name, bank } = this.state;
-        let formErrors = {};
-        let formIsValid = true;
-
-        //Name   
-        if (!name) {
-            formIsValid = false;
-            formErrors["nameErr"] = "Name is required.";
-        }
-        //Bank
-        if (bank === '' || bank === "select") {
-            formIsValid = false;
-            formErrors["bankErr"] = "Select bank.";
-        }
-        this.setState({ formErrors: formErrors });
-
-        this.setState({ formErrors: formErrors });
-
-        return formIsValid;
-    }
-
     handleDelete = (e) => {
         e.preventDefault();
-        if (this.saveBankValidation()) {
-
-        }
-    }
-    handleUpdate = (e) => {
-        e.preventDefault();
-        if (this.saveBankValidation()) {
-
-        }
+            firebase.auth().onAuthStateChanged((user)=>{
+                if(user){
+                    let savedBanks = [...this.props.savedBanks];
+                    let account = savedBanks.filter(bank=> bank.accountNumber === this.state.account)[0];
+                    
+                    if(account && account.accountName === this.state.name && account.bank === this.state.bank){
+                        let bankRef = firebase.database().ref('bank-accounts/'+ user.uid+ "/"+ account.accountNumber);
+                        bankRef.remove();
+                    }else{
+                        alert("Account does not exist")
+                    }
+                }else{
+                    alert("User is not logged in");
+                }
+            })
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
     }
 
     render() {
@@ -118,7 +105,6 @@ class UpdateBankDetail extends Component {
         let banksallowed;
         let optionsAllowed;
         if (this.state.loading) {
-            console.log(this.state.allowedBanks);
             banksallowed = [...this.state.allowedBanks];
             optionsAllowed = banksallowed.sort((a, b) => a.bankName > b.bankName ? 1 : -1).map((detail, i) => (
                 <option key={i} value={detail.bankCode}>{detail.bankName}</option>
@@ -127,12 +113,13 @@ class UpdateBankDetail extends Component {
 
         return (<div>
             {this.state.loading ?
-                <form onSubmit={this.handleSubmit}>
-                    <h2>Update or Delete bank</h2>
+                <form>
+                    <h2>Delete bank</h2>
                     <div>
                         <label className={classes.label} htmlFor="name">Name</label>
                         <input type="text" name="name"
                             value={this.state.name}
+                            disabled={true}
                             onChange={this.handleChange}
                             placeholder="Name: as in bank"
                             className={classes.Text} />
@@ -142,12 +129,13 @@ class UpdateBankDetail extends Component {
 
                     </div>
 
-
                     <div>
                         <label className={classes.label} htmlFor="name">Bank:</label>
                         <select name="bank"
                             value={this.state.bank}
                             onChange={this.handleChange}
+                            disabled={true}
+
                             className={banks.join(" ")} >
                             {optionsAllowed}
                         </select>
@@ -178,8 +166,6 @@ class UpdateBankDetail extends Component {
                             <button type="button" className={classes.Button2} onClick={this.handleDelete}
                             >Delete</button>
                         </div>
-                        <input type="submit" className={classes.Submit} onClick={this.handleUpdate}
-                            value="Update" />
                     </div>
                 </form> : <Spinner />}
         </div>);

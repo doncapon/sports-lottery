@@ -4,9 +4,9 @@ import { Trash2Fill } from 'react-bootstrap-icons';
 import classes from './topBoard.module.css';
 
 const topBoard = (props) => {
-  const genrateSlip = (event) => {
+  const generateSlip = (event) => {
     let i = event.target.innerHTML;
-    props.genrateSlip(i, props.editIndex, props.basePrice);
+    props.generateSlip(i, props.editIndex, props.basePrice);
   }
   return (<div className= {classes.TopBoard}>
    
@@ -22,13 +22,13 @@ const topBoard = (props) => {
           
           variant="success"
           size="md"
-          onClick={(e) => genrateSlip(e)}
+          onClick={(e) => generateSlip(e)}
         >
           480 ₦
         </Button>
 
         <Button
-          onClick={(e) => genrateSlip(e)}
+          onClick={(e) => generateSlip(e)}
           variant="success"
           size="md"
         >
@@ -37,7 +37,7 @@ const topBoard = (props) => {
 
         <Button
           variant="success"
-          onClick={(e) => genrateSlip(e)}
+          onClick={(e) => generateSlip(e)}
           size="md"
         >
           1,440 ₦
@@ -53,13 +53,13 @@ const topBoard = (props) => {
           
           variant="success"
           size="lg"
-          onClick={(e) => genrateSlip(e)}
+          onClick={(e) => generateSlip(e)}
         >
           480 ₦
         </Button>
 
         <Button
-          onClick={(e) => genrateSlip(e)}
+          onClick={(e) => generateSlip(e)}
           variant="success"
           size="lg"
         >
@@ -68,7 +68,7 @@ const topBoard = (props) => {
 
         <Button
           variant="success"
-          onClick={(e) => genrateSlip(e)}
+          onClick={(e) => generateSlip(e)}
           size="lg"
         >
           1,440 ₦

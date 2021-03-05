@@ -86,7 +86,7 @@ class PlayRow extends Component {
                           k,
                           2,
                           game[gameId + (k + 1)].sides[2].selected,
-                          this.basePrice
+                          this.props.basePrice
                         )
                       }
                     />
@@ -96,9 +96,7 @@ class PlayRow extends Component {
                       {!game.showHistory ? <CaretDownFill className={classes.Icon} /> : <CaretUpFill className={classes.Icon} />} </Button>
                   </div>
                 </div>
-
               }
-
             </div>
           </div>
           {(game.showHistory && this.props.predictions !== null) ? <div className="">

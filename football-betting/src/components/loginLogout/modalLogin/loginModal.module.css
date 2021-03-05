@@ -1,0 +1,98 @@
+.alertHidden{
+    display: none;
+    width: 30vw;
+}
+
+.alertShown{
+    display: block;
+    width: 90vw;
+}
+
+.FormControl{
+    display: block;
+    text-align: left;
+}
+.Label{
+    width: 10vw;
+    margin: 0;
+    padding: 0;
+}
+.Input{
+    margin-bottom: 20px;
+}
+
+.Buttons{
+    margin-top: 5vw;
+}
+.Forgot{
+
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    /*input has OS specific font-family*/
+    text-decoration: underline;
+    cursor: pointer;
+    color: blue;
+    margin-right: 5px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+.Forgot:hover{
+    color: salmon;
+}
+/* medium screens */
+@media only screen and (min-width: 768px){
+    .Wrapper{
+        margin: 0px;
+        padding: 0px;
+    }
+    .Form{
+        margin: 0;
+        padding: 0;
+    }
+    .alertShown{
+        width: 55vw;
+    }
+    .Label{
+        font-size: 25px;
+        width: 20vw;
+    }
+    .FormControl{
+        display: flex;
+        font-size: 1.6em;
+        height: 5.5vh;
+    }
+    .Input, .Input2{
+        width: 45vw;
+        height: 30px;
+        margin: 0px;
+        padding: 0px;
+    }
+    .Input2{
+        margin-bottom: 10px;
+    }
+    .Buttons{
+        margin-top: 1vh;
+    }
+  
+}
+
+/* Large devices */
+@media only screen and (min-width: 968px){
+
+    .alertShown{
+        width: 35vw;
+    }
+    h3{
+        font-size: 50em;
+    }
+    .FormControl{
+        display: flex;
+        font-size: 1.2em;
+        height: 8.5vh;
+        padding-left: 5px;
+    }
+    .Label{
+        font-size: 18px;
+    }
+}
