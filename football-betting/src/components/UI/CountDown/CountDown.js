@@ -27,19 +27,21 @@ const getTimeMinutes = (time) => ((time % hourSeconds) / minuteSeconds) | 0;
 const getTimeHours = (time) => ((time % daySeconds) / hourSeconds) | 0;
 const getTimeDays = (time) => (time / daySeconds) | 0;
 const CountDown = (props) => {
-  const stratTime = Date.now() / 1000;
-  const endTime = stratTime + 243248;
+  let endDate1 = moment(props.gamedate);
+  let diff = endDate1 - Date.now();
+  
+  const stratTime = Date.now()/1000;
+  //const endTime = stratTime + 243248;
+  console.log(props.gamedate)
+  console.log(stratTime)
 
-  const remainingTime = endTime - stratTime;
-  const days = Math.ceil(remainingTime / daySeconds);
+  const remainingTime = diff/1000;
+  const days = Math.ceil(diff / daySeconds);
   console.log(days)
   const daysDuration = days * daySeconds;
-  let day = moment(props.gameDateRaw).format("D");
-  let hour = moment(props.gameDateRaw).format("HH");
-  let mins = moment(props.gameDateRaw).format("mm");
-  let secs = moment(props.gameDateRaw).format("ss");
-  console.log(Number(day))
-  console.log("game count",props.gamedate)
+ 
+  //console.log(Number(day))
+  console.log("Game count", props.gamedate)
   return (
     <Auxy>
       <h1 style={{ textAlign: "center" }}>Countdown to Game Day</h1>
@@ -60,7 +62,7 @@ const CountDown = (props) => {
           duration={daySeconds}
           initialRemainingTime={remainingTime % daySeconds}
           onComplete={(totalElapsedTime) => [
-            remainingTime - totalElapsedTime > hourSeconds,
+            diff - totalElapsedTime > hourSeconds,
           ]}
         >
           {({ elapsedTime }) =>
@@ -73,7 +75,7 @@ const CountDown = (props) => {
           duration={hourSeconds}
           initialRemainingTime={remainingTime % hourSeconds}
           onComplete={(totalElapsedTime) => [
-            remainingTime - totalElapsedTime > minuteSeconds,
+            diff - totalElapsedTime > minuteSeconds,
           ]}
         >
           {({ elapsedTime }) =>
@@ -86,7 +88,7 @@ const CountDown = (props) => {
           duration={minuteSeconds}
           initialRemainingTime={remainingTime % minuteSeconds}
           onComplete={(totalElapsedTime) => [
-            remainingTime - totalElapsedTime > 0,
+            diff- totalElapsedTime > 0,
           ]}
         >
           {({ elapsedTime }) =>
