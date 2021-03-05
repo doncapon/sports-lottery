@@ -124,10 +124,11 @@ option{
 
 /* Larger devices */
 @media only screen and (min-width: 960px) {
-    .Text, select  ,   .Password , .Banks
+    .Text, select  ,   .Password , .Banks, .BanksExist
       , .Number  
     {    
       width: 30vw;
+      height: 7vh;
     }
 
     .label{

@@ -42,6 +42,10 @@ class Navs extends Component {
     if (this.props.slips !== null && this.props.slips.length > 0)
       this.props.deleteAndResetAll();
     this.props.history.push("/");
+    setTimeout(()=>{
+      window.location.reload();
+
+    }, 1000)
   }
 
   render() {

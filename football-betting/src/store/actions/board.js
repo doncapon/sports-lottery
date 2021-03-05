@@ -24,7 +24,7 @@ export const generateSlip2 = (amount, basePrice) =>{
 
 export const setBoard=(basePrice) =>{
     return dispatch =>{
-        let boardRef = firebase.database().ref("board").limitToFirst(1);
+        let boardRef = firebase.database().ref("board").limitToLast(1);
         let wantedFixtures = [];
         boardRef.on("value", snapshot=>{
             let data = snapshot.val();

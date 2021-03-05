@@ -33,10 +33,12 @@ class Jackpot extends Component {
                     data = snapshot.val();
                 });
                 setTimeout(() => {
-                this.setState({ elevenAmount: data.eleven });
-                this.setState({ tenAmount: data.ten });
-                this.setState({ twelveAmount: data.twelve });
-                this.setState({ thirteenAmount: data.thirteen });
+                    if(data){
+                        this.setState({ elevenAmount: data.eleven });
+                        this.setState({ tenAmount: data.ten });
+                        this.setState({ twelveAmount: data.twelve });
+                        this.setState({ thirteenAmount: data.thirteen });
+                    }
                 }, 500);
         }
         this.setState({ loading: true });

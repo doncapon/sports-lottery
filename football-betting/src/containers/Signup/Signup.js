@@ -164,6 +164,11 @@ class Signup extends Component {
             }
 
             dob = dob.split("/");
+            if(Number(dob[2])< 1900 && formIsValid){
+                
+                formIsValid = false;
+                error = "Sorry, you are too old";
+            }
             dob = dob[2] + "-" + dob[1] + "-" + dob[0];
             if (calculateAge(dob) < 18 && formIsValid) {
                 formIsValid = false;
@@ -410,7 +415,7 @@ class Signup extends Component {
 
                         <div>
                             <label className={classes.Label} htmlFor="passwordConf">Confirm Password</label>
-                            <input type="password" name="passwordConf"
+                            <input type={this.state.passwordType} name="passwordConf"
                                 value={this.state.passwordConf}
                                 onChange={this.handleChange}
                                 placeholder="Re-password"
