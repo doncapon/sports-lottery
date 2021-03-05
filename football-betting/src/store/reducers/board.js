@@ -1,9 +1,9 @@
 import * as actionTypes from "../actions/actionTypes";
 import produce from 'immer';
 import _ from "lodash";
-import {uuid} from '../../shared/utility'
+import { uuid } from '../../shared/utility'
 import moment from 'moment';
-
+import firebase from '../../config/firebase/firebase';
 const initialStte = {
 
     slips: null,
@@ -41,36 +41,24 @@ const initialStte = {
     isStarted: false,
     gamesLength: null,
     isPaying: false,
-    funds: 15500,
     isPaid: false,
     isShowReceipt: false,
     gameDate: null,
     gameDateRaw: null,
     isToWallet: true,
-    
-    showFunds:  true,
+
+    showFunds: true,
 
 };
 
-const setIsToWallet = (state, action) =>{
-    return produce(state, draft=>{
+const setIsToWallet = (state, action) => {
+    return produce(state, draft => {
         draft.isToWallet = action.isToWallet;
     });
 }
-const creditFunds = (state, action) =>{
-    return produce(state, draft=>{
-        draft.funds += action.funds;
-    })
-}
 
-const debitFunds = (state, action) =>{
-    return produce(state, draft=>{
-        draft.funds -= action.funds;
-    })
-}
-
-const resetReduxBoard = (state, action) =>{
-    return produce(state, draft=>{
+const resetReduxBoard = (state, action) => {
+    return produce(state, draft => {
         draft.slips = null;
     })
 }
@@ -90,10 +78,16 @@ const toggleIsShowReceipt = (state, action) => {
         draft.isShowReceipt = !draft.isShowReceipt
     });
 }
-const toggleReceiptShowHistory = (state, action) =>{
-    return produce(state, draft=>{
+const toggleReceiptShowHistory = (state, action) => {
+    return produce(state, draft => {
         draft.receipts[action.receiptIndex].showHistory =
-         !draft.receipts[action.receiptIndex].showHistory;
+            !draft.receipts[action.receiptIndex].showHistory;
+    })
+}
+
+const setBoardLoading = (state, action) => {
+    return produce(state, draft => {
+        draft.loading = action.loading
     })
 }
 const setReceipt = (state, action) => {
@@ -101,19 +95,37 @@ const setReceipt = (state, action) => {
         let slips = _.cloneDeep(draft.slips);
         let gameDay = action.gameDay;
 
-        slips.forEach(slip =>{
+        slips.forEach(slip => {
             slip.gameDay = gameDay;
-            slip.showHistory = false;
-        })
+            slip.correctResult = 0;
+        });
         draft.receipts = slips;
-        for(let i = 0; i < draft.slips.length; i++){
+        let slip = {};
+        for (let i = 0; i < draft.slips.length; i++) {
             draft.slips[i].gameNumber = uuid();
+            slip.slipPrice = draft.slips[i].slipPrice;
+            slip.gameNumber = draft.slips[i].gameNumber;
+            slip.gameRows = draft.slips[i].slipAmount;
+            slip.basePrice = draft.slips[i].basePrice;
+            let slipGames = [];
+            slip.correctRows= 0;
+            slip.datePlayed= moment(Date.now()).format("YYYY-MM-DD HH:mm:ss");
+            for (let k = 0; k < draft.slips[i]["slip_" + (i + 1)].games.length; k++) {
+                slipGames.splice(slipGames.length, slipGames.length + 1, {
+                    fixture_id: draft.slips[i]["slip_" + (i + 1)].games[k].fixture_id,
+                    selections: draft.slips[i]["slip_" + (i + 1)].games[k]["game_" + (k + 1)].sides,
+                    
+                });
+            }
+            slip.games = Object.assign([],slipGames);
+            let evDateSplit = draft.slips[i].gameDate.split("-");
+            let evaDate = evDateSplit[2]+"-"+ evDateSplit[1] +"-"+ evDateSplit[0]
+            slip.evaluationDate = evaDate;
+            let user = firebase.auth().currentUser;
+            slip.userId=user.uid;
+            let historyRef = firebase.database().ref("game-history").child(user.uid).child(slip.gameNumber);
+            historyRef.set(slip);
         }
-    })
-}
-const executePurchase = (state, action) => {
-    return produce(state, draft => {
-        draft.funds -= draft.totalPrice;
     })
 }
 const setIsPaid = (state, action) => {
@@ -135,33 +147,34 @@ const initializeBoard = (state, action) => {
         let slipId = "slip_";
         let games1 = [];
         let gameId = "game_";
+   
         action.fixtures.forEach((fixture, i) => {
             let game = {
                 id: gameId + (i + 1),
                 amount: 0,
-                league: fixture.league.name,
+                league: fixture.leagueName,
                 fixture_id: fixture.fixture_id,
                 status: fixture.status,
                 [gameId + (i + 1)]: {
-                    team1_id: fixture.homeTeam.team_id,
-                    team1: fixture.homeTeam.team_name,
-                    team2_id: fixture.awayTeam.team_id,
-                    team2: fixture.awayTeam.team_name, isValid: false,
+                    team1_id: fixture.homeTeam_id,
+                    team1: fixture.homeTeam,
+                    team2_id: fixture.awayTeam_id,
+                    team2: fixture.awayTeam, isValid: false,
                     sides: [{ selected: false }, { selected: false }, { selected: false }],
                 }
             };
-            
+
             games1.splice(i, i + 1, game);
         });
         let slipInner = Object.assign({}, { games: games1 });
         let newSlip = Object.assign({}, {
-            id: (slipId + 1), purchasable: false, slipAmount: 0,
+            id: (slipId + 1), purchasable: false, slipAmount: 0, basePrice: action.basePrice,
             slipPrice: 0, adding: false, removing: false, [slipId + 1]: slipInner
         });
-        newSlip.games = Object.assign([], games1.sort((a,b)=>a.fixture_id > b.fixture_id? 1: -1));
-
+        newSlip.games = Object.assign([], games1.sort((a, b) => a.fixture_id > b.fixture_id ? 1 : -1));
+        newSlip.gameDate =  moment(action.fixtures[0].event_date).format("DD-MM-YYYY");
         newSlip.gameNumber = uuid();
-        // let newSlips = [Object.assign({}, newSlip)];
+        newSlip.basePrice = action.basePrice;
         let newSlips = [];
         newSlips.splice(0, 1, newSlip);
         draft.gamesLength = action.fixtures.length;
@@ -172,7 +185,7 @@ const initializeBoard = (state, action) => {
         draft.gameDateRaw = action.fixtures[0].event_date;
         draft.gameDate = moment(action.fixtures[0].event_date).format("DD-MM-YYYY");
         draft.loading = true;
-
+        
     });
 }
 const toggleShowHistory = (state, action) => {
@@ -269,10 +282,12 @@ const generateSlip = (state, action) => {
                 .games[i].amount = arrayGames[i][0] + arrayGames[i][1] + arrayGames[i][2]
         }
         draft.slips[state.editIndex].purchasable = true;
+        draft.slips[state.editIndex].basePrice = action.basePrice;
         draft.slips[state.editIndex].gameNumber = uuid();
         draft.isPaying = false;
         draft.isPaid = false;
         draft.isShowReceipt = false;
+
 
     })
 }
@@ -369,15 +384,16 @@ const copyBetslip = (state, action) => {
     return produce(state, draft => {
         const oldId = "slip_" + (action.position + 1);
         const newId = "slip_" + (draft.slips.length + 1);
+        let slip = _.cloneDeep(draft.slips[action.position]);
         let newslip = _.cloneDeep(draft.slips[action.position][oldId]);
-
         draft.slips.splice(draft.slips.length, 0, {
-            id: newId, purchasable: true,
+            id: newId, purchasable: true, slipAmount : slip.slipAmount, basePrice: slip.basePrice,
             slipPrice: state.slips[action.position].slipPrice, adding: false,
             removing: false, [newId]: newslip
         });
 
-        draft.slips[draft.slips.length-1].gameNumber = uuid();
+        draft.slips[draft.slips.length - 1].gameNumber = uuid();
+        draft.slips[draft.slips.length - 1].gameDate = slip.gameDate;
         draft.isPaying = false;
         draft.isPaid = false;
         draft.isShowReceipt = false;
@@ -407,7 +423,9 @@ const addEmptySlip = (state, action) => {
         clonedSlip.adding = false;
         clonedSlip.removing = false;
         clonedSlip.slipPrice = 0;
+        clonedSlip.gameDate = draft.gameDate;
         clonedSlip.gameNumber = uuid();
+        clonedSlip.basePrice = action.basePrice;
         clonedSlip.id = newId;
         clonedSlip[newId] = clonedSlip[oldId];
         delete [clonedSlip[oldId]];
@@ -416,7 +434,7 @@ const addEmptySlip = (state, action) => {
         draft.isPaying = false;
         draft.isPaid = false;
         draft.isShowReceipt = false;
-        
+
     });
 }
 
@@ -425,7 +443,6 @@ const deleteAndResetAll = (state, action) => {
         const clonedSlips = _.cloneDeep(state.slips);
 
         if (state.slips.length > 1) {
-
             clonedSlips.splice(1, state.slips.length);
         }
 
@@ -445,7 +462,8 @@ const deleteAndResetAll = (state, action) => {
             clonedSlips[0].purchasable = false
             clonedSlips[0].slipPrice = 0;
             clonedSlips[0].slipAmount = 0;
-            
+            clonedSlips[0].gameNumber = uuid();
+
         }
 
 
@@ -454,6 +472,7 @@ const deleteAndResetAll = (state, action) => {
         draft.purchaseAll = false;
         draft.isPaying = false;
         draft.isShowReceipt = false;
+        draft.editIndex = 0;
 
 
     })
@@ -495,8 +514,8 @@ const calculateGrandTtoalPriceOfAllSlips = (state, action) => {
         let slips = state.slips;
         let totalPrice = 0;
         slips.forEach((slip, i) => {
-
-            return totalPrice += slip.slipPrice;
+            if (slip.purchasable)
+                totalPrice += slip.slipPrice;
         });
 
         draft.totalPrice = totalPrice;
@@ -613,14 +632,14 @@ const reducer = (state = initialStte, action) => {
     switch (action.type) {
         case actionTypes.RESET_BOARD:
             return resetReduxBoard(state, action);
+        case actionTypes.SET_BOARD_LOADING:
+            return setBoardLoading(state, action);
         case actionTypes.TOGGLE_SHOWFUNDS:
             return toggleShowFunds(state, action);
         case actionTypes.TOGGLE_SHOW_RECEIPT:
             return toggleIsShowReceipt(state, action);
         case actionTypes.SET_RECEIPT:
             return setReceipt(state, action);
-        case actionTypes.EXECUTE_PURCHASE:
-            return executePurchase(state, action);
         case actionTypes.CALCULATE_EDIT_INDEX_PRICE:
             return calculateSpecificSlipPrice(state, action);
         case actionTypes.SET_ISPAID:
@@ -663,14 +682,10 @@ const reducer = (state = initialStte, action) => {
             return generateSlip(state, action);
         case actionTypes.SET_SHOW_FUNDS:
             return setShowFunds(state, action);
-            case actionTypes.CREDIT_FUNDS:
-                return creditFunds(state, action);
-            case actionTypes.DEBIT_FUNDS:
-                return debitFunds(state, action);
-            case actionTypes.SET_ISTOWALLET:
-                return setIsToWallet(state, action);
-            case actionTypes.TOGGLE_SHOW_RECEIPT_HISTORY:
-                return toggleReceiptShowHistory(state, action);
+        case actionTypes.SET_ISTOWALLET:
+            return setIsToWallet(state, action);
+        case actionTypes.TOGGLE_SHOW_RECEIPT_HISTORY:
+            return toggleReceiptShowHistory(state, action);
         default:
             return state;
     }

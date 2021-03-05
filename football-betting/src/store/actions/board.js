@@ -1,12 +1,12 @@
 import * as actionTypes from './actionTypes';
-import axios from '../../axios-fixtures';
+import firebase from '../../config/firebase/firebase'; 
 // import { getNextPlayDate } from '../../shared/utility';
 
 
-export const genrateSlip = (amount, slipIndex, basePrice ) =>{
+export const generateSlip = (amount, slipIndex, basePrice ) =>{
     return dispatch =>{
         dispatch(EmptyEditingISlip());
-        dispatch(genrateSlip2(amount, basePrice));
+        dispatch(generateSlip2(amount, basePrice));
         dispatch(setPurchaseAll());
         dispatch(calculateSpecificSlipPrice(slipIndex, basePrice));
         dispatch(calculateGrandTtoalPriceOfAllSlips());
@@ -14,7 +14,7 @@ export const genrateSlip = (amount, slipIndex, basePrice ) =>{
     }
 }
 
-export const genrateSlip2 = (amount, basePrice) =>{
+export const generateSlip2 = (amount, basePrice) =>{
     return {
         type: actionTypes.GENERATE_SLIP,
         amount: amount,
@@ -22,69 +22,20 @@ export const genrateSlip2 = (amount, basePrice) =>{
     }
 }
 
-export const setBoard=(isFaCup , kickOffTime , kickOffDate ) =>{
-    // let kickOffDate = getNextPlayDate( daysOffset, hourstoNext);
+export const setBoard=(basePrice) =>{
     return dispatch =>{
-        axios.get("fixtures/date/"+ kickOffDate
-         ,
-        {
-            headers: {
-                'x-rapidapi-key': '8275c582bamshd83a3179dd00459p19f0b2jsn94c889368579',
-                'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
-              }
+        let boardRef = firebase.database().ref("board").limitToLast(1);
+        let wantedFixtures = [];
+        boardRef.on("value", snapshot=>{
+            let data = snapshot.val();
+            Object.keys(data).map(key => {
+               return  wantedFixtures = data[key];
+            })
         })
-        .then(response =>{
+        setTimeout(() => {
+            dispatch(initializeBoard(wantedFixtures, basePrice));
+        }, 2000);
 
-            let dateTime = ( kickOffDate +"T"+kickOffTime);
-            let fixtureAtTime = response.data.api.fixtures.filter(
-                fixture =>fixture.event_date === dateTime);
-            let EnglandFixtures =fixtureAtTime.filter(fixture =>fixture.league.country === "England" );
-            
-            
-            let PremierShipOrFACup;
-            if(!isFaCup)    {
-                PremierShipOrFACup = EnglandFixtures.filter(fixture => fixture.league.name === "Premier League");
-            }else{
-                PremierShipOrFACup = EnglandFixtures.filter(fixture => fixture.league.name === "FA Cup");
-            }
-            
-
-            let Championship = EnglandFixtures.filter(fixture => fixture.league.name === "Championship");
-            let countWanted;
-
-            if((Championship.length + PremierShipOrFACup.length) < 13)
-            countWanted = Championship.length + PremierShipOrFACup.length;
-            else
-            countWanted = 13;
-
-            let premCount= 7;
-            let ChamCount = 6;
-            if(countWanted === 13){
-                if(Championship.length < 6)
-                    premCount = countWanted - Championship.length;
-                if(PremierShipOrFACup.length < 7)
-                    ChamCount = countWanted - PremierShipOrFACup.length;
-            }else{
-                if(Championship.length < 5)
-                    premCount = countWanted - Championship.length;
-                if(PremierShipOrFACup < 6)
-                    Championship = countWanted - PremierShipOrFACup.length;
-            }
-            let wantedFixtures = PremierShipOrFACup.splice(0, premCount).concat(Championship.splice(0, ChamCount));
-            let countAfter = wantedFixtures.length;
-            if(wantedFixtures.length < 13){
-                let leagueOneFixture = EnglandFixtures.filter(fixture => fixture.league.name === "League One");
-                wantedFixtures = wantedFixtures.concat(leagueOneFixture.splice(0, (13 - countAfter)));
-            }
-            let counterAFterLeagueOne = wantedFixtures.length;
-            if(wantedFixtures.length < 13){
-                let leagueTwoFixture = EnglandFixtures.filter(fixture => fixture.league.name === "League Two");
-                wantedFixtures = wantedFixtures.concat(leagueTwoFixture.splice(0, (13 - counterAFterLeagueOne)));
-            }
-            dispatch(initializeBoard(wantedFixtures));
-        }).catch(error =>{
-
-        });
     };
 }
 export const setFixtureIds = ()=>{
@@ -97,22 +48,6 @@ export const setIsToWallet = (isToWallet)=>{
     return {
         type: actionTypes.SET_ISTOWALLET,
         isToWallet: isToWallet,
-
-    }
-}
-
-export const creditFunds = (funds)=>{
-    return {
-        type: actionTypes.CREDIT_FUNDS,
-        funds: funds
-
-    }
-}
-
-export const debitFunds = (funds)=>{
-    return {
-        type: actionTypes.DEBIT_FUNDS,
-        funds: funds
 
     }
 }
@@ -175,12 +110,6 @@ export const setIsPaying = (isPaying)=>{
         isPaying: isPaying
     }
 }
-
-export const executePurchase= ()=>{
-    return {
-        type: actionTypes.EXECUTE_PURCHASE
-    }
-}
 export const setIsPaid = (isPaid)=>{
     return {
         type: actionTypes.SET_ISPAID,
@@ -233,20 +162,22 @@ export const calculateOverAllPrice = (slipIndex, gameIndex, sideIndex, basePrice
     return dispatch =>{
         dispatch(calulateGameAmount(slipIndex, gameIndex, sideIndex));
         dispatch(calculateSpecificSlipPrice(slipIndex, basePrice))
-        dispatch(calculateGrandTtoalPriceOfAllSlips(slipIndex));
+        dispatch(calculateGrandTtoalPriceOfAllSlips());
     }
 }
 
-export const initializeBoard = (fixtures) =>{
+export const initializeBoard = (fixtures, basePrice) =>{
     return { 
         type : actionTypes.INITIALIZE_BOARD,
-        fixtures: fixtures
+        fixtures: fixtures,
+        basePrice: basePrice
     };
 }
 
-export const addEmptySlip = () =>{
+export const addEmptySlip = (basePrice) =>{
     return { 
         type : actionTypes.ADD_EMPTY_SLIP,
+        basePrice: basePrice
     };
 }
 
@@ -270,14 +201,18 @@ export const calulateGameAmount = (slipIndex, gameIndex,sideIndex) =>{
 }
 
 
-export const calculateGrandTtoalPriceOfAllSlips = (slipIndex) =>{
+export const calculateGrandTtoalPriceOfAllSlips = () =>{
     return { 
         type : actionTypes.CALCULATE_GRAND_tOTAL,
-        slipIndex: slipIndex,
         
     };
 }
-
+export const setBoardLoading= (loading)=>{
+    return {
+        type: actionTypes.SET_BOARD_LOADING,
+        loading: loading
+    }
+}
 
 export const setEditIndex= (index)=>{
     return {

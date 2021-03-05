@@ -5,8 +5,8 @@ const initialState = {
     
     isFACup: false,
     isFACupNextWeek: true,
-    daysOffset: -7,
-    // daysOffsetNextWeek: -7,
+    daysOffset: 0,
+    daysOffsetNextWeek: 0,
     hourToNextDay: 9,   //24 - kick-off time
     kickOffTime: '15:00:00+00:00',
 
@@ -24,7 +24,7 @@ const initialState = {
     basePrice: 20,
     insertResult: true,
 
-    resultsFrom: '01-01-2021',
+    numberofResultsDisplayed: 39,
     currentResults: [],
     loading: false
 

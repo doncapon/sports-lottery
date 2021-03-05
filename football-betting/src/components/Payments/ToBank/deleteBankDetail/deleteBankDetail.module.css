@@ -30,7 +30,8 @@ option{
 }
     .Buttons{
         width: 100vw;
-        display: flex   ;
+        display: flex;
+        
     }
         
     .Button1,.Button2, .Submit{    
@@ -43,6 +44,7 @@ option{
       cursor: pointer;  
       font-size: 20px;  
       margin-left: 2px;
+      width: 30vw;
 
     } 
  .Submit{
@@ -92,6 +94,7 @@ option{
     .Button1, .Button2,.Submit{    
       min-width: 15vw;
       margin-left: 5px;
+      width: 20vw;
       
     }
     
@@ -146,4 +149,8 @@ option{
 
       width: 10vw;
   }
+  .Buttons{
+    margin-left: 10vw;
+    
+}
 }

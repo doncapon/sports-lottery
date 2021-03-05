@@ -1,9 +1,9 @@
 
 import axios from '../../axios-fixtures';
-import axiosMain from '../../axios-main';
 import moment from 'moment';
 import * as  actionTypes from './actionTypes';
 import _ from 'lodash';
+import firebase from "../../config/firebase/firebase";
 
 export const stopResultInitialize = () => {
     return {
@@ -19,34 +19,121 @@ export const fetchWeeklyResults = (payload) => {
 }
 
 
-export const fetchResults = (startDate) => {
-    return dispatch => {
+export const configureBoard =(isFaCup , kickOffTime , kickOffDate) =>{
+    // let kickOffDate = getNextPlayDate( daysOffset, hourstoNext);
+    return dispatch =>{
+        axios.get("fixtures/date/"+ kickOffDate)
+        .then(response =>{
 
-        axiosMain.get("match-results/" + startDate)
-            .then(response => {
-                let finalResults  = [];
-                let groupedGameResults = _.groupBy(response.data.results, 'gameDay');
-                Object.keys(groupedGameResults).forEach((keys , k)=>{
-                    let i = groupedGameResults[keys].sort((a,b)=>a.fixtureId > b.fixtureId? 1:-1);
-                                    
-                    finalResults.splice(finalResults.length, finalResults.length+1, i);
-                })
+            let dateTime = ( kickOffDate +"T"+kickOffTime);
+            let fixtureAtTime = response.data.api.fixtures.filter(
+                fixture =>fixture.event_date === dateTime);
+            let EnglandFixtures =fixtureAtTime.filter(fixture =>fixture.league.country === "England" );
+            
+            
+            let PremierShipOrFACup;
+            if(!isFaCup)    {
+                PremierShipOrFACup = EnglandFixtures.filter(fixture => fixture.league.name === "Premier League");
+            }else{
+                PremierShipOrFACup = EnglandFixtures.filter(fixture => fixture.league.name === "FA Cup");
+            }
+            
+
+            let Championship = EnglandFixtures.filter(fixture => fixture.league.name === "Championship");
+            let countWanted;
+
+            if((Championship.length + PremierShipOrFACup.length) < 13)
+            countWanted = Championship.length + PremierShipOrFACup.length;
+            else
+            countWanted = 13;
+
+            let premCount= 7;
+            let ChamCount = 6;
+            if(countWanted === 13){
+                if(Championship.length < 6)
+                    premCount = countWanted - Championship.length;
+                if(PremierShipOrFACup.length < 7)
+                    ChamCount = countWanted - PremierShipOrFACup.length;
+            }else{
+                if(Championship.length < 5)
+                    premCount = countWanted - Championship.length;
+                if(PremierShipOrFACup < 6)
+                    Championship = countWanted - PremierShipOrFACup.length;
+            }
+            let wantedFixtures = PremierShipOrFACup.splice(0, premCount).concat(Championship.splice(0, ChamCount));
+            let countAfter = wantedFixtures.length;
+            if(wantedFixtures.length < 13){
+                let leagueOneFixture = EnglandFixtures.filter(fixture => fixture.league.name === "League One");
+                wantedFixtures = wantedFixtures.concat(leagueOneFixture.splice(0, (13 - countAfter)));
+            }
+            let counterAFterLeagueOne = wantedFixtures.length;
+            if(wantedFixtures.length < 13){
+                let leagueTwoFixture = EnglandFixtures.filter(fixture => fixture.league.name === "League Two");
+                wantedFixtures = wantedFixtures.concat(leagueTwoFixture.splice(0, (13 - counterAFterLeagueOne)));
+            }
+            let fixturesToPush = [];
+            for(let i = 0; i < wantedFixtures.length; i++){
+                fixturesToPush.splice(fixturesToPush.length, fixturesToPush.length+ 1,
+                    { leagueName: wantedFixtures[i].league.name ,
+                    fixture_id:wantedFixtures[i].fixture_id, status: wantedFixtures[i].status,
+                homeTeam_id: wantedFixtures[i].homeTeam.team_id ,homeTeam:wantedFixtures[i].homeTeam.team_name,
+                 awayTeam_id: wantedFixtures[i].awayTeam.team_id, awayTeam:wantedFixtures[i].awayTeam.team_name,
+                 event_date: wantedFixtures[i].event_date})
+            }
+
+            let boardRef = firebase.database().ref("board").child(kickOffDate);
+            let data ;
+            boardRef.on("value", snapshot=>{
+                data =snapshot.val();
+                if(!data){
+                    firebase.database().ref("board").child(kickOffDate).set(fixturesToPush);
+                    alert("Setup successful");
+                }
+            })
+            if(data){
+                alert("record for that day already exists");
+            }
+        }).catch(error =>{
+            alert("Something went wrong")
+        });
+    };
+}
+
+
+export const fetchResults = (numberOfGames = 39) => {
+    return dispatch => {
+        let matchRef = firebase.database().ref().child("match-results").orderByChild('gameDay')
+        .limitToLast(numberOfGames);
+        matchRef.on('value', (snapshot) => {
+            const resultData = snapshot.val();
+            let finalResults = [];
+            let groupedGameResults = _.groupBy(resultData, 'gameDay');
+            let result = Object.keys(groupedGameResults).map((key) => [key, groupedGameResults[key]]);
+
+            let newArr = [];
+            for(let i =  result.length -1 ; i >=0; i--){
+                newArr.push(result[i]);
+            }
+            newArr.forEach((arr, k)=>{
+                let i   = arr[1].sort((a, b) => a.fixtureId > b.fixtureId ? 1 : -1);
+                finalResults.splice(finalResults.length, finalResults.length + 1, i);
+               
+            })
+            if(finalResults.length > 0 ){
                 dispatch(fetchWeeklyResults(finalResults));
                 dispatch(stopResultInitialize());
-            });
+            }else{
+                alert("Content Not Found");
+            }
+            
+        });
     }
 }
 
-export const setCurrentResult = (slipGame, startDate) => {
+export const setCurrentResult = (slipGame) => {
     return dispatch => {
         slipGame.games.map(game => {
-            return axios.get("fixtures/id/" + game.fixture_id,
-                {
-                    headers: {
-                        'x-rapidapi-key': '8275c582bamshd83a3179dd00459p19f0b2jsn94c889368579',
-                        'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
-                    }
-                })
+            return axios.get("fixtures/id/" + game.fixture_id)
                 .then(response => {
                     let resultFixture = response.data.api.fixtures[0];
                     let gameDay = moment(resultFixture.event_date).format("YYYY-MM-DD") + "T00:00:00+00:00";
@@ -61,11 +148,22 @@ export const setCurrentResult = (slipGame, startDate) => {
                         gameDate: resultFixture.event_date,
                         gameDay: gameDay
                     };
-                    axiosMain.post("match-results", returnResult)
-                        .then(response => {
-                        })
-                        .catch(error => {
-                        });
+
+                    let userRef = firebase.database().ref('match-results/' + resultFixture.fixture_id);
+                    userRef.on('value', (snapshot) => {
+                        const resultData = snapshot.val();
+                        if (resultData === null) {
+                            firebase.database().ref('match-results/' + resultFixture.fixture_id).set({
+                                returnResult
+                            });
+                        } else {
+                            let updates = {};
+                            updates['match-results/' + resultFixture.fixture_id] = returnResult;
+                            firebase.database().ref().update(updates)
+                        }
+                    })
+
+
                 })
                 .catch(err => {
 

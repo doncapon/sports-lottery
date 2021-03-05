@@ -14,25 +14,22 @@ export {
      calculateGrandTtoalPriceOfAllSlips,
      addEmptySlip,
      EmptyEditingISlip,
-     genrateSlip,
+     generateSlip,
      toggleShowHistory,
      setIsPaying,
      setIsPaid,
-     executePurchase,
      setReceipt,
      toggleIsShowReceipt,
      toggleShowFunds,
      setShowFunds,
-     creditFunds,
      setIsToWallet,
-     debitFunds,
-     toggleReceiptShowHistory
+     toggleReceiptShowHistory,
+     setBoardLoading,
 } from './board';
 
 export {
      fetchPredictionsAll
 } from './prediction';
-
 
 
 export {
@@ -43,11 +40,22 @@ export {
 export {
      setLoggedInUser,
      setIsLoggedIn,
+     login,
+     setForgot,
+     logout,
+     setFunds
 } from './login';
 
 
 export {
      setCurrentResult,
      fetchWeeklyResults,
-     fetchResults
+     fetchResults,
+     configureBoard
 } from './config';
+
+
+export {
+     fetchBanks,
+     resetSavedBanks
+} from './banks';

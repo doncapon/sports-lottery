@@ -18,7 +18,8 @@ import Settings from './containers/Settings/Settings';
 import Signup from './containers/Signup/Signup';
 import ActivateNewUser from './containers/ActivateNewUser/ActivateNewUser';
 import UserPlayHistory from './components/gameHistory/userPlayHistory/UserPlayHistory';
-
+import firebase from "./config/firebase/firebase";
+import CountDown from './components/UI/CountDown/CountDown';
 
 class App extends React.Component {
 
@@ -52,6 +53,7 @@ class App extends React.Component {
   _onIdle(e) {
     const isTimedOut = this.state.isTimedOut
     if (isTimedOut) {
+      this.props.onLogout();
       this.props.onSetIsLoggedIn(false);
       this.props.history.push("/");
 
@@ -69,9 +71,12 @@ class App extends React.Component {
   }
 
   handleLogout() {
-    this.setState({ showModal: false })
-    this.props.onSetIsLoggedIn(false);
-    this.props.history.push("/")
+    firebase.auth().signOut().then(() => {
+      this.setState({ showModal: false })
+      this.props.onSetIsLoggedIn(false);
+      this.props.history.push("/");
+      firebase.database().ref("users").off();
+    })
   }
 
   render() {
@@ -89,17 +94,16 @@ class App extends React.Component {
             debounce={250}
             timeout={this.state.timeout} />
           : null}
-        <div className={classes.Navs}><Navs funds={this.props.funds}
-          loggedIn={false} setIsLoggedIn={this.props.onSetIsLoggedIn}
-          setLoggedInUser={this.props.onSetLoggedInUser} isLoggedIn={this.props.isLoggedIn}
-           deleteAndResetAll={this.props.onDeleteAndResetAll}
-          username={this.props.username} password={this.props.password} slips = {this.props.slips}
+        <div className={classes.Navs}><Navs setForgot= {this.props.onSetForgot}
+          isLoggedIn={this.props.isLoggedIn} login= {this.props.onLogin} logout= {this.props.onLogout}
+          deleteAndResetAll={this.props.onDeleteAndResetAll}  loading = {this.props.loading}
+          slips={this.props.slips} forgotPassword={this.props.forgotPassword}
           showFunds={this.props.showFunds} firstName={this.props.user.name}
-           setShowFunds={this.props.onSetShowFunds} user = {this.props.user}
-          toggleShowFunds={this.props.onToggleShowFunds}
-          
-          /></div>
-
+          setShowFunds={this.props.onSetShowFunds} user={this.props.user}
+          toggleShowFunds={this.props.onToggleShowFunds} setEditIndex={this.props.onSetEditIndex}
+          setIsPaying = {this.props.onSetIsPaying} setIsPaid = {this.props.onSetIsPaid}
+        /></div>
+        {/* <CountDown/> */}
         <Switch>
           <Route path="/transfers" component={Transfers} />
           <Route path="/results" component={ResultPage} />
@@ -111,6 +115,7 @@ class App extends React.Component {
           <Route path="/play" component={Board} />
           <Route path="/authentication/activate/:token" component={ActivateNewUser} />
           <Route exact path="/" component={Landing} />
+          {/* <Route exact path="/" component={CountDown} /> */}
           <Redirect to="/" />
         </Switch>
         {this.props.isLoggedIn ?
@@ -128,27 +133,43 @@ class App extends React.Component {
 const mapstateToProps = (state) => {
   return {
 
-    
+
     showFunds: state.board.showFunds,
-    funds: state.board.funds,
     slips: state.board.slips,
 
     loginMessage: state.login.loginMessage,
     user: state.login.user,
-    username: state.login.username,
-    password: state.login.password,
     isLoggedIn: state.login.isLoggedIn,
+    forgotPassword: state.login.forgotPassword,
+    loading: state.login.loading,
+
+    isFaCup: state.config.isFaCup,
+    kickOffTime: state.config.kickOffTime,
+    kickOffDate: state.config.kickOffDate
 
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-
+    onLogout: ()=> dispatch(actions.logout()),
     onSetIsLoggedIn: (value) => dispatch(actions.setIsLoggedIn(value)),
-    onToggleShowFunds: () => dispatch(actions.toggleShowFunds()),
-    onSetLoggedInUser: (username, password) => dispatch(actions.setLoggedInUser(username, password)),
+    onSetForgot: (value) => dispatch(actions.setForgot(value)),
+    onLogin: (email, password) => dispatch(actions.login(email, password)),
+   onToggleShowFunds: () => dispatch(actions.toggleShowFunds()),
     onDeleteAndResetAll: () => dispatch(actions.deleteAndResetAll()),
     onSetShowFunds: () => dispatch(actions.setShowFunds()),
+    onResetReduxBoard: () =>
+      dispatch(actions.resetReduxBoard()),
+      
+    onSetEditIndex: (value) =>
+      dispatch(actions.setEditIndex(value)),
+    // onSetBoard: (isFaCup, kickOffTime, kickOffDate, basePrice) =>
+    //   dispatch(actions.setBoard(isFaCup, kickOffTime, kickOffDate,basePrice)),
+      
+    onSetIsPaying: (isPaying) =>
+    dispatch(actions.setIsPaying(isPaying)),
+  onSetIsPaid: (isPaid) =>
+    dispatch(actions.setIsPaid(isPaid)),
 
   };
 };

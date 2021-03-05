@@ -55,10 +55,10 @@ const results = (props) => {
 
                 </div>
                 <div className={classes.JackPotShare}>
-                    <Jackpot basePrice={props.basePrice} gamesLength={results.length} thirteen={props.thirteen}
-                        twelve={props.twelve} eleven={props.eleven} ten={props.ten}
-                        thirteenPcs={props.thirteenPcs} twelvePcs={props.twelvePcs}
-                        elevenPcs={props.elevenPcs} tenPcs={props.tenPcs}
+                    <Jackpot basePrice={props.basePrice} gameDay=
+                    {moment(results[0].gameDay).format("YYYY-MM-DD")}
+                     gamesLength= {results.length}
+                       
                     />
                 </div>
             </div>

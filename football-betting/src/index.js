@@ -18,6 +18,7 @@ import predictionReducer from "./store/reducers/prediction";
 import matchResultsReducer from "./store/reducers/matchResults";
 import loginReducer from "./store/reducers/login";
 import configReducer from "./store/reducers/config";
+import bankReducer from "./store/reducers/banks";
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 import { PersistGate } from 'redux-persist/es/integration/react';
@@ -34,7 +35,8 @@ const rootReducer = combineReducers({
   pred: predictionReducer,
   matchResults: matchResultsReducer,
   config: configReducer,
-  login: loginReducer
+  login: loginReducer,
+  banks: bankReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

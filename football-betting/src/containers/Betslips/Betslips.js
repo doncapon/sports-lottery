@@ -47,7 +47,7 @@ const Betslips = React.memo(
       setActivePage(k);
     };
     const addEmptySlip = () => {
-      props.addEmptySlip();
+      props.addEmptySlip(props.basePrice);
       setEditIndex(props.slips.length);
 
       props.setPurchaseAll();
@@ -135,8 +135,7 @@ const Betslips = React.memo(
                     variant="primary"
                     disabled={
                       !props.purchaseAll ||
-                      props.slips.length > totalSlips - 1||
-                      props.funds < props.totalPrice
+                      props.slips.length > totalSlips - 1
                     }
                   >
                     <PlusSquareFill  className={classes.Icon} />
