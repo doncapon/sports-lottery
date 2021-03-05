@@ -28,7 +28,6 @@ const CountDown = (props) => {
   let endDate1 = moment(props.gamedate);
   let diff = endDate1 - Date.now();
   
-  const stratTime = Date.now()/1000;
   const remainingTime = diff/1000;
   const days = Math.ceil(diff / daySeconds);
   const daysDuration = days * daySeconds;
