@@ -3,18 +3,28 @@ import classes from "./landing.module.css";
 import { connect } from "react-redux";
 import CountDown from "../CountDown/CountDown";
 import Footer from "../Footer/Footer";
+import {getNextPlayDate} from '../../../shared/utility';
 class Landing extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
+      gameDateRaw: null
     };
   }
-  
+  componentDidMount(){
+    if(!this.state.loading){
+      let kickOffDate = getNextPlayDate(this.props.daysOffset,
+        this.props.hourToNextDay);
+        this.setState({gameDateRaw: kickOffDate+"T"+this.props.kickOffTime })
+    }
+    this.setState({loading: true})
+  }
+
   render() {
     return (
       <div className={classes.LandingWrapper}>
-        <CountDown gamedate={this.props.gameDateRaw}/>
+        {this.state.loading? <CountDown gamedate={this.state.gameDateRaw}/> : null}
         <Footer/>
       </div>
     );
@@ -23,9 +33,11 @@ class Landing extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    // console.log("I am in landing page", this.props.gameDateRaw)
     gameDateRaw: state.board.gameDateRaw,
-    // gameDate: state.
+    hourToNextDay: state.config.hourToNextDay,
+    daysOffset: state.config.daysOffset,
+    kickOffTime: state.config.kickOffTime,
+
   };
 };
 

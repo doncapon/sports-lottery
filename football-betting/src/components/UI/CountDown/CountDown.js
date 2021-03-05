@@ -26,7 +26,9 @@ const getTimeHours = (time) => ((time % daySeconds) / hourSeconds) | 0;
 const getTimeDays = (time) => (time / daySeconds) | 0;
 const CountDown = (props) => {
   let endDate1 = moment(props.gamedate);
+
   let diff = endDate1 - Date.now();
+  console.log("date" , props.gamedate, diff)
   
   const remainingTime = diff/1000;
   const days = Math.ceil(diff / daySeconds);
