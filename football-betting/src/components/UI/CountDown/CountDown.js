@@ -7,8 +7,6 @@ const minuteSeconds = 60;
 const hourSeconds = 3600;
 const daySeconds = 86400;
 
-
-
 const timerProps = {
   isPlaying: true,
   size: 120,
@@ -31,17 +29,10 @@ const CountDown = (props) => {
   let diff = endDate1 - Date.now();
   
   const stratTime = Date.now()/1000;
-  //const endTime = stratTime + 243248;
-  console.log(props.gamedate)
-  console.log(stratTime)
-
   const remainingTime = diff/1000;
   const days = Math.ceil(diff / daySeconds);
-  console.log(days)
   const daysDuration = days * daySeconds;
  
-  //console.log(Number(day))
-  console.log("Game count", props.gamedate)
   return (
     <Auxy>
       <h1 style={{ textAlign: "center" }}>Countdown to Game Day</h1>
