@@ -1,7 +1,5 @@
 import * as actionTypes from './actionTypes';
 import firebase from '../../config/firebase/firebase'; 
-// import { getNextPlayDate } from '../../shared/utility';
-
 
 export const generateSlip = (amount, slipIndex, basePrice ) =>{
     return dispatch =>{

@@ -20,7 +20,6 @@ export const fetchWeeklyResults = (payload) => {
 
 
 export const configureBoard =(isFaCup , kickOffTime , kickOffDate) =>{
-    // let kickOffDate = getNextPlayDate( daysOffset, hourstoNext);
     return dispatch =>{
         axios.get("fixtures/date/"+ kickOffDate)
         .then(response =>{
