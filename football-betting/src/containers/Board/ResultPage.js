@@ -3,11 +3,15 @@ import React, { Component } from "react";
 import * as actions from '../../store/actions/index';
 import Results from '../../components/gameHistory/results/results';
 import { Spinner } from 'react-bootstrap';
+import firebase from '../../config/firebase/firebase';
 
 class ResultPage extends Component {
     componentDidMount(){
         if(!this.props.loading)
         this.props.onFetchResults(this.props.numberofResultsDisplayed);
+    }
+    componentWillUnmount(){
+        firebase.database().ref("match-results").off();
     }
     render() {
         return  !this.props.loading? <Spinner /> : <div>
@@ -18,6 +22,7 @@ class ResultPage extends Component {
     }
 
 }
+
 const mapstateToProps = (state) => {
     return {
 

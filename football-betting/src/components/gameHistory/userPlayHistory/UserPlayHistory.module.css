@@ -149,6 +149,14 @@
     background: skyblue;
 }
 
+.NoGames{
+    background: white;
+    margin: 4vh 0;
+    height: 10vh;
+}
+.NoGames h3{
+    padding: 5vw
+}
 
 /* medium screens */
 
@@ -240,6 +248,9 @@
         margin: 0;
         padding: 0;
     }
+    .NoGames h3{
+        font-size: 5vw
+    }
 }
 
 
@@ -261,9 +272,9 @@
         width: 20vw;
     }
     .DateHead1 {
-        width: 30vw;
+        width: 20vw;
     }
-    .userPlayHistoryAndShare {
+    .userPlayHistoryAndShare,.NoGames {
         width: 70%;
         margin: auto;
     }
@@ -271,7 +282,7 @@
         width: 0vw;
     }
     .Head {
-        width: 7vw;
+        width: 0vw;
     }
     .Score {
         width: 5vw;
@@ -288,7 +299,8 @@
     .Selected,
     .Winner {
         height: 7vh;
-        padding: 0 2px;
+        padding: 0 1px;
+        width: 1.9vw;
     }
     .Winner {
         border: 3px solid green;
@@ -312,14 +324,24 @@
         width: 100vw;
     }
     .OrderBy{
-        height: 7vh;
-        font-size: 0.8em;
+        height: 8vh;
+        font-size: 0.7em;
         margin-left: 6vw;
         width: 25%;
+        padding-bottom: 2vh;
     }
     .Buttons{
         margin: 0;
         padding: 0;
     }
+    .NoGames{
+        background: white;
+        height: 20vh;
+    }
+    .NoGames h3{
+        font-size: 3vw
+    }
+
+ 
 
 }

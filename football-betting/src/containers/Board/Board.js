@@ -12,7 +12,7 @@ import axios from '../../axios-fixtures';
 import Payment from '../../components/board/payment/payment';
 import { ArrowRight } from "react-bootstrap-icons";
 import Receipts from '../../components/board/receipts/receipts/receipts';
-import { addCommaToAmounts ,dateInYYYYMMDD} from '../../shared/utility';
+import { addCommaToAmounts, dateInYYYYMMDD } from '../../shared/utility';
 import firebase from '../../config/firebase/firebase';
 import Modal from "../../components/UI/Modal/Modal";
 import LoginModal from '../../components/loginLogout/modalLogin/loginModal';
@@ -20,19 +20,32 @@ import LoginModal from '../../components/loginLogout/modalLogin/loginModal';
 class Board extends Component {
 
   state = {
-    showModalSignin: false
+    showModalSignin: false,
+    funds: 0,
+    loading: false
   }
   constructor(props) {
     super(props);
     if (!this.props.loading) {
       this.props.onSetBoard(this.props.basePrice);
+      this.state.funds = this.props.user.funds;
+
     }
 
   }
+  componentDidMount() {
+    if (!this.state.loading) {
+      setTimeout(() => {
+        this.setState({ funds: this.props.user.funds });
+      }, 1000);
+    }
+    this.setState({ loading: true });
+  }
 
   togglePaymentButton = (paying, paid) => {
-    if (firebase.auth().currentUser) {
+    // firebase.auth().signOut().then(() => {});
 
+    if (firebase.auth().currentUser) {
       this.props.onSetIsPaying(paying);
       this.props.onSetIsPaid(paid);
     } else {
@@ -62,11 +75,11 @@ class Board extends Component {
       return funds - this.props.totalPrice
     });
   }
-updateJackpot =(totalPrice)=>{
-  firebase.database().ref("jackpots").child(dateInYYYYMMDD(this.props.gameDate)).child("jackpot").transaction(Jackpots=>{
-    return Jackpots  + totalPrice;
-  })
-}
+  updateJackpot = (totalPrice) => {
+    firebase.database().ref("jackpots").child(dateInYYYYMMDD(this.props.gameDate)).child("jackpot").transaction(Jackpots => {
+      return Jackpots + totalPrice;
+    })
+  }
   render() {
     return (this.props.loading ? (<div className={classes.Board}>
 
@@ -133,7 +146,7 @@ updateJackpot =(totalPrice)=>{
             <div>
               <div className={classes.PayButtons}>
                 <Button
-                  disabled={this.props.totalPrice <= 0 || (firebase.auth().currentUser && this.state.funds < this.props.totalPrice)}
+                  disabled={this.props.totalPrice <= 0 || (this.props.isLoggedIn && this.state.funds < this.props.totalPrice)}
                   variant="success"
                   className={classes.PayButton}
                   onClick={() => this.togglePaymentButton(true, false)}
@@ -145,9 +158,11 @@ updateJackpot =(totalPrice)=>{
                   {"₦" + addCommaToAmounts(this.props.totalPrice.toString(10))}
 
                 </Button>
-                {(this.state.funds < this.props.totalPrice && firebase.auth().currentUser) ? <div>
-                  <div style={{ color: 'red', textAlign: 'center', background: 'grey', padding: '10px 0', marginBottom: '10px' }}>Sorry, you do not have enough funds to make the purchase</div>
-                  <div><Button className={classes.TransferButton}> <ArrowRight style={{ fontWeight: 'bolder' }} size="20" /> GO TO FUNDS TRANSFER</Button></div>
+                {(this.state.funds < this.props.totalPrice && this.props.isLoggedIn) ? <div>
+                  <div style={{ color: 'red', textAlign: 'center', background: 
+                  'grey', padding: '10px 0', marginBottom: '10px' }}>Sorry, you do not have enough funds to make the purchase</div>
+                  <div><Button className={classes.TransferButton} 
+                  onClick={() => (this.props.history.push("/transfers"))}> <ArrowRight style={{ fontWeight: 'bolder' }} size="20" /> GO TO FUNDS TRANSFER</Button></div>
                 </div> : null}
                 <Modal show={this.state.showModalSignin} modalClosed={this.cancelLoginPopup}>
                   <LoginModal setLoggedInUser={this.props.onSetLoggedInUser}
@@ -211,6 +226,10 @@ const mapstateToProps = (state) => {
     isPaying: state.board.isPaying,
     isPaid: state.board.isPaid,
     predictions: state.pred.predictions,
+
+    isLoggedIn: state.login.isLoggedIn,
+    user: state.login.user
+
   };
 };
 const mapDispatchToProps = (dispatch) => {

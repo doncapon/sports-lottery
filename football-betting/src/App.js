@@ -27,7 +27,7 @@ class App extends React.Component {
     super(props)
 
     this.state = {
-      timeout: 1000 * 60 * 15,
+      timeout: 1000 * 60 * 10,
       showModal: false,
       isTimedOut: false,
     }
@@ -55,6 +55,13 @@ class App extends React.Component {
     if (isTimedOut) {
       this.props.onLogout();
       this.props.onSetIsLoggedIn(false);
+      
+    this.props.onSetIsPaying(false);
+    this.props.onSetIsPaid(false);
+
+    if (this.props.slips !== null && this.props.slips.length > 0)
+      this.props.onDeleteAndResetAll();
+    this.props.history.push("/");
       this.props.history.push("/");
 
     } else {

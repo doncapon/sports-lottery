@@ -28,16 +28,18 @@ class Jackpot extends Component {
             setTimeout(() => {
                 this.setState({ jackpotData: dataUser });
             }, 500);
-                let jackpotWinRef = firebase.database().ref("jackpot-win").child(this.props.gameDay);
-                jackpotWinRef.on("value" , snapshot=>{
-                    data = snapshot.val();
-                });
-                setTimeout(() => {
-                this.setState({ elevenAmount: data.eleven });
-                this.setState({ tenAmount: data.ten });
-                this.setState({ twelveAmount: data.twelve });
-                this.setState({ thirteenAmount: data.thirteen });
-                }, 500);
+            let jackpotWinRef = firebase.database().ref("jackpot-win").child(this.props.gameDay);
+            jackpotWinRef.on("value", snapshot => {
+                data = snapshot.val();
+            });
+            setTimeout(() => {
+                if (data) {
+                    this.setState({ elevenAmount: data.eleven });
+                    this.setState({ tenAmount: data.ten });
+                    this.setState({ twelveAmount: data.twelve });
+                    this.setState({ thirteenAmount: data.thirteen });
+                }
+            }, 500);
         }
         this.setState({ loading: true });
 

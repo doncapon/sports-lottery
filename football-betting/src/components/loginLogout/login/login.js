@@ -1,15 +1,14 @@
 import { Button, FormControl, Form } from 'react-bootstrap';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import React, { useState } from 'react';
 import classes from './login.module.css';
 
 const Login = (props) => {
     const [showPopup, setShowPopUp] = useState(false);
-    const [email, setEmail] = useState('lordshegz@gmail.com');
-    const [password, setPassword] = useState('Emmanuel1987');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [alerts, setAlerts] = useState([]);
     let history = useHistory();
-    let location = useLocation();
     const login = () => {
         if (!props.loading) {
             props.login(email, password);
