@@ -18,7 +18,6 @@ import Settings from './containers/Settings/Settings';
 import Signup from './containers/Signup/Signup';
 import ActivateNewUser from './containers/ActivateNewUser/ActivateNewUser';
 import UserPlayHistory from './components/gameHistory/userPlayHistory/UserPlayHistory';
-import firebase from "./config/firebase/firebase";
 
 class App extends React.Component {
 
@@ -26,11 +25,10 @@ class App extends React.Component {
     super(props)
 
     this.state = {
-      timeout: 1000 * 60 * 10,
+      timeout: 1000 * 60 * 15,
       showModal: false,
       isTimedOut: false,
     }
-
     this.idleTimer = null;
     this.onAction = this._onAction.bind(this);
     this.onActive = this._onActive.bind(this);
@@ -40,7 +38,18 @@ class App extends React.Component {
     this.handleClose = this.handleClose.bind(this)
     this.handleLogout = this.handleLogout.bind(this)
   }
+  // onUnload = e => {
+  //   e.preventDefault();
+  //   e.returnValue = 'hello';
+  //   this.handleLogout();
+  // }
+  // componentDidMount() {
+  //   window.addEventListener("beforeunload", this.onUnload);
+  // }
 
+  // componentWillUnmount() {
+  //   window.removeEventListener("beforeunload", this.onUnload);
+  // }
   _onAction(e) {
     this.setState({ isTimedOut: false })
   }
@@ -52,22 +61,11 @@ class App extends React.Component {
   _onIdle(e) {
     const isTimedOut = this.state.isTimedOut
     if (isTimedOut) {
-      this.props.onLogout();
-      this.props.onSetIsLoggedIn(false);
-      
-    this.props.onSetIsPaying(false);
-    this.props.onSetIsPaid(false);
-
-    if (this.props.slips !== null && this.props.slips.length > 0)
-      this.props.onDeleteAndResetAll();
-    this.props.history.push("/");
-      this.props.history.push("/");
-
+      this.handleLogout();
     } else {
       this.setState({ showModal: true })
       this.idleTimer.reset();
       this.setState({ isTimedOut: true })
-
     }
   }
 
@@ -76,17 +74,20 @@ class App extends React.Component {
 
   }
 
-  handleLogout() {
-    firebase.auth().signOut().then(() => {
-      this.setState({ showModal: false })
-      this.props.onSetIsLoggedIn(false);
-      this.props.history.push("/");
-      firebase.database().ref("users").off();
-    })
+  handleLogout = () => {
+    this.props.onLogout();
+    this.props.onSetIsLoggedIn(false);
+    this.props.onSetIsPaying(false);
+    this.props.onSetIsPaid(false);
+
+    if (this.props.slips !== null && this.props.slips.length > 0)
+      this.props.onDeleteAndResetAll();
+    this.props.history.push("/");
+    this.props.onSetBoardLoading(false);
+
   }
 
   render() {
-
     return (
       <div className={classes.App}>
         {this.props.isLoggedIn ?
@@ -100,14 +101,14 @@ class App extends React.Component {
             debounce={250}
             timeout={this.state.timeout} />
           : null}
-        <div className={classes.Navs}><Navs setForgot= {this.props.onSetForgot}
-          isLoggedIn={this.props.isLoggedIn} login= {this.props.onLogin} logout= {this.props.onLogout}
-          deleteAndResetAll={this.props.onDeleteAndResetAll}  loading = {this.props.loading}
+        <div className={classes.Navs}><Navs setForgot={this.props.onSetForgot} setBoardLoading={this.props.onSetBoardLoading}
+          isLoggedIn={this.props.isLoggedIn} login={this.props.onLogin} logout={this.props.onLogout}
+          deleteAndResetAll={this.props.onDeleteAndResetAll} loading={this.props.loading}
           slips={this.props.slips} forgotPassword={this.props.forgotPassword}
           showFunds={this.props.showFunds} firstName={this.props.user.name}
           setShowFunds={this.props.onSetShowFunds} user={this.props.user}
           toggleShowFunds={this.props.onToggleShowFunds} setEditIndex={this.props.onSetEditIndex}
-          setIsPaying = {this.props.onSetIsPaying} setIsPaid = {this.props.onSetIsPaid}
+          setIsPaying={this.props.onSetIsPaying} setIsPaid={this.props.onSetIsPaid}
         /></div>
         <Switch>
           <Route path="/transfers" component={Transfers} />
@@ -155,25 +156,26 @@ const mapstateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    onLogout: ()=> dispatch(actions.logout()),
+    onSetBoardLoading: (loading) => dispatch(actions.setBoardLoading(loading)),
+    onLogout: () => dispatch(actions.logout()),
     onSetIsLoggedIn: (value) => dispatch(actions.setIsLoggedIn(value)),
     onSetForgot: (value) => dispatch(actions.setForgot(value)),
     onLogin: (email, password) => dispatch(actions.login(email, password)),
-   onToggleShowFunds: () => dispatch(actions.toggleShowFunds()),
+    onToggleShowFunds: () => dispatch(actions.toggleShowFunds()),
     onDeleteAndResetAll: () => dispatch(actions.deleteAndResetAll()),
     onSetShowFunds: () => dispatch(actions.setShowFunds()),
     onResetReduxBoard: () =>
       dispatch(actions.resetReduxBoard()),
-      
+
     onSetEditIndex: (value) =>
       dispatch(actions.setEditIndex(value)),
     // onSetBoard: (isFaCup, kickOffTime, kickOffDate, basePrice) =>
     //   dispatch(actions.setBoard(isFaCup, kickOffTime, kickOffDate,basePrice)),
-      
+
     onSetIsPaying: (isPaying) =>
-    dispatch(actions.setIsPaying(isPaying)),
-  onSetIsPaid: (isPaid) =>
-    dispatch(actions.setIsPaid(isPaid)),
+      dispatch(actions.setIsPaying(isPaying)),
+    onSetIsPaid: (isPaid) =>
+      dispatch(actions.setIsPaid(isPaid)),
 
   };
 };

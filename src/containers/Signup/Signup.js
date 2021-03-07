@@ -44,7 +44,6 @@ class Signup extends Component {
                 .set({
                     name: capitalizeFirstLetter(this.state.name),
                     surname: capitalizeFirstLetter(this.state.surname),
-                    password: passwordHash.generate(this.state.password),
                     phoneNumber: this.state.phoneNumber,
                     email: this.state.emailId,
                     dob: this.state.dob,

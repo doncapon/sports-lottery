@@ -128,6 +128,7 @@ option{
       , .Number  
     {    
       width: 25vw;
+      height: 7vh
     }
 
     .label{

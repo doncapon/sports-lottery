@@ -112,21 +112,6 @@ class UserPlayHistory extends Component {
             }
         }
     }
-
-    componentDidUpdate(prevProps, prevState) {
-        if (this.state.matchResults.length !== prevState.matchResults.length) {
-            let groupedArray = [...this.state.matchesPlayed]
-            this.setMatchResults(groupedArray);
-        }
-    }
-    shouldComponentUpdate(nextProps, nextState) {
-        if (this.state.matchResults.length === nextState.matchResults.length
-            && this.state.matchResults.length > 0 && this.state.matchResults[0].awayGoals
-        ) {
-            return false;
-        }
-        return true;
-    }
     rseetShowHistory = () => {
         let smallShow = [...this.state.showHistory];
         let newHistory = []
