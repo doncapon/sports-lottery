@@ -44,7 +44,7 @@ class Signup extends Component {
                 .set({
                     name: capitalizeFirstLetter(this.state.name),
                     surname: capitalizeFirstLetter(this.state.surname),
-                    phoneNumber: this.state.phoneNumber,
+                    phoneNumber: "+234"+ this.state.phoneNumber.substr(1, this.state.phoneNumber.length),
                     email: this.state.emailId,
                     dob: this.state.dob,
                     role: "user",

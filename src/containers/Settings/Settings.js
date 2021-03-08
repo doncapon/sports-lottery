@@ -8,7 +8,15 @@ import firebase from '../../config/firebase/firebase';
 import moment from 'moment';
 class Settings extends Component {
     state = {
-        disable: false
+        disable: false,
+        gameDate: '',
+        loading: false
+    }
+    componentDidMount() {
+        if (!this.state.loading) {
+            this.setState({ gameDate: this.props.gameDate })
+        }
+        this.setState({ loading: true })
     }
     handlecCnfigureBoard = () => {
         let kickOffDate
@@ -60,7 +68,6 @@ class Settings extends Component {
                 allFisinished = false;
                 break;
             }
-
         }
         if (allFisinished) {
             for (let i = 0; i < matchRes.length; i++) {
@@ -71,45 +78,41 @@ class Settings extends Component {
                         sideWon++;
                     }
                 }
-
             }
         }
         return sideWon;
     }
     calculaterWiinerAmount = () => {
         let jackpotRef = firebase.database().ref("jackpots").child(
-            dateInYYYYMMDD(this.props.gameDate));
+            dateInYYYYMMDD(this.state.gameDate));
         jackpotRef.on("value", snapshot => {
             let data = snapshot.val();
             let thirteen = 0;
             let twelve = 0;
             let eleven = 0;
             let ten = 0;
-            if (data.thirteenUser > 0) {
-                setTimeout(() => {
+            if (data !== null) {
+                if (data.thirteenUser > 0) {
                     thirteen = (data.jackpot * this.props.thirteenPercent) / data.thirteenUser;
-                    firebase.database().ref("jackpot-win").child(dateInYYYYMMDD(this.props.gameDate)).update({ thirteen: thirteen });
-                }, 2000);
-            }
-            if (data.twelveUser > 0) {
-                setTimeout(() => {
+                    firebase.database().ref("jackpot-win").child(dateInYYYYMMDD(this.state.gameDate)).update({ thirteen: thirteen });
+                }
+                if (data.twelveUser > 0) {
                     twelve = (data.jackpot * this.props.twelvePercent) / data.twelveUser;
-                    firebase.database().ref("jackpot-win").child(dateInYYYYMMDD(this.props.gameDate)).update({ twelve: twelve });
-                }, 2000);
-            }
-            if (data.elevenUser > 0) {
-                setTimeout(() => {
+                    firebase.database().ref("jackpot-win").child(dateInYYYYMMDD(this.state.gameDate)).update({ twelve: twelve });
+                }
+                if (data.elevenUser > 0) {
                     eleven = (data.jackpot * this.props.elevenPercent) / data.elevenUser;
-                    firebase.database().ref("jackpot-win").child(dateInYYYYMMDD(this.props.gameDate)).update({ eleven: eleven });
-                }, 2000);
-
-            }
-            if (data.tenUser > 0) {
-                setTimeout(() => {
+                    firebase.database().ref("jackpot-win").child(dateInYYYYMMDD(this.state.gameDate)).update({ eleven: eleven });
+                }
+                if (data.tenUser > 0) {
                     ten = (data.jackpot * this.props.tenPercent) / data.tenUser;
-                    firebase.database().ref("jackpot-win").child(dateInYYYYMMDD(this.props.gameDate)).update({ ten: ten });
-                }, 2000);
+                    firebase.database().ref("jackpot-win").child(dateInYYYYMMDD(this.state.gameDate)).update({ ten: ten });
+                }
+            } else {
+                alert("No games recorded for  chosen day " + this.state.gameDate);
             }
+            firebase.database().ref("jackpots").off();
+            firebase.database().ref("jackpot-win").off();
         });
     }
 
@@ -127,18 +130,19 @@ class Settings extends Component {
         });
         return matchResults;
     }
-    shareJackpot = () => {
-        this.setState({ disable: true })
+    shareJackpot = (e) => {
+        e.preventDefault();
+        this.setState({ disable: true });
         let matchesPlayedRef = firebase.database().ref("game-history");
         let allFinished = true;
         firebase.database().ref("match-results")
             .on("value", snapshot => {
                 let data = snapshot.val();
-                let games = Object.keys(data).map(key => 
-                         data[key]
+                let games = Object.keys(data).map(key =>
+                    data[key]
                 )
                 let wantedGames = games.filter(game =>
-                    moment(game.gameDay).format("DD-MM-YYYY") === this.props.gameDate
+                    moment(game.gameDay).format("DD-MM-YYYY") === this.state.gameDate
                 )
                 for (let i = 0; i < wantedGames.length; i++) {
                     if (wantedGames[i].status === "Not Started") {
@@ -148,86 +152,83 @@ class Settings extends Component {
                 }
 
                 if (allFinished) {
-
-
                     matchesPlayedRef.on("value", snapshot => {
                         let data = snapshot.val();
                         Object.keys(data).map(keys => {
                             let matches = data[keys];
                             return Object.keys(matches).map(key => {
                                 let matchesPlayed = matches[key];
-        
                                 let matchRes = this.setMatchResults(matchesPlayed);
-                                setTimeout(() => {
-                                    let hits = this.calculateWins(matchesPlayed, matchRes[0]);
-                                    setTimeout(() => {
-                                        firebase.database().ref("game-history").child(matchesPlayed.userId)
-                                            .child(matchesPlayed.gameNumber)
-                                            .update({ hits: hits });
-                                    }, 2000);
-        
-                                    if (!matchesPlayed.isEvaluated) {
-                                        if (hits === 10) {
-                                            setTimeout(() => {
-                                                firebase.database().ref("jackpots").child(matchesPlayed.evaluationDate).child("tenUser").transaction(tenUsers => {
-                                                    return tenUsers + 1;
-                                                })
-                                            }, 3000);
-        
-                                        } else if (hits === 11) {
-                                            setTimeout(() => {
-                                                firebase.database().ref("jackpots").child(matchesPlayed.evaluationDate).child("elevenUser").transaction(elevenUsers => {
-                                                    return elevenUsers + 1;
-                                                })
-                                            }, 3000);
-        
-                                        } else if (hits === 12) {
-                                            setTimeout(() => {
-                                                firebase.database().ref("jackpots").child(matchesPlayed.evaluationDate).child("twelveUser").transaction(twelveUsers => {
-                                                    return twelveUsers + 1;
-                                                })
-                                            }, 3000);
-        
-                                        } else if (hits === 13) {
-                                            setTimeout(() => {
-                                                firebase.database().ref("jackpots").child(matchesPlayed.evaluationDate).child("thirteenUser").transaction(thirteenUsers => {
-                                                    return thirteenUsers + 1;
-                                                })
-                                            }, 3000);
-        
-                                        } else {
-        
-                                        }
-                                        firebase.database().ref("game-history").child(matchesPlayed.userId)
-                                            .child(matchesPlayed.gameNumber).update({ isEvaluated: true })
+                                let hits = this.calculateWins(matchesPlayed, matchRes[0]);
+                                firebase.database().ref("game-history").child(matchesPlayed.userId)
+                                    .child(matchesPlayed.gameNumber)
+                                    .update({ hits: hits });
+                                if (!matchesPlayed.isEvaluated) {
+                                    if (hits === 10) {
+                                        firebase.database().ref("jackpots").child(matchesPlayed.evaluationDate).child("tenUser").transaction(tenUsers => {
+                                            return tenUsers + 1;
+                                        })
+                                    } else if (hits === 11) {
+                                        firebase.database().ref("jackpots").child(matchesPlayed.evaluationDate).child("elevenUser").transaction(elevenUsers => {
+                                            return elevenUsers + 1;
+                                        })
+                                    } else if (hits === 12) {
+                                        firebase.database().ref("jackpots").child(matchesPlayed.evaluationDate).child("twelveUser").transaction(twelveUsers => {
+                                            return twelveUsers + 1;
+                                        })
+
+                                    } else if (hits === 13) {
+                                        firebase.database().ref("jackpots").child(matchesPlayed.evaluationDate).child("thirteenUser").transaction(thirteenUsers => {
+                                            return thirteenUsers + 1;
+                                        })
+                                    } else {
+
                                     }
-                                    this.setState({ disable: false });
-                                }, 2000);
+                                    firebase.database().ref("game-history").child(matchesPlayed.userId)
+                                        .child(matchesPlayed.gameNumber).update({ isEvaluated: true })
+                                }
+                                firebase.database().ref("match-results").off();
+                                firebase.database().ref("game-history").off();
+                                firebase.database().ref("jackpots").off();
                                 return null;
                             })
                         })
                     });
                 }
-        
+
             });
         this.calculaterWiinerAmount();
+        setTimeout(() => {
+            this.setState({ disable: false });
+        }, 5000);
+
+
     }
 
-    setupJackpot = (totalPrice) => {
-        let date = this.props.gameDate.split("-");
+    setupJackpot = (e) => {
+        e.preventDefault();
+        let date = this.state.gameDate.split("-");
         let dateReformed = date[2] + "-" + date[1] + "-" + date[0];
-        firebase.database().ref("jackpots").child(dateReformed).child("jackpot")
+        let jackpotData;
+        firebase.database().ref("jackpots").child(dateReformed)
             .on("value", snapshot => {
-                if (!snapshot.val()) {
-                    firebase.database().ref("jackpots").child(dateReformed).child("jackpot").transaction(Jackpots => {
-                        return Jackpots + totalPrice;
-                    })
-                    alert("done")
-                } else {
-                    alert("this is already set, cannot reset");
-                }
+                jackpotData = snapshot.val();
             })
-
+        setTimeout(() => {
+            if (jackpotData === null) {
+                firebase.database().ref("jackpots").child(dateReformed).set({
+                    jackpot: 0,
+                    tenUser: 0,
+                    elevenUser: 0,
+                    twelveUser: 0,
+                    thirteenUser: 0
+                })
+                alert("done");
+            } else {
+                alert("this is already set, cannot reset");
+            }
+        }, 3000)
+        firebase.database().ref("jackpots").off();
     }
     render() {
         if (this.props.user.role !== "admin" || !this.props.isLoggedIn) {
@@ -236,8 +237,13 @@ class Settings extends Component {
         return (<div className={classes.SettingsWrapper}>
             <Button onClick={this.handlecCnfigureBoard} >Configure Play Board</Button>
             <Button onClick={this.handleSetResultss} >Set Last Results</Button>
-            <Button onClick={this.shareJackpot} disabled={this.state.disable} >Share Jackpot</Button>
-            <Button onClick={() => this.setupJackpot(0)} >Set Starting Jakcpot</Button>
+
+            <form onSubmit={this.shareJackpot}>
+                <input type="text" name="date" value={this.state.gameDate} onChange={(e) => this.setState({ gameDate: e.target.value })} />
+                <Button type="button" onClick={this.setupJackpot} disabled={this.state.disable} >Set Starting Jakcpot</Button>
+                <Button type="submit" variant="success" disabled={this.state.disable} >Share Jackpot</Button>
+
+            </form>
         </div>)
     }
 }
