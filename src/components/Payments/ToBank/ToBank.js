@@ -8,6 +8,8 @@ import { Spinner } from "react-bootstrap";
 import firebase from '../../../config/firebase/firebase';
 import * as actions from '../../../store/actions/index';
 import { connect } from "react-redux";
+import ConfirmPassword from '../ToBank/ConfirmPassword/ConfirmPassword';
+import Modal from '../../UI/Modal/Modal';
 
 class ToBank extends Component {
     state = {
@@ -22,7 +24,8 @@ class ToBank extends Component {
         apiError: '',
         saveError: '',
         showUpdate: '',
-
+        showReSigninForm: false,
+        isWithDraw: false,
         loding: false,
     }
     componentDidMount() {
@@ -149,7 +152,7 @@ class ToBank extends Component {
         this.setState({ [name]: value });
         if (name === "account") {
             value = value.replace(/[^0-9]+/, '');
-            this.setState({account: value});
+            this.setState({ account: value });
         }
         const ele = document.activeElement.name;
         let error = {};
@@ -198,68 +201,93 @@ class ToBank extends Component {
             this.saveBankValidation();
         }, 100);
     }
-    handleSubmit = (e) => {
-        e.preventDefault();
-        if (this.handleFormValidation()) {
+    handleWithdraw = () => {
+        const receipntData = {
+            type: "nuban",
+            name: this.state.name,
+            account_number: this.state.account,
+            bank_code: this.state.bank,
+            currency: "NGN"
+        }
+        const params = "account_number=" + this.state.account + "&bank_code=" + this.state.bank;
+        if (this.state.amount <= this.state.funds && this.state.amount > 0) {
+            axios.get("bank/resolve?" + params)
+                .then(response => {
+                    if (response.data.message === "Account number resolved") {
+                        axios.post("transferrecipient", receipntData)
+                            .then(response => {
+                                if (response.data.message === "Transfer recipient created successfully") {
+                                    return response.data.data;
+                                }
+                            })
+                            .then(value => {
+                                const paymentData = {
+                                    source: "balance",
+                                    amount: "" + this.state.amount * 100,
+                                    recipient: value.recipient_code,
+                                    reason: "Returns from BetSoka account"
+                                };
+                                axios.post("transfer", paymentData)
+                                    .then(response => {
+                                        console.log("I got 1", firebase.auth().currentUser.uid, response.data.data.status);
 
-            const receipntData = {
-                type: "nuban",
-                name: this.state.name,
-                account_number: this.state.account,
-                bank_code: this.state.bank,
-                currency: "NGN"
-            }
-            const params = "account_number=" + this.state.account + "&bank_code=" + this.state.bank;
-            if (this.state.amount <= this.state.funds && this.state.amount > 0) {
-                axios.get("bank/resolve?" + params)
-                    .then(response => {
-                        if (response.data.message === "Account number resolved") {
-                            axios.post("transferrecipient", receipntData)
-                                .then(response => {
-                                    if (response.data.message === "Transfer recipient created successfully") {
-                                        return response.data.data;
-                                    }
-                                })
-                                .then(value => {
-                                    const paymentData = {
-                                        source: "balance",
-                                        amount: "" + this.state.amount * 100,
-                                        recipient: value.recipient_code,
-                                        reason: "Returns from BetSoka account"
-                                    };
-                                    axios.post("transfer", paymentData)
-                                        .then(response => {
-                                            if (response.data.data.status === "success") {
-                                                let userId = firebase.auth().currentUser.uid;
-                                                let userRef = firebase.database().ref("users").child(userId);
-                                                userRef.child('funds').transaction((funds) => {
-                                                    this.props.onSetFunds(funds - Number(this.state.amount))
-                                                    return funds - Number(this.state.amount)
-                                                })
+                                        if (response.data.data.status === "success") {
+                                            let userId = firebase.auth().currentUser.uid;
+                                            console.log("I got called", userId);
+                                            let userRef = firebase.database().ref("users").child(userId);
+                                            userRef.child('funds').transaction((funds) => {
+                                                this.props.onSetFunds(funds - Number(this.state.amount))
+                                                return funds - Number(this.state.amount)
+                                            })
 
-                                                alert(`${response.data.message}. Funds wull be received within 24 hours.`)
+                                            alert(`${response.data.message}. Funds wull be received within 24 hours.`)
+                                        }
+                                    })
+                                    .catch(error => {
+                                        this.setState({ apiError: error, saveError: '' });
+                                    })
+                            })
+                            .catch(error => {
+                                this.setState({ apiError: error, saveError: '' });
 
-                                            }
+                            });
+                    }
+                })
+                .catch(error => {
+                    this.setState({ apiError: error, saveError: '' })
 
-                                        })
-                                        .catch(error => {
-                                            this.setState({ apiError: error, saveError: '' });
-                                        })
-                                })
-                                .catch(error => {
-                                    this.setState({ apiError: error, saveError: '' });
-
-                                });
-                        }
-                    })
-                    .catch(error => {
-                        this.setState({ apiError: error, saveError: '' })
-
-                    });
-            }
+                });
         }
     }
+    handleSubmit = (e) => {
+        e.preventDefault();
+        let bankDetail = [...this.props.savedBanks];
 
+        if (this.handleFormValidation()) {
+            let BankExist = bankDetail.find(detail => detail.accountNumber === this.state.account);
+            if (BankExist) {
+                this.handleWithdraw();
+            } else {
+                this.setState({ showReSigninForm: true });
+                this.setState({ isWithDraw: true })
+            }
+
+        }
+    }
+    handleSaveHandler = (e) => {
+        e.preventDefault();
+        let bankDetail = [...this.props.savedBanks];
+
+        if (this.handleFormValidation()) {
+            let BankExist = bankDetail.find(detail => detail.accountNumber === this.state.account);
+            if (BankExist) {
+                alert("Account already saved");
+            } else {
+                this.setState({ showReSigninForm: true });
+            }
+
+        }
+    }
     HandleSave = () => {
         let bankDetail = [...this.props.savedBanks];
         let name = this.state.name;
@@ -347,6 +375,9 @@ class ToBank extends Component {
         }
         return (
             <div className={classes.ToBankWrapper}>
+                {this.state.showReSigninForm ? <Modal show={this.state.showReSigninForm}><ConfirmPassword
+                    handleWithdraw={this.handleWithdraw} isWithDraw={this.state.isWithDraw}
+                    cancel={() => this.setState({ showReSigninForm: false })} HandleSave={this.HandleSave} /></Modal> : null}
                 {this.state.showUpdate ? <SignupModal show={this.state.showUpdate}><DeleteBankDetail
                     name={this.state.name} bank={this.state.bank} account={this.state.account}
                     allowedBanks={this.props.allowedBanks} savedBanks={this.props.savedBanks}
@@ -417,7 +448,7 @@ class ToBank extends Component {
                                     {this.state.saveError ? <div style={{ color: 'red', fontSize: '20px' }}>{this.state.saveError}</div> : null}
                                 </div>
                                 <div className={classes.Buttons}>
-                                    <button type="button" onClick={this.HandleSave} className={classes.Button1}
+                                    <button type="button" onClick={this.handleSaveHandler} className={classes.Button1}
                                     >Save</button>
                                     {this.state.name && this.state.bank !== "select" && this.state.account ?
                                         <button type="button" className={classes.Button2}

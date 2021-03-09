@@ -4,7 +4,6 @@ import axios from '../../axios-main';
 import { connect } from "react-redux";
 import { calculateAge, capitalizeFirstLetter } from '../../shared/utility';
 import firebase from '../../config/firebase/firebase';
-import passwordHash from 'password-hash';
 
 class Signup extends Component {
     constructor(props) {

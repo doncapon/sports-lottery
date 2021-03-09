@@ -245,7 +245,7 @@ class UserPlayHistory extends Component {
 
         let matchesPlayed = [...this.state.matchesPlayed];
         let matchResults = [...this.state.matchResults];
-        let userPlayHistoryTrannsformed = this.state.loading? matchesPlayed[0]?
+        let userPlayHistoryTrannsformed = this.state.loading  && matchesPlayed[0]? 
             matchesPlayed.sort((a, b)=> a[0]["datePlayed"] < b[0]["datePlayed"] ? 1: -1).map((match, k) => {
               let matchRes = this.getMatchResults(matchResults, match[0]);
                 return <div className={classes.userPlayHistoryAndShare} key={k}>
@@ -320,7 +320,7 @@ class UserPlayHistory extends Component {
                         : null}
 
                 </div>
-            }) : <div className={classes.NoGames}><h3>You have not yet played</h3></div>
+            }) 
             : <Spinner />
 
         return (<div className={classes.userPlayHistoryWrapper}>

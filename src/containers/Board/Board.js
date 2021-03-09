@@ -159,10 +159,12 @@ class Board extends Component {
 
                 </Button>
                 {(this.state.funds < this.props.totalPrice && this.props.isLoggedIn) ? <div>
-                  <div style={{ color: 'red', textAlign: 'center', background: 
-                  'grey', padding: '10px 0', marginBottom: '10px' }}>Sorry, you do not have enough funds to make the purchase</div>
-                  <div><Button className={classes.TransferButton} 
-                  onClick={() => (this.props.history.push("/transfers"))}> <ArrowRight style={{ fontWeight: 'bolder' }} size="20" /> GO TO FUNDS TRANSFER</Button></div>
+                  <div style={{
+                    color: 'red', textAlign: 'center', background:
+                      'grey', padding: '10px 0', marginBottom: '10px'
+                  }}>Sorry, you do not have enough funds to make the purchase</div>
+                  <div><Button className={classes.TransferButton}
+                    onClick={() => (this.props.history.push("/transfers"))}> <ArrowRight style={{ fontWeight: 'bolder' }} size="20" /> GO TO FUNDS TRANSFER</Button></div>
                 </div> : null}
                 <Modal show={this.state.showModalSignin} modalClosed={this.cancelLoginPopup}>
                   <LoginModal setLoggedInUser={this.props.onSetLoggedInUser}
