@@ -49,7 +49,7 @@ class Jackpot extends Component {
     }
 
     render() {
-        return this.state.loading?<div className={classes.Jackpot}>
+        return this.state.loading? this.state.jackpotData? <div className={classes.Jackpot}>
             <div className={classes.Header}>
                 <h6>JACKPOT SHARE</h6>
             </div>
@@ -57,7 +57,7 @@ class Jackpot extends Component {
                 <div className={classes.Row}>
                     <div className={classes.Correct}><div className={classes.GameNumber}>{this.props.gamesLength}</div>
                         <div className={classes.Greyed}>correct</div></div>
-                    <div className={classes.Pieces}><div className={classes.PiecesNumber}>{this.state.jackpotData.thirteenUser}</div>{"\xa0\xa0"}
+                    <div className={classes.Pieces}><div className={classes.PiecesNumber}>{this.state.jackpotData.thirteenUser !== null? this.state.jackpotData.thirteenUser: "-" }</div>{"\xa0\xa0"}
                         <div className={classes.Greyed}>winner(s)</div></div>
                     <div className={classes.Pot}> {this.checkAmount(this.state.thirteenAmount)} </div>
                 </div>
@@ -85,7 +85,7 @@ class Jackpot extends Component {
                 </div>
             </div>
 
-        </div>: <Spinner />
+        </div>:null: <Spinner />
     }
 }
 
