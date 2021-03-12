@@ -38,11 +38,12 @@
     "redux-logger": "^3.0.6",
     "redux-persist": "^5.6.12",
     "redux-thunk": "^2.3.0",
+    "serve": "^11.3.2",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "dev": "serve -s build",
+    "dev": "react-scripts start",
+    "start": "serve -s build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
