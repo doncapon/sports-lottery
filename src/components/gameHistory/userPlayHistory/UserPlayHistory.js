@@ -19,19 +19,18 @@ class UserPlayHistory extends Component {
             winAmount: [],
             loading: false,
             showHistory: [],
-            numOfHits: []
         }
 
         this.setMatchResults = this.setMatchResults.bind(this);
     }
-    
 
-    componentWillUnmount(){
+
+    componentWillUnmount() {
         firebase.database().ref("game-history").off();
         firebase.database().ref("match-results").off();
-        this.setState({matchResults: []});
-        this.setState({matchesPlayed: []});
-        this.setState({loading: false});
+        this.setState({ matchResults: [] });
+        this.setState({ matchesPlayed: [] });
+        this.setState({ loading: false });
     }
     componentDidMount() {
         // window.location.reload();
@@ -51,7 +50,6 @@ class UserPlayHistory extends Component {
                         this.setMatchResults(groupedArray)
                         this.setState({ matchesPlayed: groupedArray });
                         this.setState({ showHistory: myShow });
-                        this.setNumberOfHits();
                         this.setWinAmount();
                     });
                 } else {
@@ -96,22 +94,6 @@ class UserPlayHistory extends Component {
         }
     }
 
-    setNumberOfHits = () => {
-
-        if (this.state.winAmount.length <= 0) {
-
-            let matchesPlayed = [...this.state.matchesPlayed];
-            let matchResults = [...this.state.matchResults];
-            let numOfHits = [];
-            if (this.state.winAmount.length <= 0 && matchResults.length > 0) {
-                for (let i = 0; i < matchesPlayed.length; i++) {
-                    let matchRes = matchResults.filter(res => res.fixtureId === matchesPlayed[i][0].fixture_id)[0]
-                    numOfHits.push(this.calculateWins(matchesPlayed[i][0], matchRes).hits);
-                }
-                this.setState({ numOfHits: numOfHits });
-            }
-        }
-    }
     rseetShowHistory = () => {
         let smallShow = [...this.state.showHistory];
         let newHistory = []
@@ -127,15 +109,20 @@ class UserPlayHistory extends Component {
         smallShow[index] = !smallShow[index];
         this.setState({ showHistory: smallShow });
     }
-    translateResult = (goalHome, goalAway, status) => {
-        if (status === "Match Finished") {
-            if (goalHome > goalAway) {
-                return "H";
-            } else if (goalHome < goalAway) {
-                return "A";
-            } else {
-                return "D";
+    translateResult = (goalHome, goalAway, endTime) => {
+        if (Date.now() > endTime) {
+            if(goalHome !== undefined && goalAway !== undefined){
+                if (goalHome > goalAway) {
+                    return "H";
+                } else if (goalHome < goalAway) {
+                    return "A";
+                } else {
+                    return "D";
+                }
+            }else{
+                return "free pass";
             }
+      
         } else {
             return "";
         }
@@ -155,48 +142,27 @@ class UserPlayHistory extends Component {
         }
     }
 
-    calculateWins = (match, matchRes) => {
-        let allFisinished = true;
+    calculateWins = (match, matchHits) => {
         let win = "No wins";
-        let sideWon = 0;
 
-        for (let i = 0; i < matchRes.length; i++) {
-            if (matchRes[i].status !== "Match Finished") {
-                allFisinished = false;
-                break;
-            }
-
+        let searchTerm = "";
+        if (matchHits === 10) {
+            searchTerm = "ten";
+        } else if (matchHits === 11) {
+            searchTerm = "eleven"
+        } else if (matchHits === 12) {
+            searchTerm = "twelve"
+        } else if (matchHits === 13) {
+            searchTerm = "thirteen";
+        } else {
+            return "No wins";
         }
-        if (allFisinished) {
-            for (let i = 0; i < matchRes.length; i++) {
-                for (let k = 0; k < 3; k++) {
-                    if (this.translateResult(matchRes[i].homeGoals, matchRes[i].awayGoals, matchRes[i].status)
-                        === this.determineSelection(match.games[i].selections[k].selected, k)
-                    ) {
-                        sideWon++;
-                    }
-                }
 
-            }
-            let searchTerm = "";
-            if (sideWon === 10) {
-                searchTerm = "ten";
-            } else if (sideWon === 11) {
-                searchTerm = "eleven"
-            } else if (sideWon === 12) {
-                searchTerm = "twelve"
-            } else if (sideWon === 13) {
-                searchTerm = "thirteen";
-            } else {
-                return "No wins";
-            }
-
-            let potRef = firebase.database().ref("jackpot-win").child(match.evaluationDate).child(searchTerm);
-            potRef.on("value", snapshot => {
-                let data = snapshot.val();
-                win = "₦" + addCommaToAmounts("" + data)
-            });
-        }
+        let potRef = firebase.database().ref("jackpot-win").child(match.evaluationDate).child(searchTerm);
+        potRef.on("value", snapshot => {
+            let data = snapshot.val();
+            win = "₦" + addCommaToAmounts("" + data)
+        });
         return win;
     }
     submitHandler = (e) => {
@@ -232,12 +198,12 @@ class UserPlayHistory extends Component {
         });
     }
     getMatchResults = (matchResults, match) => {
-            let finalMatches = [];
-            for (let i = 0; i < match.games.length; i++) {
-                let res = matchResults.filter(res => res.fixtureId === match.games[i].fixture_id);
-                finalMatches.splice(finalMatches.length, finalMatches.length + 1, res);
-            }
-            return finalMatches;
+        let finalMatches = [];
+        for (let i = 0; i < match.games.length; i++) {
+            let res = matchResults.filter(res => res.fixtureId === match.games[i].fixture_id);
+            finalMatches.splice(finalMatches.length, finalMatches.length + 1, res);
+        }
+        return finalMatches;
     }
     render() {
         if (!this.props.isLoggedIn)
@@ -245,9 +211,9 @@ class UserPlayHistory extends Component {
 
         let matchesPlayed = [...this.state.matchesPlayed];
         let matchResults = [...this.state.matchResults];
-        let userPlayHistoryTrannsformed = this.state.loading  && matchesPlayed[0]? 
-            matchesPlayed.sort((a, b)=> a[0]["datePlayed"] < b[0]["datePlayed"] ? 1: -1).map((match, k) => {
-              let matchRes = this.getMatchResults(matchResults, match[0]);
+        let userPlayHistoryTrannsformed = this.state.loading && matchesPlayed[0] ?
+            matchesPlayed.sort((a, b) => a[0]["datePlayed"] < b[0]["datePlayed"] ? 1 : -1).map((match, k) => {
+                let matchRes = this.getMatchResults(matchResults, match[0]);
                 return <div className={classes.userPlayHistoryAndShare} key={k}>
                     <div className={classes.MainHeader} onClick={() => this.toggleShowHistory(k)} >
                         <div className={classes.DateHead}>Entry date : {moment(match[0].datePlayed).format("DD.MM.YYYY")}</div>
@@ -279,14 +245,14 @@ class UserPlayHistory extends Component {
                                                         </div>
                                                     </div>
                                                     <div className={classes.ScoreResult}>
-                                                        <div className={classes.Score}>{eachRes[0].status === "Match Finished" ? eachRes[0].score : "-"}</div>
-                                                        <div >{this.translateResult(eachRes[0].homeGoals, eachRes[0].awayGoals, eachRes[0].status)}</div>
+                                                        <div className={classes.Score}>{eachRes[0].status === "Match Finished" ? eachRes[0].score : Date.now() > moment(match[0].endTime) ? "free pass" : "-"}</div>
+                                                        <div >{this.translateResult(eachRes[0].homeGoals, eachRes[0].awayGoals, moment(match[0].endTime) )}</div>
                                                     </div>
                                                     <div className={classes.Selections}>
                                                         {match[0].games[i].selections.map((select, y) =>
-                                                            <div key={y} className={this.translateResult(eachRes[0].homeGoals, eachRes[0].awayGoals, eachRes[0].status) ===
+                                                            <div key={y} className={this.translateResult(eachRes[0].homeGoals, eachRes[0].awayGoals, moment(match[0].endTime) ) ===
                                                                 this.determineSelection(select.selected, y) ?
-                                                                eachRes[0].status === "Match Finished" ? classes.Winner : null : classes.Selected} >{this.determineSelection(select.selected, y)}</div>)}
+                                                                Date.now() > moment(match[0].endTime) ? classes.Winner : null : classes.Selected} >{this.determineSelection(select.selected, y)}</div>)}
                                                     </div>
 
                                                 </div>
@@ -294,7 +260,7 @@ class UserPlayHistory extends Component {
                                         </div>
                                         <div className={classes.AmountWon}>
                                             <div>Number of hits:  {match[0].hits}</div>
-                                            <div>Amount won: {this.calculateWins(match[0], matchRes)}</div>
+                                            <div>Amount won: {this.calculateWins(match[0], match[0].hits)}</div>
                                         </div>
                                     </div>
                                     <div className={classes.JackPotShare}>
@@ -320,7 +286,7 @@ class UserPlayHistory extends Component {
                         : null}
 
                 </div>
-            }) 
+            })
             : <Spinner />
 
         return (<div className={classes.userPlayHistoryWrapper}>

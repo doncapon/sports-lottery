@@ -1,12 +1,31 @@
 import classes from "./funds.module.css";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
+import firebase from '../../../config/firebase/firebase'; 
 const Funds = (props) => {
+    const [loading , setLoading] = useState(false);
+    const [funds , setFunds] = useState(0);
     let title = props.firstName;
     let titleLarge = props.firstName;
+    useEffect(()=>{
+        if(!loading){
+            firebase.auth().onAuthStateChanged((user)=>{
+                if(user){
+                    firebase.database().ref("users").child(user.uid)
+                    .on("value" , snapshot=>{
+                        setFunds(snapshot.val().funds)
+                    })
+                }
+            })
+         
+        }
+        setLoading(true);
+    }, [loading])
+
+
     if (props.showFunds) {
-        title += "\xa0\xa0\xa0\xa0 Wallet: ₦" + props.user.funds.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        title += "\xa0\xa0\xa0\xa0 Wallet: ₦" + funds.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     } else {
         title += "\xa0\xa0\xa0\xa0 wallet hidden";
     }
@@ -14,13 +33,12 @@ const Funds = (props) => {
     if (props.showFunds) {
         titleLarge += "\xa0\xa0\xa0\xa0" +
             "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0 Wallet: ₦" +
-            props.user.funds.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            funds.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     } else {
         titleLarge += "\xa0\xa0\xa0" +
             "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0" +
             " wallet hidden";
     }
-
     return (
 
         <div style={{ clear: 'both' }}>
