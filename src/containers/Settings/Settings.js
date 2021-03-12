@@ -27,7 +27,7 @@ class Settings extends Component {
         kickOffDate = getNextPlayDate(this.props.daysOffset,
             this.props.hourToNextDay);
         this.props.onConfigureBoard(this.props.isFACup,
-            this.props.kickOffTime, dateInYYYYMMDD(this.state.gameDate));
+            this.props.kickOffTime, dateInYYYYMMDD(kickOffDate)); //this.state.gameDate
     }
     handleSetResultss = () => {
         this.props.onSetCurrentResult(this.props.slips[0]["slip_1"]);
