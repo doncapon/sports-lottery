@@ -22,9 +22,7 @@ class Navs extends Component {
             if (this.props.user.funds <= 0) {
               this.props.setIsPaying(false);
               this.props.setIsPaid(false);
-  
             }
-  
             this.setState({ isLoading: true })
           }
         })) {

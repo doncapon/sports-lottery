@@ -5,22 +5,22 @@ import Jackpot from "../jackpot/jackpot";
 
 const Results = (props) => {
     const [recalculatedReults, setRecaculted] = useState([]);
-     
-    useLayoutEffect(()=>{
+
+    useLayoutEffect(() => {
         let gamesCalc = [...props.daysResults];
         props.daysResults.forEach((results, i) => {
-            if(results.length === 1){
+            if (results.length === 1) {
                 let myRes = [results[0]];
-                let myTarget =[... props.daysResults[i+1]];
-                myRes.gameDay= props.daysResults[i+1][0].gameDay
-                myTarget.splice(myTarget.length, myTarget.length+1, myRes[0]);
-                gamesCalc.splice(i, i+1);
+                let myTarget = [...props.daysResults[i + 1]];
+                myRes.gameDay = props.daysResults[i + 1][0].gameDay
+                myTarget.splice(myTarget.length, myTarget.length + 1, myRes[0]);
+                gamesCalc.splice(i, i + 1);
 
-                gamesCalc.splice(i-1,i-1, myTarget);
+                gamesCalc.splice(i - 1, i - 1, myTarget);
                 setRecaculted(gamesCalc);
             }
         });
-    }, []) 
+    }, [props.daysResults])
     const showGames = (index) => {
         let daysResults = [...props.daysResults];
         if (daysResults[index].length >= 12)
@@ -29,7 +29,7 @@ const Results = (props) => {
             return false;
 
     }
-    const findSelection = (goalHome, goalAway, status) => {
+    const findSelection = (goalHome, goalAway, status, endDate) => {
         if (status === "Match Finished") {
             if (goalHome > goalAway) {
                 return "H";
@@ -39,7 +39,10 @@ const Results = (props) => {
                 return "D";
             }
         } else {
-            return "Free pass!!!";
+            if (Date.now() > endDate)
+                return "Free pass!!!";
+            else
+                return "-";
         }
 
     }
@@ -72,8 +75,8 @@ const Results = (props) => {
                                             <div>{eachRes.awayTeam}</div>
                                         </div>
                                     </div>
-                                    <div className={classes.Score}>{eachRes.status === "Match Finished" ? eachRes.score : "free pass!!!"}</div>
-                                    <div >{findSelection(eachRes.homeGoals, eachRes.awayGoals, eachRes.status)}</div>
+                                    <div className={classes.Score}>{eachRes.status === "Match Finished" ? eachRes.score : Date.now() > moment(eachRes.gameDate)? "free pass!!!" : "-"}</div>
+                                    <div >{findSelection(eachRes.homeGoals, eachRes.awayGoals, eachRes.status, eachRes.gameDate)}</div>
                                 </div>
                             })}
                         </div>
@@ -88,8 +91,8 @@ const Results = (props) => {
                     </div>
 
                 </div>
-                </div>: props.daysResults[k].length> 1? <div>Sorry too many games have been postponed
-                    Hence, games for this week have been cancelled
+            </div> : props.daysResults[k].length > 1 ? <div>Sorry too many games have been postponed
+            Hence, games for this week have been cancelled
                 </div> : null}
 
         </div>

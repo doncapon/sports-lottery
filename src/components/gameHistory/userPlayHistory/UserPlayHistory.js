@@ -110,7 +110,6 @@ class UserPlayHistory extends Component {
         this.setState({ showHistory: smallShow });
     }
     translateResult = (goalHome, goalAway, endTime) => {
-        console.log(endTime)
         if (Date.now() > endTime) {
             if(goalHome !== undefined && goalAway !== undefined){
                 if (goalHome > goalAway) {
