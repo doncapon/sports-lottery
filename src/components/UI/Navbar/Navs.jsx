@@ -73,7 +73,7 @@ class Navs extends Component {
           {this.props.isLoggedIn && this.props.user.funds >= 0 ?
             <div className={classes.LoginSection}>
               <Button className={classes.Logout} onClick={this.logout} variant="danger">Logout</Button>
-              <Funds showFunds={this.props.showFunds} firstName={firstName} user={this.props.user}
+              <Funds showFunds={this.props.showFunds} firstName={firstName}
                 toggleShowFunds={this.props.toggleShowFunds} setIsLoggedIn={this.props.setIsLoggedIn} />
             </div>
             : <Login slips={this.props.slips} deleteAndResetAll={this.props.deleteAndResetAll} user={this.props.user}
