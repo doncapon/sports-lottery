@@ -275,7 +275,7 @@ class ToBank extends Component {
         e.preventDefault();
         let bankDetail = [...this.props.savedBanks];
 
-        if (this.handleFormValidation()) {
+        if (this.saveBankValidation()) {
             let BankExist = bankDetail.find(detail => detail.accountNumber === this.state.account);
             if (BankExist) {
                 alert("Account already saved");
