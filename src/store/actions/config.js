@@ -77,29 +77,32 @@ export const configureBoard =(isFaCup , kickOffTime , kickOffDate) =>{
                     fixture_id:wantedFixtures[i].fixture_id, status: wantedFixtures[i].status,
                 homeTeam_id: wantedFixtures[i].homeTeam.team_id ,homeTeam:wantedFixtures[i].homeTeam.team_name,
                  awayTeam_id: wantedFixtures[i].awayTeam.team_id, awayTeam:wantedFixtures[i].awayTeam.team_name,
-                 event_date: wantedFixtures[i].event_date})
+                 event_date: wantedFixtures[i].event_date,
+                 end_time: moment(dateTime).add(3, 'hours').format("YYYY-MM-DDTHH:mm:SS+00:00")
+                })
             }
-
             let boardRef = firebase.database().ref("board").child(kickOffDate);
             let data ;
             boardRef.on("value", snapshot=>{
                 data =snapshot.val();
                 if(!data){
-                    firebase.database().ref("board").child(kickOffDate).set(fixturesToPush);
+                    firebase.database().ref("board").child(kickOffDate).update(fixturesToPush);
+                    firebase.database().ref("board").child(kickOffDate).update({isPaid: false})
                     alert("Setup successful");
+                    firebase.database().ref("board").child(kickOffDate).off();
                 }
             })
             if(data){
                 alert("record for that day already exists");
             }
         }).catch(error =>{
-            alert("Something went wrong")
+            alert("Something went wrong");
         });
     };
 }
 
 
-export const fetchResults = (numberOfGames = 39) => {
+export const fetchResults = (numberOfGames) => {
     return dispatch => {
         let matchRef = firebase.database().ref().child("match-results").orderByChild('gameDay')
         .limitToLast(numberOfGames);

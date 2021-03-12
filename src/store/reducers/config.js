@@ -24,7 +24,7 @@ const initialState = {
     basePrice: 20,
     insertResult: true,
 
-    numberofResultsDisplayed: 39,
+    numberofResultsDisplayed: 26,
     currentResults: [],
     loading: false
 

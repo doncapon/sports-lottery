@@ -229,11 +229,8 @@ class ToBank extends Component {
                                 };
                                 axios.post("transfer", paymentData)
                                     .then(response => {
-                                        console.log("I got 1", firebase.auth().currentUser.uid, response.data.data.status);
-
                                         if (response.data.data.status === "success") {
                                             let userId = firebase.auth().currentUser.uid;
-                                            console.log("I got called", userId);
                                             let userRef = firebase.database().ref("users").child(userId);
                                             userRef.child('funds').transaction((funds) => {
                                                 this.props.onSetFunds(funds - Number(this.state.amount))
