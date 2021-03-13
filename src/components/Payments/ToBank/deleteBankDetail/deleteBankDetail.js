@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Spinner } from 'react-bootstrap';
-import classes from './deleteBankDetail.module.css';
-import firebase from  '../../../../config/firebase/firebase';
+import classes from './DeleteBankDetail.module.css';
+import firebase from '../../../../config/firebase/firebase';
 
-class UpdateBankDetail extends Component {
+class DeleteBankDetail extends Component {
     constructor(props) {
         super(props);
 
@@ -74,24 +74,26 @@ class UpdateBankDetail extends Component {
 
     handleDelete = (e) => {
         e.preventDefault();
-            firebase.auth().onAuthStateChanged((user)=>{
-                if(user){
-                    let savedBanks = [...this.props.savedBanks];
-                    let account = savedBanks.filter(bank=> bank.accountNumber === this.state.account)[0];
-                    
-                    if(account && account.accountName === this.state.name && account.bank === this.state.bank){
-                        let bankRef = firebase.database().ref('bank-accounts/'+ user.uid+ "/"+ account.accountNumber);
-                        bankRef.remove();
-                    }else{
-                        alert("Account does not exist")
-                    }
-                }else{
-                    alert("User is not logged in");
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                let savedBanks = [...this.props.savedBanks];
+                let account = savedBanks.filter(bank => bank.accountNumber === this.state.account)[0];
+
+                if (account && account.accountName === this.state.name && account.bank === this.state.bank) {
+                    let bankRef = firebase.database().ref('bank-accounts/' + user.uid + "/" + account.accountNumber);
+                    bankRef.remove();
+                } else {
+                    alert("Account does not exist")
                 }
-            })
-            setTimeout(() => {
-                window.location.reload();
-            }, 500);
+                firebase.database().ref("bank-accounts").off();
+
+                } else {
+                alert("User is not logged in");
+            }
+        })
+        setTimeout(() => {
+            window.location.reload(false);
+        }, 2500);
     }
 
     render() {
@@ -172,4 +174,4 @@ class UpdateBankDetail extends Component {
     }
 }
 
-export default UpdateBankDetail;
+export default DeleteBankDetail;

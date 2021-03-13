@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import './ToBank.module.css'
 import classes from "./ToBank.module.css";
 import axios from '../../../axios-paystack';
-import DeleteBankDetail from "./deleteBankDetail/deleteBankDetail";
+import DeleteBankDetail from "./DeleteBankDetail/DeleteBankDetail";
 import SignupModal from "../../UI/SignupModal/SignupModoal";
 import { Spinner } from "react-bootstrap";
 import firebase from '../../../config/firebase/firebase';
@@ -10,6 +10,7 @@ import * as actions from '../../../store/actions/index';
 import { connect } from "react-redux";
 import ConfirmPassword from '../ToBank/ConfirmPassword/ConfirmPassword';
 import Modal from '../../UI/Modal/Modal';
+import { Button } from 'react-bootstrap';
 
 class ToBank extends Component {
     state = {
@@ -24,6 +25,7 @@ class ToBank extends Component {
         apiError: '',
         saveError: '',
         showUpdate: '',
+        checkMessage: '',
         showReSigninForm: false,
         isWithDraw: false,
         loding: false,
@@ -34,18 +36,6 @@ class ToBank extends Component {
             this.setState({ funds: this.props.user.funds })
         }
         this.setState({ loading: true })
-    }
-
-    validateName(name) {
-        let formIsValid = true;
-        let error = "";
-        //Name   
-        if (!name) {
-            formIsValid = false;
-            error = "Name is required.";
-        }
-
-        return { isValid: formIsValid, error: error }
     }
     validateAccount(account) {
         let formIsValid = true;
@@ -93,13 +83,9 @@ class ToBank extends Component {
     }
 
     handleFormValidation() {
-        const { name, amount, account, bank } = this.state;
+        const { amount, account, bank } = this.state;
         let formErrors = {};
         let formIsValid = true;
-
-        //Name
-        formErrors["nameErr"] = this.validateName(name).error;
-        formIsValid = this.validateName(name).isValid && formIsValid;
 
         // Account
         formIsValid = this.validateAccount(account).isValid && formIsValid;
@@ -121,16 +107,9 @@ class ToBank extends Component {
 
 
     saveBankValidation() {
-        const { name, account, bank } = this.state;
+        const { account, bank } = this.state;
         let formErrors = {};
         let formIsValid = true;
-
-        //Name   
-        if (!name) {
-            formIsValid = false;
-            formErrors["nameErr"] = "Name is required.";
-        }
-
         if (!account) {
             formIsValid = false;
             formErrors["accountErr"] = "Account number is required.";
@@ -156,8 +135,6 @@ class ToBank extends Component {
         }
         const ele = document.activeElement.name;
         let error = {};
-        if (ele === "name")
-            error["nameErr"] = this.validateName(value).error;
         if (ele === "account")
             error["accountErr"] = this.validateAccount(value).error;
         if (ele === "amount")
@@ -200,6 +177,7 @@ class ToBank extends Component {
         setTimeout(() => {
             this.saveBankValidation();
         }, 100);
+            this.setState({checkMessage: ""});
     }
     handleWithdraw = () => {
         const receipntData = {
@@ -285,15 +263,38 @@ class ToBank extends Component {
 
         }
     }
+
+    checkBankAccount = (e) => {
+        e.preventDefault();
+        let account = this.state.account;
+        let bank = this.state.bank;
+
+        if (account && bank !== 'select') {
+            this.setState({ name: '' })
+            const params = "account_number=" + account + "&bank_code="
+                + bank;
+            axios.get("bank/resolve?" + params)
+                .then(response => {
+                    console.log(response.data.data);
+                    this.setState({ name: response.data.data.account_name });
+                    this.setState({ checkMessage: 'Account Found' })
+                })
+                .catch(err => {
+                    this.setState({ checkMessage: 'Account Not Found' })
+                })
+        } else {
+            this.setState({ saveError: "Please enter: bank and account to proceed", apiError: '' });
+        }
+    }
+
     HandleSave = () => {
         let bankDetail = [...this.props.savedBanks];
-        let name = this.state.name;
         let account = this.state.account;
         let bank = this.state.bank;
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 // User is signed in.
-                if (name && account && bank !== 'select') {
+                if (account && bank !== 'select') {
                     let BankExist = bankDetail.find(detail => detail.accountNumber === account);
                     if (!BankExist) {
                         const params = "account_number=" + account + "&bank_code="
@@ -301,7 +302,7 @@ class ToBank extends Component {
                         axios.get("bank/resolve?" + params)
                             .then(response => {
                                 if (response.data.message === "Account number resolved") {
-                                    const accountDetail = { accountName: name, bank: bank, accountNumber: account }
+                                    const accountDetail = { accountName: response.data.data.account_name, bank: bank, accountNumber: account }
                                     firebase.database().ref('bank-accounts/' + user.uid + "/" + accountDetail.accountNumber).set(
                                         accountDetail
                                     );
@@ -313,8 +314,8 @@ class ToBank extends Component {
                                     this.setState({ saveError: '', apiError: '' })
                                     alert("Bank details saved!");
                                     setTimeout(() => {
-                                        window.location.reload();
-                                    }, 500);
+                                        window.location.reload(false);
+                                    }, 2500);
                                 } else {
                                     this.setState({ saveError: "Please check your card details", apiError: '' })
 
@@ -345,7 +346,7 @@ class ToBank extends Component {
     }
 
     render() {
-        const { nameErr, amountErr, accountErr, bankErr } = this.state.formErrors;
+        const { amountErr, accountErr, bankErr } = this.state.formErrors;
         const banks = [classes.Banks];
         if (bankErr) {
             banks.push(classes.showError);
@@ -357,7 +358,7 @@ class ToBank extends Component {
         let optionsAllowed;
         if (this.state.loading) {
             bankDetails = [...this.props.savedBanks];
-            options = bankDetails.sort((a, b) => a.accountNumber > b.accountNumber ? 1 : -1)
+            options = bankDetails.sort((a, b) => a.accountNumber < b.accountNumber ? 1 : -1)
                 .map((detail, i) => (
                     <option key={i} value={detail.accountNumber}>{detail.accountNumber}</option>
                 ));
@@ -376,6 +377,7 @@ class ToBank extends Component {
                     handleWithdraw={this.handleWithdraw} isWithDraw={this.state.isWithDraw}
                     cancel={() => this.setState({ showReSigninForm: false })} HandleSave={this.HandleSave} /></Modal> : null}
                 {this.state.showUpdate ? <SignupModal show={this.state.showUpdate}><DeleteBankDetail
+                    showUpdate={() => this.setState({ showUpdate: false })}
                     name={this.state.name} bank={this.state.bank} account={this.state.account}
                     allowedBanks={this.props.allowedBanks} savedBanks={this.props.savedBanks}
                     setShowUpdate={this.setShowUpdate} /></SignupModal> :
@@ -406,20 +408,6 @@ class ToBank extends Component {
                                 </div>
 
                                 <div>
-                                    <label className={classes.label} htmlFor="name">Name</label>
-                                    <input type="text" name="name"
-                                        value={this.state.name}
-                                        onChange={this.handleChange}
-                                        placeholder="Your Name: as in bank"
-                                        className={classes.Text} />
-                                    {nameErr &&
-                                        <div style={{ color: "red" }}>{nameErr}</div>
-                                    }
-
-                                </div>
-
-
-                                <div>
                                     <label className={classes.label} htmlFor="bank">Bank:</label>
                                     <select name="bank"
                                         value={this.state.bank}
@@ -444,17 +432,33 @@ class ToBank extends Component {
                                     }
                                     {this.state.saveError ? <div style={{ color: 'red', fontSize: '20px' }}>{this.state.saveError}</div> : null}
                                 </div>
-                                <div className={classes.Buttons}>
-                                    <button type="button" onClick={this.handleSaveHandler} className={classes.Button1}
-                                    >Save</button>
-                                    {this.state.name && this.state.bank !== "select" && this.state.account ?
-                                        <button type="button" className={classes.Button2}
-                                            onClick={() => this.setShowUpdate(true)}
-                                        >Delete</button> : null}
-
-                                    <input type="submit" className={classes.Submit}
-                                        value="Withdraw" />
+                                <div className={classes.Verify}>
+                                    <div className={classes.VerifyButton}><Button variant="info" onClick={this.checkBankAccount}>Verify Account Details</Button></div>
+                                    <div className={this.state.checkMessage.includes("Not") ? classes.RedMsg : classes.NormalMsg} >{this.state.checkMessage}</div>
                                 </div>
+
+                                <div>
+                                    <label className={classes.label} htmlFor="name">Name</label>
+                                    <input type="text" name="name"
+                                        value={this.state.name}
+                                        onChange={this.handleChange}
+                                        disabled={true}
+                                        placeholder="Your Name: will appear here"
+                                        className={classes.Text} />
+                                </div>
+                                {this.state.name ?
+                                    <div className={classes.Buttons}>
+                                        <button type="button" onClick={this.handleSaveHandler} className={classes.Button1}
+                                        >Save</button>
+                                        {this.state.name && this.state.bank !== "select" && this.state.account ?
+                                            <button type="button" className={classes.Button2}
+                                                onClick={() => this.setShowUpdate(true)}
+                                            >Delete</button> : null}
+
+                                        <input type="submit" className={classes.Submit}
+                                            value="Withdraw" />
+                                    </div>
+                                    : null}
                             </form>
                         </div>
                     </div>
