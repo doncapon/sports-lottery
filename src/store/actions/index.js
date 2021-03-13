@@ -31,12 +31,6 @@ export {
      fetchPredictionsAll
 } from './prediction';
 
-
-export {
-     setUpWinners
-} from './matchResults';
-
-
 export {
      setLoggedInUser,
      setIsLoggedIn,
@@ -46,14 +40,13 @@ export {
      setFunds
 } from './login';
 
-
 export {
      setCurrentResult,
      fetchWeeklyResults,
      fetchResults,
-     configureBoard
+     configureBoard,
+     setEventDate
 } from './config';
-
 
 export {
      fetchBanks,

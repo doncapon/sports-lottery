@@ -61,7 +61,7 @@ class Board extends Component {
 
   confirmPurchase = () => {
     this.ExecutePurchase();
-    this.props.onSetReceipt(this.props.gameDate);
+    this.props.onSetReceipt(this.props.eventDate);
     this.togglePaymentButton(false, true)
   }
   ExecutePurchase = () => {
@@ -230,7 +230,9 @@ const mapstateToProps = (state) => {
     predictions: state.pred.predictions,
 
     isLoggedIn: state.login.isLoggedIn,
-    user: state.login.user
+    user: state.login.user,
+
+    eventDate: state.config.eventDate,
 
   };
 };

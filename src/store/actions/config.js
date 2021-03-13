@@ -18,6 +18,12 @@ export const fetchWeeklyResults = (payload) => {
     }
 }
 
+export const setEventDate =(eventDate)=>{
+    return{
+        type: actionTypes.SET_EVENTDATE,
+        eventDate: eventDate
+    }
+}
 
 export const configureBoard =(isFaCup , kickOffTime , kickOffDate) =>{
     return dispatch =>{
@@ -90,8 +96,11 @@ export const configureBoard =(isFaCup , kickOffTime , kickOffDate) =>{
                     firebase.database().ref("board").child(kickOffDate).update({isPaid: false})
                     alert("Setup successful");
                     firebase.database().ref("board").child(kickOffDate).off();
+            dispatch(setEventDate(fixturesToPush[0].event_date))
+
                 }
             })
+
             if(data){
                 alert("record for that day already exists");
             }

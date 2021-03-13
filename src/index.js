@@ -15,7 +15,6 @@ import {
 import logger from 'redux-logger';
 import boardReducer from "./store/reducers/board";
 import predictionReducer from "./store/reducers/prediction";
-import matchResultsReducer from "./store/reducers/matchResults";
 import loginReducer from "./store/reducers/login";
 import configReducer from "./store/reducers/config";
 import bankReducer from "./store/reducers/banks";
@@ -33,7 +32,6 @@ const persistConfig = {
 const rootReducer = combineReducers({
   board: boardReducer,
   pred: predictionReducer,
-  matchResults: matchResultsReducer,
   config: configReducer,
   login: loginReducer,
   banks: bankReducer,
