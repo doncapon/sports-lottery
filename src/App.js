@@ -35,7 +35,7 @@ class App extends React.Component {
     this.onIdle = this._onIdle.bind(this);
 
 
-    this.handleClose = this.handleClose.bind(this)
+    // this.handleClose = this.handleClose.bind(this)
     this.handleLogout = this.handleLogout.bind(this)
   }
   // onUnload = e => {
