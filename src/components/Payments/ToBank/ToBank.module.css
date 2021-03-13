@@ -74,8 +74,18 @@ option{
     .Button2{
       background:salmon
     }
-
-    
+  
+    .VerifyButton{
+      position: relative;
+      right:0;
+      float: left;
+    }
+    .NormalMsg, .RedMsg{
+      font-size: 1.0em;
+    }
+    .RedMsg{
+      color: red;
+    }
 /* medium screens */
 @media only screen and (min-width: 768px){
     
@@ -119,6 +129,18 @@ option{
       margin-left: 0px; 
       padding-left: 0px;
     }
+    .Verify{
+      display: flex;
+    }
+    .NormalMsg, .RedMsg{
+      margin: 0;
+      padding: 0;
+    }
+    .VerifyButton{
+      margin: 0;
+      padding: 0;
+      margin-left: 12vw;
+    }
 }
 
 
@@ -152,5 +174,9 @@ option{
 
   .Button{
     width: 5%;
+  }
+
+  .VerifyButton{
+    margin-left: 10vw;
   }
 }
