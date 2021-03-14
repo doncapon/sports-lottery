@@ -18,7 +18,7 @@ const initialState = {
     basePrice: 20,
     insertResult: true,
 
-    numberofResultsDisplayed: 26,
+    numberofResultsDisplayed: 79,
     currentResults: [],
     loading: false
 

@@ -275,7 +275,6 @@ class ToBank extends Component {
                 + bank;
             axios.get("bank/resolve?" + params)
                 .then(response => {
-                    console.log(response.data.data);
                     this.setState({ name: response.data.data.account_name });
                     this.setState({ checkMessage: 'Account Found' })
                 })
