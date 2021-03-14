@@ -375,8 +375,8 @@ class ToBank extends Component {
                 {this.state.showReSigninForm ? <Modal show={this.state.showReSigninForm}><ConfirmPassword
                     handleWithdraw={this.handleWithdraw} isWithDraw={this.state.isWithDraw}
                     cancel={() => this.setState({ showReSigninForm: false })} HandleSave={this.HandleSave} /></Modal> : null}
-                {this.state.showUpdate ? <SignupModal show={this.state.showUpdate}><DeleteBankDetail
-                    showUpdate={() => this.setState({ showUpdate: false })}
+                {this.state.showUpdate ? <SignupModal show={this.state.showUpdate}>
+                    <DeleteBankDetail showUpdate={() => this.setState({ showUpdate: false })}
                     name={this.state.name} bank={this.state.bank} account={this.state.account}
                     allowedBanks={this.props.allowedBanks} savedBanks={this.props.savedBanks}
                     setShowUpdate={this.setShowUpdate} /></SignupModal> :
