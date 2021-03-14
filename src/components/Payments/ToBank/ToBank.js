@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import './ToBank.module.css'
 import classes from "./ToBank.module.css";
 import axios from '../../../axios-paystack';
-import DeleteBankDetail from "./DeleteBankDetail/DeleteBankDetail";
+import DeleteBankDetails from "./DeletBankDetails/DeleteBankDetails";
 import SignupModal from "../../UI/SignupModal/SignupModoal";
 import { Spinner } from "react-bootstrap";
 import firebase from '../../../config/firebase/firebase';
@@ -376,7 +376,7 @@ class ToBank extends Component {
                     handleWithdraw={this.handleWithdraw} isWithDraw={this.state.isWithDraw}
                     cancel={() => this.setState({ showReSigninForm: false })} HandleSave={this.HandleSave} /></Modal> : null}
                 {this.state.showUpdate ? <SignupModal show={this.state.showUpdate}>
-                    <DeleteBankDetail showUpdate={() => this.setState({ showUpdate: false })}
+                    <DeleteBankDetails showUpdate={() => this.setState({ showUpdate: false })}
                     name={this.state.name} bank={this.state.bank} account={this.state.account}
                     allowedBanks={this.props.allowedBanks} savedBanks={this.props.savedBanks}
                     setShowUpdate={this.setShowUpdate} /></SignupModal> :
@@ -435,7 +435,6 @@ class ToBank extends Component {
                                     <div className={classes.VerifyButton}><Button variant="info" onClick={this.checkBankAccount}>Verify Account Details</Button></div>
                                     <div className={this.state.checkMessage.includes("Not") ? classes.RedMsg : classes.NormalMsg} >{this.state.checkMessage}</div>
                                 </div>
-
                                 <div>
                                     <label className={classes.label} htmlFor="name">Name</label>
                                     <input type="text" name="name"
