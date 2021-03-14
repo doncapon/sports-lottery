@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Spinner } from 'react-bootstrap';
-import classes from './DeleteBankDetail.module.css';
+import classes from './DeleteBankDetails.module.css';
 import firebase from '../../../../config/firebase/firebase';
 
 class DeleteBankDetail extends Component {
