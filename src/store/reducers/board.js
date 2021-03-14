@@ -108,7 +108,7 @@ const setReceipt = (state, action) => {
             slip.gameRows = draft.slips[i].slipAmount;
             slip.basePrice = draft.slips[i].basePrice;
             let slipGames = [];
-            slip.correctRows= 0;
+            slip.hits= 0;
             slip.datePlayed= moment(Date.now()).format("YYYY-MM-DD HH:mm:ss");
             for (let k = 0; k < draft.slips[i]["slip_" + (i + 1)].games.length; k++) {
                 slipGames.splice(slipGames.length, slipGames.length + 1, {
@@ -120,6 +120,7 @@ const setReceipt = (state, action) => {
             slip.games = Object.assign([],slipGames);
             let evaDate = dateInYYYYMMDD( draft.slips[i].gameDate);
             slip.evaluationDate = evaDate;
+            slip.isEvaluated = false;
             slip.endTime =  moment(action.gameDay).add(3, 'hours').format("YYYY-MM-DDTHH:mm:SS+00:00")
             let user = firebase.auth().currentUser;
             slip.userId=user.uid;

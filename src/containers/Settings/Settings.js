@@ -3,9 +3,10 @@ import { Button } from "react-bootstrap";
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
 import classes from './Settings.module.css';
-import { getNextPlayDate, dateInYYYYMMDD } from '../../shared/utility';
+import { 
+    // getNextPlayDate,
+     dateInYYYYMMDD } from '../../shared/utility';
 import firebase from '../../config/firebase/firebase';
-import moment from 'moment';
 class Settings extends Component {
     state = {
         disable: false,
@@ -22,12 +23,12 @@ class Settings extends Component {
         }
         this.setState({ loading: true })
     }
-    handlecCnfigureBoard = () => {
-        let kickOffDate;
-        kickOffDate = getNextPlayDate(this.props.daysOffset,
-            this.props.hourToNextDay);
+    handlecConfigureBoard = () => {
+        // let kickOffDate;
+        // kickOffDate = getNextPlayDate(this.props.daysOffset,
+        //     this.props.hourToNextDay);
         this.props.onConfigureBoard(this.props.isFACup,
-            this.props.kickOffTime, dateInYYYYMMDD(kickOffDate)); //this.state.gameDate
+            this.props.kickOffTime, dateInYYYYMMDD(this.state.gameDate)); //this.state.gameDate
     }
     handleSetResultss = () => {
         this.props.onSetCurrentResult(this.props.slips[0]["slip_1"]);
@@ -73,10 +74,8 @@ class Settings extends Component {
         }
         for (let i = 0; i < matchRes.length; i++) {
             for (let k = 0; k < 3; k++) {
-                console.log("yeah yeah");
                 let left = this.translateResult(matchRes[i].homeGoals, matchRes[i].awayGoals, matchRes[i].status);
                 let right = this.determineSelection(match.games[i].selections[k].selected, k,);
-                console.log("right", left, right)
                 if (left === right && left !== "-" && right !== "-") {
                     sideWon++;
                 }
@@ -85,7 +84,6 @@ class Settings extends Component {
         if (allFinished === 1) {
             sideWon++;
         }
-
         return sideWon;
     }
     calculaterWiinerAmount = () => {
@@ -100,29 +98,24 @@ class Settings extends Component {
             if (data !== null) {
                 if (data.jackpot > 0) {
                     if (data.thirteenUser > 0) {
-                        console.log("get me out")
                         thirteen = (data.jackpot * this.props.thirteenPercent) / data.thirteenUser;
                         firebase.database().ref("jackpot-win").child(dateInYYYYMMDD(this.state.gameDate)).update({ thirteen: thirteen });
                     } else {
-                        console.log("get me out1")
                         firebase.database().ref("jackpot-win").child(dateInYYYYMMDD(this.state.gameDate)).update({ thirteen: 0 });
                     }
                     if (data.twelveUser > 0) {
-                        console.log("get me out2")
                         twelve = (data.jackpot * this.props.twelvePercent) / data.twelveUser;
                         firebase.database().ref("jackpot-win").child(dateInYYYYMMDD(this.state.gameDate)).update({ twelve: twelve });
                     } else {
                         firebase.database().ref("jackpot-win").child(dateInYYYYMMDD(this.state.gameDate)).update({ twelve: 0 });
                     }
                     if (data.elevenUser > 0) {
-                        console.log("get me out3")
                         eleven = (data.jackpot * this.props.elevenPercent) / data.elevenUser;
                         firebase.database().ref("jackpot-win").child(dateInYYYYMMDD(this.state.gameDate)).update({ eleven: eleven });
                     } else {
                         firebase.database().ref("jackpot-win").child(dateInYYYYMMDD(this.state.gameDate)).update({ eleven: 0 });
                     }
                     if (data.tenUser > 0) {
-                        console.log("get me out4")
                         ten = (data.jackpot * this.props.tenPercent) / data.tenUser;
                         firebase.database().ref("jackpot-win").child(dateInYYYYMMDD(this.state.gameDate)).update({ ten: ten });
                     } else {
@@ -161,71 +154,65 @@ class Settings extends Component {
         let boardRef = firebase.database().ref("board").child(dateInYYYYMMDD(this.state.gameDate));
         boardRef.on("value", snapshot => {
             let data = snapshot.val();
-            if (data.isPaid !== true) {
-                let i = 0;
+            if (!data.isPaid) {
                 matchesPlayedRef.on("value", snapshot => {
                     let data = snapshot.val();
                     Object.keys(data).map(keys => {
                         let matches = data[keys];
                         return Object.keys(matches).map(key => {
                             let matchesPlayed = matches[key];
-                            let endDate = new Date(this.state.gameDate);
+                            let endDate = new Date(dateInYYYYMMDD(this.state.gameDate)+ "T"+ this.props.kickOffTime);
                             let startDate = endDate.getDate() - 7;
                             let matchDate = new Date(matchesPlayed.datePlayed);
-                            console.log("sdfdf", matchDate <= endDate);
-                            console.log("heodloweee", matchDate >= startDate);
-                            console.log(moment(matchesPlayed.datePlayed));
-                            if (matchDate <= endDate
-                                && matchDate >= startDate) {
-                                if (!matchesPlayed.isEvaluated) {
-                                    i++;
-                                    console.log(i);
-
-                                    let matchRes = this.setMatchResults(matchesPlayed);
-                                    let hits
-                                    setTimeout(() => {
-                                        hits = this.calculateWins(matchesPlayed, matchRes[0]);
-                                    }, 1500)
-                                    setTimeout(() => {
-                                        firebase.database().ref("game-history").child(matchesPlayed.userId)
-                                            .child(matchesPlayed.gameNumber)
-                                            .update({ hits: hits });
-                                        if (hits === 10) {
-                                            this.setState({ tenWinners: this.state.tenWinners + 1 });
-                                        } else if (hits === 11) {
-                                            this.setState({ elevenWinners: this.state.elevenWinners + 1 });
-                                        } else if (hits === 12) {
-                                            this.setState({ twelveWinners: this.state.twelveWinners + 1 });
-                                        } else if (hits === 13) {
-                                            this.setState({ thirteenWinners: this.state.thirteenWinners + 1 });
-                                        }
-                                        firebase.database().ref("game-history").child(matchesPlayed.userId)
-                                            .child(matchesPlayed.gameNumber).update({ isEvaluated: true })
-                                        firebase.database().ref("jackpots").child(matchesPlayed.evaluationDate).update({ tenUser: this.state.tenWinners })
-                                        firebase.database().ref("jackpots").child(matchesPlayed.evaluationDate).update({ elevenUser: this.state.elevenWinners })
-                                        firebase.database().ref("jackpots").child(matchesPlayed.evaluationDate).update({ twelveUser: this.state.twelveWinners })
-                                        firebase.database().ref("jackpots").child(matchesPlayed.evaluationDate).update({ thirteenUser: this.state.thirteenWinners })
-                                    }, 3000)
+                            if(matchesPlayed.evaluationDate === dateInYYYYMMDD(this.state.gameDate)){
+                                if (matchDate <= endDate
+                                    && matchDate >= startDate){
+                                    if (!matchesPlayed.isEvaluated) {
+                                        let matchRes = this.setMatchResults(matchesPlayed);
+                                        let hits
+                                        setTimeout(() => {
+                                            hits = this.calculateWins(matchesPlayed, matchRes[0]);
+                                        }, 500)
+                                        setTimeout(() => {
+                                            firebase.database().ref("game-history").child(matchesPlayed.userId)
+                                                .child(matchesPlayed.gameNumber)
+                                                .update({ hits: hits });
+                                            if (hits === 10) {
+                                                this.setState({ tenWinners: this.state.tenWinners + 1 });
+                                            } else if (hits === 11) {
+                                                this.setState({ elevenWinners: this.state.elevenWinners + 1 });
+                                            } else if (hits === 12) {
+                                                this.setState({ twelveWinners: this.state.twelveWinners + 1 });
+                                            } else if (hits === 13) {
+                                                this.setState({ thirteenWinners: this.state.thirteenWinners + 1 });
+                                            }
+                                            firebase.database().ref("game-history").child(matchesPlayed.userId)
+                                                .child(matchesPlayed.gameNumber).update({ isEvaluated: true })
+                                            firebase.database().ref("jackpots").child(matchesPlayed.evaluationDate).update({ tenUser: this.state.tenWinners })
+                                            firebase.database().ref("jackpots").child(matchesPlayed.evaluationDate).update({ elevenUser: this.state.elevenWinners })
+                                            firebase.database().ref("jackpots").child(matchesPlayed.evaluationDate).update({ twelveUser: this.state.twelveWinners })
+                                            firebase.database().ref("jackpots").child(matchesPlayed.evaluationDate).update({ thirteenUser: this.state.thirteenWinners})
+                                        }, 2000)
+                                    }
                                 }
                             }
                             return null;
-
                         })
                     });
-                    firebase.database().ref("jackpots").off();
-                    firebase.database().ref("match-results").off();
-                    firebase.database().ref("game-history").off();
+                        firebase.database().ref("jackpots").off();
+                        firebase.database().ref("match-results").off();
+                        firebase.database().ref("game-history").off();
                 });
                 setTimeout(() => {
                     this.calculaterWiinerAmount();
                     this.setState({ disable: false });
-                }, 30000); //Subject to change with huge data possible to 1 hour
+                }, 20000); //Subject to change with huge data possible to 1 hour
 
                 boardRef.update({ isPaid: true })
                 firebase.database().ref("board").off();
                 setTimeout(() => {
                     alert("Jackpot successfully shared")
-                }, 30000); //Subject to change
+                }, 20000); //Subject to change
 
             } else {
                 setTimeout(() => {
@@ -255,7 +242,6 @@ class Settings extends Component {
                         firebase.database().ref("jackpot-win").child(dateInYYYYMMDD(this.state.gameDate))
                             .on("value", snapshot => {
                                 let data = snapshot.val();
-                                console.log(data);
                                 let winRef = firebase.database().ref("users").child(matchesPlayed.userId)
                                 if (hits === 10) {
                                     winRef.child("funds").transaction(funds => {
@@ -321,7 +307,7 @@ class Settings extends Component {
             this.props.history.push("/");
         }
         return (<div className={classes.SettingsWrapper}>
-            <Button onClick={this.handlecCnfigureBoard} >Configure Play Board</Button>
+            <Button onClick={this.handlecConfigureBoard} >Configure Play Board</Button>
             <Button onClick={this.handleSetResultss} >Set Last Results</Button>
 
             <form onSubmit={this.shareJackpot}>

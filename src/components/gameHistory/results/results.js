@@ -10,25 +10,18 @@ const Results = (props) => {
         let gamesCalc = [...props.daysResults];
         props.daysResults.forEach((results, i) => {
             if (results.length === 1) {
-                let myRes = [results[0]];
-                let myTarget = [...props.daysResults[i + 1]];
-                myRes.gameDay = props.daysResults[i + 1][0].gameDay
-                myTarget.splice(myTarget.length, myTarget.length + 1, myRes[0]);
-                gamesCalc.splice(i, i + 1);
+                // let myRes = [results[0]];
+                // let myTarget = [...props.daysResults[i]];
+                // myRes.gameDay = props.daysResults[i + 1][0].gameDay
+                // myTarget.splice(myTarget.length, myTarget.length + 1, myRes[0]);
+                gamesCalc.splice(i, i );
 
-                gamesCalc.splice(i - 1, i - 1, myTarget);
-                setRecaculted(gamesCalc);
+                // gamesCalc.splice(i-1, i, myTarget);
             }
         });
-    }, [props.daysResults])
-    const showGames = (index) => {
-        let daysResults = [...props.daysResults];
-        if (daysResults[index].length >= 12)
-            return true;
-        else
-            return false;
+        setRecaculted(gamesCalc);
 
-    }
+    }, [props.daysResults])
     const findSelection = (goalHome, goalAway, status, endDate) => {
         if (status === "Match Finished") {
             if (goalHome > goalAway) {
@@ -48,7 +41,8 @@ const Results = (props) => {
     }
     let resultsTrannsformed = recalculatedReults.map((results, k) => {
         return <div className={classes.ResultsAndShare} key={k}>
-            {showGames(k) ? <div>
+            {console.log(props.daysResults[k].length)}
+            {  props.daysResults[k].length >= 12 ? <div>
                 <div className={classes.ResultHead} >
                     <div className={classes.HeaderInner}>
                         <div>{moment(results[0].gameDay).format("dddd")}</div>{" "}
@@ -85,15 +79,15 @@ const Results = (props) => {
                     <div className={classes.JackPotShare}>
                         <Jackpot basePrice={props.basePrice} gameDay=
                             {moment(results[0].gameDay).format("YYYY-MM-DD")}
-                            gamesLength={results.length}
+                            gamesLength={results.length} 
 
                         />
                     </div>
 
                 </div>
-            </div> : props.daysResults[k].length > 1 ? <div>Sorry too many games have been postponed
+            </div>:  props.daysResults[k].length > 1?<div>Sorry too many games have been postponed
             Hence, games for this week have been cancelled
-                </div> : null}
+                </div>:null}
 
         </div>
     })
