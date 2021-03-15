@@ -1,8 +1,8 @@
 import * as actionTypes from './actionTypes';
-import firebase from '../../config/firebase/firebase'; 
+import firebase from '../../config/firebase/firebase';
 
-export const generateSlip = (amount, slipIndex, basePrice ) =>{
-    return dispatch =>{
+export const generateSlip = (amount, slipIndex, basePrice) => {
+    return dispatch => {
         dispatch(EmptyEditingISlip());
         dispatch(generateSlip2(amount, basePrice));
         dispatch(setPurchaseAll());
@@ -12,7 +12,7 @@ export const generateSlip = (amount, slipIndex, basePrice ) =>{
     }
 }
 
-export const generateSlip2 = (amount, basePrice) =>{
+export const generateSlip2 = (amount, basePrice) => {
     return {
         type: actionTypes.GENERATE_SLIP,
         amount: amount,
@@ -20,29 +20,35 @@ export const generateSlip2 = (amount, basePrice) =>{
     }
 }
 
-export const setBoard=(basePrice) =>{
-    return dispatch =>{
+export const setBoard = (basePrice) => {
+    return dispatch => {
         let boardRef = firebase.database().ref("board").limitToLast(1);
         let wantedFixtures = [];
-        boardRef.on("value", snapshot=>{
-            let data = snapshot.val();
-            Object.keys(data).map(key => {
-               return  wantedFixtures = data[key];
-            })
-        })
-        setTimeout(() => {
-            dispatch(initializeBoard(wantedFixtures, basePrice));
-        }, 2000);
+        let returned ;
+        boardRef.on("value", snapshot => {
+            returned = Object.assign([],snapshot.val());
+            setTimeout(() => {
+                Object.keys(returned).map(key=>{
+                    let fixt = returned[key];
+                    Object.keys(fixt).map(key2=>{
+                        if(key2 !== "isPaid")
+                        wantedFixtures.push(fixt[key2]);
+                    });
+                    console.log("fsdfdsf",wantedFixtures);
+                    dispatch(initializeBoard(wantedFixtures, basePrice));
 
+                })
+            }, 2000);
+        });
     };
 }
-export const setFixtureIds = ()=>{
+export const setFixtureIds = () => {
     return {
         type: actionTypes.SET_FIXTURE_IDS
 
     }
 }
-export const setIsToWallet = (isToWallet)=>{
+export const setIsToWallet = (isToWallet) => {
     return {
         type: actionTypes.SET_ISTOWALLET,
         isToWallet: isToWallet,
@@ -50,38 +56,38 @@ export const setIsToWallet = (isToWallet)=>{
     }
 }
 
-export const resetReduxBoard=()=>{
+export const resetReduxBoard = () => {
     return {
         type: actionTypes.RESET_BOARD
     }
 }
-export const toggleShowFunds = () =>{
+export const toggleShowFunds = () => {
     return {
         type: actionTypes.TOGGLE_SHOWFUNDS,
     }
 }
 
-export const setShowFunds = (show) =>{
+export const setShowFunds = (show) => {
     return {
         type: actionTypes.SET_SHOW_FUNDS,
         show: show
     }
 }
 
-export const toggleIsShowReceipt = () =>{
+export const toggleIsShowReceipt = () => {
     return {
         type: actionTypes.TOGGLE_SHOW_RECEIPT,
     }
 }
 
-export const setReceipt = (gameDay) =>{
+export const setReceipt = (gameDay) => {
     return {
         type: actionTypes.SET_RECEIPT,
         gameDay: gameDay
     }
 }
 
-export const toggleReceiptShowHistory = (receiptIndex) =>{
+export const toggleReceiptShowHistory = (receiptIndex) => {
     return {
         type: actionTypes.TOGGLE_SHOW_RECEIPT_HISTORY,
         receiptIndex: receiptIndex
@@ -89,26 +95,26 @@ export const toggleReceiptShowHistory = (receiptIndex) =>{
 }
 
 
-export const toggleShowHistory = (gameIndex) =>{
+export const toggleShowHistory = (gameIndex) => {
     return {
         type: actionTypes.TOGGLE_SHOW_HISTORY,
         gameIndex: gameIndex
     }
 }
 
-export const setPurchaseAll= ()=>{
-    return{
+export const setPurchaseAll = () => {
+    return {
         type: actionTypes.PURCHASE_ALL
     }
 }
 
-export const setIsPaying = (isPaying)=>{
+export const setIsPaying = (isPaying) => {
     return {
         type: actionTypes.SET_ISPAYING,
         isPaying: isPaying
     }
 }
-export const setIsPaid = (isPaid)=>{
+export const setIsPaid = (isPaid) => {
     return {
         type: actionTypes.SET_ISPAID,
         isPaid: isPaid
@@ -116,110 +122,110 @@ export const setIsPaid = (isPaid)=>{
 }
 
 
-export const checkPurchasable = (index)=>{
+export const checkPurchasable = (index) => {
     return {
         type: actionTypes.CHECK_PURCHASABLE,
         slipIndex: index
     }
 }
 
-export const EmptyEditingISlip =()=>{
-    return dispatch =>{
+export const EmptyEditingISlip = () => {
+    return dispatch => {
         dispatch(EmptyEditingIndexSlip());
     }
 }
-export const toggleSelectedTile = (slipIndex, gameIndex,sideIndex, side) =>{
-    return dispatch => { 
+export const toggleSelectedTile = (slipIndex, gameIndex, sideIndex, side) => {
+    return dispatch => {
         dispatch(toggleSelectedTile2(slipIndex, gameIndex, sideIndex, side));
         dispatch(checkHasStartedPlaying());
     }
 }
-export const toggleSelectedTile2 = (slipIndex, gameIndex,sideIndex, side) =>{
-    return { 
-        type : actionTypes.TOGGLE_SELECTED_TILE,
+export const toggleSelectedTile2 = (slipIndex, gameIndex, sideIndex, side) => {
+    return {
+        type: actionTypes.TOGGLE_SELECTED_TILE,
         slipIndex: slipIndex,
-        gameIndex : gameIndex,
-        sideIndex : sideIndex,
+        gameIndex: gameIndex,
+        sideIndex: sideIndex,
         side: side
     };
 }
 
 
-export const checkHasStartedPlaying =()=>{
+export const checkHasStartedPlaying = () => {
     return {
-        type : actionTypes.CHECK_HAS_STARED
+        type: actionTypes.CHECK_HAS_STARED
     }
 }
 
-export const EmptyEditingIndexSlip =()=>{
+export const EmptyEditingIndexSlip = () => {
     return {
-        type : actionTypes.EMPTY_EDITING_SLIP
+        type: actionTypes.EMPTY_EDITING_SLIP
     }
 }
-export const calculateOverAllPrice = (slipIndex, gameIndex, sideIndex, basePrice)=>{
-    return dispatch =>{
+export const calculateOverAllPrice = (slipIndex, gameIndex, sideIndex, basePrice) => {
+    return dispatch => {
         dispatch(calulateGameAmount(slipIndex, gameIndex, sideIndex));
         dispatch(calculateSpecificSlipPrice(slipIndex, basePrice))
         dispatch(calculateGrandTtoalPriceOfAllSlips());
     }
 }
 
-export const initializeBoard = (fixtures, basePrice) =>{
-    return { 
-        type : actionTypes.INITIALIZE_BOARD,
+export const initializeBoard = (fixtures, basePrice) => {
+    return {
+        type: actionTypes.INITIALIZE_BOARD,
         fixtures: fixtures,
         basePrice: basePrice
     };
 }
 
-export const addEmptySlip = (basePrice) =>{
-    return { 
-        type : actionTypes.ADD_EMPTY_SLIP,
+export const addEmptySlip = (basePrice) => {
+    return {
+        type: actionTypes.ADD_EMPTY_SLIP,
         basePrice: basePrice
     };
 }
 
-export const calculateSpecificSlipPrice = (slipIndex, basePrice) =>{
-    return { 
-        type : actionTypes.CALCULATE_EDIT_INDEX_PRICE, 
-        slipIndex : slipIndex,
-        basePrice: basePrice       
-    };
-}
-
-
-export const calulateGameAmount = (slipIndex, gameIndex,sideIndex) =>{
-    return { 
-        type : actionTypes.CALCULATE_SLIP_PRICE,
+export const calculateSpecificSlipPrice = (slipIndex, basePrice) => {
+    return {
+        type: actionTypes.CALCULATE_EDIT_INDEX_PRICE,
         slipIndex: slipIndex,
-        gameIndex : gameIndex,
-        sideIndex : sideIndex
-        
+        basePrice: basePrice
     };
 }
 
 
-export const calculateGrandTtoalPriceOfAllSlips = () =>{
-    return { 
-        type : actionTypes.CALCULATE_GRAND_tOTAL,
-        
+export const calulateGameAmount = (slipIndex, gameIndex, sideIndex) => {
+    return {
+        type: actionTypes.CALCULATE_SLIP_PRICE,
+        slipIndex: slipIndex,
+        gameIndex: gameIndex,
+        sideIndex: sideIndex
+
     };
 }
-export const setBoardLoading= (loading)=>{
+
+
+export const calculateGrandTtoalPriceOfAllSlips = () => {
+    return {
+        type: actionTypes.CALCULATE_GRAND_tOTAL,
+
+    };
+}
+export const setBoardLoading = (loading) => {
     return {
         type: actionTypes.SET_BOARD_LOADING,
         loading: loading
     }
 }
 
-export const setEditIndex= (index)=>{
+export const setEditIndex = (index) => {
     return {
         type: actionTypes.SET_EDITING_INDEX,
         position: index
     }
 }
 
-export const setAdding=(slipIndex,isAdded)=>{
+export const setAdding = (slipIndex, isAdded) => {
     return {
         type: actionTypes.SET_ADDING,
         slipIndex: slipIndex,
@@ -227,7 +233,7 @@ export const setAdding=(slipIndex,isAdded)=>{
     }
 }
 
-export const setRemoving=(slipIndex,isRemoved)=>{
+export const setRemoving = (slipIndex, isRemoved) => {
     return {
         type: actionTypes.SET_REMOVING,
         slipIndex: slipIndex - 1,
@@ -236,7 +242,7 @@ export const setRemoving=(slipIndex,isRemoved)=>{
 }
 
 
-export const deleteAndResetAll = ()=>{
+export const deleteAndResetAll = () => {
     return {
         type: actionTypes.DELETE_AND_RESET_ALL
     }
@@ -244,24 +250,24 @@ export const deleteAndResetAll = ()=>{
 
 
 
-export const copyBetslip = (position) =>{
-    return { 
+export const copyBetslip = (position) => {
+    return {
         type: actionTypes.COPY_BETSLIP,
         position: position
     };
 }
 
 
-export const removeRowFromBetSlip = (deleteId) =>{
-    return dispatch =>{
+export const removeRowFromBetSlip = (deleteId) => {
+    return dispatch => {
         dispatch(removeRowFromBetSlip2(deleteId));
         dispatch(calculateGrandTtoalPriceOfAllSlips());
     };
 }
 
-export const removeRowFromBetSlip2 = (deleteId) =>{
+export const removeRowFromBetSlip2 = (deleteId) => {
     return {
         type: actionTypes.REMOVE_ROW_FROM_BETSLIP,
-        deleteId : deleteId
+        deleteId: deleteId
     };
 }
