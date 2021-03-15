@@ -10,13 +10,7 @@ const Results = (props) => {
         let gamesCalc = [...props.daysResults];
         props.daysResults.forEach((results, i) => {
             if (results.length === 1) {
-                // let myRes = [results[0]];
-                // let myTarget = [...props.daysResults[i]];
-                // myRes.gameDay = props.daysResults[i + 1][0].gameDay
-                // myTarget.splice(myTarget.length, myTarget.length + 1, myRes[0]);
                 gamesCalc.splice(i, i );
-
-                // gamesCalc.splice(i-1, i, myTarget);
             }
         });
         setRecaculted(gamesCalc);
@@ -41,7 +35,6 @@ const Results = (props) => {
     }
     let resultsTrannsformed = recalculatedReults.map((results, k) => {
         return <div className={classes.ResultsAndShare} key={k}>
-            {console.log(props.daysResults[k].length)}
             {  props.daysResults[k].length >= 12 ? <div>
                 <div className={classes.ResultHead} >
                     <div className={classes.HeaderInner}>

@@ -111,7 +111,7 @@ class UserPlayHistory extends Component {
     }
     translateResult = (goalHome, goalAway, endTime) => {
         if (Date.now() > endTime) {
-            if(goalHome !== undefined && goalAway !== undefined){
+            if (goalHome !== undefined && goalAway !== undefined) {
                 if (goalHome > goalAway) {
                     return "H";
                 } else if (goalHome < goalAway) {
@@ -119,10 +119,10 @@ class UserPlayHistory extends Component {
                 } else {
                     return "D";
                 }
-            }else{
+            } else {
                 return "free pass";
             }
-      
+
         } else {
             return "";
         }
@@ -214,6 +214,7 @@ class UserPlayHistory extends Component {
         let userPlayHistoryTrannsformed = this.state.loading && matchesPlayed[0] ?
             matchesPlayed.sort((a, b) => a[0]["datePlayed"] < b[0]["datePlayed"] ? 1 : -1).map((match, k) => {
                 let matchRes = this.getMatchResults(matchResults, match[0]);
+
                 return <div className={classes.userPlayHistoryAndShare} key={k}>
                     <div className={classes.MainHeader} onClick={() => this.toggleShowHistory(k)} >
                         <div className={classes.DateHead}>Entry date : {moment(match[0].datePlayed).format("DD.MM.YYYY")}</div>
@@ -227,7 +228,6 @@ class UserPlayHistory extends Component {
                         <div className={classes.ResultHead} >
                             {
                                 matchRes.length > 0 ? <div className={classes.userPlayHistory}>
-
                                     <div className={classes.ResultBody} >
                                         <div className={classes.BodyHeader}>
                                             <div className={classes.Head1}>Match</div>
@@ -236,6 +236,8 @@ class UserPlayHistory extends Component {
                                         </div >
                                         <div className={classes.BodyMain}>
                                             {matchRes.map((eachRes, i) => {
+                                                // console.log(matchRes)
+                                                console.log("each Res", eachRes) 
                                                 return <div key={i} className={classes.SelectionRow}>
                                                     <div className={classes.Teams}>
                                                         <div className={classes.RowNumber}>{i + 1} </div>
@@ -246,11 +248,11 @@ class UserPlayHistory extends Component {
                                                     </div>
                                                     <div className={classes.ScoreResult}>
                                                         <div className={classes.Score}>{eachRes[0].status === "Match Finished" ? eachRes[0].score : Date.now() > moment(match[0].endTime) ? "free pass" : "-"}</div>
-                                                        <div >{this.translateResult(eachRes[0].homeGoals, eachRes[0].awayGoals, moment(match[0].endTime) )}</div>
+                                                        <div >{this.translateResult(eachRes[0].homeGoals, eachRes[0].awayGoals, moment(match[0].endTime))}</div>
                                                     </div>
                                                     <div className={classes.Selections}>
                                                         {match[0].games[i].selections.map((select, y) =>
-                                                            <div key={y} className={this.translateResult(eachRes[0].homeGoals, eachRes[0].awayGoals, moment(match[0].endTime) ) ===
+                                                            <div key={y} className={this.translateResult(eachRes[0].homeGoals, eachRes[0].awayGoals, moment(match[0].endTime)) ===
                                                                 this.determineSelection(select.selected, y) ?
                                                                 Date.now() > moment(match[0].endTime) ? classes.Winner : null : classes.Selected} >{this.determineSelection(select.selected, y)}</div>)}
                                                     </div>

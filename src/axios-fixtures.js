@@ -7,7 +7,8 @@ const instance = axios.create({
     baseURL: base_url,
     headers: {
         'x-rapidapi-key' : app_key,
-        'x-rapidapi-host': api_host
+        'x-rapidapi-host': api_host,
+        "useQueryString": true
     }
 });
 export default instance;

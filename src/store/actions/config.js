@@ -26,7 +26,6 @@ export const setEventDate = (eventDate) => {
 }
 
 export const configureBoard = (isFaCup, kickOffTime, kickOffDate) => {
-    console.log(kickOffDate);
     return dispatch => {
         axios.get("fixtures/date/" + kickOffDate)
             .then(response => {
