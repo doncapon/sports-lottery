@@ -168,16 +168,18 @@ class ToBank extends Component {
         let bankDetails = [...this.props.savedBanks];
         let cardTobeSaved = bankDetails.filter(detail => detail.accountNumber === e.target.value)[0];
 
-        this.setState({ account: cardTobeSaved.accountNumber });
+        if(cardTobeSaved.accountNumber !== "--Use an exisitng bank--"){
+            this.setState({ account: cardTobeSaved.accountNumber });
+        }
+        else{
+            this.setState({ account: ""});
+        }
+
         this.setState({ bank: cardTobeSaved.bank });
         this.setState({ name: cardTobeSaved.accountName });
 
         this.setState({ savedAccountNumber: e.target.value });
-
-        setTimeout(() => {
-            this.saveBankValidation();
-        }, 100);
-            this.setState({checkMessage: ""});
+        this.setState({ saveError: "" });
     }
     handleWithdraw = () => {
         const receipntData = {
@@ -377,9 +379,9 @@ class ToBank extends Component {
                     cancel={() => this.setState({ showReSigninForm: false })} HandleSave={this.HandleSave} /></Modal> : null}
                 {this.state.showUpdate ? <SignupModal show={this.state.showUpdate}>
                     <DeleteBankDetails showUpdate={() => this.setState({ showUpdate: false })}
-                    name={this.state.name} bank={this.state.bank} account={this.state.account}
-                    allowedBanks={this.props.allowedBanks} savedBanks={this.props.savedBanks}
-                    setShowUpdate={this.setShowUpdate} /></SignupModal> :
+                        name={this.state.name} bank={this.state.bank} account={this.state.account}
+                        allowedBanks={this.props.allowedBanks} savedBanks={this.props.savedBanks}
+                        setShowUpdate={this.setShowUpdate} /></SignupModal> :
                     this.state.loading ? <div className="formDiv">
                         <div>
                             {this.state.apiError ? <div style={{ color: 'red', fontSize: '20px' }}>Please check your bank details</div> : null}
