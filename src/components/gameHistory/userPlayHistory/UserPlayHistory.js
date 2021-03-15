@@ -236,8 +236,6 @@ class UserPlayHistory extends Component {
                                         </div >
                                         <div className={classes.BodyMain}>
                                             {matchRes.map((eachRes, i) => {
-                                                // console.log(matchRes)
-                                                console.log("each Res", eachRes) 
                                                 return <div key={i} className={classes.SelectionRow}>
                                                     <div className={classes.Teams}>
                                                         <div className={classes.RowNumber}>{i + 1} </div>

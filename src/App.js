@@ -25,7 +25,7 @@ class App extends React.Component {
     super(props)
 
     this.state = {
-      timeout: 1000 * 60 * 15,
+      timeout: 1000 * 5 * 1,
       showModal: false,
       isTimedOut: false,
     }
@@ -62,6 +62,11 @@ class App extends React.Component {
     const isTimedOut = this.state.isTimedOut
     if (isTimedOut) {
       this.handleLogout();
+      setTimeout(()=>{
+
+        this.setState({ showModal: false })
+        window.location.reload();
+      }, 1500)
     } else {
       this.setState({ showModal: true })
       this.idleTimer.reset();
@@ -71,7 +76,6 @@ class App extends React.Component {
 
   handleClose() {
     this.setState({ showModal: false });
-
   }
 
   handleLogout = () => {
