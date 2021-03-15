@@ -34,7 +34,6 @@ export const setBoard = (basePrice) => {
                         if(key2 !== "isPaid")
                         wantedFixtures.push(fixt[key2]);
                     });
-                    console.log("fsdfdsf",wantedFixtures);
                     dispatch(initializeBoard(wantedFixtures, basePrice));
 
                 })
