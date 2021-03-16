@@ -24,18 +24,19 @@ export const setBoard = (basePrice) => {
     return dispatch => {
         let boardRef = firebase.database().ref("board").limitToLast(1);
         let wantedFixtures = [];
-        let returned ;
+        let returned;
         boardRef.on("value", snapshot => {
-            returned = Object.assign([],snapshot.val());
+            returned = Object.assign([], snapshot.val());
             setTimeout(() => {
-                Object.keys(returned).map(key=>{
+                Object.keys(returned).map(key => {
                     let fixt = returned[key];
-                    Object.keys(fixt).map(key2=>{
-                        if(key2 !== "isPaid")
-                        wantedFixtures.push(fixt[key2]);
+                    Object.keys(fixt).map(key2 => {
+                        if (key2 !== "isPaid")
+                            wantedFixtures.push(fixt[key2]);
+                        return null;
                     });
                     dispatch(initializeBoard(wantedFixtures, basePrice));
-
+                    return null;
                 })
             }, 2000);
         });
