@@ -3,29 +3,43 @@ import classes from "./landing.module.css";
 import { connect } from "react-redux";
 import CountDown from "../CountDown/CountDown";
 import Footer from "../Footer/Footer";
-import {getNextPlayDate} from '../../../shared/utility';
+import { getNextPlayDate } from '../../../shared/utility';
+import firebase from '../../../config/firebase/firebase';
+import { addCommaToAmounts } from "..//../../shared/utility";
+import moment from "moment";
 class Landing extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
-      gameDateRaw: null
+      gameDateRaw: null,
+      jackpot: null,
     };
   }
-  componentDidMount(){
-    if(!this.state.loading){
+  componentDidMount() {
+    if (!this.state.loading) {
       let kickOffDate = getNextPlayDate(this.props.daysOffset,
         this.props.hourToNextDay);
-        this.setState({gameDateRaw: kickOffDate+"T"+this.props.kickOffTime })
+      this.setState({ gameDateRaw: kickOffDate + "T" + this.props.kickOffTime })
     }
-    this.setState({loading: true})
+    this.setState({ loading: true })
+    this.interval = setInterval(()=>this.getJackpo(), 10 *60*1000)
   }
-
+  getJackpo = () => {
+    firebase.database().ref("jackpots").child(moment(this.props.gameDateRaw).format("YYYY-MM-DD"))
+      .on("value", snapshot => {
+        this.setState({ jackpot: snapshot.val().jackpot });
+      })
+  }
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
   render() {
     return (
       <div className={classes.LandingWrapper}>
-        {this.state.loading? <CountDown gamedate={this.state.gameDateRaw}/> : null}
-        <Footer/>
+        {this.state.loading ? <CountDown gamedate={this.state.gameDateRaw} /> : null}
+        {this.state.jackpot? <div className={classes.Jackpot}><div className={classes.JapotText}>Jackpot: </div>{" ₦ " + addCommaToAmounts(this.state.jackpot) }</div>:null}
+        <Footer />
       </div>
     );
   }
