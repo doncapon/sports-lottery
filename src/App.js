@@ -118,12 +118,10 @@ class App extends React.Component {
           <Route path="/transfers" component={Transfers} />
           <Route path="/results" component={ResultPage} />
           <Route path="/signup" component={Signup} />
-          <Route path="/forgot-password/:resetLink" component={ForgotPassword} />
           <Route path="/forgot-password" component={ForgotPassword} />
           <Route path="/settings" component={Settings} />
           <Route path="/history" component={UserPlayHistory} />
           <Route path="/play" component={Board} />
-          <Route path="/authentication/activate/:token" component={ActivateNewUser} />
           <Route exact path="/" component={Landing} />
           <Redirect to="/" />
         </Switch>
