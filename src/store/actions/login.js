@@ -13,7 +13,7 @@ export const login2 = () => {
         type: actionTypes.LOGIN,
     }
 }
-export const setFunds=(funds) =>{
+export const setFunds = (funds) => {
     return {
         type: actionTypes.SET_FUNDS,
         funds: funds
@@ -43,41 +43,45 @@ export const logout = () => {
 
 }
 
-    export const login = (email, password) => {
-        return dispatch => {
-            dispatch(login2());
-            firebase.auth().signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    // Signed in
-                    var user = userCredential.user;
-                    if (user.emailVerified) {
-                        let userRef = firebase.database().ref("users/" + user.uid);
-                        userRef.on('value', (snapshot) => {
-                            const dbUser = snapshot.val();
-                            dispatch(setLoggedInUser(user));
-                            dispatch(setIsLoggedIn(true));
-                            dispatch(setLoggedInUser(dbUser));
-                        });
-                        return function cleanup() {
-                            userRef.off();
-                          }
+export const login = (email, password) => {
+    return dispatch => {
+        dispatch(login2());
+        firebase.auth().signInWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                // Signed in
+                var user = userCredential.user;
+                if (user.emailVerified===true) {
+                    let userRef = firebase.database().ref("users/" + user.uid);
+                    userRef.on('value', (snapshot) => {
+                        const dbUser = snapshot.val();
+                        dispatch(setLoggedInUser(user));
+                        dispatch(setIsLoggedIn(true));
+                        dispatch(setLoggedInUser(dbUser));
+                        firebase.database().ref("users").off();
+
+                    });
+                    return function cleanup() {
+                        userRef.off();
                     }
                     
-                })
-                .catch((error) => {
-                    setLoggedInUser(error);
-                    dispatch(setForgot(true));
-                    dispatch(setIsLoggedIn(false));
-                    dispatch(logout2())
-                });
+                }
 
-        
-        }
-    }
+            })
+            .catch((error) => {
+                setLoggedInUser(error);
+                dispatch(setForgot(true));
+                dispatch(setIsLoggedIn(false));
+                dispatch(logout2())
+            });
+            firebase.database().ref("users").off();
 
-    export const setLoggedInUser = (user) => {
-        return {
-            type: actionTypes.SET_LOGGEDIN_USER,
-            user: user
-        }
+
     }
+}
+
+export const setLoggedInUser = (user) => {
+    return {
+        type: actionTypes.SET_LOGGEDIN_USER,
+        user: user
+    }
+}

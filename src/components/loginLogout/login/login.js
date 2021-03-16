@@ -2,6 +2,7 @@ import { Button, FormControl, Form } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import React, { useState } from 'react';
 import classes from './login.module.css';
+import firebase from '../../../config/firebase/firebase';
 
 const Login = (props) => {
     const [showPopup, setShowPopUp] = useState(false);
@@ -20,14 +21,19 @@ const Login = (props) => {
         e.preventDefault();
         login();
         setTimeout(() => {
-            if (!props.isLoggedIn) {
-                setAlerts(["alert", "alert-danger"])
-                popUpFunc();
-            } else {
-                setAlerts(["alert", "alert-success"])
-                popUpFunc();
-                history.push("/play");
-            }
+            firebase.auth().onAuthStateChanged(user=>{
+                if (!props.isLoggedIn || !user.emailVerified) {
+                    setAlerts(["alert", "alert-danger"])
+                    popUpFunc();
+                } else {
+                    setTimeout(()=>{
+                        setAlerts(["alert", "alert-success"])
+                        popUpFunc();
+                        history.push("/play");
+                    }, 2000)
+                }
+            })
+         
         }, 3000);
     }
 
@@ -51,7 +57,7 @@ const Login = (props) => {
         {showPopup ?
             alerts[1] === "alert-danger" ?
                 <div className={alerts.join(" ")}>
-                    <strong>Failure!</strong> Please check email or password!
+                    <strong>Failure!</strong> Invalid email or password!/ Email Not Verified
                 </div>
                 : <div className={alerts.join(" ")}>
                     <strong>Success!</strong> Login successful!

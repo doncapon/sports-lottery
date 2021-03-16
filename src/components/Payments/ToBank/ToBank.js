@@ -132,7 +132,7 @@ class ToBank extends Component {
 
     handlePaystackSuccessAction = (reference) => {
         firebase.database().onAuthStateChanged((user) => {
-            if (user) {
+            if (user && user.emailVerified) {
                 user.funds += this.state.amount;
                 let updates = {};
                 updates["users/" + user.uid] = user;
@@ -273,7 +273,7 @@ class ToBank extends Component {
         let account = this.state.account;
         let bank = this.state.bank;
         firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
+            if (user && user.emailVerified) {
                 // User is signed in.
                 if (account && bank !== 'select') {
                     let BankExist = bankDetail.find(detail => detail.accountNumber === account);

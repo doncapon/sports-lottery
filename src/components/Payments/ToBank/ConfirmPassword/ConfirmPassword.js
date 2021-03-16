@@ -10,7 +10,7 @@ const ConfirmPassword = (props) => {
     const HandleSubmit = (e) => {
         e.preventDefault();
         firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
+            if (user && user.emailVerified) {
                 var credential = firebase.auth.EmailAuthProvider.credential(
                     user.email, password.trim());
                 user.reauthenticateWithCredential(credential)

@@ -36,7 +36,7 @@ class UserPlayHistory extends Component {
         // window.location.reload();
         if (!this.state.loading) {
             firebase.auth().onAuthStateChanged((user) => {
-                if (user) {
+                if (user && user.emailVerified) {
                     let playedRef = firebase.database().ref("game-history").child(user.uid);
                     playedRef.on("value", (snapshot) => {
                         let data = snapshot.val();
@@ -186,7 +186,7 @@ class UserPlayHistory extends Component {
     handleAll = () => {
         this.rseetShowHistory();
         firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
+            if (user && user.emailVerified) {
                 let playedRef = firebase.database().ref("game-history").child(user.uid);
                 playedRef.on("value", (snapshot) => {
                     let data = snapshot.val();

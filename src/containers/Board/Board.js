@@ -43,15 +43,17 @@ class Board extends Component {
   }
 
   togglePaymentButton = (paying, paid) => {
-    // firebase.auth().signOut().then(() => {});
+    firebase.auth().signOut().then(() => {});
 
-    if (firebase.auth().currentUser) {
-      this.props.onSetIsPaying(paying);
-      this.props.onSetIsPaid(paid);
-    } else {
-      this.setState({ showModalSignin: true })
-    }
-
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user && user.emailVerified) {
+        this.props.onSetIsPaying(paying);
+        this.props.onSetIsPaid(paid);
+      } else {
+        this.setState({ showModalSignin: true })
+        console.log("i got called")
+      }
+    })
   }
 
   cancelLoginPopup = () => {
