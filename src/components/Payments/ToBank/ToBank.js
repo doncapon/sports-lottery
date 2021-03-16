@@ -158,6 +158,7 @@ class ToBank extends Component {
         this.setState({ savedAccountNumber: e.target.value });
         this.setState({ saveError: "" });
         this.setState({ checkMessage: "" });
+        this.setState({ apiError: "" });
     }
     handleWithdraw = () => {
         const receipntData = {
@@ -213,6 +214,9 @@ class ToBank extends Component {
     }
     handleSubmit = (e) => {
         e.preventDefault();
+        this.setState({ saveError: "" });
+        this.setState({ checkMessage: "" });
+        this.setState({ apiError: "" });
         let bankDetail = [...this.props.savedBanks];
         if (this.handleFormValidation()) {
             let BankExist = bankDetail.find(detail => detail.accountNumber === this.state.account);
@@ -226,6 +230,9 @@ class ToBank extends Component {
     }
     handleSaveHandler = (e) => {
         e.preventDefault();
+        this.setState({ saveError: "" });
+        this.setState({ checkMessage: "" });
+        this.setState({ apiError: "" });
         let bankDetail = [...this.props.savedBanks];
         if (this.saveBankValidation()) {
             let BankExist = bankDetail.find(detail => detail.accountNumber === this.state.account);
@@ -239,6 +246,9 @@ class ToBank extends Component {
 
     checkBankAccount = (e) => {
         e.preventDefault();
+        this.setState({ saveError: "" });
+        this.setState({ checkMessage: "" });
+        this.setState({ apiError: "" });
         let account = this.state.account;
         let bank = this.state.bank;
         if (account && bank !== 'select') {
