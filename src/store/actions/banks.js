@@ -27,7 +27,7 @@ export const fetchBanks = () => {
         let newData = [];
 
         firebase.auth().onAuthStateChanged(function (user) {
-            if (user) {
+            if (user && user.emailVerified) {
                 var accountRef = firebase.database().ref('bank-accounts/' + user.uid);
                 accountRef.on('value', (snapshot) => {
                     data = snapshot.val();

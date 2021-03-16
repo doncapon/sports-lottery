@@ -75,7 +75,7 @@ class DeleteBankDetail extends Component {
     handleDelete = (e) => {
         e.preventDefault();
         firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
+            if (user && user.emailVerified) {
                 let savedBanks = [...this.props.savedBanks];
                 let account = savedBanks.filter(bank => bank.accountNumber === this.state.account)[0];
 

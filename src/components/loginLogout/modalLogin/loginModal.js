@@ -6,8 +6,9 @@ import firebase from '../../../config/firebase/firebase';
 
 const LoginModal = (props) => {
     const [showPopup, setShowPopUp] = useState(false);
-    const [email, setEmail] = useState('"');
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState('');
+    const [isNotVerified, setIsNotVerified] = useState('');
     const [userData, setUserData] = useState({});
     const [forgot, setForgot] = useState(false);
     let history = useHistory();
@@ -18,7 +19,7 @@ const LoginModal = (props) => {
             .then((userCredential) => {
                 // Signed in
                 var user = userCredential.user;
-                if (user.emailVerified) {
+                if (user.emailVerified === true) {
                     let userRef = firebase.database().ref("users/" + user.uid);
                     userRef.on('value', (snapshot) => {
                         const dbUser = snapshot.val();
@@ -26,33 +27,47 @@ const LoginModal = (props) => {
                         props.setIsLoggedIn(true);
                         popUpFunc();
                         props.setLoggedInUser(dbUser);
+                        firebase.database().ref("users").child(user.uid).child("funds")
+                            .on("value", snapshot => {
+                                if (snapshot.val() > 0) {
+                                    props.setIsPaying(true);
 
+                                } else {
+                                    props.setIsPaying(false);
 
-                            firebase.database().ref("users").child(user.uid).child("funds")
-                                .on("value", snapshot => {
-                                    if (snapshot.val() > 0) {
-                                        props.setIsPaying(true);
+                                }
+                            })
+                        setTimeout(() => {
+                            firebase.database().ref("users").off();
 
-                                    } else {
-                                        props.setIsPaying(false);
-
-                                    }
-                                })
-
+                        }, 3000);
 
                         props.cancelLoginPopup();
                         history.push("/play");
                         window.location.reload();
                     });
+                } else {
+                    setIsNotVerified("User has not been verified");
+                    console.log("i got called why")
+                    props.setIsLoggedIn(false);
+                    props.setIsPaying(false);
+                    
+
                 }
 
+                setTimeout(() => {
+                    firebase.database().ref("users").off();
+                }, 3000)
             })
             .catch((error) => {
+                console.log(error)
                 setUserData(error);
                 popUpFunc();
                 setForgot(true);
                 props.setIsLoggedIn(false);
+
             });
+
     };
 
 
@@ -83,7 +98,7 @@ const LoginModal = (props) => {
         {showPopup ?
             !userData.email ?
                 <div className={alerts.join(" ")}>
-                    <strong>Failure!</strong> Please check email or password!
+                    <strong>Failure!</strong> Invalid email or password / User Not Verified
                 </div>
                 : null
             : null
@@ -102,6 +117,7 @@ const LoginModal = (props) => {
                     <input name="password" type="password" onChange={(e) => setPassword(e.target.value)}
                         value={password} placeholder="password" className={classes.Input2} />
                 </div>
+                {isNotVerified ? <div style={{ color: 'red' }}>{isNotVerified}</div> : null}
                 {forgot ?
                     <Button className={classes.Forgot} onClick={handleForgot} >forgot password?</Button>
                     : null}
