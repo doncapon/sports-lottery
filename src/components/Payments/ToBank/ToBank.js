@@ -18,7 +18,6 @@ class ToBank extends Component {
         amount: '',
         account: "",
         bank: '',
-
         funds: 0,
         formErrors: {},
         config: {},
@@ -45,7 +44,6 @@ class ToBank extends Component {
             formIsValid = false;
             error = "Account number is required.";
         }
-
         return { isValid: formIsValid, error: error }
     }
     validateAmount(amount) {
@@ -63,11 +61,8 @@ class ToBank extends Component {
             if (Number(amount) > this.state.funds) {
                 formIsValid = false;
                 error = "Withrawal amount is more than your funds. correct";
-
             }
-
         }
-
         return { isValid: formIsValid, error: error }
     }
 
@@ -78,7 +73,6 @@ class ToBank extends Component {
             formIsValid = false;
             error = "Select bank.";
         }
-
         return { isValid: formIsValid, error: error }
     }
 
@@ -86,25 +80,19 @@ class ToBank extends Component {
         const { amount, account, bank } = this.state;
         let formErrors = {};
         let formIsValid = true;
-
         // Account
         formIsValid = this.validateAccount(account).isValid && formIsValid;
         formErrors["accountErr"] = this.validateAccount(account).error;
-
         //Amount    
         formIsValid = this.validateAmount(amount).isValid && formIsValid;
         formErrors["amountErr"] = this.validateAmount(amount).error;
         //Bank
         formIsValid = this.validateBank(bank).isValid && formIsValid;
         formErrors["bankErr"] = this.validateBank(bank).error;
-
         this.setState({ formErrors: formErrors });
-
         this.setState({ formErrors: formErrors });
-
         return formIsValid;
     }
-
 
     saveBankValidation() {
         const { account, bank } = this.state;
@@ -121,10 +109,8 @@ class ToBank extends Component {
         }
         this.setState({ formErrors: formErrors });
         this.setState({ formErrors: formErrors });
-
         return formIsValid;
     }
-
 
     handleChange = (e) => {
         let { name, value } = e.target;
@@ -141,11 +127,8 @@ class ToBank extends Component {
             error["amountErr"] = this.validateAmount(value).error;
         if (ele === "account")
             error["bankErr"] = this.validateBank(value).error;
-
         this.setState({ formErrors: error })
-
     }
-
 
     handlePaystackSuccessAction = (reference) => {
         firebase.database().onAuthStateChanged((user) => {
@@ -164,22 +147,17 @@ class ToBank extends Component {
     }
     handleSubmit2 = (e) => {
         e.preventDefault();
-
         let bankDetails = [...this.props.savedBanks];
         let cardTobeSaved = bankDetails.filter(detail => detail.accountNumber === e.target.value)[0];
-
-        if(cardTobeSaved.accountNumber !== "--Use an exisitng bank--"){
+        if (cardTobeSaved.accountNumber !== "--Use an exisitng bank--")
             this.setState({ account: cardTobeSaved.accountNumber });
-        }
-        else{
-            this.setState({ account: ""});
-        }
-
+        else
+            this.setState({ account: "" });
         this.setState({ bank: cardTobeSaved.bank });
         this.setState({ name: cardTobeSaved.accountName });
-
         this.setState({ savedAccountNumber: e.target.value });
         this.setState({ saveError: "" });
+        this.setState({ checkMessage: "" });
     }
     handleWithdraw = () => {
         const receipntData = {
@@ -216,7 +194,6 @@ class ToBank extends Component {
                                                 this.props.onSetFunds(funds - Number(this.state.amount))
                                                 return funds - Number(this.state.amount)
                                             })
-
                                             alert(`${response.data.message}. Funds wull be received within 24 hours.`)
                                         }
                                     })
@@ -226,20 +203,17 @@ class ToBank extends Component {
                             })
                             .catch(error => {
                                 this.setState({ apiError: error, saveError: '' });
-
                             });
                     }
                 })
                 .catch(error => {
                     this.setState({ apiError: error, saveError: '' })
-
                 });
         }
     }
     handleSubmit = (e) => {
         e.preventDefault();
         let bankDetail = [...this.props.savedBanks];
-
         if (this.handleFormValidation()) {
             let BankExist = bankDetail.find(detail => detail.accountNumber === this.state.account);
             if (BankExist) {
@@ -248,13 +222,11 @@ class ToBank extends Component {
                 this.setState({ showReSigninForm: true });
                 this.setState({ isWithDraw: true })
             }
-
         }
     }
     handleSaveHandler = (e) => {
         e.preventDefault();
         let bankDetail = [...this.props.savedBanks];
-
         if (this.saveBankValidation()) {
             let BankExist = bankDetail.find(detail => detail.accountNumber === this.state.account);
             if (BankExist) {
@@ -262,7 +234,6 @@ class ToBank extends Component {
             } else {
                 this.setState({ showReSigninForm: true });
             }
-
         }
     }
 
@@ -270,7 +241,6 @@ class ToBank extends Component {
         e.preventDefault();
         let account = this.state.account;
         let bank = this.state.bank;
-
         if (account && bank !== 'select') {
             this.setState({ name: '' })
             const params = "account_number=" + account + "&bank_code="
@@ -319,27 +289,19 @@ class ToBank extends Component {
                                     }, 2500);
                                 } else {
                                     this.setState({ saveError: "Please check your card details", apiError: '' })
-
                                 }
                             })
                             .catch(error => {
                                 this.setState({ saveError: "Please check your card details", apiError: '' })
-
                             })
-
-
                     } else {
                         this.setState({ saveError: "That bank detail already exists", apiError: '' });
                     }
                 } else {
                     this.setState({ saveError: "Please enter: valid name, bank and account to proceed", apiError: '' });
                 }
-            } else {
-                // No user is signed in.
-                // alert("please login")
             }
         })
-
     }
 
     setShowUpdate = (value) => {
@@ -363,14 +325,11 @@ class ToBank extends Component {
                 .map((detail, i) => (
                     <option key={i} value={detail.accountNumber}>{detail.accountNumber}</option>
                 ));
-
             banksallowed = [...this.props.allowedBanks];
-
             optionsAllowed = banksallowed.sort((a, b) => a.bankName > b.bankName ? 1 : -1)
                 .map((detail, i) => (
                     <option key={i} value={detail.bankCode}>{detail.bankName}</option>
                 ));
-
         }
         return (
             <div className={classes.ToBankWrapper}>
@@ -385,7 +344,6 @@ class ToBank extends Component {
                     this.state.loading ? <div className="formDiv">
                         <div>
                             {this.state.apiError ? <div style={{ color: 'red', fontSize: '20px' }}>Please check your bank details</div> : null}
-
                             <form onSubmit={this.handleSubmit}>
                                 <select name="savedAccountNumber"
                                     value={this.state.savedAccountNumber}
@@ -393,21 +351,18 @@ class ToBank extends Component {
                                     multiple={false}
                                     className={banksExist.join(" ")} >
                                     {options}
-
                                 </select>
                                 <div>
                                     <label className={classes.label} htmlFor="amount">Amount</label>
                                     <input type="number" name="amount"
                                         onChange={this.handleChange}
                                         value={this.state.amount}
-
                                         placeholder="Amount: 500 Naira minimum"
                                         className={classes.Number} />
                                     {amountErr &&
                                         <div style={{ color: "red" }}>{amountErr}</div>
                                     }
                                 </div>
-
                                 <div>
                                     <label className={classes.label} htmlFor="bank">Bank:</label>
                                     <select name="bank"
