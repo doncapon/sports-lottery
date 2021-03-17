@@ -18,17 +18,20 @@ class Landing extends Component {
   }
   componentDidMount() {
     if (!this.state.loading) {
-      let kickOffDate = getNextPlayDate(this.props.daysOffset,
+      this.kickOffDate = getNextPlayDate(this.props.daysOffset,
         this.props.hourToNextDay);
         this.getJackpo();
-      this.setState({ gameDateRaw: kickOffDate + "T" + this.props.kickOffTime })
+      this.setState({ gameDateRaw: this.kickOffDate + "T" + this.props.kickOffTime })
     }
     this.setState({ loading: true })
-    this.interval = setInterval(()=>this.getJackpo(), 30*60*1000)
+    setTimeout(() => {
+      this.interval = setInterval(()=>this.getJackpo(), 30*60*1000)      
+    }, 2000);
   }
   getJackpo = () => {
-    firebase.database().ref("jackpots").child(moment(this.props.gameDateRaw).format("YYYY-MM-DD"))
+    firebase.database().ref("jackpots").child(moment(this.kickOffDate).format("YYYY-MM-DD"))
       .on("value", snapshot => {
+        console.log(snapshot.val().jackpot)
         this.setState({ jackpot: snapshot.val().jackpot });
       })
   }
