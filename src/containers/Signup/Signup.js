@@ -296,9 +296,13 @@ class Signup extends Component {
                                     formERror["emailIdErr"] = response.message;
                                     this.setState({ formErrors: formERror });
                                 } else {
-                                    firebase.auth().currentUser.sendEmailVerification({ url: process.env.REACT_APP_HOME });
-                                    alert("Account registered. Please click link in sent to your email to activate.");
-                                    this.props.history.push("/");
+                                    firebase.auth().onAuthStateChanged((user)=>{
+                                        if(user){
+                                            user.sendEmailVerification({ url: process.env.REACT_APP_HOME });
+                                            alert("Account registered. Please click link sent to your email to activate.");
+                                            this.props.history.push("/");
+                                        }
+                                    })
                                 }
                             })
                     }
