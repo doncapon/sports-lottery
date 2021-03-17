@@ -77,7 +77,7 @@ class Board extends Component {
   }
   updateJackpot = (totalPrice) => {
     firebase.database().ref("jackpots").child(dateInYYYYMMDD(this.props.gameDate)).child("jackpot").transaction(Jackpots => {
-      return Jackpots + totalPrice;
+      return Jackpots + (totalPrice/2);
     })
   }
   render() {

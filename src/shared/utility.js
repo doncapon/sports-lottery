@@ -10,15 +10,14 @@ export const getNextPlayDate = (daysOffset, hoursToGo) => {
 }
 
 
-export function uuid() {
+export  const uuid =() => {
   let d = moment(Date.now()).format("SSSSS-MMssDD-HHYYYYmm");
   let str = Math.floor(Math.random() * 10000);
   d += "-" + str
   return d;
 }
 
-export function addCommaToAmounts(nStr) {
-
+export const  addCommaToAmounts=(nStr)=> {
   nStr += '';
   const x = nStr.split('.');
   let x1 = x[0];

@@ -31,7 +31,6 @@ class Landing extends Component {
   getJackpo = () => {
     firebase.database().ref("jackpots").child(moment(this.kickOffDate).format("YYYY-MM-DD"))
       .on("value", snapshot => {
-        console.log(snapshot.val().jackpot)
         this.setState({ jackpot: snapshot.val().jackpot });
       })
   }

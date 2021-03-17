@@ -44,8 +44,6 @@ const ForgotPassword = (props) => {
               setShowModal(false);
               history.push("/");
               alert("A reset link has been sent to your email.")
-            }).catch(function(error) {
-              // An error happened.
             });
         }
 

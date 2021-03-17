@@ -48,7 +48,6 @@ const LoginModal = (props) => {
                     });
                 } else {
                     setIsNotVerified("User has not been verified");
-                    console.log("i got called why")
                     props.setIsLoggedIn(false);
                     props.setIsPaying(false);
                     
