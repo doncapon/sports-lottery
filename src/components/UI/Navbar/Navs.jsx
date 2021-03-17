@@ -36,6 +36,7 @@ class Navs extends Component {
     this.props.logout();
     this.props.setIsPaying(false);
     this.props.setIsPaid(false);
+    this.props.setForgot(false);
 
     if (this.props.slips !== null && this.props.slips.length > 0)
       this.props.deleteAndResetAll();
