@@ -39,7 +39,7 @@ const ForgotPassword = (props) => {
 
         if (handleFormValidationEmail()) {
             var auth = firebase.auth();
-            auth.sendPasswordResetEmail(emailId, {url: process.env.REACT_APP_HOME}).then(function() {
+            auth.sendPasswordResetEmail(emailId, {url: process.env.REACT_APP_HOME}).then(() => {
               // Email sent.
               setShowModal(false);
               history.push("/");
