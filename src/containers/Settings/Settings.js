@@ -342,7 +342,7 @@ class Settings extends Component {
         return (<div className={classes.SettingsWrapper}>
             <form>
                 <input type="email" placeholder="user email to logut" onChange={(e) => this.setState({ email: e.target.value })} />
-                <Button type="button" onClick={(e) => this.deleteUserByEmail(e, this.state.email)} variant="outline-danger">Force Logout</Button>
+                <Button type="button" onClick={(e) => this.deleteUserByEmail(e, this.state.email)} variant="outline-danger">Delete User</Button>
             </form>
             <div>
                 <Button onClick={this.handlecConfigureBoard} >Configure Play Board</Button>
