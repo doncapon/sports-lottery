@@ -21,23 +21,27 @@ const Login = (props) => {
         e.preventDefault();
         login();
         setTimeout(() => {
-            firebase.auth().onAuthStateChanged(user=>{
+            firebase.auth().onAuthStateChanged(user => {
                 if (!props.isLoggedIn || !user.emailVerified) {
                     setAlerts(["alert", "alert-danger"])
                     popUpFunc();
+                    setTimeout(() => {
+                        props.setForgot(true);
+                    })
                 } else {
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         setAlerts(["alert", "alert-success"])
                         popUpFunc();
                         history.push("/play");
                     }, 2000)
                 }
             })
-         
+
         }, 3000);
     }
 
     const HandleSignup = () => {
+        props.setForgot(false);
         history.push("/signup");
     }
     const popUpFunc = () => {

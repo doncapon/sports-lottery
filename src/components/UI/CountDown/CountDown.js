@@ -35,7 +35,7 @@ const CountDown = (props) => {
  
   return (
     <Auxy>
-      <h1 style={{ textAlign: "center" }}>Countdown to E Day</h1>
+      <h1 style={{ textAlign: "center" }}>Time Left To Play</h1>
       <div className={classes.count}>
         <CountdownCircleTimer
           {...timerProps}
