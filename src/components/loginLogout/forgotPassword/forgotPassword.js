@@ -77,8 +77,8 @@ const ForgotPassword = (props) => {
                                 <div className={classes.Buttons}>
                                     <button type="button" onClick={forgetRedirect} className={classes.Button1}
                                     >Cancel</button>
-                                    <input type="submit" className={classes.Submit}
-                                        value="Submit" />
+                                    <button type="submit" className={classes.Submit}
+                                        >Submit </button>
                                 </div>
                             </form>
 

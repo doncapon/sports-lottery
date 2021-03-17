@@ -331,7 +331,7 @@ class ToBank extends Component {
         let optionsAllowed;
         if (this.state.loading) {
             bankDetails = [...this.props.savedBanks];
-            options = bankDetails.sort((a, b) => a.accountNumber < b.accountNumber ? 1 : -1)
+            options = bankDetails.sort((a, b) => a.accountNumber > b.accountNumber ? 1 : -1)
                 .map((detail, i) => (
                     <option key={i} value={detail.accountNumber}>{detail.accountNumber}</option>
                 ));
@@ -420,8 +420,8 @@ class ToBank extends Component {
                                                 onClick={() => this.setShowUpdate(true)}
                                             >Delete</button> : null}
 
-                                        <input type="submit" className={classes.Submit}
-                                            value="Withdraw" />
+                                        <button type="submit" className={classes.Submit}
+                                        >Withdraw</button>
                                     </div>
                                     : null}
                             </form>

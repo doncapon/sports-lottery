@@ -52,8 +52,6 @@ export const fetchBanks = () => {
                     }
                     dispatch(initializeSavedBanks(newData))
                 });
-            } else {
-                // alert("Please login");
             }
         });
 
