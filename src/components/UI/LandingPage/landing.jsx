@@ -20,6 +20,7 @@ class Landing extends Component {
     if (!this.state.loading) {
       let kickOffDate = getNextPlayDate(this.props.daysOffset,
         this.props.hourToNextDay);
+        this.getJackpo();
       this.setState({ gameDateRaw: kickOffDate + "T" + this.props.kickOffTime })
     }
     this.setState({ loading: true })
