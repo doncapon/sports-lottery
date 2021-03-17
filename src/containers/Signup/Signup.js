@@ -43,7 +43,7 @@ class Signup extends Component {
                 .set({
                     name: capitalizeFirstLetter(this.state.name),
                     surname: capitalizeFirstLetter(this.state.surname),
-                    phoneNumber: "+234"+ this.state.phoneNumber.substr(1, this.state.phoneNumber.length),
+                    phoneNumber: "+234" + this.state.phoneNumber.substr(1, this.state.phoneNumber.length),
                     email: this.state.emailId,
                     dob: this.state.dob,
                     role: "user",
@@ -162,8 +162,8 @@ class Signup extends Component {
             }
 
             dob = dob.split("/");
-            if(Number(dob[2])< 1900 && formIsValid){
-                
+            if (Number(dob[2]) < 1900 && formIsValid) {
+
                 formIsValid = false;
                 error = "Sorry, you are too old";
             }
@@ -296,8 +296,8 @@ class Signup extends Component {
                                     formERror["emailIdErr"] = response.message;
                                     this.setState({ formErrors: formERror });
                                 } else {
-                                    firebase.auth().onAuthStateChanged((user)=>{
-                                        if(user){
+                                    firebase.auth().onAuthStateChanged((user) => {
+                                        if (user) {
                                             user.sendEmailVerification({ url: process.env.REACT_APP_HOME });
                                             alert("Account registered. Please click link sent to your email to activate.");
                                             this.props.history.push("/");
@@ -313,13 +313,13 @@ class Signup extends Component {
         // eslint-disable-next-line
         this.setState({ dob: this.state.dob.replace(/^(\d\d)(\d)$/g, '$1/$2').replace(/^(\d\d\/\d\d)(\d+)$/g, '$1/$2').replace(/[^\d\/]/g, '') });
     }
-    togglePasswordShow = ()=>{
-        if(this.state.passwordType === "password"){
-            this.setState({passwordType: "text"})
-            this.setState({showText: 'Hide password?'});
-        }else{
-            this.setState({passwordType: "password"})
-            this.setState({showText: 'Show password?'});
+    togglePasswordShow = () => {
+        if (this.state.passwordType === "password") {
+            this.setState({ passwordType: "text" })
+            this.setState({ showText: 'Hide password?' });
+        } else {
+            this.setState({ passwordType: "password" })
+            this.setState({ showText: 'Show password?' });
         }
     }
 
@@ -399,10 +399,10 @@ class Signup extends Component {
                         </div>
 
                         <div>
-                        <div onClick={this.togglePasswordShow} className={classes.TogglePassword}>{this.state.showText}</div>
+                            <div onClick={this.togglePasswordShow} className={classes.TogglePassword}>{this.state.showText}</div>
 
                             <label className={classes.Label} htmlFor="password">Password</label>
-                            
+
                             <input type={this.state.passwordType} name="password"
                                 value={this.state.password}
                                 onChange={this.handleChange}
@@ -429,7 +429,7 @@ class Signup extends Component {
                         <input onClick={() => this.props.history.push("/")}
                             className={classes.Button}
                             type="button" value="Cancel" />
-                        <input type="submit" value="Submit" className={classes.Submit} />
+                        <button type="submit"  className={classes.Submit} >Submit</button>
                     </form>
                 </div>
             </div>
