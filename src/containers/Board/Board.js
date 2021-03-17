@@ -51,14 +51,12 @@ class Board extends Component {
         this.props.onSetIsPaid(paid);
       } else {
         this.setState({ showModalSignin: true })
-        console.log("i got called")
       }
     })
   }
 
   cancelLoginPopup = () => {
     this.setState({ showModalSignin: false })
-
   }
 
   confirmPurchase = () => {
