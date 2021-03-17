@@ -82,19 +82,18 @@ class App extends React.Component {
     this.props.onSetIsLoggedIn(false);
     this.props.onSetIsPaying(false);
     this.props.onSetIsPaid(false);
+    this.props.onSetForgot(false);
 
     if (this.props.slips !== null && this.props.slips.length > 0)
       this.props.onDeleteAndResetAll();
     this.props.history.push("/");
     this.props.onSetBoardLoading(false);
-
   }
 
   render() {
     return (
       <div className={classes.App}>
         {this.props.isLoggedIn ?
-
           <IdleTimer
             ref={ref => { this.idleTimer = ref }}
             element={document}
@@ -138,8 +137,6 @@ class App extends React.Component {
 
 const mapstateToProps = (state) => {
   return {
-
-
     showFunds: state.board.showFunds,
     slips: state.board.slips,
 
@@ -152,7 +149,6 @@ const mapstateToProps = (state) => {
     isFaCup: state.config.isFaCup,
     kickOffTime: state.config.kickOffTime,
     kickOffDate: state.config.kickOffDate
-
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -167,17 +163,12 @@ const mapDispatchToProps = (dispatch) => {
     onSetShowFunds: () => dispatch(actions.setShowFunds()),
     onResetReduxBoard: () =>
       dispatch(actions.resetReduxBoard()),
-
     onSetEditIndex: (value) =>
       dispatch(actions.setEditIndex(value)),
-    // onSetBoard: (isFaCup, kickOffTime, kickOffDate, basePrice) =>
-    //   dispatch(actions.setBoard(isFaCup, kickOffTime, kickOffDate,basePrice)),
-
     onSetIsPaying: (isPaying) =>
       dispatch(actions.setIsPaying(isPaying)),
     onSetIsPaid: (isPaid) =>
       dispatch(actions.setIsPaid(isPaid)),
-
   };
 };
 export default withRouter(connect(mapstateToProps, mapDispatchToProps)(App));
