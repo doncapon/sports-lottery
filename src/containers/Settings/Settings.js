@@ -17,6 +17,7 @@ class Settings extends Component {
         elevenWinners: 0,
         twelveWinners: 0,
         thirteenWinners: 0,
+        email: ''
     }
     componentDidMount() {
         if (!this.state.loading) {
@@ -308,13 +309,45 @@ class Settings extends Component {
         }, 3000)
         firebase.database().ref("jackpots").off();
     }
+    deleteUserByEmail = (e, email) => {
+        e.preventDefault();
+        let notfound = true;
+        firebase.database().ref("users").on("value", snapshot => {
+            let users = snapshot.val();
+            Object.keys(users).map(key => {
+                let user = users[key];
+                if (user.email === email && user.role.toLocaleLowerCase() !== "admin") {
+                    firebase.database().ref('users').child(key).remove();
+                    notfound= false;
+                    alert("deleted");
+                    setTimeout(() => {
+                        firebase.database().ref("users").off();
+                    }, 1000);
+                }
+               
+                return null;
+            })
+            if(notfound)
+            alert("User not found");
+
+        })
+        setTimeout(() => {
+            firebase.database().ref("users").off();
+        }, 5000);
+    }
     render() {
         if (this.props.user.role !== "admin" || !this.props.isLoggedIn) {
             this.props.history.push("/");
         }
         return (<div className={classes.SettingsWrapper}>
-            <Button onClick={this.handlecConfigureBoard} >Configure Play Board</Button>
-            <Button onClick={this.handleSetResultss} >Set Last Results</Button>
+            <form>
+                <input type="email" placeholder="user email to logut" onChange={(e) => this.setState({ email: e.target.value })} />
+                <Button type="button" onClick={(e) => this.deleteUserByEmail(e, this.state.email)} variant="outline-danger">Force Logout</Button>
+            </form>
+            <div>
+                <Button onClick={this.handlecConfigureBoard} >Configure Play Board</Button>
+                <Button onClick={this.handleSetResultss} >Set Last Results</Button>
+            </div>
 
             <form onSubmit={this.shareJackpot}>
                 <input type="text" name="date" value={this.state.gameDate} onChange={(e) => this.setState({ gameDate: e.target.value })} />

@@ -73,6 +73,7 @@ const LoginModal = (props) => {
 
     const HandleSubmit = (e) => {
         e.preventDefault();
+        setIsNotVerified("");
         login();
 
     }
