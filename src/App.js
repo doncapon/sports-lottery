@@ -16,7 +16,6 @@ import Transfers from './containers/Transfers/Transfers';
 import ForgotPassword from './components/loginLogout/forgotPassword/forgotPassword';
 import Settings from './containers/Settings/Settings';
 import Signup from './containers/Signup/Signup';
-import ActivateNewUser from './containers/ActivateNewUser/ActivateNewUser';
 import UserPlayHistory from './components/gameHistory/userPlayHistory/UserPlayHistory';
 
 class App extends React.Component {

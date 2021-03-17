@@ -24,7 +24,7 @@ class Landing extends Component {
       this.setState({ gameDateRaw: kickOffDate + "T" + this.props.kickOffTime })
     }
     this.setState({ loading: true })
-    this.interval = setInterval(()=>this.getJackpo(), 10 *60*1000)
+    this.interval = setInterval(()=>this.getJackpo(), 30*60*1000)
   }
   getJackpo = () => {
     firebase.database().ref("jackpots").child(moment(this.props.gameDateRaw).format("YYYY-MM-DD"))

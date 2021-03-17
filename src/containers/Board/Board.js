@@ -43,7 +43,7 @@ class Board extends Component {
   }
 
   togglePaymentButton = (paying, paid) => {
-    firebase.auth().signOut().then(() => {});
+    // firebase.auth().signOut().then(() => {});
 
     firebase.auth().onAuthStateChanged((user) => {
       if (user && user.emailVerified) {
