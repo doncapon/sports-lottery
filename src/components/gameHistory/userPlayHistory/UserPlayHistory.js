@@ -155,7 +155,10 @@ class UserPlayHistory extends Component {
         } else if (matchHits === 13) {
             searchTerm = "thirteen";
         } else {
-            return "No wins";
+            if (match.isEvaluated)
+                return "No wins";
+            else
+                return "Not evaluated yet";
         }
 
         let potRef = firebase.database().ref("jackpot-win").child(match.evaluationDate).child(searchTerm);
@@ -259,7 +262,7 @@ class UserPlayHistory extends Component {
                                             })}
                                         </div>
                                         <div className={classes.AmountWon}>
-                                            <div>Number of hits:  {match[0].hits}</div>
+                                            <div>Number of hits:  {match[0].isEvaluated? match[0].hits : "-"}</div>
                                             <div>Amount won: {this.calculateWins(match[0], match[0].hits)}</div>
                                         </div>
                                     </div>
