@@ -121,7 +121,7 @@ const setReceipt = (state, action) => {
             let evaDate = dateInYYYYMMDD( draft.slips[i].gameDate);
             slip.evaluationDate = evaDate;
             slip.isEvaluated = false;
-            slip.endTime =  moment(action.gameDay).add(3, 'hours').format("YYYY-MM-DDTHH:mm:SS+00:00")
+            slip.endTime =  moment(draft.gameDateRaw).add(3, 'hours').format("YYYY-MM-DDTHH:mm:SS+00:00")
             let user = firebase.auth().currentUser;
             slip.userId=user.uid;
             let historyRef = firebase.database().ref("game-history").child(user.uid).child(slip.gameNumber);

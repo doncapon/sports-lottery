@@ -60,7 +60,7 @@ class ToBank extends Component {
             }
             if (Number(amount) > this.state.funds) {
                 formIsValid = false;
-                error = "Withrawal amount is more than your funds. correct";
+                error = "Withdrawal amount is more than your funds. correct";
             }
         }
         return { isValid: formIsValid, error: error }
