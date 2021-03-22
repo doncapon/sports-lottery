@@ -92,6 +92,8 @@ class ToWallet extends Component {
             this.props.onSetFunds(funds+ Number(this.state.amount))
             return funds+ Number(this.state.amount)
         })
+        firebase.database().ref("users").off();
+        
     };
 
     handlePaystackCloseAction = () => {

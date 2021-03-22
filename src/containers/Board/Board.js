@@ -71,9 +71,9 @@ class Board extends Component {
     let userRef = firebase.database().ref("users").child(userId);
     userRef.child('funds').transaction((funds) => {
       this.props.onSetFunds(funds - this.props.totalPrice)
-
       return funds - this.props.totalPrice
     });
+    userRef.off();
   }
   updateJackpot = (totalPrice) => {
     firebase.database().ref("jackpots").child(dateInYYYYMMDD(this.props.gameDate)).child("jackpot").transaction(Jackpots => {
