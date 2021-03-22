@@ -117,6 +117,7 @@ class Settings extends Component {
                         firebase.database().ref("jackpot-win").child(dateInYYYYMMDD(this.state.gameDate)).update({ twelve: 0 });
                     }
                     if (data.elevenUser > 0) {
+                        console.log("I got called");
                         eleven = (data.jackpot * this.props.elevenPercent) / data.elevenUser;
                         firebase.database().ref("jackpot-win").child(dateInYYYYMMDD(this.state.gameDate)).update({ eleven: eleven });
                     } else {
@@ -187,6 +188,7 @@ class Settings extends Component {
                                             if (hits === 10) {
                                                 this.setState({ tenWinners: this.state.tenWinners + 1 });
                                             } else if (hits === 11) {
+                                                console.log("blab", matchesPlayed.userId)
                                                 this.setState({ elevenWinners: this.state.elevenWinners + 1 });
                                             } else if (hits === 12) {
                                                 this.setState({ twelveWinners: this.state.twelveWinners + 1 });
@@ -213,13 +215,13 @@ class Settings extends Component {
                 setTimeout(() => {
                     this.calculaterWiinerAmount();
                     this.setState({ disable: false });
-                }, 20000); //Subject to change with huge data possible to 1 hour
+                }, 30000); //Subject to change with huge data possible to 1 hour
 
                 boardRef.update({ isPaid: true })
                 firebase.database().ref("board").off();
                 setTimeout(() => {
                     alert("Jackpot successfully shared")
-                }, 20000); //Subject to change
+                }, 30000); //Subject to change
 
             } else {
                 setTimeout(() => {
@@ -229,7 +231,7 @@ class Settings extends Component {
 
             setTimeout(() => {
                 window.location.reload();
-            }, 20000)
+            }, 30000)
         })
 
     }
@@ -244,34 +246,45 @@ class Settings extends Component {
                 let matches = data[keys];
                 return Object.keys(matches).map(key => {
                     let matchesPlayed = matches[key];
-                    if (matchesPlayed.isEvaluated && !matchesPlayed.isPaid) {
-                        let hits = matchesPlayed.hits;
-                        firebase.database().ref("jackpot-win").child(dateInYYYYMMDD(this.state.gameDate))
-                            .on("value", snapshot => {
-                                let data = snapshot.val();
-                                let winRef = firebase.database().ref("users").child(matchesPlayed.userId)
+                    if (matchesPlayed.evaluationDate === dateInYYYYMMDD(this.state.gameDate)) {
+                        if (matchesPlayed.isEvaluated && !matchesPlayed.isPaid) {
+                            let hits = matchesPlayed.hits;
+                            let data;
+
+                            firebase.database().ref("jackpot-win").child(dateInYYYYMMDD(this.state.gameDate))
+                                .on("value", snapshot => {
+                                    data = snapshot.val();
+                                });
+                            setTimeout(() => {
                                 if (hits === 10) {
-                                    winRef.child("funds").transaction(funds => {
+                                    console.log("name naa", matchesPlayed.userId, matchesPlayed, data.ten);
+                                    firebase.database().ref("users").child(matchesPlayed.userId).child("funds").transaction(funds => {
                                         return funds + data.ten;
                                     });
                                 }
                                 else if (hits === 11) {
-                                    winRef.child("funds").transaction(funds => {
+                                    console.log("name naa", matchesPlayed.userId, matchesPlayed, data.eleven);
+                                    firebase.database().ref("users").child(matchesPlayed.userId).child("funds").transaction(funds => {
                                         return funds + data.eleven;
                                     });
                                 } else if (hits === 12) {
-                                    winRef.child("funds").transaction(funds => {
+                                    firebase.database().ref("users").child(matchesPlayed.userId).child("funds").transaction(funds => {
                                         return funds + data.twelve;
                                     });
                                 } else if (hits === 13) {
-                                    winRef.child("funds").transaction(funds => {
+                                    firebase.database().ref("users").child(matchesPlayed.userId).child("funds").transaction(funds => {
                                         return funds + data.thirteen;
                                     });
                                 }
-                                matchesPlayedRef.child(matchesPlayed.userId).child(matchesPlayed.gameNumber).update({ isPaid: true })
 
-                            });
+                                matchesPlayedRef.child(matchesPlayed.userId).child(matchesPlayed.gameNumber).update({ isPaid: true })
+                                setTimeout(() => {
+                                    firebase.database().ref("users").off();
+                                }, 1500);
+                            }, 2000)
+                        }
                     }
+
                     return null;
                 })
             });
@@ -318,17 +331,17 @@ class Settings extends Component {
                 let user = users[key];
                 if (user.email === email && user.role.toLocaleLowerCase() !== "admin") {
                     firebase.database().ref('users').child(key).remove();
-                    notfound= false;
+                    notfound = false;
                     alert("deleted");
                     setTimeout(() => {
                         firebase.database().ref("users").off();
                     }, 1000);
                 }
-               
+
                 return null;
             })
-            if(notfound)
-            alert("User not found");
+            if (notfound)
+                alert("User not found");
 
         })
         setTimeout(() => {

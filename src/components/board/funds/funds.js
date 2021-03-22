@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import firebase from '../../../config/firebase/firebase'; 
+import { addCommaToAmounts } from "../../../shared/utility";
 const Funds = (props) => {
     const [loading , setLoading] = useState(false);
     const [funds , setFunds] = useState(0);
@@ -20,12 +21,13 @@ const Funds = (props) => {
             })
          
         }
+        firebase.database().ref("users").off();
         setLoading(true);
     }, [loading])
 
 
     if (props.showFunds) {
-        title += "\xa0\xa0\xa0\xa0 Wallet: ₦" + funds.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        title += "\xa0\xa0\xa0\xa0 Wallet: ₦" +  addCommaToAmounts(funds);
     } else {
         title += "\xa0\xa0\xa0\xa0 wallet hidden";
     }
@@ -33,7 +35,7 @@ const Funds = (props) => {
     if (props.showFunds) {
         titleLarge += "\xa0\xa0\xa0\xa0" +
             "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0 Wallet: ₦" +
-            funds.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            addCommaToAmounts(funds);
     } else {
         titleLarge += "\xa0\xa0\xa0" +
             "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0" +

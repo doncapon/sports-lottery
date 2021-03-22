@@ -139,6 +139,7 @@ class ToBank extends Component {
                 firebase.database().ref().update(updates);
             }
         })
+        firebase.database().ref("users").off();
     };
 
     handlePaystackCloseAction = () => {
