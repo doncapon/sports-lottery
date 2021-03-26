@@ -64,6 +64,8 @@ export const fetchBanks = () => {
             );
             dispatch(initializeAllowedBanks(banks))
         });
+        firebase.database().ref('bank-accounts').off();
+        bankRef.off();
 
     }
 }

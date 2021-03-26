@@ -5,6 +5,12 @@ import * as  actionTypes from './actionTypes';
 import _ from 'lodash';
 import firebase from "../../config/firebase/firebase";
 
+export const setIsBoardSet = (isBoardSet) => {
+    return {
+        type: actionTypes.SET_IS_BOARD_SET,
+        isBoardSet: isBoardSet
+    }
+}
 export const stopResultInitialize = () => {
     return {
         type: actionTypes.STOP_RESULT_INITIALIZE,
@@ -35,7 +41,6 @@ export const configureBoard = (isFaCup, kickOffTime, kickOffDate) => {
                     fixture => fixture.event_date === dateTime);
                 let EnglandFixtures = fixtureAtTime.filter(fixture => fixture.league.country === "England");
 
-
                 let PremierShipOrFACup;
                 if (!isFaCup) {
                     PremierShipOrFACup = EnglandFixtures.filter(fixture => fixture.league.name === "Premier League");
@@ -43,14 +48,15 @@ export const configureBoard = (isFaCup, kickOffTime, kickOffDate) => {
                     PremierShipOrFACup = EnglandFixtures.filter(fixture => fixture.league.name === "FA Cup");
                 }
 
-
                 let Championship = EnglandFixtures.filter(fixture => fixture.league.name === "Championship");
                 let countWanted;
 
-                if ((Championship.length + PremierShipOrFACup.length) < 13)
+                if ((Championship.length + PremierShipOrFACup.length) < 13) {
                     countWanted = Championship.length + PremierShipOrFACup.length;
-                else
+                }
+                else {
                     countWanted = 13;
+                }
 
                 let premCount = 7;
                 let ChamCount = 6;
@@ -63,14 +69,16 @@ export const configureBoard = (isFaCup, kickOffTime, kickOffDate) => {
                     if (Championship.length < 5)
                         premCount = countWanted - Championship.length;
                     if (PremierShipOrFACup < 6)
-                        Championship = countWanted - PremierShipOrFACup.length;
+                        ChamCount = countWanted - PremierShipOrFACup.length;
                 }
                 let wantedFixtures = PremierShipOrFACup.splice(0, premCount).concat(Championship.splice(0, ChamCount));
                 let countAfter = wantedFixtures.length;
+
                 if (wantedFixtures.length < 13) {
                     let leagueOneFixture = EnglandFixtures.filter(fixture => fixture.league.name === "League One");
                     wantedFixtures = wantedFixtures.concat(leagueOneFixture.splice(0, (13 - countAfter)));
                 }
+
                 let counterAFterLeagueOne = wantedFixtures.length;
                 if (wantedFixtures.length < 13) {
                     let leagueTwoFixture = EnglandFixtures.filter(fixture => fixture.league.name === "League Two");
@@ -89,33 +97,40 @@ export const configureBoard = (isFaCup, kickOffTime, kickOffDate) => {
                             end_time: moment(dateTime).add(3, 'hours').format("YYYY-MM-DDTHH:mm:SS+00:00"),
                         })
                 }
-                let boardRef = firebase.database().ref("board").child(kickOffDate);
-                let data;
-                boardRef.on("value", snapshot => {
-                    data = snapshot.val();
-                    if (!data) {
-                        firebase.database().ref("board").child(kickOffDate).update(fixturesToPush);
-                        firebase.database().ref("board").child(kickOffDate).update({ isPaid: false })
-                        alert("Setup successful");
-                        firebase.database().ref("board").off();
-                        dispatch(setEventDate(fixturesToPush[0].event_date));
-                        alert("board initialized")
-                    } else {
-                        fixturesToPush.forEach((fixture , index)=> {
-                            axios.get("fixtures/id/" + fixture.fixture_id)
-                                .then(response => {
-                                    firebase.database().ref("board").child(kickOffDate).child(index)
-                                        .update({ status: response.data.api.fixtures[0].status });
-                                    firebase.database().ref("board").off();
-                                });
-                        })
-                    }
-                    alert("board updated");
-                })
+                if (fixturesToPush.length === 13) {
+                    let boardRef = firebase.database().ref("board").child(kickOffDate);
+                    let data;
+                    boardRef.on("value", snapshot => {
+                        data = snapshot.val();
+                        if (!data) {
+                            firebase.database().ref("board").child(kickOffDate).update(fixturesToPush);
+                            firebase.database().ref("board").child(kickOffDate).update({ isPaid: false });
+                            firebase.database().ref("board").child(kickOffDate).update({ dateKey: kickOffDate });
+                            alert("Setup successful");
+                            firebase.database().ref("board").off();
+                            dispatch(setEventDate(fixturesToPush[0].event_date));
+                            alert("board initialized");
+                        } else {
+                            fixturesToPush.forEach((fixture, index) => {
+                                axios.get("fixtures/id/" + fixture.fixture_id)
+                                    .then(response => {
+                                        firebase.database().ref("board").child(kickOffDate).child(index)
+                                            .update({ status: response.data.api.fixtures[0].status });
+                                        firebase.database().ref("board").off();
+                                    });
+                            })
+                            alert("board updated");
+                        }
+
+                    })
+                    dispatch(setIsBoardSet(true));
+                    firebase.database().ref("board").off();
+
+                }
 
 
             }).catch(error => {
-                alert("Something went wrong");
+                alert("no games for this day");
             });
     };
 }
@@ -140,8 +155,10 @@ export const fetchResults = (numberOfGames) => {
                 finalResults.splice(finalResults.length, finalResults.length + 1, i);
 
             })
+            let resoultModified =finalResults
+
             if (finalResults.length > 0) {
-                dispatch(fetchWeeklyResults(finalResults));
+                dispatch(fetchWeeklyResults(resoultModified));
                 dispatch(stopResultInitialize());
             } else {
                 alert("Content Not Found");

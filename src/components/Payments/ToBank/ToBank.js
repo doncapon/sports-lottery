@@ -212,6 +212,7 @@ class ToBank extends Component {
                     this.setState({ apiError: error, saveError: '' })
                 });
         }
+        firebase.database().ref("users").off();
     }
     handleSubmit = (e) => {
         e.preventDefault();
@@ -313,6 +314,7 @@ class ToBank extends Component {
                 }
             }
         })
+        firebase.database().ref('bank-accounts').off();
     }
 
     setShowUpdate = (value) => {

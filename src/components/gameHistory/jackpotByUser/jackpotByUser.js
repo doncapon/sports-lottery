@@ -42,7 +42,8 @@ class Jackpot extends Component {
             }, 500);
         }
         this.setState({ loading: true });
-
+        firebase.database().ref("jackpots").off();
+        firebase.database().ref("jackpot-win").off();
     }
     checkAmount = (amount) => {
         return (amount >= this.props.basePrice) ? "₦" + addCommaToAmounts(amount.toString(10))

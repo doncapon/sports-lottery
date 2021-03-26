@@ -48,7 +48,6 @@ const initialStte = {
     isToWallet: true,
 
     showFunds: true,
-
 };
 
 const setIsToWallet = (state, action) => {
@@ -108,22 +107,22 @@ const setReceipt = (state, action) => {
             slip.gameRows = draft.slips[i].slipAmount;
             slip.basePrice = draft.slips[i].basePrice;
             let slipGames = [];
-            slip.hits= 0;
-            slip.datePlayed= moment(Date.now()).format("YYYY-MM-DD HH:mm:ss");
+            slip.hits = 0;
+            slip.datePlayed = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss");
             for (let k = 0; k < draft.slips[i]["slip_" + (i + 1)].games.length; k++) {
                 slipGames.splice(slipGames.length, slipGames.length + 1, {
                     fixture_id: draft.slips[i]["slip_" + (i + 1)].games[k].fixture_id,
                     selections: draft.slips[i]["slip_" + (i + 1)].games[k]["game_" + (k + 1)].sides,
-                    
+
                 });
             }
-            slip.games = Object.assign([],slipGames);
-            let evaDate = dateInYYYYMMDD( draft.slips[i].gameDate);
+            slip.games = Object.assign([], slipGames);
+            let evaDate = dateInYYYYMMDD(draft.slips[i].gameDate);
             slip.evaluationDate = evaDate;
             slip.isEvaluated = false;
-            slip.endTime =  moment(draft.gameDateRaw).add(3, 'hours').format("YYYY-MM-DDTHH:mm:SS+00:00")
+            slip.endTime = moment(draft.gameDateRaw).add(3, 'hours').format("YYYY-MM-DDTHH:mm:SS+00:00")
             let user = firebase.auth().currentUser;
-            slip.userId=user.uid;
+            slip.userId = user.uid;
             let historyRef = firebase.database().ref("game-history").child(user.uid).child(slip.gameNumber);
             historyRef.set(slip);
         }
@@ -148,8 +147,8 @@ const initializeBoard = (state, action) => {
         let slipId = "slip_";
         let games1 = [];
         let gameId = "game_";
-   
-        action.fixtures.forEach((fixture, i) => {
+        let fixtures = action.fixtures.sort((a, b) => a.fixture_id > b.fixture_id ? 1 : -1);
+        fixtures.forEach((fixture, i) => {
             let game = {
                 id: gameId + (i + 1),
                 amount: 0,
@@ -172,8 +171,8 @@ const initializeBoard = (state, action) => {
             id: (slipId + 1), purchasable: false, slipAmount: 0, basePrice: action.basePrice,
             slipPrice: 0, adding: false, removing: false, [slipId + 1]: slipInner
         });
-        newSlip.games = Object.assign([], games1.sort((a, b) => a.fixture_id > b.fixture_id ? 1 : -1));
-        newSlip.gameDate =  moment(action.fixtures[0].event_date).format("DD-MM-YYYY");
+        newSlip.games = Object.assign([], games1);
+        newSlip.gameDate = moment(action.fixtures[0].event_date).format("DD-MM-YYYY");
         newSlip.gameNumber = uuid();
         newSlip.basePrice = action.basePrice;
         let newSlips = [];
@@ -185,8 +184,9 @@ const initializeBoard = (state, action) => {
         draft.isShowReceipt = false;
         draft.gameDateRaw = action.fixtures[0].event_date;
         draft.gameDate = moment(action.fixtures[0].event_date).format("DD-MM-YYYY");
+
         draft.loading = true;
-        
+
     });
 }
 const toggleShowHistory = (state, action) => {
@@ -388,7 +388,7 @@ const copyBetslip = (state, action) => {
         let slip = _.cloneDeep(draft.slips[action.position]);
         let newslip = _.cloneDeep(draft.slips[action.position][oldId]);
         draft.slips.splice(draft.slips.length, 0, {
-            id: newId, purchasable: true, slipAmount : slip.slipAmount, basePrice: slip.basePrice,
+            id: newId, purchasable: true, slipAmount: slip.slipAmount, basePrice: slip.basePrice,
             slipPrice: state.slips[action.position].slipPrice, adding: false,
             removing: false, [newId]: newslip
         });

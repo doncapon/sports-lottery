@@ -22,29 +22,35 @@ class Board extends Component {
   state = {
     showModalSignin: false,
     funds: 0,
-    loading: false
+    loading: false,
+    eventDate: null
   }
   constructor(props) {
     super(props);
     if (!this.props.loading) {
       this.props.onSetBoard(this.props.basePrice);
       this.state.funds = this.props.user.funds;
-
     }
-
   }
   componentDidMount() {
     if (!this.state.loading) {
       setTimeout(() => {
         this.setState({ funds: this.props.user.funds });
       }, 1000);
+      firebase.database().ref("board").orderByChild("dateKey").limitToLast(1).once("value")
+      .then(snapshot => {
+        let key = snapshot.key;
+          this.setState({ eventDate: key + "T" + this.props.kickOffTime })
+      });
     }
     this.setState({ loading: true });
   }
+  componentWillUnmount() {
+    firebase.database().ref("jackpots").off();
+    firebase.database().ref("board").off();
 
+  }
   togglePaymentButton = (paying, paid) => {
-    // firebase.auth().signOut().then(() => {});
-
     firebase.auth().onAuthStateChanged((user) => {
       if (user && user.emailVerified) {
         this.props.onSetIsPaying(paying);
@@ -61,11 +67,10 @@ class Board extends Component {
 
   confirmPurchase = () => {
     this.ExecutePurchase();
-    this.props.onSetReceipt(this.props.eventDate);
+    this.props.onSetReceipt(this.state.eventDate);
     this.togglePaymentButton(false, true)
   }
   ExecutePurchase = () => {
-
     let userId = firebase.auth().currentUser.uid;
     this.updateJackpot(this.props.totalPrice);
     let userRef = firebase.database().ref("users").child(userId);
@@ -77,13 +82,11 @@ class Board extends Component {
   }
   updateJackpot = (totalPrice) => {
     firebase.database().ref("jackpots").child(dateInYYYYMMDD(this.props.gameDate)).child("jackpot").transaction(Jackpots => {
-      return Jackpots + (totalPrice/2);
+      return Jackpots + (totalPrice / 2);
     })
   }
   render() {
     return (this.props.loading ? (<div className={classes.Board}>
-
-
       <div className={classes.BoardLeft}>
         <div className={classes.TopBoard} >
           <TopBoard
@@ -208,7 +211,6 @@ const mapstateToProps = (state) => {
     hourToNextDay: state.config.hourToNextDay,
     isFACupNextWeek: state.config.isFACupNextWeek,
     daysOffset: state.config.daysOffset,
-    daysOffsetNextWeek: state.config.daysOffsetNextWeek,
     kickOffTime: state.config.kickOffTime,
 
     gameDate: state.board.gameDate,
@@ -231,8 +233,6 @@ const mapstateToProps = (state) => {
 
     isLoggedIn: state.login.isLoggedIn,
     user: state.login.user,
-
-    eventDate: state.config.eventDate,
 
   };
 };

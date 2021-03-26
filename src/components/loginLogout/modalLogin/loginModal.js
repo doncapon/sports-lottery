@@ -59,7 +59,6 @@ const LoginModal = (props) => {
                 }, 3000)
             })
             .catch((error) => {
-                console.log(error)
                 setUserData(error);
                 popUpFunc();
                 setForgot(true);

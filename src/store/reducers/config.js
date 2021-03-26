@@ -5,7 +5,6 @@ const initialState = {
     isFACup: false,
     isFACupNextWeek: true,
     daysOffset: 0,
-    daysOffsetNextWeek: 0,
     hourToNextDay: 9,   //24 - kick-off time
     kickOffTime: '15:00:00+00:00',
     eventDate: null,
@@ -17,8 +16,9 @@ const initialState = {
 
     basePrice: 20,
     insertResult: true,
+    isBoardSet: false,
 
-    numberofResultsDisplayed: 79,
+    numberofResultsDisplayed: 39,
     currentResults: [],
     loading: false
 
@@ -26,9 +26,7 @@ const initialState = {
 
 const fetchWeeklyResults = (state, action) => {
     return produce(state, draft => {
-
         draft.currentResults = action.payload;
-
     });
 }
 const stopIintializeResults = (state, action) => {
@@ -40,11 +38,17 @@ const stopIintializeResults = (state, action) => {
 const setEventDate = (state, action) => {
     return produce(state, draft => {
         draft.eventDate = action.eventDate
-    })
+    });
 }
-
+const setIsBoardSet = (state, action) => {
+    return produce(state, draft => {
+        draft.isBoardSet = action.isBoardSet;
+    });
+}
 const reducer = (state = initialState, action) => {
     switch (action.type) {
+        case actionTypes.SET_IS_BOARD_SET:
+            return setIsBoardSet(state, action);
         case actionTypes.FETCH_RESULTS:
             return fetchWeeklyResults(state, action); 
         case actionTypes.STOP_RESULT_INITIALIZE:

@@ -8,29 +8,48 @@ import {
     dateInYYYYMMDD
 } from '../../shared/utility';
 import firebase from '../../config/firebase/firebase';
+import moment from 'moment';
+
+
 class Settings extends Component {
     state = {
         disable: false,
-        gameDate: '',
         loading: false,
         tenWinners: 0,
         elevenWinners: 0,
         twelveWinners: 0,
         thirteenWinners: 0,
-        email: ''
+        email: '',
+        gameDate: '',
+
     }
     componentDidMount() {
         if (!this.state.loading) {
-            this.setState({ gameDate: this.props.gameDate })
+            firebase.database().ref("board").orderByChild("dateKey").limitToLast(1)
+            .on("value", snapshot=>{
+                    this.setState({ gameDate:  Object.keys(snapshot.val())[0] });
+            })
         }
         this.setState({ loading: true })
     }
     handlecConfigureBoard = () => {
+        this.props.onSetIsBoardSet(false);
         let kickOffDate;
         kickOffDate = getNextPlayDate(this.props.daysOffset,
             this.props.hourToNextDay);
-        this.props.onConfigureBoard(this.props.isFACup,
+        this.props.onConfigureBoard(false,
             this.props.kickOffTime, dateInYYYYMMDD(kickOffDate)); //this.state.gameDate
+        setTimeout(() => {
+            if (this.props.isBoardSet === false) {
+                this.props.onConfigureBoard(true,
+                    this.props.kickOffTime, dateInYYYYMMDD(kickOffDate)); //this.state.gameDate
+            }
+        }, 1000)
+
+        let date = new Date(dateInYYYYMMDD(kickOffDate));
+        date.setDate(date.getDate() + 7);
+        kickOffDate = moment(date).format("DD-MM-YYYY");
+
         setTimeout(() => {
             window.localStorage.removeItem('firebase:host:betsoka-4b359-default-rtdb.europe-west1.firebasedatabase.app');
             window.localStorage.removeItem('persist:root');
@@ -117,7 +136,6 @@ class Settings extends Component {
                         firebase.database().ref("jackpot-win").child(dateInYYYYMMDD(this.state.gameDate)).update({ twelve: 0 });
                     }
                     if (data.elevenUser > 0) {
-                        console.log("I got called");
                         eleven = (data.jackpot * this.props.elevenPercent) / data.elevenUser;
                         firebase.database().ref("jackpot-win").child(dateInYYYYMMDD(this.state.gameDate)).update({ eleven: eleven });
                     } else {
@@ -188,7 +206,6 @@ class Settings extends Component {
                                             if (hits === 10) {
                                                 this.setState({ tenWinners: this.state.tenWinners + 1 });
                                             } else if (hits === 11) {
-                                                console.log("blab", matchesPlayed.userId)
                                                 this.setState({ elevenWinners: this.state.elevenWinners + 1 });
                                             } else if (hits === 12) {
                                                 this.setState({ twelveWinners: this.state.twelveWinners + 1 });
@@ -257,13 +274,11 @@ class Settings extends Component {
                                 });
                             setTimeout(() => {
                                 if (hits === 10) {
-                                    console.log("name naa", matchesPlayed.userId, matchesPlayed, data.ten);
                                     firebase.database().ref("users").child(matchesPlayed.userId).child("funds").transaction(funds => {
                                         return funds + data.ten;
                                     });
                                 }
                                 else if (hits === 11) {
-                                    console.log("name naa", matchesPlayed.userId, matchesPlayed, data.eleven);
                                     firebase.database().ref("users").child(matchesPlayed.userId).child("funds").transaction(funds => {
                                         return funds + data.eleven;
                                     });
@@ -300,27 +315,35 @@ class Settings extends Component {
 
     setupJackpot = (e) => {
         e.preventDefault();
-        let dateReformed = dateInYYYYMMDD(this.state.gameDate);
-        let jackpotData;
-        firebase.database().ref("jackpots").child(dateReformed)
-            .on("value", snapshot => {
-                jackpotData = snapshot.val();
+        firebase.database().ref("board").limitToLast(1).on("value", snapshot=>{
+            let data = snapshot.val();
+            Object.keys(data).map(key=>{
+                let jackpotData;
+                firebase.database().ref("jackpots").child(key)
+                    .on("value", snapshot => {
+                        jackpotData = snapshot.val();
+                    })
+                setTimeout(() => {
+                    if (jackpotData === null) {
+                        firebase.database().ref("jackpots").child(key).set({
+                            jackpot: 0,
+                            tenUser: 0,
+                            elevenUser: 0,
+                            twelveUser: 0,
+                            thirteenUser: 0
+                        })
+                        alert("done");
+                    } else {
+                        alert("this is already set, cannot reset");
+                    }
+                }, 3000)
+                firebase.database().ref("jackpots").off();
+                firebase.database().ref("board").off();
+                return null;
             })
-        setTimeout(() => {
-            if (jackpotData === null) {
-                firebase.database().ref("jackpots").child(dateReformed).set({
-                    jackpot: 0,
-                    tenUser: 0,
-                    elevenUser: 0,
-                    twelveUser: 0,
-                    thirteenUser: 0
-                })
-                alert("done");
-            } else {
-                alert("this is already set, cannot reset");
-            }
-        }, 3000)
-        firebase.database().ref("jackpots").off();
+        })
+
+       
     }
     deleteUserByEmail = (e, email) => {
         e.preventDefault();
@@ -359,12 +382,12 @@ class Settings extends Component {
             </form>
             <div>
                 <Button onClick={this.handlecConfigureBoard} >Configure Play Board</Button>
+                <Button type="button" onClick={this.setupJackpot} disabled={this.state.disable} >Set Starting Jakcpot</Button>
                 <Button onClick={this.handleSetResultss} >Set Last Results</Button>
             </div>
 
             <form onSubmit={this.shareJackpot}>
                 <input type="text" name="date" value={this.state.gameDate} onChange={(e) => this.setState({ gameDate: e.target.value })} />
-                <Button type="button" onClick={this.setupJackpot} disabled={this.state.disable} >Set Starting Jakcpot</Button>
                 <Button type="submit" variant="outline-success" disabled={this.state.disable} >Share Jackpot</Button>
                 <Button type="button" variant="success" onClick={this.payOut} disabled={this.state.disable} >Payout to Winners</Button>
 
@@ -379,16 +402,16 @@ const mapStateToProps = (state) => {
         isFACup: state.config.isFACup,
         isFACupNextWeek: state.config.isFACupNextWeek,
         daysOffset: state.config.daysOffset,
-        daysOffsetNextWeek: state.config.daysOffsetNextWeek,
         kickOffTime: state.config.kickOffTime,
         gameDate: state.board.gameDate,
+        slips: state.board.slips,
 
         thirteenPercent: state.config.thirteenPercent,
         twelvePercent: state.config.twelvePercent,
         elevenPercent: state.config.elevenPercent,
         tenPercent: state.config.tenPercent,
 
-        slips: state.board.slips,
+        isBoardSet: state.config.isBoardSet,
 
         user: state.login.user,
         isLoggedIn: state.login.isLoggedIn
@@ -403,6 +426,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(actions.configureBoard(isFaCup, kickOffTime, kickOffDate)),
         onSetCurrentResult: (slip) =>
             dispatch(actions.setCurrentResult(slip)),
+        onSetIsBoardSet: (isBoardSet) => dispatch(actions.setIsBoardSet(isBoardSet))
     }
 }
 
