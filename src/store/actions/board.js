@@ -12,6 +12,7 @@ export const generateSlip = (amount, slipIndex, basePrice) => {
     }
 }
 
+
 export const generateSlip2 = (amount, basePrice) => {
     return {
         type: actionTypes.GENERATE_SLIP,
@@ -22,24 +23,23 @@ export const generateSlip2 = (amount, basePrice) => {
 
 export const setBoard = (basePrice) => {
     return dispatch => {
-        let boardRef = firebase.database().ref("board").limitToLast(1);
-        let wantedFixtures = [];
-        let returned;
-        boardRef.on("value", snapshot => {
-            returned = Object.assign([], snapshot.val());
-            setTimeout(() => {
+
+        firebase.database().ref("board").orderByChild("dateKey").limitToLast(1)
+            .once("value").then(snapshot => {
+                let returned = Object.assign([], snapshot.val());
+                let wantedFixtures = [];
                 Object.keys(returned).map(key => {
                     let fixt = returned[key];
                     Object.keys(fixt).map(key2 => {
-                        if (key2 !== "isPaid")
+                        if (key2 !== "isPaid" && key2 !== "dateKey")
                             wantedFixtures.push(fixt[key2]);
                         return null;
                     });
-                    dispatch(initializeBoard(wantedFixtures, basePrice));
+                    if (wantedFixtures.length === 13)
+                        dispatch(initializeBoard(wantedFixtures, basePrice));
                     return null;
                 })
-            }, 2000);
-        });
+            });
     };
 }
 export const setFixtureIds = () => {

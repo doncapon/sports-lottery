@@ -28,6 +28,7 @@ class UserPlayHistory extends Component {
     componentWillUnmount() {
         firebase.database().ref("game-history").off();
         firebase.database().ref("match-results").off();
+        firebase.database().ref("jackpot-win").off();
         this.setState({ matchResults: [] });
         this.setState({ matchesPlayed: [] });
         this.setState({ loading: false });
@@ -38,20 +39,21 @@ class UserPlayHistory extends Component {
             firebase.auth().onAuthStateChanged((user) => {
                 if (user && user.emailVerified) {
                     let playedRef = firebase.database().ref("game-history").child(user.uid);
-                    playedRef.on("value", (snapshot) => {
-                        let data = snapshot.val();
-                        let grouped = _.groupBy(data, 'gameNumber');
-                        let groupedArray = Object.keys(grouped).map(keys => grouped[keys]);
+                    playedRef.once("value")
+                        .then(snapshot => {
+                            let data = snapshot.val();
+                            let grouped = _.groupBy(data, 'gameNumber');
+                            let groupedArray = Object.keys(grouped).map(keys => grouped[keys]);
 
-                        let myShow = []
-                        Object.keys(grouped).map(grp =>
-                            myShow.push(false)
-                        );
-                        this.setMatchResults(groupedArray)
-                        this.setState({ matchesPlayed: groupedArray });
-                        this.setState({ showHistory: myShow });
-                        this.setWinAmount();
-                    });
+                            let myShow = []
+                            Object.keys(grouped).map(grp =>
+                                myShow.push(false)
+                            );
+                            this.setMatchResults(groupedArray)
+                            this.setState({ matchesPlayed: groupedArray });
+                            this.setState({ showHistory: myShow });
+                            this.setWinAmount();
+                        });
                 } else {
 
                 }
@@ -217,7 +219,6 @@ class UserPlayHistory extends Component {
         let userPlayHistoryTrannsformed = this.state.loading && matchesPlayed[0] ?
             matchesPlayed.sort((a, b) => a[0]["datePlayed"] < b[0]["datePlayed"] ? 1 : -1).map((match, k) => {
                 let matchRes = this.getMatchResults(matchResults, match[0]);
-
                 return <div className={classes.userPlayHistoryAndShare} key={k}>
                     <div className={classes.MainHeader} onClick={() => this.toggleShowHistory(k)} >
                         <div className={classes.DateHead}>Entry date : {moment(match[0].datePlayed).format("DD.MM.YYYY")}</div>
@@ -262,7 +263,7 @@ class UserPlayHistory extends Component {
                                             })}
                                         </div>
                                         <div className={classes.AmountWon}>
-                                            <div>Number of hits:  {match[0].isEvaluated? match[0].hits : "-"}</div>
+                                            <div>Number of hits:  {match[0].isEvaluated ? match[0].hits : "-"}</div>
                                             <div>Amount won: {this.calculateWins(match[0], match[0].hits)}</div>
                                         </div>
                                     </div>
