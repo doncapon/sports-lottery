@@ -27,7 +27,7 @@ class Board extends Component {
   }
   constructor(props) {
     super(props);
-    if (!this.props.loading && this.props.slips === null) {
+    if (!this.props.loading) {
       this.props.onSetBoard(this.props.basePrice);
       this.state.funds = this.props.user.funds;
     }
@@ -86,7 +86,7 @@ class Board extends Component {
     })
   }
   render() {
-    return (this.props.loading && this.props.slips !== null ? (<div className={classes.Board}>
+    return (this.props.loading ? (<div className={classes.Board}>
       <div className={classes.BoardLeft}>
         <div className={classes.TopBoard} >
           <TopBoard
