@@ -26,35 +26,67 @@ class Settings extends Component {
     componentDidMount() {
         if (!this.state.loading) {
             firebase.database().ref("board").orderByChild("dateKey").limitToLast(1)
-            .on("value", snapshot=>{
-                    this.setState({ gameDate:  Object.keys(snapshot.val())[0] });
-            })
+                .on("value", snapshot => {
+                    this.setState({ gameDate: Object.keys(snapshot.val())[0]});
+                })
         }
         this.setState({ loading: true })
+    }
+    handleUpdateBoard= ()=>{
+        firebase.database().ref("board").orderByChild("dateKey").limitToLast(1)
+        .once("value").then(snapshot => {
+            let date = Object.keys(snapshot.val())[0];
+            let data = snapshot.val();
+            let fixturesToPush=  [];
+            Object.keys(data).map(key=>{
+                Object.keys(data[key]).map(keys2=>{
+                    if(keys2 !== "dateKey" && keys2 !== "isPaid"){
+                        fixturesToPush.push(data[key][keys2])
+                    }
+                })
+
+            })
+            this.props.onUpdateBoard(fixturesToPush, date)
+        }) 
+
     }
     handlecConfigureBoard = () => {
         this.props.onSetIsBoardSet(false);
         let kickOffDate;
         kickOffDate = getNextPlayDate(this.props.daysOffset,
             this.props.hourToNextDay);
-        this.props.onConfigureBoard(false,
-            this.props.kickOffTime, dateInYYYYMMDD(kickOffDate)); //this.state.gameDate
+        setTimeout(() => {
+            this.props.onConfigureBoard(false,
+                this.props.kickOffTime, dateInYYYYMMDD(kickOffDate)); //this.state.gameDate
+        }, 3000);
+        
         setTimeout(() => {
             if (this.props.isBoardSet === false) {
                 this.props.onConfigureBoard(true,
                     this.props.kickOffTime, dateInYYYYMMDD(kickOffDate)); //this.state.gameDate
             }
-        }, 1000)
+        }, 6000)
 
         let date = new Date(dateInYYYYMMDD(kickOffDate));
         date.setDate(date.getDate() + 7);
-        kickOffDate = moment(date).format("DD-MM-YYYY");
-
+        let kickOffDateNew = moment(date).format("DD-MM-YYYY");
         setTimeout(() => {
-            window.localStorage.removeItem('firebase:host:betsoka-4b359-default-rtdb.europe-west1.firebasedatabase.app');
-            window.localStorage.removeItem('persist:root');
-            window.location.reload();
-        }, 5000);
+            if (this.props.isBoardSet === false) {
+                this.props.onConfigureBoard(false,
+                    this.props.kickOffTime, dateInYYYYMMDD(kickOffDateNew)); //this.state.gameDate
+            }
+        }, 9000)
+        setTimeout(() => {
+            if (this.props.isBoardSet === false) {
+                this.props.onConfigureBoard(true,
+                    this.props.kickOffTime, dateInYYYYMMDD(kickOffDateNew)); //this.state.gameDate
+            }
+        }, 12000)
+        // setTimeout(() => {
+        //     window.localStorage.removeItem('firebase:host:betsoka-4b359-default-rtdb.europe-west1.firebasedatabase.app');
+        //     window.localStorage.removeItem('persist:root');
+        //     window.location.reload();
+        // }, 5000);
     }
     handleSetResultss = () => {
         this.props.onSetCurrentResult(this.props.slips[0]["slip_1"]);
@@ -178,10 +210,10 @@ class Settings extends Component {
         this.setState({ disable: true });
         let matchesPlayedRef = firebase.database().ref("game-history");
         let boardRef = firebase.database().ref("board").child(dateInYYYYMMDD(this.state.gameDate));
-        boardRef.on("value", snapshot => {
+        boardRef.once("value").then(snapshot => {
             let data = snapshot.val();
             if (!data.isPaid) {
-                matchesPlayedRef.on("value", snapshot => {
+                matchesPlayedRef.once("value").then(snapshot => {
                     let data = snapshot.val();
                     Object.keys(data).map(keys => {
                         let matches = data[keys];
@@ -315,9 +347,9 @@ class Settings extends Component {
 
     setupJackpot = (e) => {
         e.preventDefault();
-        firebase.database().ref("board").limitToLast(1).on("value", snapshot=>{
+        firebase.database().ref("board").limitToLast(1).on("value", snapshot => {
             let data = snapshot.val();
-            Object.keys(data).map(key=>{
+            Object.keys(data).map(key => {
                 let jackpotData;
                 firebase.database().ref("jackpots").child(key)
                     .on("value", snapshot => {
@@ -343,7 +375,7 @@ class Settings extends Component {
             })
         })
 
-       
+
     }
     deleteUserByEmail = (e, email) => {
         e.preventDefault();
@@ -388,6 +420,7 @@ class Settings extends Component {
 
             <form onSubmit={this.shareJackpot}>
                 <input type="text" name="date" value={this.state.gameDate} onChange={(e) => this.setState({ gameDate: e.target.value })} />
+                <Button onClick={this.handleUpdateBoard} variant="outline-dark">Update Play Board</Button>
                 <Button type="submit" variant="outline-success" disabled={this.state.disable} >Share Jackpot</Button>
                 <Button type="button" variant="success" onClick={this.payOut} disabled={this.state.disable} >Payout to Winners</Button>
 
@@ -422,6 +455,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
 
+        onUpdateBoard: (fixturesToPush, kickOffDate) =>
+            dispatch(actions.updateBoard(fixturesToPush, kickOffDate)),
         onConfigureBoard: (isFaCup, kickOffTime, kickOffDate) =>
             dispatch(actions.configureBoard(isFaCup, kickOffTime, kickOffDate)),
         onSetCurrentResult: (slip) =>
