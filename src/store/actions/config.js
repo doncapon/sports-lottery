@@ -30,12 +30,29 @@ export const setEventDate = (eventDate) => {
         eventDate: eventDate
     }
 }
-
+export const updateBoard = (fixturesToPush, kickOffDate)=>{
+    return dispatch=> {
+        console.log("i got called here");
+        fixturesToPush.forEach((fixture, index) => {
+            axios.get("fixtures/id/" + fixture.fixture_id)
+                .then(response => {
+                    firebase.database().ref("board").child(kickOffDate).child(index)
+                        .update({ status: response.data.api.fixtures[0].status });
+                    firebase.database().ref("board").off();
+                });
+        })
+        firebase.database().ref("board").off();
+       
+        alert("board updated");
+        return null;
+    }
+}
 export const configureBoard = (isFaCup, kickOffTime, kickOffDate) => {
     return dispatch => {
+        console.log(kickOffDate);
         axios.get("fixtures/date/" + kickOffDate)
             .then(response => {
-
+               
                 let dateTime = (kickOffDate + "T" + kickOffTime);
                 let fixtureAtTime = response.data.api.fixtures.filter(
                     fixture => fixture.event_date === dateTime);
@@ -98,6 +115,7 @@ export const configureBoard = (isFaCup, kickOffTime, kickOffDate) => {
                         })
                 }
                 if (fixturesToPush.length === 13) {
+                    console.log("i got called here3");
                     let boardRef = firebase.database().ref("board").child(kickOffDate);
                     let data;
                     boardRef.on("value", snapshot => {
@@ -106,29 +124,14 @@ export const configureBoard = (isFaCup, kickOffTime, kickOffDate) => {
                             firebase.database().ref("board").child(kickOffDate).update(fixturesToPush);
                             firebase.database().ref("board").child(kickOffDate).update({ isPaid: false });
                             firebase.database().ref("board").child(kickOffDate).update({ dateKey: kickOffDate });
-                            alert("Setup successful");
                             firebase.database().ref("board").off();
                             dispatch(setEventDate(fixturesToPush[0].event_date));
                             alert("board initialized");
-                        } else {
-                            fixturesToPush.forEach((fixture, index) => {
-                                axios.get("fixtures/id/" + fixture.fixture_id)
-                                    .then(response => {
-                                        firebase.database().ref("board").child(kickOffDate).child(index)
-                                            .update({ status: response.data.api.fixtures[0].status });
-                                        firebase.database().ref("board").off();
-                                    });
-                            })
-                            alert("board updated");
                         }
-
                     })
                     dispatch(setIsBoardSet(true));
                     firebase.database().ref("board").off();
-
                 }
-
-
             }).catch(error => {
                 alert("no games for this day");
             });
@@ -155,7 +158,7 @@ export const fetchResults = (numberOfGames) => {
                 finalResults.splice(finalResults.length, finalResults.length + 1, i);
 
             })
-            let resoultModified =finalResults
+            let resoultModified = finalResults
 
             if (finalResults.length > 0) {
                 dispatch(fetchWeeklyResults(resoultModified));

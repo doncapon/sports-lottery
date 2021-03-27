@@ -41,6 +41,7 @@ export {
 } from './login';
 
 export {
+     updateBoard,
      setIsBoardSet,
      setCurrentResult,
      fetchWeeklyResults,

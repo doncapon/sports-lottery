@@ -12,7 +12,7 @@ import axios from '../../axios-fixtures';
 import Payment from '../../components/board/payment/payment';
 import { ArrowRight } from "react-bootstrap-icons";
 import Receipts from '../../components/board/receipts/receipts/receipts';
-import { addCommaToAmounts, dateInYYYYMMDD } from '../../shared/utility';
+import { addCommaToAmounts, dateInYYYYMMDD, getNextPlayDate } from '../../shared/utility';
 import firebase from '../../config/firebase/firebase';
 import Modal from "../../components/UI/Modal/Modal";
 import LoginModal from '../../components/loginLogout/modalLogin/loginModal';
@@ -22,6 +22,7 @@ class Board extends Component {
   state = {
     showModalSignin: false,
     funds: 0,
+    isGamesAvailable: true,
     loading: false,
     eventDate: null
   }
@@ -38,10 +39,17 @@ class Board extends Component {
         this.setState({ funds: this.props.user.funds });
       }, 1000);
       firebase.database().ref("board").orderByChild("dateKey").limitToLast(1).once("value")
-      .then(snapshot => {
-        let key = snapshot.key;
+        .then(snapshot => {
+          let key =  Object.keys(snapshot.val())[0];
+          let kickOffDate;
+          kickOffDate = getNextPlayDate(this.props.daysOffset,
+            this.props.hourToNextDay);
+            if(new Date(key + "T" + this.props.kickOffTime ) < new Date(kickOffDate)){
+                this.setState({isGamesAvailable: false})
+            }
           this.setState({ eventDate: key + "T" + this.props.kickOffTime })
-      });
+        });
+
     }
     this.setState({ loading: true });
   }
@@ -86,7 +94,7 @@ class Board extends Component {
     })
   }
   render() {
-    return (this.props.loading ? (<div className={classes.Board}>
+    return (this.props.loading ? (this.state.isGamesAvailable? <div className={classes.Board}>
       <div className={classes.BoardLeft}>
         <div className={classes.TopBoard} >
           <TopBoard
@@ -199,7 +207,7 @@ class Board extends Component {
         </div>
 
       </div>
-    </div>
+    </div>: <div style={{background: 'skyblue', paddingLeft: '10vw'}}>Sorry there are no games available for this week</div>
     )
       : <div><Spinner /></div>
 
