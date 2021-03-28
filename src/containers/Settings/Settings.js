@@ -27,27 +27,28 @@ class Settings extends Component {
         if (!this.state.loading) {
             firebase.database().ref("board").orderByChild("dateKey").limitToLast(1)
                 .on("value", snapshot => {
-                    this.setState({ gameDate: Object.keys(snapshot.val())[0]});
+                    this.setState({ gameDate: Object.keys(snapshot.val())[0] });
                 })
         }
         this.setState({ loading: true })
     }
-    handleUpdateBoard= ()=>{
+    handleUpdateBoard = () => {
         firebase.database().ref("board").orderByChild("dateKey").limitToLast(1)
-        .once("value").then(snapshot => {
-            let date = Object.keys(snapshot.val())[0];
-            let data = snapshot.val();
-            let fixturesToPush=  [];
-            Object.keys(data).map(key=>{
-                Object.keys(data[key]).map(keys2=>{
-                    if(keys2 !== "dateKey" && keys2 !== "isPaid"){
-                        fixturesToPush.push(data[key][keys2])
-                    }
+            .once("value").then(snapshot => {
+                let date = Object.keys(snapshot.val())[0];
+                let data = snapshot.val();
+                let fixturesToPush = [];
+                Object.keys(data).map(key => {
+                    Object.keys(data[key]).map(keys2 => {
+                        if (keys2 !== "dateKey" && keys2 !== "isPaid") {
+                            fixturesToPush.push(data[key][keys2])
+                        }
+                        return null;
+                    })
+                    return null;
                 })
-
+                this.props.onUpdateBoard(fixturesToPush, date)
             })
-            this.props.onUpdateBoard(fixturesToPush, date)
-        }) 
 
     }
     handlecConfigureBoard = () => {
@@ -59,7 +60,7 @@ class Settings extends Component {
             this.props.onConfigureBoard(false,
                 this.props.kickOffTime, dateInYYYYMMDD(kickOffDate)); //this.state.gameDate
         }, 3000);
-        
+
         setTimeout(() => {
             if (this.props.isBoardSet === false) {
                 this.props.onConfigureBoard(true,
@@ -82,11 +83,11 @@ class Settings extends Component {
                     this.props.kickOffTime, dateInYYYYMMDD(kickOffDateNew)); //this.state.gameDate
             }
         }, 12000)
-        // setTimeout(() => {
-        //     window.localStorage.removeItem('firebase:host:betsoka-4b359-default-rtdb.europe-west1.firebasedatabase.app');
-        //     window.localStorage.removeItem('persist:root');
-        //     window.location.reload();
-        // }, 5000);
+        setTimeout(() => {
+            window.localStorage.removeItem('firebase:host:betsoka-4b359-default-rtdb.europe-west1.firebasedatabase.app');
+            window.localStorage.removeItem('persist:root');
+            window.location.reload();
+        }, 13000);
     }
     handleSetResultss = () => {
         this.props.onSetCurrentResult(this.props.slips[0]["slip_1"]);
@@ -275,7 +276,7 @@ class Settings extends Component {
             } else {
                 setTimeout(() => {
                     alert("games have already been shared for this day and board")
-                }, 1000)
+                }, 2000)
             }
 
             setTimeout(() => {
