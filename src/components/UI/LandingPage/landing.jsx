@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import CountDown from "../CountDown/CountDown";
 import Footer from "../Footer/Footer";
 import firebase from '../../../config/firebase/firebase';
-import { addCommaToAmounts } from "..//../../shared/utility";
+import { addCommaToAmounts, getNextPlayDate } from "..//../../shared/utility";
 import moment from "moment";
 class Landing extends Component {
   constructor(props) {
@@ -13,22 +13,29 @@ class Landing extends Component {
       loading: false,
       gameDateRaw: null,
       jackpot: null,
+      isGamesAvailable: true
     };
   }
   componentDidMount() {
     if (!this.state.loading) {
       firebase.database().ref("board").orderByChild("dateKey").limitToLast(1).once("value")
-      .then(snapshot=>{
-        let data =  Object.keys(snapshot.val())[0]
+        .then(snapshot => {
+          let data = Object.keys(snapshot.val())[0]
           this.kickOffDate = data;
-        this.getJackpo();
-        this.setState({ gameDateRaw: this.kickOffDate + "T" + this.props.kickOffTime });
-    
-      })
+          let kickOffDate;
+          kickOffDate = getNextPlayDate(this.props.daysOffset,
+            this.props.hourToNextDay);
+          if (new Date(data + "T" + this.props.kickOffTime) < new Date(kickOffDate)) {
+            this.setState({ isGamesAvailable: false })
+          }
+          this.getJackpo();
+          this.setState({ gameDateRaw: this.kickOffDate + "T" + this.props.kickOffTime });
+
+        })
     }
     this.setState({ loading: true })
     setTimeout(() => {
-      this.interval = setInterval(()=>this.getJackpo(), 30*60*1000)      
+      this.interval = setInterval(() => this.getJackpo(), 30 * 60 * 1000)
     }, 2000);
   }
   getJackpo = () => {
@@ -45,7 +52,7 @@ class Landing extends Component {
     return (
       <div className={classes.LandingWrapper}>
         {this.state.loading && this.state.gameDateRaw ? <CountDown gamedate={this.state.gameDateRaw} /> : null}
-        {this.state.jackpot >= 0? <div className={classes.Jackpot}><div className={classes.JapotText}>Jackpot: </div>{" ₦ " + addCommaToAmounts(this.state.jackpot) }</div>:null}
+        {this.state.jackpot >= 0 ? <div className={classes.Jackpot}><div className={classes.JapotText}>Jackpot: </div>{this.state.isGamesAvailable? " ₦ " + addCommaToAmounts(this.state.jackpot): "Sorry, No games this week"}</div> : null}
         <Footer />
       </div>
     );
