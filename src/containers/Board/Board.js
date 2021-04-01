@@ -94,7 +94,9 @@ class Board extends Component {
     })
   }
   render() {
-    return (this.props.loading ? (this.state.isGamesAvailable? <div className={classes.Board}>
+    return (this.props.loading ? (
+      // this.state.isGamesAvailable? 
+    <div className={classes.Board}>
       <div className={classes.BoardLeft}>
         <div className={classes.TopBoard} >
           <TopBoard
@@ -207,7 +209,8 @@ class Board extends Component {
         </div>
 
       </div>
-    </div>: <div style={{background: 'skyblue', paddingLeft: '10vw'}}>Sorry there are no games available for this week</div>
+    </div>
+    // : <div style={{background: 'skyblue', paddingLeft: '10vw'}}>Sorry there are no games available for this week</div>
     )
       : <div><Spinner /></div>
 
