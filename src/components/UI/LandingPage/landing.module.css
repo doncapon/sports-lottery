@@ -1,48 +1,19 @@
-.LandingWrapper{
-    height:100%;
-
-    background-image: url("https://image.freepik.com/free-photo/hand-painted-watercolor-background-with-sky-clouds-shape_24972-1095.jpg");
-}
 
 
 .Jackpot{
-    font-size: 10vh;
+    font-size: 3rem;
     font-weight: bolder;
     margin: 30px auto;
-    color: green;
-    margin-left: 10vw;
+    color: #fff;
 }
 .JapotText{
     color: black;
-    
 }
-
-
-
-/* medium screens */
-@media only screen and (min-width: 768px){
-    .Jackpot{
-        margin-left: 30vw;
-        font-size: 7vh;
-
-    }
-
+.wrapperLand {
+    height: 100vh;
 }
-
-
-
-
-
-/* Larger devices */
-@media only screen and (min-width: 960px) {
-
-    .Jackpot{
-        margin-left: 35vw;
-        font-size: 7vh;
-        display: flex;
-
-    }
-    .JapotText{
-        width: 14vw;
+@media (max-width: 500px) {
+    .wrapperLand {
+        height: auto;
     }
 }

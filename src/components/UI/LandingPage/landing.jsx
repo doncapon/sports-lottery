@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import CountDown from "../CountDown/CountDown";
 import Footer from "../Footer/Footer";
 import firebase from '../../../config/firebase/firebase';
+import { Container } from 'react-bootstrap'
 import { addCommaToAmounts, getNextPlayDate } from "..//../../shared/utility";
 import moment from "moment";
 class Landing extends Component {
@@ -50,11 +51,16 @@ class Landing extends Component {
   }
   render() {
     return (
-      <div className={classes.LandingWrapper}>
-        {this.state.loading && this.state.gameDateRaw ? <CountDown gamedate={this.state.gameDateRaw} /> : null}
-        {this.state.jackpot >= 0 ? <div className={classes.Jackpot}><div className={classes.JapotText}>Jackpot: </div>{this.state.isGamesAvailable? " ₦ " + addCommaToAmounts(this.state.jackpot): "Sorry, No games this week"}</div> : null}
+      <>
+        <Container className={classes.wrapperLand}>
+          <div >
+            {this.state.loading && this.state.gameDateRaw ? <CountDown gamedate={this.state.gameDateRaw} /> : null}
+            {this.state.jackpot >= 0 ? <div className={classes.Jackpot}><div className={classes.JapotText}>Jackpot: </div>{this.state.isGamesAvailable ? " ₦ " + addCommaToAmounts(this.state.jackpot) : "Sorry, No games this week"}</div> : null}
+
+          </div>
+        </Container>
         <Footer />
-      </div>
+      </>
     );
   }
 }
