@@ -196,7 +196,7 @@ class Settings extends Component {
         let inner = [];
         matchesPlayed.games.forEach((match, k) => {
             let matchResRef = firebase.database().ref("match-results").child(match.fixture_id);
-            matchResRef.once("value", snapshot => {
+            matchResRef.once("value").then(snapshot => {
                 let data = Object.assign({}, snapshot.val());
                 inner.push(data)
             });

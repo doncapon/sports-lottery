@@ -9,7 +9,6 @@ const initialState = {
 const initializeAllowedBanks = (state, action) =>{
     return produce(state, draft=>{
         draft.allowedBanks = Object.assign([] , action.payload);
-     
     })
 }
 
