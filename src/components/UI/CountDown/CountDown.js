@@ -2,6 +2,7 @@ import React from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import Auxy from "../../../hoc/Auxy/Auxy";
 import classes from "./CountDown.module.css";
+import pin from '../../../assets/pin.png'
 import { Container, Row, Col } from 'react-bootstrap'
 
 import moment from 'moment';
@@ -40,11 +41,12 @@ const CountDown = (props) => {
       <Container style={{ margin: '0 auto' }}>
         <h2 style={{ textAlign: "center", fontWeight: '700' }} className='mt-4'>Time Left To Play</h2>
         <Row style={{ display: 'flex', justifyContent: 'center', width: '90%', margin: '50px auto' }}>
-          <Col lg={3} md={3} sm={12}>
+          <Col lg={3} md={3} sm={12}  style={{display: 'flex', justifyContent: 'center'}} className='mb-2'>
             <CountdownCircleTimer
+            style={{position: 'relative'}}
               {...timerProps}
-
-              colors={[["#7E2E84"]]}
+              className={classes.circle}
+              colors={[["#000"]]}
               duration={daysDuration}
               initialRemainingTime={remainingTime}
             >
@@ -52,12 +54,13 @@ const CountDown = (props) => {
                 renderTime("days", getTimeDays(daysDuration - elapsedTime))
               }
             </CountdownCircleTimer>
+            <img className={classes.pin} src={pin} width='30px' style={{position: 'absolute', right: '70px', top: '-5px'}}/>
           </Col>
-          <Col lg={3} md={3} sm={12}>
+          <Col lg={3} md={3} sm={12} style={{display: 'flex', justifyContent: 'center'}} className='mb-2'>
             <CountdownCircleTimer
-
+             
               {...timerProps}
-              colors={[["#D14081"]]}
+              colors={[["#000"]]}
               duration={daySeconds}
               initialRemainingTime={remainingTime % daySeconds}
               onComplete={(totalElapsedTime) => [
@@ -68,11 +71,12 @@ const CountDown = (props) => {
                 renderTime("hours", getTimeHours(daySeconds - elapsedTime))
               }
             </CountdownCircleTimer>
+            <img className={classes.pin} src={pin} width='30px' style={{position: 'absolute', right: '70px', top: '-5px'}}/>
           </Col>
-          <Col lg={3} md={3} sm={12}>
+          <Col lg={3} md={3} sm={12} style={{display: 'flex', justifyContent: 'center'}} className='mb-2'>
             <CountdownCircleTimer
               {...timerProps}
-              colors={[["#EF798A"]]}
+              colors={[["#000"]]}
               duration={hourSeconds}
               initialRemainingTime={remainingTime % hourSeconds}
               onComplete={(totalElapsedTime) => [
@@ -83,11 +87,12 @@ const CountDown = (props) => {
                 renderTime("minutes", getTimeMinutes(hourSeconds - elapsedTime))
               }
             </CountdownCircleTimer>
+            <img className={classes.pin} src={pin} width='30px' style={{position: 'absolute', right: '70px', top: '-5px'}}/>
           </Col>
-          <Col lg={3} md={3} sm={12}>
+          <Col lg={3} md={3} sm={12} style={{display: 'flex', justifyContent: 'center'}} className='mb-2'>
             <CountdownCircleTimer
               {...timerProps}
-              colors={[["#218380"]]}
+              colors={[["#000"]]}
               duration={minuteSeconds}
               initialRemainingTime={remainingTime % minuteSeconds}
               onComplete={(totalElapsedTime) => [
@@ -98,6 +103,7 @@ const CountDown = (props) => {
                 renderTime("seconds", getTimeSeconds(elapsedTime))
               }
             </CountdownCircleTimer>
+            <img className={classes.pin} src={pin} width='30px' style={{position: 'absolute', right: '70px', top: '-5px'}}/>
           </Col>
         </Row>
       </Container >

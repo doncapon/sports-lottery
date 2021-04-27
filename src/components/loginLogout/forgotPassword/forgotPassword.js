@@ -52,13 +52,13 @@ const ForgotPassword = (props) => {
         if(emailIdErr)
         {Email.push(classes.showError)}
     return (
-        <Modal show={showModal} modalClosed={forgetRedirect} >
-            <div className={classes.PasswordWrapper}>
+        <Modal show={showModal} modalClosed={forgetRedirect}>
+            <div className={classes.PasswordWrapper} >
                 <h5>Request password!</h5>
-                    <div className="formDiv">
-                        <div>
+                    <div className="formDiv" >
+                        <div >
                             <div className={classes.formText}>Enter your email: </div>
-                            <form onSubmit={(e) => handleSubmitEmail(e)}>
+                            <form onSubmit={(e) => handleSubmitEmail(e)} >
                                 <div className= {classes.EmailWrapper}>
                                     <label htmlFor="emailId">Email</label>
                                     <input type="text" name="emailId"

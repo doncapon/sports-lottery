@@ -5,9 +5,11 @@
     font-weight: bolder;
     margin: 30px auto;
     color: #fff;
+    text-shadow: 5px 5px #558ABB;
 }
 .JapotText{
     color: black;
+    text-shadow: none;
 }
 .wrapperLand {
     height: 100vh;
@@ -15,5 +17,12 @@
 @media (max-width: 500px) {
     .wrapperLand {
         height: auto;
+    }
+    .ball_img {
+        right: -80px !important;
+        top: 1000px;
+    }
+    .Jackpot {
+        padding-bottom: 200px;
     }
 }

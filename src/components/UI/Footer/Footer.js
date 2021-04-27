@@ -7,7 +7,7 @@ const Footer = (props) => {
         <Auxy >
             <div className={classes.footer}>
                 <Container>
-                    <p className='text-white'>Footer</p>
+                    <p className='text-white text-center pt-2'>&copy; 2021 BetSoka</p>
                 </Container>
             </div>
         </Auxy>
