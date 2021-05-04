@@ -1,3 +1,8 @@
+.Header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 .Jackpot{
     font-size: 0.9em;
 }
@@ -6,11 +11,13 @@
 }
 
 .Main > div:nth-child(even){
-    background:  #c3eafa;
+    background: #90C688;
+    border-radius: 20px;
 }
 
 .Main > div:nth-child(odd){
-    background: #eee;
+    background-color: #DDFFBC;
+    border-radius: 20px;
 }
 
 h6{

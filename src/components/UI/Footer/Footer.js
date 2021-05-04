@@ -1,14 +1,19 @@
 import React from 'react';
+import { Container } from 'react-bootstrap'
 import Auxy from '../../../hoc/Auxy/Auxy'
 import classes from "./footer.module.css";
-const Footer = (props) =>{
-    return(
-        <Auxy>
-            <div className={classes.footer}>I am footer</div>
+const Footer = (props) => {
+    return (
+        <Auxy >
+            <div className={classes.footer}>
+                <Container>
+                    <p className='text-white text-center pt-2'>&copy; 2021 BetSoka</p>
+                </Container>
+            </div>
         </Auxy>
-        
+
     );
-    
+
 }
 
 export default Footer;

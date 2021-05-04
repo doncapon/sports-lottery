@@ -26,7 +26,7 @@ class Navs extends Component {
             this.setState({ isLoading: true })
           }
         })) {
-        
+
         }
       }, 2000);
     }
@@ -42,7 +42,7 @@ class Navs extends Component {
       this.props.deleteAndResetAll();
     this.props.history.push("/");
     this.props.setBoardLoading(false);
-    setTimeout(()=>{
+    setTimeout(() => {
       window.location.reload();
 
     }, 1000)
@@ -51,24 +51,26 @@ class Navs extends Component {
   render() {
     let firstName = this.props.firstName;
     return (
-      <Navbar bg="success" expand="lg">
+      <Navbar expand="lg" style={{ background: '#000' }}>
         <Navbar.Brand href="/">
-          <img
+          <h2 style={{ color: '#fff', fontSize: '35px' }}>Bet<small style={{ fontWeight: 'bold', color: '#63CFEA', fontSize: '35px', fontStyle: 'italic' }}>Soka</small></h2>
+          {/* <img
             src={logo}
             width="100px"
             height="50px"
             className="d-inline-block align-top"
             alt="React Bootstrap logo"
-          /></Navbar.Brand>
+          /> */}
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link to="/" as={NavLink}>Home</Nav.Link>
-            <Nav.Link to="/play" as={NavLink}>Play</Nav.Link>
-            {firebase.auth().currentUser ? <Nav.Link to="/history" as={NavLink}>My Games</Nav.Link> : null}
-            <Nav.Link to="/results" as={NavLink}>Result</Nav.Link>
+            <Nav.Link to="/" as={NavLink} className='text-white ml-2'>Home</Nav.Link>
+            <Nav.Link to="/play" as={NavLink} className='text-white ml-2'>Play</Nav.Link>
+            {firebase.auth().currentUser ? <Nav.Link to="/history" as={NavLink} className='text-white ml-2'>My Games</Nav.Link> : null}
+            <Nav.Link to="/results" as={NavLink} className='text-white ml-2'>Result</Nav.Link>
             {this.props.user.role === "admin" ?
-              <Nav.Link to="/settings" as={NavLink}>Settings</Nav.Link>
+              <Nav.Link to="/settings" as={NavLink} className='text-white ml-2'>Settings</Nav.Link>
               : null}
           </Nav>
           {this.props.isLoggedIn && this.props.user.funds >= 0 ?
@@ -80,6 +82,7 @@ class Navs extends Component {
             : <Login slips={this.props.slips} deleteAndResetAll={this.props.deleteAndResetAll} user={this.props.user}
               login={this.props.login} setForgot={this.props.setForgot} forgotPassword={this.props.forgotPassword}
               loading={this.props.loading} isLoggedIn={this.props.isLoggedIn}
+
             />
           }
 

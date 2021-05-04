@@ -4,8 +4,12 @@ import { connect } from "react-redux";
 import CountDown from "../CountDown/CountDown";
 import Footer from "../Footer/Footer";
 import firebase from '../../../config/firebase/firebase';
+import { Container } from 'react-bootstrap'
 import { addCommaToAmounts, getNextPlayDate } from "..//../../shared/utility";
 import moment from "moment";
+import guy from '../../../assets/guy.png'
+import ball from '../../../assets/ball.png'
+
 class Landing extends Component {
   constructor(props) {
     super(props);
@@ -50,11 +54,20 @@ class Landing extends Component {
   }
   render() {
     return (
-      <div className={classes.LandingWrapper}>
-        {this.state.loading && this.state.gameDateRaw ? <CountDown gamedate={this.state.gameDateRaw} /> : null}
-        {this.state.jackpot >= 0 ? <div className={classes.Jackpot}><div className={classes.JapotText}>Jackpot: </div>{this.state.isGamesAvailable? " ₦ " + addCommaToAmounts(this.state.jackpot): "Sorry, No games this week"}</div> : null}
+      <>
+        <Container className={classes.wrapperLand} style={{position: 'relative'}}>
+          <div >
+            {this.state.loading && this.state.gameDateRaw ? <CountDown gamedate={this.state.gameDateRaw} /> : null}
+           
+         
+           {this.state.jackpot >= 0 ? <div className={classes.Jackpot}><div className={classes.JapotText}>Jackpot: </div>{this.state.isGamesAvailable ? " ₦ " + addCommaToAmounts(this.state.jackpot) : "Sorry, No games this week"}</div> : null}
+          
+
+          </div>
+          <img className={classes.ball_img} src={ball} width='200px' alt='ball' style={{position: 'absolute', right: '100px', bottom: '200px'}}/>
+        </Container>
         <Footer />
-      </div>
+      </>
     );
   }
 }
