@@ -332,7 +332,7 @@ class Signup extends Component {
         }
         return (<div className={classes.Wrapper}>
             <div className={classes.formDiv}>
-                <h3 style={{ textAlign: "center" }} >Registration Form </ h3>
+                <h3 style={{ textAlign: "center", fontWeight: 700 }} className='pb-3'>Registration Form </ h3>
                 <div>
                     <form className={classes.Form} onSubmit={this.handleSubmit}>
                         <div>
@@ -426,10 +426,12 @@ class Signup extends Component {
                             }
 
                         </div>
+                        <div style={{display: 'flex', justifyContent: 'center', marginTop: '30px'}}>
                         <input onClick={() => this.props.history.push("/")}
                             className={classes.Button}
                             type="button" value="Cancel" />
                         <button type="submit"  className={classes.Submit} >Submit</button>
+                        </div>
                     </form>
                 </div>
             </div>

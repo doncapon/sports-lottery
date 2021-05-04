@@ -1,15 +1,21 @@
 .ResultsWrapper{
-    background: #ccc;
     font-weight: bold;
     font-size: 1.2em;
+    padding-bottom: 100px;
 }
 .HeaderInner{
     display: flex;
     word-spacing: 5px;
 }
 .ResultHead{
+    /* width: 100%; */
     display: flex;
+    justify-content: center;
     padding: 10px 0 5px;
+    margin: 50px;
+    background: rgb(255, 255, 255, 0.3);
+    border-radius: 20px;
+
 }
 .SelectionRow{
     display: flex;
@@ -52,11 +58,13 @@
     margin-left: 4vw;
 }
 .BodyMain > div:nth-child(odd){
-    background: #eee;
+    background-color: #DDFFBC;
+    border-radius: 20px;
 }
 
 .BodyMain> div:nth-child(even){
-    background: #c3eafa;
+    background: #90C688;
+    border-radius: 20px;
 }
 
 
