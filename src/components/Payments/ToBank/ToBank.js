@@ -25,6 +25,7 @@ class ToBank extends Component {
         saveError: '',
         showUpdate: '',
         checkMessage: '',
+        savedAccountNumber: '',
         showReSigninForm: false,
         isWithDraw: false,
         loding: false,
@@ -32,7 +33,8 @@ class ToBank extends Component {
     componentDidMount() {
         if (!this.state.loading) {
             this.props.onFetchBanks();
-            this.setState({ funds: this.props.user.funds })
+            this.setState({ funds: this.props.user.funds });
+            this.setState({savedAccountNumber: '--Use an exisitng bank--'})
         }
         this.setState({ loading: true })
     }
@@ -296,9 +298,11 @@ class ToBank extends Component {
                                     });
                                     this.setState({ saveError: '', apiError: '' })
                                     alert("Bank details saved!");
+                                    window.location.reload(false);
                                     setTimeout(() => {
-                                        window.location.reload(false);
+                                        this.setState({savedAccountNumber: account })
                                     }, 2500);
+
                                 } else {
                                     this.setState({ saveError: "Please check your card details", apiError: '' })
                                 }
@@ -334,8 +338,7 @@ class ToBank extends Component {
         let optionsAllowed;
         if (this.state.loading) {
             bankDetails = [...this.props.savedBanks];
-            options = bankDetails.sort((a, b) => a.accountNumber > b.accountNumber ? 1 : -1)
-                .map((detail, i) => (
+            options = bankDetails.map((detail, i) => (
                     <option key={i} value={detail.accountNumber}>{detail.accountNumber}</option>
                 ));
             banksallowed = [...this.props.allowedBanks];
