@@ -68,7 +68,7 @@ const CountDown = (props) => {
               ]}
             >
               {({ elapsedTime }) =>
-                renderTime("hours", getTimeHours(daySeconds - elapsedTime))
+                renderTime("hours", getTimeHours(daySeconds - elapsedTime) < 0 ? 0: getTimeHours(daySeconds - elapsedTime)  )
               }
             </CountdownCircleTimer>
             <img className={classes.pin} src={pin} width='30px' style={{position: 'absolute', right: '70px', top: '-5px'}}/>
