@@ -32,17 +32,18 @@ class Landing extends Component {
           if (new Date(data + "T" + this.props.kickOffTime) < new Date(kickOffDate)) {
             this.setState({ isGamesAvailable: false })
           }
-          this.getJackpo();
+          this.getJackpot();
           this.setState({ gameDateRaw: this.kickOffDate + "T" + this.props.kickOffTime });
 
         })
     }
     this.setState({ loading: true })
     setTimeout(() => {
-      this.interval = setInterval(() => this.getJackpo(), 30 * 60 * 1000)
+      this.interval = setInterval(() => this.getJackpot(), 30 * 60 * 1000)
     }, 2000);
   }
-  getJackpo = () => {
+
+  getJackpot = () => {
     firebase.database().ref("jackpots").child(moment(this.kickOffDate).format("YYYY-MM-DD"))
       .on("value", snapshot => {
         this.setState({ jackpot: snapshot.val().jackpot });
@@ -55,6 +56,8 @@ class Landing extends Component {
   render() {
     return (
       <>
+      { setInterval(() => window.location.reload(),15*  60 * 1000)
+}
         <Container className={classes.wrapperLand} style={{position: 'relative'}}>
           <div >
             {this.state.loading && this.state.gameDateRaw ? <CountDown gamedate={this.state.gameDateRaw} /> : null}
