@@ -54,9 +54,9 @@ class Jackpot extends Component {
     render() {
         return this.state.loading ? this.state.jackpotData ? <div className={classes.Jackpot}>
             <div className={classes.Header}>
-            <img src={dice} width='50px'/>
+            <img src={dice} width='50px' alt='dice'/>
                 <h6>JACKPOT SHARE</h6>
-                <img src={dice} width='50px'/>
+                <img src={dice} width='50px' alt='dice'/>
             </div>
             <div className={classes.Main}>
                 <div className={classes.Row}>
