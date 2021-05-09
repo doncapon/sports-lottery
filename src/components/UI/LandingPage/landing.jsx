@@ -3,12 +3,12 @@ import classes from "./landing.module.css";
 import { connect } from "react-redux";
 import CountDown from "../CountDown/CountDown";
 import Footer from "../Footer/Footer";
-import firebase from '../../../config/firebase/firebase';
-import { Container } from 'react-bootstrap'
+import firebase from "../../../config/firebase/firebase";
+import { Container } from "react-bootstrap";
 import { addCommaToAmounts, getNextPlayDate } from "..//../../shared/utility";
 import moment from "moment";
 // import guy from '../../../assets/guy.png'
-import ball from '../../../assets/ball.png'
+import ball from "../../../assets/ball.png";
 
 class Landing extends Component {
   constructor(props) {
@@ -17,38 +17,52 @@ class Landing extends Component {
       loading: false,
       gameDateRaw: null,
       jackpot: null,
-      isGamesAvailable: true
+      isGamesAvailable: true,
     };
   }
   componentDidMount() {
     if (!this.state.loading) {
-      firebase.database().ref("board").orderByChild("dateKey").limitToLast(1).once("value")
-        .then(snapshot => {
-          let data = Object.keys(snapshot.val())[0]
+      firebase
+        .database()
+        .ref("board")
+        .orderByChild("dateKey")
+        .limitToLast(1)
+        .once("value")
+        .then((snapshot) => {
+          let data = Object.keys(snapshot.val())[0];
           this.kickOffDate = data;
           let kickOffDate;
-          kickOffDate = getNextPlayDate(this.props.daysOffset,
-            this.props.hourToNextDay);
-          if (new Date(data + "T" + this.props.kickOffTime) < new Date(kickOffDate)) {
-            this.setState({ isGamesAvailable: false })
+          kickOffDate = getNextPlayDate(
+            this.props.daysOffset,
+            this.props.hourToNextDay
+          );
+          if (
+            new Date(data + "T" + this.props.kickOffTime) <
+            new Date(kickOffDate)
+          ) {
+            this.setState({ isGamesAvailable: false });
           }
           this.getJackpot();
-          this.setState({ gameDateRaw: this.kickOffDate + "T" + this.props.kickOffTime });
-
-        })
+          this.setState({
+            gameDateRaw: this.kickOffDate + "T" + this.props.kickOffTime,
+          });
+        });
     }
-    this.setState({ loading: true })
+    this.setState({ loading: true });
     setTimeout(() => {
-      this.interval = setInterval(() => this.getJackpot(), 30 * 60 * 1000)
+      this.interval = setInterval(() => this.getJackpot(), 30 * 60 * 1000);
     }, 2000);
   }
 
   getJackpot = () => {
-    firebase.database().ref("jackpots").child(moment(this.kickOffDate).format("YYYY-MM-DD"))
-      .on("value", snapshot => {
+    firebase
+      .database()
+      .ref("jackpots")
+      .child(moment(this.kickOffDate).format("YYYY-MM-DD"))
+      .on("value", (snapshot) => {
         this.setState({ jackpot: snapshot.val().jackpot });
-      })
-  }
+      });
+  };
   componentWillUnmount() {
     firebase.database().ref("jackpots").off();
     clearInterval(this.interval);
@@ -56,18 +70,32 @@ class Landing extends Component {
   render() {
     return (
       <>
-      { setInterval(() => window.location.reload(),15*  60 * 1000)
-}
-        <Container className={classes.wrapperLand} style={{position: 'relative'}}>
-          <div >
-            {this.state.loading && this.state.gameDateRaw ? <CountDown gamedate={this.state.gameDateRaw} /> : null}
-           
-         
-           {this.state.jackpot >= 0  && this.state.jackpot != null? <div className={classes.Jackpot}><div className={classes.JapotText}>Jackpot: </div>{this.state.isGamesAvailable ? " ₦ " + addCommaToAmounts(this.state.jackpot) : "Sorry, No games this week"}</div> : null}
-          
+        {/* {setInterval(() => window.location.reload(), 15 * 60 * 1000)} */}
+        <Container
+          className={classes.wrapperLand}
+          style={{ position: "relative" }}
+        >
+          <div>
+            {this.state.loading && this.state.gameDateRaw ? (
+              <CountDown gamedate={this.state.gameDateRaw} />
+            ) : null}
 
+            {this.state.jackpot >= 0 && this.state.jackpot != null ? (
+              <div className={classes.Jackpot}>
+                <div className={classes.JapotText}>Jackpot: </div>
+                {this.state.isGamesAvailable
+                  ? " ₦ " + addCommaToAmounts(this.state.jackpot)
+                  : "Sorry, No games this week"}
+              </div>
+            ) : null}
           </div>
-          <img className={classes.ball_img} src={ball} width='200px' alt='ball' style={{position: 'absolute', right: '100px', bottom: '200px'}}/>
+          <img
+            className={classes.ball_img}
+            src={ball}
+            width="200px"
+            alt="ball"
+            style={{ position: "absolute", right: "100px", bottom: "200px" }}
+          />
         </Container>
         <Footer />
       </>
@@ -81,7 +109,6 @@ const mapStateToProps = (state) => {
     hourToNextDay: state.config.hourToNextDay,
     daysOffset: state.config.daysOffset,
     kickOffTime: state.config.kickOffTime,
-
   };
 };
 
