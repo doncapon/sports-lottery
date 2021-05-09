@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import firebase from '../../../config/firebase/firebase';
 
 //import Navbar from "reactjs-navbar";
-import logo from "./logo.JPG";
+
 import classes from "./Navs.module.css";
 
 class Navs extends Component {
