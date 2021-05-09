@@ -7,7 +7,7 @@ import firebase from '../../../config/firebase/firebase';
 import { Container } from 'react-bootstrap'
 import { addCommaToAmounts, getNextPlayDate } from "..//../../shared/utility";
 import moment from "moment";
-import guy from '../../../assets/guy.png'
+// import guy from '../../../assets/guy.png'
 import ball from '../../../assets/ball.png'
 
 class Landing extends Component {
