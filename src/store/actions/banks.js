@@ -55,8 +55,9 @@ export const fetchBanks = () => {
             }
         });
 
-        let bankRef = firebase.database().ref().child("banks");
-        bankRef.on("value", (snapshot) => {
+        let bankRef = firebase.database().ref("banks");
+        bankRef.once("value")
+        .then (snapshot => {
             const resultData = snapshot.val();
             let banks = [];
             Object.keys(resultData).map((key, i) => 
@@ -65,8 +66,6 @@ export const fetchBanks = () => {
             dispatch(initializeAllowedBanks(banks))
         });
         firebase.database().ref('bank-accounts').off();
-        bankRef.off();
-
     }
 }
 

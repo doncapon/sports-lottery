@@ -3,6 +3,7 @@ import classes from './jackpot.module.css';
 import { addCommaToAmounts } from '../../../shared/utility';
 import firebase from '../../../config/firebase/firebase';
 import Spinner from '../../../components/UI/Spinner/Spinner';
+import dice from '../../../assets/dice.png'
 
 class Jackpot extends Component {
     constructor(props) {
@@ -53,7 +54,9 @@ class Jackpot extends Component {
     render() {
         return this.state.loading ? this.state.jackpotData ? <div className={classes.Jackpot}>
             <div className={classes.Header}>
+            <img src={dice} width='50px'/>
                 <h6>JACKPOT SHARE</h6>
+                <img src={dice} width='50px'/>
             </div>
             <div className={classes.Main}>
                 <div className={classes.Row}>

@@ -25,15 +25,19 @@
   .LoginSection{
     display: block;
   }
+  /* .Logout {
+    border-radius: 20px !important;
+    padding: 5px 20px !important;
+  }
+ .btn  {
+    border-radius: 20px !important;
+    padding: 5px 20px !important;
+  } */
 
 
   @media only screen and (min-width: 768px) {
     .LoginSection{
       display: flex;
     }
-    .Logout{
-      padding: 4px;
-      height: 30px;
-      margin-top: 10px;
-    }
   }
+
