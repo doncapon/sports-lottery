@@ -72,10 +72,14 @@ class Landing extends Component {
   render() {
     return (
       <>
-        <Container className={classes.wrapperLand} style={{position: 'relative'}}>
-          <div >
-            {this.state.loading && this.state.gameDateRaw ? <CountDown gamedate={this.state.gameDateRaw} /> : null}
-           {this.state.jackpot >= 0  && this.state.jackpot != null? <div className={classes.Jackpot}><div className={classes.JapotText}>Jackpot: </div>{this.state.isGamesAvailable ? " ₦ " + addCommaToAmounts(this.state.jackpot) : "Sorry, No games this week"}</div> : null}
+        <Container
+          className={classes.wrapperLand}
+          style={{ position: "relative" }}
+        >
+          <div>
+            {this.state.loading && this.state.gameDateRaw ? (
+              <CountDown gamedate={this.state.gameDateRaw} />
+            ) : null}
             {this.state.jackpot >= 0 && this.state.jackpot != null ? (
               <div className={classes.Jackpot}>
                 <div className={classes.JapotText}>Jackpot: </div>
