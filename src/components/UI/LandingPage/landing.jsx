@@ -40,7 +40,7 @@ class Landing extends Component {
     this.setState({ loading: true })
     setTimeout(() => {
       this.interval = setInterval(() => this.getJackpot(), 30 * 60 * 1000);
-      this.interval2 = setInterval(() => window.location.reload(), 15*  60 * 1000)
+      this.interval2 = setInterval(() => window.location.reload(), 15*  60 * 1000);
     }, 2000);
   }
 
