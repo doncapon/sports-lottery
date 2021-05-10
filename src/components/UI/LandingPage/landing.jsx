@@ -39,7 +39,8 @@ class Landing extends Component {
     }
     this.setState({ loading: true })
     setTimeout(() => {
-      this.interval = setInterval(() => this.getJackpot(), 30 * 60 * 1000)
+      this.interval = setInterval(() => this.getJackpot(), 30 * 60 * 1000);
+      this.interval2 = setInterval(() => window.location.reload(), 15*  60 * 1000)
     }, 2000);
   }
 
@@ -52,12 +53,11 @@ class Landing extends Component {
   componentWillUnmount() {
     firebase.database().ref("jackpots").off();
     clearInterval(this.interval);
+    clearInterval(this.interval2);
   }
   render() {
     return (
       <>
-      { setInterval(() => window.location.reload(),15*  60 * 1000)
-}
         <Container className={classes.wrapperLand} style={{position: 'relative'}}>
           <div >
             {this.state.loading && this.state.gameDateRaw ? <CountDown gamedate={this.state.gameDateRaw} /> : null}
