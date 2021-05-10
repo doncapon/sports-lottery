@@ -54,7 +54,7 @@ const CountDown = (props) => {
                 renderTime("days", getTimeDays(daysDuration - elapsedTime))
               }
             </CountdownCircleTimer>
-            <img className={classes.pin} src={pin} width='30px' style={{position: 'absolute', right: '70px', top: '-5px'}}/>
+            <img className={classes.pin} src={pin} width='30px' style={{position: 'absolute', right: '70px', top: '-5px'}} alt='timer'/>
           </Col>
           <Col lg={3} md={3} sm={12} style={{display: 'flex', justifyContent: 'center'}} className='mb-2'>
             <CountdownCircleTimer
@@ -71,7 +71,7 @@ const CountDown = (props) => {
                 renderTime("hours", getTimeHours(daySeconds - elapsedTime) < 0 ? 0: getTimeHours(daySeconds - elapsedTime)  )
               }
             </CountdownCircleTimer>
-            <img className={classes.pin} src={pin} width='30px' style={{position: 'absolute', right: '70px', top: '-5px'}}/>
+            <img className={classes.pin} src={pin} width='30px' style={{position: 'absolute', right: '70px', top: '-5px'}} alt='timer'/>
           </Col>
           <Col lg={3} md={3} sm={12} style={{display: 'flex', justifyContent: 'center'}} className='mb-2'>
             <CountdownCircleTimer
@@ -87,7 +87,7 @@ const CountDown = (props) => {
                 renderTime("minutes", getTimeMinutes(hourSeconds - elapsedTime))
               }
             </CountdownCircleTimer>
-            <img className={classes.pin} src={pin} width='30px' style={{position: 'absolute', right: '70px', top: '-5px'}}/>
+            <img className={classes.pin} src={pin} width='30px' style={{position: 'absolute', right: '70px', top: '-5px'}} alt='timer'/>
           </Col>
           <Col lg={3} md={3} sm={12} style={{display: 'flex', justifyContent: 'center'}} className='mb-2'>
             <CountdownCircleTimer
@@ -103,7 +103,7 @@ const CountDown = (props) => {
                 renderTime("seconds", getTimeSeconds(elapsedTime))
               }
             </CountdownCircleTimer>
-            <img className={classes.pin} src={pin} width='30px' style={{position: 'absolute', right: '70px', top: '-5px'}}/>
+            <img className={classes.pin} src={pin} width='30px' style={{position: 'absolute', right: '70px', top: '-5px'}} alt='timer'/>
           </Col>
         </Row>
       </Container >

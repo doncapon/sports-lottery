@@ -4,7 +4,7 @@
   "private": true,
   "engines": {
     "node": "12.16.2",
-    "npm": "6.14.5"
+    "npm": "7.6.0"
   },
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^5.15.2",
@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^12.6.0",
     "axios": "^0.21.1",
     "bootstrap": "^4.5.3",
+    "chokidar": "^3.5.1",
     "firebase": "^8.2.7",
     "immer": "^8.0.0",
     "local-storage": "^2.0.0",
