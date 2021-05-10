@@ -52,7 +52,7 @@ class Landing extends Component {
     setTimeout(() => {
       this.interval = setInterval(() => this.getJackpot(), 30 * 60 * 1000);
       this.interval2 = setInterval(() => window.location.reload(), 15*  60 * 1000);
-
+    }, 2000);
   }
 
   getJackpot = () => {
@@ -72,26 +72,10 @@ class Landing extends Component {
   render() {
     return (
       <>
-<<<<<<< HEAD
         <Container className={classes.wrapperLand} style={{position: 'relative'}}>
           <div >
             {this.state.loading && this.state.gameDateRaw ? <CountDown gamedate={this.state.gameDateRaw} /> : null}
-           
-         
            {this.state.jackpot >= 0  && this.state.jackpot != null? <div className={classes.Jackpot}><div className={classes.JapotText}>Jackpot: </div>{this.state.isGamesAvailable ? " ₦ " + addCommaToAmounts(this.state.jackpot) : "Sorry, No games this week"}</div> : null}
-          
-=======
-        {/* {setInterval(() => window.location.reload(), 15 * 60 * 1000)} */}
-        <Container
-          className={classes.wrapperLand}
-          style={{ position: "relative" }}
-        >
-          <div>
-            {this.state.loading && this.state.gameDateRaw ? (
-              <CountDown gamedate={this.state.gameDateRaw} />
-            ) : null}
->>>>>>> 33cd769bdaa8e914f69e931573fed2d39d56e6ee
-
             {this.state.jackpot >= 0 && this.state.jackpot != null ? (
               <div className={classes.Jackpot}>
                 <div className={classes.JapotText}>Jackpot: </div>
