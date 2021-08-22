@@ -12,9 +12,11 @@ export const fetchPredictions = (payLoad, gameIndex) => {
 
 export const fetchPredictionsAll = (fixture, gameIndex) => {
     return dispatch => {
-        axios.get("/predictions/" + fixture)
+        axios.get("/predictions/" , {params: {fixture: fixture}})
             .then(response => {
-                dispatch(fetchPredictions(response.data.api.predictions,
+                console.log(response.data.response)
+                console.log("I am here");
+                dispatch(fetchPredictions(response.data.response,
                     gameIndex));
             }).catch(error => {
 

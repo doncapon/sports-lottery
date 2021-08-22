@@ -2,11 +2,10 @@ import produce from 'immer';
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-    isFACup: false,
-    isFACupNextWeek: true,
     daysOffset: 0,
     hourToNextDay: 9,   //24 - kick-off time
-    kickOffTime: '15:00:00+00:00',
+    kickOffTime: '13:00:00+00:00',
+    endTime: '18:00:00+00:00',
     eventDate: null,
 
     thirteenPercent: 0.5,

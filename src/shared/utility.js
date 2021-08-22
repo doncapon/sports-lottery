@@ -58,3 +58,10 @@ export const dateInYYYYMMDD = (date) => {
 export const capitalizeFirstLetter = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+export const checkDateRange=(checked, start, end)=>{
+  checked = moment(checked);
+  start = moment(start);
+  end = moment(end);
+  return checked.isSameOrAfter(start) && checked.isSameOrBefore(end);
+}

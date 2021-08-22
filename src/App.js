@@ -146,8 +146,8 @@ const mapstateToProps = (state) => {
     forgotPassword: state.login.forgotPassword,
     loading: state.login.loading,
 
-    isFaCup: state.config.isFaCup,
     kickOffTime: state.config.kickOffTime,
+    endTime: state.config.endTime,
     kickOffDate: state.config.kickOffDate
   };
 };
