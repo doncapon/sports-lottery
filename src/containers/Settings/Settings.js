@@ -4,11 +4,9 @@ import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
 import classes from './Settings.module.css';
 import {
-    getNextPlayDate,
     dateInYYYYMMDD
 } from '../../shared/utility';
 import firebase from '../../config/firebase/firebase';
-import moment from 'moment';
 
 
 class Settings extends Component {
@@ -50,44 +48,6 @@ class Settings extends Component {
                 this.props.onUpdateBoard(fixturesToPush, date)
             })
 
-    }
-    handlecConfigureBoard = () => {
-        this.props.onSetIsBoardSet(false);
-        let kickOffDate;
-        kickOffDate = getNextPlayDate(this.props.daysOffset,
-            this.props.hourToNextDay);
-        setTimeout(() => {
-            this.props.onConfigureBoard(false,
-                this.props.kickOffTime, dateInYYYYMMDD(kickOffDate)); //this.state.gameDate
-        }, 3000);
-
-        setTimeout(() => {
-            if (this.props.isBoardSet === false) {
-                this.props.onConfigureBoard(true,
-                    this.props.kickOffTime, dateInYYYYMMDD(kickOffDate)); //this.state.gameDate
-            }
-        }, 6000)
-
-        let date = new Date(dateInYYYYMMDD(kickOffDate));
-        date.setDate(date.getDate() + 7);
-        let kickOffDateNew = moment(date).format("DD-MM-YYYY");
-        setTimeout(() => {
-            if (this.props.isBoardSet === false) {
-                this.props.onConfigureBoard(false,
-                    this.props.kickOffTime, dateInYYYYMMDD(kickOffDateNew)); //this.state.gameDate
-            }
-        }, 9000)
-        setTimeout(() => {
-            if (this.props.isBoardSet === false) {
-                this.props.onConfigureBoard(true,
-                    this.props.kickOffTime, dateInYYYYMMDD(kickOffDateNew)); //this.state.gameDate
-            }
-        }, 12000)
-        setTimeout(() => {
-            window.localStorage.removeItem('firebase:host:betsoka-4b359-default-rtdb.europe-west1.firebasedatabase.app');
-            window.localStorage.removeItem('persist:root');
-            window.location.reload();
-        }, 13000);
     }
     handleSetResultss = () => {
         this.props.onSetCurrentResult(this.props.slips[0]["slip_1"]);
@@ -346,38 +306,6 @@ class Settings extends Component {
 
     }
 
-    setupJackpot = (e) => {
-        e.preventDefault();
-        firebase.database().ref("board").limitToLast(1).on("value", snapshot => {
-            let data = snapshot.val();
-            Object.keys(data).map(key => {
-                let jackpotData;
-                firebase.database().ref("jackpots").child(key)
-                    .on("value", snapshot => {
-                        jackpotData = snapshot.val();
-                    })
-                setTimeout(() => {
-                    if (jackpotData === null) {
-                        firebase.database().ref("jackpots").child(key).set({
-                            jackpot: 0,
-                            tenUser: 0,
-                            elevenUser: 0,
-                            twelveUser: 0,
-                            thirteenUser: 0
-                        })
-                        alert("done");
-                    } else {
-                        alert("this is already set, cannot reset");
-                    }
-                }, 3000)
-                firebase.database().ref("jackpots").off();
-                firebase.database().ref("board").off();
-                return null;
-            })
-        })
-
-
-    }
     deleteUserByEmail = (e, email) => {
         e.preventDefault();
         let notfound = true;
@@ -433,10 +361,9 @@ class Settings extends Component {
 const mapStateToProps = (state) => {
     return {
         hourToNextDay: state.config.hourToNextDay,
-        isFACup: state.config.isFACup,
-        isFACupNextWeek: state.config.isFACupNextWeek,
         daysOffset: state.config.daysOffset,
         kickOffTime: state.config.kickOffTime,
+        endTime: state.config.endTime,
         gameDate: state.board.gameDate,
         slips: state.board.slips,
 
@@ -458,11 +385,11 @@ const mapDispatchToProps = (dispatch) => {
 
         onUpdateBoard: (fixturesToPush, kickOffDate) =>
             dispatch(actions.updateBoard(fixturesToPush, kickOffDate)),
-        onConfigureBoard: (isFaCup, kickOffTime, kickOffDate) =>
-            dispatch(actions.configureBoard(isFaCup, kickOffTime, kickOffDate)),
+        // onConfigureBoard: ( kickOffTime, endTime, kickOffDate) =>
+        //     dispatch(actions.configureBoard( kickOffTime,endTime, kickOffDate)),
         onSetCurrentResult: (slip) =>
             dispatch(actions.setCurrentResult(slip)),
-        onSetIsBoardSet: (isBoardSet) => dispatch(actions.setIsBoardSet(isBoardSet))
+        // onSetIsBoardSet: (isBoardSet) => dispatch(actions.setIsBoardSet(isBoardSet))
     }
 }
 

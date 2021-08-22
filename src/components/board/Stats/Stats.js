@@ -26,15 +26,17 @@ const Stats = (props) => {
   let showedObject = null;
   props.predictions.forEach((pre) => {
     let pred = pre.prediction[0];
-    let winPercent = pred.winning_percent;
+    let winPercent = pred.predictions.percent;
     let head2Head = pred.h2h;
     let home = pred.teams.home;
     let away = pred.teams.away;
+    let homeForm = home.league.form.slice( home.league.form.length-5,  home.league.form.length);
+    let awayForm = away.league.form.slice(away.league.form.length-5,  away.league.form.length);
 
     if (selectedLink === 1) {
       showedObject = (
         <div className="col-12">
-          <Forms home={home} away={away} />
+          <Forms home={home} away={away} homeForm={homeForm} awayForm = {awayForm} />
         </div>
       );
     } else if (selectedLink === 2) {
@@ -48,7 +50,7 @@ const Stats = (props) => {
         <div className="col-12" style={{ margin: "auto" }}>
           <Odds
             home={winPercent.home}
-            draw={winPercent.draws}
+            draw={winPercent.draw}
             away={winPercent.away}
           />
         </div>

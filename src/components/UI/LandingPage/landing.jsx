@@ -5,10 +5,11 @@ import CountDown from "../CountDown/CountDown";
 import Footer from "../Footer/Footer";
 import firebase from "../../../config/firebase/firebase";
 import { Container } from "react-bootstrap";
-import { addCommaToAmounts, getNextPlayDate } from "..//../../shared/utility";
+import { addCommaToAmounts, getNextPlayDate, dateInYYYYMMDD } from "..//../../shared/utility";
 import moment from "moment";
 // import guy from '../../../assets/guy.png'
 import ball from "../../../assets/ball.png";
+import * as actions from '../../../store/actions/index';
 
 class Landing extends Component {
   constructor(props) {
@@ -18,9 +19,26 @@ class Landing extends Component {
       gameDateRaw: null,
       jackpot: null,
       isGamesAvailable: true,
+      total: 0
     };
   }
   componentDidMount() {
+    setInterval(() => {
+      let kickOffDate;
+      kickOffDate = getNextPlayDate(this.props.daysOffset,
+        this.props.hourToNextDay);
+      let gameTime = kickOffDate + "T" + this.props.kickOffTime;
+      if (moment(new Date()).isSameOrAfter(moment("2021-08-12"))) {
+        firebase.database().ref("board").child(kickOffDate).on("value", snapshot => {
+          if (snapshot.val() === null) {
+              this.handlecConfigureBoard();
+              this.setupJackpot(kickOffDate);   
+              this.props.onDeleteAndResetAll();           
+          }
+        });
+      }
+    }, 1000);
+
     if (!this.state.loading) {
       firebase
         .database()
@@ -50,19 +68,84 @@ class Landing extends Component {
     }
     this.setState({ loading: true });
     setTimeout(() => {
+      firebase.database().ref("board").off();
+      firebase.database().ref("jackpots").off();
       this.interval = setInterval(() => this.getJackpot(), 30 * 60 * 1000);
-      this.interval2 = setInterval(() => window.location.reload(), 15*  60 * 1000);
+      this.interval2 = setInterval(() => window.location.reload(), 15 * 60 * 1000);
     }, 2000);
+
+
+  }
+
+  handlecConfigureBoard = () => {
+    this.props.onSetIsBoardSet(false);
+    let kickOffDate;
+    kickOffDate = getNextPlayDate(this.props.daysOffset,
+      this.props.hourToNextDay);
+    setTimeout(() => {
+      this.props.onConfigureBoard(
+        this.props.kickOffTime, this.props.endTime, dateInYYYYMMDD(kickOffDate)); //this.state.gameDate
+    }, 3000);
+  }
+
+  
+  setupJackpot = (key) => {
+    let jackpotData;
+      firebase.database().ref("jackpots").limitToLast(1).once("value").then(snapshot => {
+        let data = snapshot.val();
+        jackpotData = Object.keys(data).map(key=>{
+          return data[key];
+        })
+      let total = 0;
+      if (jackpotData[0].tenUser === 0){
+        let percent = this.props.tenPercent * jackpotData[0].jackpot;
+        total += percent;
+      }
+
+      if (jackpotData[0].elevenUser === 0){
+        let percent = this.props.elevenPercent * jackpotData[0].jackpot;
+        total += percent;
+      }
+      if (jackpotData[0].twelveUser === 0){
+        let percent = this.props.twelvePercent * jackpotData[0].jackpot;
+        total += percent;
+      }
+      if (jackpotData[0].thirteenUser === 0){
+        let percent = this.props.thirteenPercent * jackpotData[0].jackpot;
+        total += percent;
+      }
+        firebase.database().ref("jackpots").child(key).on("value", snapshot => {
+          let data = snapshot.val();
+        setTimeout(() => {
+          if (data === null) {
+            firebase.database().ref("jackpots").child(key).set({
+              jackpot: total,
+              tenUser: 0,
+              elevenUser: 0,
+              twelveUser: 0,
+              thirteenUser: 0
+            })
+          }
+        }, 1000);
+          firebase.database().ref("jackpots").off();
+          firebase.database().ref("board").off();
+        return null;
+      })
+  });
   }
 
   getJackpot = () => {
-    firebase
-      .database()
-      .ref("jackpots")
-      .child(moment(this.kickOffDate).format("YYYY-MM-DD"))
-      .on("value", (snapshot) => {
-        this.setState({ jackpot: snapshot.val().jackpot });
-      });
+    let data = null;
+    firebase.database().ref("jackpots").limitToLast(1).on("value", snapshot => {
+      data = Object.keys(snapshot.val())[0]
+      firebase
+        .database()
+        .ref("jackpots")
+        .child(moment(data).format("YYYY-MM-DD"))
+        .on("value", (snapshot) => {
+          this.setState({ jackpot: snapshot.val().jackpot });
+        });
+    })
   };
   componentWillUnmount() {
     firebase.database().ref("jackpots").off();
@@ -109,7 +192,26 @@ const mapStateToProps = (state) => {
     hourToNextDay: state.config.hourToNextDay,
     daysOffset: state.config.daysOffset,
     kickOffTime: state.config.kickOffTime,
+    thirteenPercent: state.config.thirteenPercent,
+    twelvePercent: state.config.twelvePercent,
+    elevenPercent: state.config.elevenPercent,
+    tenPercent: state.config.tenPercent,
+    endTime: state.config.endTime,
   };
 };
 
-export default connect(mapStateToProps)(Landing);
+const mapDispatchToProps = (dispatch) => {
+  return {
+
+    onUpdateBoard: (fixturesToPush, kickOffDate) =>
+      dispatch(actions.updateBoard(fixturesToPush, kickOffDate)),
+    onConfigureBoard: (kickOffTime, endTime, kickOffDate) =>
+      dispatch(actions.configureBoard(kickOffTime, endTime, kickOffDate)),
+    onSetCurrentResult: (slip) =>
+      dispatch(actions.setCurrentResult(slip)),
+    onDeleteAndResetAll: () => dispatch(actions.deleteAndResetAll()),
+    onSetIsBoardSet: (isBoardSet) => dispatch(actions.setIsBoardSet(isBoardSet))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Landing);

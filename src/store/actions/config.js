@@ -4,6 +4,7 @@ import moment from 'moment';
 import * as  actionTypes from './actionTypes';
 import _ from 'lodash';
 import firebase from "../../config/firebase/firebase";
+import {checkDateRange} from '../../shared/utility';
 
 export const setIsBoardSet = (isBoardSet) => {
     return {
@@ -47,75 +48,61 @@ export const updateBoard = (fixturesToPush, kickOffDate)=>{
         return null;
     }
 }
-export const configureBoard = (isFaCup, kickOffTime, kickOffDate) => {
+
+
+const gamePicker = (response, startTIme,endTime,wantedFixturesArray, country, leagueNames, gamesPerLeague)=>{
+    if(wantedFixturesArray.length < 13){
+        for( let i =0 ; i < leagueNames.length; i++){
+            let league = leagueNames[i];
+            if(wantedFixturesArray.length > 13){
+                break;
+            }
+            let fixtureAtTime = response.data.response.filter(
+                fixture => checkDateRange(fixture.fixture.date, startTIme, endTime));
+            let countryFixtures = fixtureAtTime.filter(fixture =>fixture.league.country === country);
+
+            let leagueFixture = countryFixtures.filter(fixture => fixture.league.name === league);
+            wantedFixturesArray = wantedFixturesArray.concat(leagueFixture.splice(0, gamesPerLeague));
+                
+        }
+        
+    }
+    if(wantedFixturesArray.length>13)
+        wantedFixturesArray = wantedFixturesArray.splice(0, 13);
+    return wantedFixturesArray;
+}
+
+export const configureBoard = (kickOffTime,endTime, kickOffDate) => {
     return dispatch => {
-        console.log(kickOffDate);
-        axios.get("fixtures/date/" + kickOffDate)
+        axios.get("fixtures" , {    params: {
+            date: kickOffDate }
+        })
             .then(response => {
-               
-                let dateTime = (kickOffDate + "T" + kickOffTime);
-                let fixtureAtTime = response.data.api.fixtures.filter(
-                    fixture => fixture.event_date === dateTime);
-                let EnglandFixtures = fixtureAtTime.filter(fixture => fixture.league.country === "England");
+                let startTime = (kickOffDate + "T" + kickOffTime);
+                endTime = (kickOffDate + "T" + endTime );
+                let wantedFixtures = gamePicker(response,startTime, endTime,[],"England", ["Premier League", "Championship", "FA Cup","League One", "League Two"],7);
+                
+                // let fixtureAtTime = response.data.response.filter(
+                //     fixture => checkDateRange(fixture.fixture.date, startTime, endTime));
 
-                let PremierShipOrFACup;
-                if (!isFaCup) {
-                    PremierShipOrFACup = EnglandFixtures.filter(fixture => fixture.league.name === "Premier League");
-                } else {
-                    PremierShipOrFACup = EnglandFixtures.filter(fixture => fixture.league.name === "FA Cup");
-                }
+                //     fixtureAtTime.forEach(fix =>{
+                //         console.log(fix.league.country+ " "+ fix.teams.home.name+ " league nname: "+ fix.league.name);
 
-                let Championship = EnglandFixtures.filter(fixture => fixture.league.name === "Championship");
-                let countWanted;
+                //     })
 
-                if ((Championship.length + PremierShipOrFACup.length) < 13) {
-                    countWanted = Championship.length + PremierShipOrFACup.length;
-                }
-                else {
-                    countWanted = 13;
-                }
-
-                let premCount = 7;
-                let ChamCount = 6;
-                if (countWanted === 13) {
-                    if (Championship.length < 6)
-                        premCount = countWanted - Championship.length;
-                    if (PremierShipOrFACup.length < 7)
-                        ChamCount = countWanted - PremierShipOrFACup.length;
-                } else {
-                    if (Championship.length < 5)
-                        premCount = countWanted - Championship.length;
-                    if (PremierShipOrFACup < 6)
-                        ChamCount = countWanted - PremierShipOrFACup.length;
-                }
-                let wantedFixtures = PremierShipOrFACup.splice(0, premCount).concat(Championship.splice(0, ChamCount));
-                let countAfter = wantedFixtures.length;
-
-                if (wantedFixtures.length < 13) {
-                    let leagueOneFixture = EnglandFixtures.filter(fixture => fixture.league.name === "League One");
-                    wantedFixtures = wantedFixtures.concat(leagueOneFixture.splice(0, (13 - countAfter)));
-                }
-
-                let counterAFterLeagueOne = wantedFixtures.length;
-                if (wantedFixtures.length < 13) {
-                    let leagueTwoFixture = EnglandFixtures.filter(fixture => fixture.league.name === "League Two");
-                    wantedFixtures = wantedFixtures.concat(leagueTwoFixture.splice(0, (13 - counterAFterLeagueOne)));
-                }
                 let fixturesToPush = [];
                 for (let i = 0; i < wantedFixtures.length; i++) {
                     fixturesToPush.splice(fixturesToPush.length, fixturesToPush.length + 1,
                         {
                             leagueName: wantedFixtures[i].league.name,
-                            fixture_id: wantedFixtures[i].fixture_id,
-                            status: wantedFixtures[i].status,
-                            homeTeam_id: wantedFixtures[i].homeTeam.team_id, homeTeam: wantedFixtures[i].homeTeam.team_name,
-                            awayTeam_id: wantedFixtures[i].awayTeam.team_id, awayTeam: wantedFixtures[i].awayTeam.team_name,
-                            event_date: wantedFixtures[i].event_date,
-                            end_time: moment(dateTime).add(3, 'hours').format("YYYY-MM-DDTHH:mm:SS+00:00"),
+                            fixture_id: wantedFixtures[i].fixture.id,
+                            status: wantedFixtures[i].fixture.status.long,
+                            homeTeam_id: wantedFixtures[i].teams.home.id, homeTeam: wantedFixtures[i].teams.home.name,
+                            awayTeam_id: wantedFixtures[i].teams.away.id, awayTeam: wantedFixtures[i].teams.away.name,
+                            event_date: startTime,
+                            end_time: moment(endTime).add(3, 'hours').format("YYYY-MM-DDTHH:mm:SS+00:00"),
                         })
                 }
-                if (fixturesToPush.length === 13) {
-                    console.log("i got called here3");
                     let boardRef = firebase.database().ref("board").child(kickOffDate);
                     let data;
                     boardRef.on("value", snapshot => {
@@ -126,14 +113,12 @@ export const configureBoard = (isFaCup, kickOffTime, kickOffDate) => {
                             firebase.database().ref("board").child(kickOffDate).update({ dateKey: kickOffDate });
                             firebase.database().ref("board").off();
                             dispatch(setEventDate(fixturesToPush[0].event_date));
-                            alert("board initialized");
                         }
                     })
                     dispatch(setIsBoardSet(true));
                     firebase.database().ref("board").off();
-                }
             }).catch(error => {
-                alert("no games for this day");
+                console.log(error);
             });
     };
 }
@@ -163,10 +148,7 @@ export const fetchResults = (numberOfGames) => {
             if (finalResults.length > 0) {
                 dispatch(fetchWeeklyResults(resoultModified));
                 dispatch(stopResultInitialize());
-            } else {
-                alert("Content Not Found");
             }
-
         });
     }
 }

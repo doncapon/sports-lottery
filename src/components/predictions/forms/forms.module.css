@@ -10,6 +10,24 @@
         padding: 0;
         margin: 0;
     }
+    .WinForm{
+        background-color: green;
+        padding: 0 0.2vw;
+        margin-left: 0.2vw;
+        color: white;
+    }
+    .LossForm{
+        background-color: red;
+        padding: 0 0.4vw;
+        margin-left: 0.2vw;
+        color: white;
+    }
+    .DrawForm{
+        background-color: grey;
+        padding: 0 0.4vw;
+        margin-left: 0.2vw;
+        color: white;
+    }
 
 /* medium sizes */
 @media only screen and (min-width: 768px ){

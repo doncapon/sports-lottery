@@ -16,6 +16,7 @@ import { addCommaToAmounts, dateInYYYYMMDD, getNextPlayDate } from '../../shared
 import firebase from '../../config/firebase/firebase';
 import Modal from "../../components/UI/Modal/Modal";
 import LoginModal from '../../components/loginLogout/modalLogin/loginModal';
+import moment from 'moment';
 
 class Board extends Component {
 
@@ -34,6 +35,22 @@ class Board extends Component {
     }
   }
   componentDidMount() {
+    setInterval(() => {
+      let kickOffDate;
+      kickOffDate = getNextPlayDate(this.props.daysOffset,
+        this.props.hourToNextDay);
+      let gameTime = kickOffDate + "T" + this.props.kickOffTime;
+      if (moment(new Date()).isSameOrAfter(moment(gameTime))) {
+        firebase.database().ref("board").child(kickOffDate).on("value", snapshot => {
+          if (snapshot.val() === null) {
+              this.handlecConfigureBoard();
+              this.setupJackpot(kickOffDate);
+              this.props.onDeleteAndResetAll();            
+          }
+        });
+      }
+    }, 1000);
+
     if (!this.state.loading) {
       setTimeout(() => {
         this.setState({ funds: this.props.user.funds });
@@ -81,6 +98,7 @@ class Board extends Component {
   ExecutePurchase = () => {
     let userId = firebase.auth().currentUser.uid;
     this.updateJackpot(this.props.totalPrice);
+    this.updateDividend(this.props.totalPrice);
     let userRef = firebase.database().ref("users").child(userId);
     userRef.child('funds').transaction((funds) => {
       this.props.onSetFunds(funds - this.props.totalPrice)
@@ -88,11 +106,73 @@ class Board extends Component {
     });
     userRef.off();
   }
+  setupJackpot = (key) => {
+    let jackpotData;
+      firebase.database().ref("jackpots").limitToLast(1).once("value").then(snapshot => {
+        let data = snapshot.val();
+        jackpotData = Object.keys(data).map(key=>{
+          return data[key];
+        })
+      let total = 0;
+      if (jackpotData[0].tenUser === 0){
+        let percent = this.props.tenPercent * jackpotData[0].jackpot;
+        total += percent;
+      }
+
+      if (jackpotData[0].elevenUser === 0){
+        let percent = this.props.elevenPercent * jackpotData[0].jackpot;
+        total += percent;
+      }
+      if (jackpotData[0].twelveUser === 0){
+        let percent = this.props.twelvePercent * jackpotData[0].jackpot;
+        total += percent;
+      }
+      if (jackpotData[0].thirteenUser === 0){
+        let percent = this.props.thirteenPercent * jackpotData[0].jackpot;
+        total += percent;
+      }
+        firebase.database().ref("jackpots").child(key).on("value", snapshot => {
+          let data = snapshot.val();
+        setTimeout(() => {
+          if (data === null) {
+            firebase.database().ref("jackpots").child(key).set({
+              jackpot: total,
+              tenUser: 0,
+              elevenUser: 0,
+              twelveUser: 0,
+              thirteenUser: 0
+            })
+          }
+        }, 1000);
+          firebase.database().ref("jackpots").off();
+          firebase.database().ref("board").off();
+        return null;
+      })
+  });
+  }
+
   updateJackpot = (totalPrice) => {
     firebase.database().ref("jackpots").child(dateInYYYYMMDD(this.props.gameDate)).child("jackpot").transaction(Jackpots => {
       return Jackpots + (totalPrice / 2);
     })
   }
+  updateDividend = (totalPrice) => {
+    firebase.database().ref("dividends").child(dateInYYYYMMDD(this.props.gameDate)).child("dividend").transaction(dividends => {
+      return dividends + (totalPrice / 2);
+    })
+  }
+
+  handlecConfigureBoard = () => {
+    this.props.onSetIsBoardSet(false);
+    let kickOffDate;
+    kickOffDate = getNextPlayDate(this.props.daysOffset,
+      this.props.hourToNextDay);
+    setTimeout(() => {
+      this.props.onConfigureBoard(
+        this.props.kickOffTime, this.props.endTime, dateInYYYYMMDD(kickOffDate)); //this.state.gameDate
+    }, 3000);
+  }
+
   render() {
     return (this.props.loading ? (
       // this.state.isGamesAvailable? 
@@ -220,9 +300,13 @@ class Board extends Component {
 const mapstateToProps = (state) => {
   return {
     hourToNextDay: state.config.hourToNextDay,
-    isFACupNextWeek: state.config.isFACupNextWeek,
     daysOffset: state.config.daysOffset,
     kickOffTime: state.config.kickOffTime,
+    endTime: state.config.endTime,
+    thirteenPercent: state.config.thirteenPercent,
+    twelvePercent: state.config.twelvePercent,
+    elevenPercent: state.config.elevenPercent,
+    tenPercent: state.config.tenPercent,
 
     gameDate: state.board.gameDate,
     evaluationDate: state.board.evaluationDate,
@@ -291,6 +375,9 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions.fetchPredictionsAll(FixturesList, gameIndex)),
     onSetIsLoggedIn: (value) => dispatch(actions.setIsLoggedIn(value)),
     onSetLoggedInUser: (username, password) => dispatch(actions.setLoggedInUser(username, password)),
+    onConfigureBoard: (kickOffTime, endTime, kickOffDate) =>
+      dispatch(actions.configureBoard(kickOffTime, endTime, kickOffDate)),
+    onSetIsBoardSet: (isBoardSet) => dispatch(actions.setIsBoardSet(isBoardSet))
 
   };
 };
