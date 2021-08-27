@@ -46,8 +46,9 @@ const CountDown = (props) => {
               style={{ position: 'relative' }}
               {...timerProps}
               className={classes.circle}
-              colors={[["#000"]]}
+              colors={[["#fff"]]}
               duration={daysDuration}
+              trailColor="#fff"
               initialRemainingTime={remainingTime}
             >
               {({ elapsedTime }) =>
@@ -59,8 +60,9 @@ const CountDown = (props) => {
             <CountdownCircleTimer
 
               {...timerProps}
-              colors={[["#000"]]}
+              colors={[["#fff"]]}
               duration={daySeconds}
+              trailColor="#000"
               initialRemainingTime={remainingTime % daySeconds}
               onComplete={(totalElapsedTime) => [
                 diff - totalElapsedTime > hourSeconds,
@@ -74,8 +76,9 @@ const CountDown = (props) => {
           <Col lg={3} md={3} sm={12} style={{ display: 'flex', justifyContent: 'center' }} className='mb-2'>
             <CountdownCircleTimer
               {...timerProps}
-              colors={[["#000"]]}
+              colors={[["#fff"]]}
               duration={hourSeconds}
+              trailColor="#000"
               initialRemainingTime={remainingTime % hourSeconds}
               onComplete={(totalElapsedTime) => [
                 diff - totalElapsedTime > minuteSeconds,
@@ -89,8 +92,9 @@ const CountDown = (props) => {
           <Col lg={3} md={3} sm={12} style={{ display: 'flex', justifyContent: 'center' }} className='mb-2'>
             <CountdownCircleTimer
               {...timerProps}
-              colors={[["#000"]]}
+              colors={[["#fff"]]}
               duration={minuteSeconds}
+              trailColor="#000"
               initialRemainingTime={remainingTime % minuteSeconds}
               onComplete={(totalElapsedTime) => [
                 diff - totalElapsedTime > 0,
