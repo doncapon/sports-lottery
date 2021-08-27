@@ -62,7 +62,7 @@ class Navs extends Component {
             alt="React Bootstrap logo"
           /> */}
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Toggle aria-controls="basic-navbar-nav" className={classes.Toggler}/>
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Link to="/" as={NavLink} className='text-white ml-2'>Home</Nav.Link>

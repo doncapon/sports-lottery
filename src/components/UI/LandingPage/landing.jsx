@@ -31,9 +31,9 @@ class Landing extends Component {
       if (moment(new Date()).isSameOrAfter(moment("2021-08-12"))) {
         firebase.database().ref("board").child(kickOffDate).on("value", snapshot => {
           if (snapshot.val() === null) {
-              this.handlecConfigureBoard();
-              this.setupJackpot(kickOffDate);   
-              this.props.onDeleteAndResetAll();           
+            this.handlecConfigureBoard();
+            this.setupJackpot(kickOffDate);
+            this.props.onDeleteAndResetAll();
           }
         });
       }
@@ -88,34 +88,34 @@ class Landing extends Component {
     }, 3000);
   }
 
-  
+
   setupJackpot = (key) => {
     let jackpotData;
-      firebase.database().ref("jackpots").limitToLast(1).once("value").then(snapshot => {
-        let data = snapshot.val();
-        jackpotData = Object.keys(data).map(key=>{
-          return data[key];
-        })
+    firebase.database().ref("jackpots").limitToLast(1).once("value").then(snapshot => {
+      let data = snapshot.val();
+      jackpotData = Object.keys(data).map(key => {
+        return data[key];
+      })
       let total = 0;
-      if (jackpotData[0].tenUser === 0){
+      if (jackpotData[0].tenUser === 0) {
         let percent = this.props.tenPercent * jackpotData[0].jackpot;
         total += percent;
       }
 
-      if (jackpotData[0].elevenUser === 0){
+      if (jackpotData[0].elevenUser === 0) {
         let percent = this.props.elevenPercent * jackpotData[0].jackpot;
         total += percent;
       }
-      if (jackpotData[0].twelveUser === 0){
+      if (jackpotData[0].twelveUser === 0) {
         let percent = this.props.twelvePercent * jackpotData[0].jackpot;
         total += percent;
       }
-      if (jackpotData[0].thirteenUser === 0){
+      if (jackpotData[0].thirteenUser === 0) {
         let percent = this.props.thirteenPercent * jackpotData[0].jackpot;
         total += percent;
       }
-        firebase.database().ref("jackpots").child(key).on("value", snapshot => {
-          let data = snapshot.val();
+      firebase.database().ref("jackpots").child(key).on("value", snapshot => {
+        let data = snapshot.val();
         setTimeout(() => {
           if (data === null) {
             firebase.database().ref("jackpots").child(key).set({
@@ -127,11 +127,11 @@ class Landing extends Component {
             })
           }
         }, 1000);
-          firebase.database().ref("jackpots").off();
-          firebase.database().ref("board").off();
+        firebase.database().ref("jackpots").off();
+        firebase.database().ref("board").off();
         return null;
       })
-  });
+    });
   }
 
   getJackpot = () => {
@@ -160,10 +160,7 @@ class Landing extends Component {
           style={{ position: "relative" }}
         >
           <div>
-            {this.state.loading && this.state.gameDateRaw ? (
-              <CountDown gamedate={this.state.gameDateRaw} />
-            ) : null}
-            {this.state.jackpot >= 0 && this.state.jackpot != null ? (
+          {this.state.jackpot >= 0 && this.state.jackpot != null ? (
               <div className={classes.Jackpot}>
                 <div className={classes.JapotText}>Jackpot: </div>
                 {this.state.isGamesAvailable
@@ -171,13 +168,18 @@ class Landing extends Component {
                   : "Sorry, No games this week"}
               </div>
             ) : null}
+
+            {this.state.loading && this.state.gameDateRaw ? (
+              <CountDown gamedate={this.state.gameDateRaw} />
+            ) : null}
+       
           </div>
           <img
             className={classes.ball_img}
             src={ball}
             width="200px"
             alt="ball"
-            style={{ position: "absolute", right: "100px", bottom: "200px" }}
+            style={{ position: "absolute", right: "100px", bottom: "40px" }}
           />
         </Container>
         <Footer />
