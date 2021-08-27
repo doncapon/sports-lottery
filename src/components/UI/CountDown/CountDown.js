@@ -41,9 +41,9 @@ const CountDown = (props) => {
       <Container style={{ margin: '0 auto' }}>
         <h2 style={{ textAlign: "center", fontWeight: '700' }} className='mt-4'>Time Left To Play</h2>
         <Row style={{ display: 'flex', justifyContent: 'center', width: '90%', margin: '50px auto' }}>
-          <Col lg={3} md={3} sm={12}  style={{display: 'flex', justifyContent: 'center'}} className='mb-2'>
+          <Col lg={3} md={3} sm={12} style={{ display: 'flex', justifyContent: 'center' }} className='mb-2'>
             <CountdownCircleTimer
-            style={{position: 'relative'}}
+              style={{ position: 'relative' }}
               {...timerProps}
               className={classes.circle}
               colors={[["#000"]]}
@@ -54,11 +54,10 @@ const CountDown = (props) => {
                 renderTime("days", getTimeDays(daysDuration - elapsedTime))
               }
             </CountdownCircleTimer>
-            <img className={classes.pin} src={pin} width='30px' style={{position: 'absolute', right: '70px', top: '-5px'}} alt='timer'/>
           </Col>
-          <Col lg={3} md={3} sm={12} style={{display: 'flex', justifyContent: 'center'}} className='mb-2'>
+          <Col lg={3} md={3} sm={12} style={{ display: 'flex', justifyContent: 'center' }} className='mb-2'>
             <CountdownCircleTimer
-             
+
               {...timerProps}
               colors={[["#000"]]}
               duration={daySeconds}
@@ -68,12 +67,11 @@ const CountDown = (props) => {
               ]}
             >
               {({ elapsedTime }) =>
-                renderTime("hours", getTimeHours(daySeconds - elapsedTime) < 0 ? 0: getTimeHours(daySeconds - elapsedTime)  )
+                renderTime("hours", getTimeHours(daySeconds - elapsedTime) < 0 ? 0 : getTimeHours(daySeconds - elapsedTime))
               }
             </CountdownCircleTimer>
-            <img className={classes.pin} src={pin} width='30px' style={{position: 'absolute', right: '70px', top: '-5px'}} alt='timer'/>
           </Col>
-          <Col lg={3} md={3} sm={12} style={{display: 'flex', justifyContent: 'center'}} className='mb-2'>
+          <Col lg={3} md={3} sm={12} style={{ display: 'flex', justifyContent: 'center' }} className='mb-2'>
             <CountdownCircleTimer
               {...timerProps}
               colors={[["#000"]]}
@@ -87,9 +85,8 @@ const CountDown = (props) => {
                 renderTime("minutes", getTimeMinutes(hourSeconds - elapsedTime))
               }
             </CountdownCircleTimer>
-            <img className={classes.pin} src={pin} width='30px' style={{position: 'absolute', right: '70px', top: '-5px'}} alt='timer'/>
           </Col>
-          <Col lg={3} md={3} sm={12} style={{display: 'flex', justifyContent: 'center'}} className='mb-2'>
+          <Col lg={3} md={3} sm={12} style={{ display: 'flex', justifyContent: 'center' }} className='mb-2'>
             <CountdownCircleTimer
               {...timerProps}
               colors={[["#000"]]}
@@ -103,7 +100,6 @@ const CountDown = (props) => {
                 renderTime("seconds", getTimeSeconds(elapsedTime))
               }
             </CountdownCircleTimer>
-            <img className={classes.pin} src={pin} width='30px' style={{position: 'absolute', right: '70px', top: '-5px'}} alt='timer'/>
           </Col>
         </Row>
       </Container >

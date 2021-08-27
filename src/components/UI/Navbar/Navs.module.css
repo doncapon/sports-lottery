@@ -22,6 +22,9 @@
     --sm-font-size: 0.65rem;
   }
 
+  .Toggler{
+    background-image: url(../../../assets/hamburger.png);
+  }
   .LoginSection{
     display: block;
   }
