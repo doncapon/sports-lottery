@@ -59,6 +59,7 @@ export const login = (email, password) => {
                         dispatch(setLoggedInUser(dbUser));
                         setTimeout(()=>{
                             firebase.database().ref("users").off();
+
                         }, 2000)
 
                     });
@@ -76,7 +77,7 @@ export const login = (email, password) => {
             .catch((error) => {
                 setLoggedInUser(error);
                 dispatch(setForgot(true));
-                dispatch(setIsLoggedIn(true));
+                dispatch(setIsLoggedIn(false));
                 dispatch(logout2())
             });
             firebase.database().ref("users").off();
