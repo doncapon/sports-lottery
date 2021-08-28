@@ -23,8 +23,9 @@ const Login = (props) => {
         e.preventDefault();
         login();
         setTimeout(() => {
+            // !props.isLoggedIn ||
             firebase.auth().onAuthStateChanged(user => {
-                if (!props.isLoggedIn || !user.emailVerified) {
+                if ( !user.emailVerified) {
                     setAlerts(["alert", "alert-danger"])
                     popUpFunc();
                     setTimeout(() => {
