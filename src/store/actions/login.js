@@ -60,14 +60,20 @@ export const login = (email, password) => {
                         firebase.database().ref("users").off();
 
                     });
+
                     return function cleanup() {
-                        userRef.off();
+                        setTimeout(()=>{
+                            userRef.off();
+                        }, 2000)
                     }
                     
+                }else{
+                    alert("I am not verified")
                 }
 
             })
             .catch((error) => {
+                alert("could not login");
                 setLoggedInUser(error);
                 dispatch(setForgot(true));
                 dispatch(setIsLoggedIn(false));
