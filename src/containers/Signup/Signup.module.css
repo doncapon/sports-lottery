@@ -23,15 +23,13 @@
     } 
     .Label{
         display: none;
+        color: white;
+        font-weight: bolder;
     } 
-.LabelSmall{
-  font-size: 2vh;
-  margin: 0;
-}
     .ErrorText{
       color: red;
     }
-    .Text, .Select  ,   .Password, .Date 
+    .Text, .Select  ,   .Password
     {    
       width: 90%;    
       padding: 2px 20px;    
@@ -42,12 +40,10 @@
       box-sizing: border-box;   
       font-size: 12px; 
     }    
-.TogglePassword{
-  margin-left: 50vw;
-}
-    .Date {
-      width: 54%;
+    .TogglePassword{
+      margin-left: 50vw;
     }
+
     .Text{
     }
     .Submit {    
@@ -103,7 +99,7 @@
       width: 450px;
       height: 60vh;
      }
-    .Text,  .Password ,  .Date
+    .Text,  .Password 
     {    
       width: 75%;
       height: 4vh;
@@ -131,9 +127,9 @@
     width: 550px;
     height: 80vh;
    }
-  .Text, select  ,   .Password ,  .Date
+  .Text, select  ,   .Password
   {    
-    width: 60%;
+    /* width: 60%; */
     height: 5vh;
   }
   .Label{
