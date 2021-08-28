@@ -57,26 +57,26 @@ export const login = (email, password) => {
                         dispatch(setLoggedInUser(user));
                         dispatch(setIsLoggedIn(true));
                         dispatch(setLoggedInUser(dbUser));
-                        firebase.database().ref("users").off();
+                        setTimeout(()=>{
+                            firebase.database().ref("users").off();
+                        }, 2000)
 
                     });
 
                     return function cleanup() {
                         setTimeout(()=>{
-                            userRef.off();
+                        userRef.off();
+
                         }, 2000)
                     }
                     
-                }else{
-                    alert("I am not verified")
                 }
 
             })
             .catch((error) => {
-                alert("could not login");
                 setLoggedInUser(error);
                 dispatch(setForgot(true));
-                dispatch(setIsLoggedIn(false));
+                dispatch(setIsLoggedIn(true));
                 dispatch(logout2())
             });
             firebase.database().ref("users").off();
