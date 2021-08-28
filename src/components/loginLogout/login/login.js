@@ -12,7 +12,9 @@ const Login = (props) => {
     let history = useHistory();
     const login = () => {
         if (!props.loading) {
-            props.login(email, password);
+            let emailTrimmed = email.trim();
+            let passwordTrimmed = password.trim();
+            props.login(emailTrimmed, passwordTrimmed);
         }
 
     };
