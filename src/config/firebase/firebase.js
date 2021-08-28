@@ -2,7 +2,7 @@ import firebase from "firebase";
 
 const config = {
   apiKey: "AIzaSyAFblv8_Mrvo2mQrEwKimN20AjrTTv9WwE",
-  authDomain: "betsoka-4b359.firebaseapp.com",
+  authDomain: process.env.REACT_HOME ,
   databaseURL: "https://betsoka-4b359-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "betsoka-4b359",
   storageBucket: "betsoka-4b359.appspot.com",
