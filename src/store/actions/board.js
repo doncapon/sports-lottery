@@ -3,7 +3,7 @@ import firebase from '../../config/firebase/firebase';
 
 export const generateSlip = (amount, slipIndex, basePrice) => {
     return dispatch => {
-        dispatch(EmptyEditingISlip());
+        dispatch(EmptyEditingISlip2());
         dispatch(generateSlip2(amount, basePrice));
         dispatch(setPurchaseAll());
         dispatch(calculateSpecificSlipPrice(slipIndex, basePrice));
@@ -128,10 +128,16 @@ export const checkPurchasable = (index) => {
         slipIndex: index
     }
 }
-
+const EmptyEditingISlip2 = ()=>{
+    return dispatch => {
+        dispatch(EmptyEditingIndexSlip());
+    }
+}
 export const EmptyEditingISlip = () => {
     return dispatch => {
         dispatch(EmptyEditingIndexSlip());
+        dispatch(setPurchaseAll());
+        dispatch(calculateGrandTtoalPriceOfAllSlips());
     }
 }
 export const toggleSelectedTile = (slipIndex, gameIndex, sideIndex, side) => {

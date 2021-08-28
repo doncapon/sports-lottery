@@ -346,6 +346,7 @@ const EmptyEditingIndexSlip = (state, action) => {
         for (let i = 0; i < games.length; i++) {
             for (let k = 0; k < len; k++) {
                 games[i]["game_" + (i + 1)].sides.push(side);
+                games[i].amount = 0;                
             }
             games[i]["game_" + (i + 1)].sides.splice(0, 3);
         }
