@@ -386,13 +386,12 @@ class Signup extends Component {
                         </div>
                         <div>
                             <label className={classes.Label} htmlFor="dob">Birth Date</label>
-                            <span className={classes.LabelSmall} htmlFor="dob">Birth Date</span>
                             <input type="text" name="dob"
                                 value={this.state.dob}
                                 size="10" maxLength="10" onKeyUp={this.handleKeyUp}
                                 onChange={this.handleChange}
-                                placeholder="dd/mm/yyyy"
-                                className={classes.Date} />
+                                placeholder="Birth Date - dd/mm/yyyy"
+                                className={classes.Text} />
                             {dobErr &&
                                 <div className={classes.ErrorText}>{dobErr}</div>
                             }
