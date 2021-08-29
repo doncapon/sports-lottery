@@ -50,8 +50,7 @@ class Settings extends Component {
 
     }
     handleSetResultss = () => {
-        this.props.onSetCurrentResult(this.props.slips[0]["slip_1"]);
-        alert("results hae been set or updated")
+        this.props.onSetCurrentResult();
     }
 
     translateResult = (goalHome, goalAway, status) => {
@@ -343,13 +342,13 @@ class Settings extends Component {
             </form>
             <div>
                 <Button onClick={this.handlecConfigureBoard} >Configure Play Board</Button>
-                <Button type="button" onClick={this.setupJackpot} disabled={this.state.disable} >Set Starting Jakcpot</Button>
+                {/* <Button type="button" onClick={this.setupJackpot} disabled={this.state.disable} >Set Starting Jakcpot</Button> */}
                 <Button onClick={this.handleSetResultss} >Set Last Results</Button>
             </div>
 
             <form onSubmit={this.shareJackpot}>
                 <input type="text" name="date" value={this.state.gameDate} onChange={(e) => this.setState({ gameDate: e.target.value })} />
-                <Button onClick={this.handleUpdateBoard} variant="outline-dark">Update Play Board</Button>
+                {/* <Button onClick={this.handleUpdateBoard} variant="outline-dark">Update Play Board</Button> */}
                 <Button type="submit" variant="outline-success" disabled={this.state.disable} >Share Jackpot</Button>
                 <Button type="button" variant="success" onClick={this.payOut} disabled={this.state.disable} >Payout to Winners</Button>
 
@@ -387,8 +386,8 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(actions.updateBoard(fixturesToPush, kickOffDate)),
         // onConfigureBoard: ( kickOffTime, endTime, kickOffDate) =>
         //     dispatch(actions.configureBoard( kickOffTime,endTime, kickOffDate)),
-        onSetCurrentResult: (slip) =>
-            dispatch(actions.setCurrentResult(slip)),
+        onSetCurrentResult: () =>
+            dispatch(actions.setCurrentResult()),
         // onSetIsBoardSet: (isBoardSet) => dispatch(actions.setIsBoardSet(isBoardSet))
     }
 }

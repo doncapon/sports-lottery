@@ -4,7 +4,7 @@ import moment from 'moment';
 import * as  actionTypes from './actionTypes';
 import _ from 'lodash';
 import firebase from "../../config/firebase/firebase";
-import {checkDateRange} from '../../shared/utility';
+import { checkDateRange } from '../../shared/utility';
 
 export const setIsBoardSet = (isBoardSet) => {
     return {
@@ -31,57 +31,56 @@ export const setEventDate = (eventDate) => {
         eventDate: eventDate
     }
 }
-export const updateBoard = (fixturesToPush, kickOffDate)=>{
-    return dispatch=> {
-        console.log("i got called here");
+export const updateBoard = (fixturesToPush, kickOffDate) => {
+    return dispatch => {
         fixturesToPush.forEach((fixture, index) => {
-            axios.get("fixtures/id/" + fixture.fixture_id)
+                axios.get("fixtures", {params: { id: fixture}})
                 .then(response => {
                     firebase.database().ref("board").child(kickOffDate).child(index)
-                        .update({ status: response.data.api.fixtures[0].status });
+                        .update({ status: response.data.response[0].fixture.status.long });
                     firebase.database().ref("board").off();
                 });
-        })
+        });
         firebase.database().ref("board").off();
-       
-        alert("board updated");
         return null;
     }
 }
 
 
-const gamePicker = (response, startTIme,endTime,wantedFixturesArray, country, leagueNames, gamesPerLeague)=>{
-    if(wantedFixturesArray.length < 13){
-        for( let i =0 ; i < leagueNames.length; i++){
+const gamePicker = (response, startTIme, endTime, wantedFixturesArray, country, leagueNames, gamesPerLeague) => {
+    if (wantedFixturesArray.length < 13) {
+        for (let i = 0; i < leagueNames.length; i++) {
             let league = leagueNames[i];
-            if(wantedFixturesArray.length > 13){
+            if (wantedFixturesArray.length > 13) {
                 break;
             }
             let fixtureAtTime = response.data.response.filter(
                 fixture => checkDateRange(fixture.fixture.date, startTIme, endTime));
-            let countryFixtures = fixtureAtTime.filter(fixture =>fixture.league.country === country);
+            let countryFixtures = fixtureAtTime.filter(fixture => fixture.league.country === country);
 
             let leagueFixture = countryFixtures.filter(fixture => fixture.league.name === league);
             wantedFixturesArray = wantedFixturesArray.concat(leagueFixture.splice(0, gamesPerLeague));
-                
+
         }
-        
+
     }
-    if(wantedFixturesArray.length>13)
+    if (wantedFixturesArray.length > 13)
         wantedFixturesArray = wantedFixturesArray.splice(0, 13);
     return wantedFixturesArray;
 }
 
-export const configureBoard = (kickOffTime,endTime, kickOffDate) => {
+export const configureBoard = (kickOffTime, endTime, kickOffDate) => {
     return dispatch => {
-        axios.get("fixtures" , {    params: {
-            date: kickOffDate }
+        axios.get("fixtures", {
+            params: {
+                date: kickOffDate
+            }
         })
             .then(response => {
                 let startTime = (kickOffDate + "T" + kickOffTime);
-                endTime = (kickOffDate + "T" + endTime );
-                let wantedFixtures = gamePicker(response,startTime, endTime,[],"England", ["Premier League", "Championship", "FA Cup","League One", "League Two"],7);
-                
+                endTime = (kickOffDate + "T" + endTime);
+                let wantedFixtures = gamePicker(response, startTime, endTime, [], "England", ["Premier League", "Championship", "FA Cup", "League One", "League Two"], 7);
+
                 // let fixtureAtTime = response.data.response.filter(
                 //     fixture => checkDateRange(fixture.fixture.date, startTime, endTime));
 
@@ -99,24 +98,24 @@ export const configureBoard = (kickOffTime,endTime, kickOffDate) => {
                             status: wantedFixtures[i].fixture.status.long,
                             homeTeam_id: wantedFixtures[i].teams.home.id, homeTeam: wantedFixtures[i].teams.home.name,
                             awayTeam_id: wantedFixtures[i].teams.away.id, awayTeam: wantedFixtures[i].teams.away.name,
-                            event_date: startTime,
-                            end_time: moment(endTime).add(3, 'hours').format("YYYY-MM-DDTHH:mm:SS+00:00"),
+                            event_date: startTime
+                            // end_time: moment(endTime).add(3, 'hours').format("YYYY-MM-DDTHH:mm:SS+00:00"),
                         })
                 }
-                    let boardRef = firebase.database().ref("board").child(kickOffDate);
-                    let data;
-                    boardRef.on("value", snapshot => {
-                        data = snapshot.val();
-                        if (!data) {
-                            firebase.database().ref("board").child(kickOffDate).update(fixturesToPush);
-                            firebase.database().ref("board").child(kickOffDate).update({ isPaid: false });
-                            firebase.database().ref("board").child(kickOffDate).update({ dateKey: kickOffDate });
-                            firebase.database().ref("board").off();
-                            dispatch(setEventDate(fixturesToPush[0].event_date));
-                        }
-                    })
-                    dispatch(setIsBoardSet(true));
-                    firebase.database().ref("board").off();
+                let boardRef = firebase.database().ref("board").child(kickOffDate);
+                let data;
+                boardRef.on("value", snapshot => {
+                    data = snapshot.val();
+                    if (!data) {
+                        firebase.database().ref("board").child(kickOffDate).update(fixturesToPush);
+                        firebase.database().ref("board").child(kickOffDate).update({ isPaid: false });
+                        firebase.database().ref("board").child(kickOffDate).update({ dateKey: kickOffDate });
+                        firebase.database().ref("board").off();
+                        dispatch(setEventDate(fixturesToPush[0].event_date));
+                    }
+                })
+                dispatch(setIsBoardSet(true));
+                firebase.database().ref("board").off();
             }).catch(error => {
                 console.log(error);
             });
@@ -144,54 +143,68 @@ export const fetchResults = (numberOfGames) => {
 
             })
             let resoultModified = finalResults
-
             if (finalResults.length > 0) {
+                
                 dispatch(fetchWeeklyResults(resoultModified));
                 dispatch(stopResultInitialize());
             }
+            return null;
         });
     }
 }
 
-export const setCurrentResult = (slipGame) => {
+export const setCurrentResult = () => {
     return dispatch => {
-        slipGame.games.map(game => {
-            return axios.get("fixtures/id/" + game.fixture_id)
-                .then(response => {
-                    let resultFixture = response.data.api.fixtures[0];
-                    let gameDay = moment(resultFixture.event_date).format("YYYY-MM-DD") + "T00:00:00+00:00";
-                    let returnResult = {
-                        status: resultFixture.status,
-                        fixtureId: resultFixture.fixture_id,
-                        homeGoals: resultFixture.goalsHomeTeam,
-                        awayGoals: resultFixture.goalsAwayTeam,
-                        score: resultFixture.score.fulltime,
-                        homeTeam: resultFixture.homeTeam.team_name,
-                        awayTeam: resultFixture.awayTeam.team_name,
-                        gameDate: resultFixture.event_date,
-                        gameDay: gameDay
-                    };
+        firebase.database().ref("board").limitToLast(2).on("value", snapshot => {
+            let date = Object.keys(snapshot.val())[0];
+            let boardGame = snapshot.val();
+            let gameData = boardGame[date];
+            Object.keys(gameData).map(key => {
+                if (key >= 0 && key <= 12) {
+                    let targetFixture = gameData[key].fixture_id;
 
-                    let userRef = firebase.database().ref('match-results/' + resultFixture.fixture_id);
-                    userRef.on('value', (snapshot) => {
-                        const resultData = snapshot.val();
-                        if (resultData === null) {
-                            firebase.database().ref('match-results/' + resultFixture.fixture_id).set({
-                                returnResult
-                            });
-                        } else {
-                            let updates = {};
-                            updates['match-results/' + resultFixture.fixture_id] = returnResult;
-                            firebase.database().ref().update(updates)
-                        }
-                    })
+                    return axios.get("fixtures", { params: { id: targetFixture } })
+                        .then(response => {
+                            let resultFixture = response.data.response[0];
+                            let gameDay = moment(resultFixture.fixture.date).format("YYYY-MM-DD") + "T00:00:00+00:00";
+                            console.log(gameDay)
+                            let returnResult = {
+                                status: resultFixture.fixture.status.long,
+                                fixtureId: resultFixture.fixture.id,
+                                homeGoals: resultFixture.goals.home,
+                                awayGoals: resultFixture.goals.away,
+                                score: resultFixture.score.fulltime,
+                                homeTeam: resultFixture.teams.home.name,
+                                awayTeam: resultFixture.teams.away.name,
+                                gameDate: resultFixture.fixture.date,
+                                gameDay: gameDay
+                            };
+                            console.log(returnResult);
+                            let userRef = firebase.database().ref('match-results/' + resultFixture.fixture.id);
+                            userRef.on('value', (snapshot) => {
+                                const resultData = snapshot.val();
+                                if (resultData === null) {
+                                    firebase.database().ref('match-results/' + resultFixture.fixture.id).set({
+                                        returnResult
+                                    });
+                                } else {
+                                    let updates = {};
+                                    updates['match-results/' + resultFixture.fixture.id] = returnResult;
+                                    firebase.database().ref().update(updates)
+                                }
+                            })
+                        })
+                        .catch(err => {
 
+                        });
+                }
+                return null;
+            });
+        })
+        setTimeout(() => {
+            firebase.database().ref("board").off();
+            firebase.database().ref("match-results").off();
+        }, 5000)
 
-                })
-                .catch(err => {
-
-                });
-
-        });
     }
 }

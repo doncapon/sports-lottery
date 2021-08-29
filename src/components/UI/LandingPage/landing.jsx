@@ -28,7 +28,7 @@ class Landing extends Component {
       kickOffDate = getNextPlayDate(this.props.daysOffset,
         this.props.hourToNextDay);
       let gameTime = kickOffDate + "T" + this.props.kickOffTime;
-      if (moment(new Date()).isSameOrAfter(moment("2021-08-12"))) {
+      if (moment(new Date()).isSameOrAfter(moment(gameTime))) {
         firebase.database().ref("board").child(kickOffDate).on("value", snapshot => {
           if (snapshot.val() === null) {
             this.handlecConfigureBoard();
@@ -209,8 +209,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions.updateBoard(fixturesToPush, kickOffDate)),
     onConfigureBoard: (kickOffTime, endTime, kickOffDate) =>
       dispatch(actions.configureBoard(kickOffTime, endTime, kickOffDate)),
-    onSetCurrentResult: (slip) =>
-      dispatch(actions.setCurrentResult(slip)),
+    onSetCurrentResult: () =>
+      dispatch(actions.setCurrentResult()),
     onDeleteAndResetAll: () => dispatch(actions.deleteAndResetAll()),
     onSetIsBoardSet: (isBoardSet) => dispatch(actions.setIsBoardSet(isBoardSet))
   }

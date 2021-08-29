@@ -9,6 +9,7 @@ const Results = (props) => {
     useLayoutEffect(() => {
         let gamesCalc = [];
         let temp = [...props.daysResults];
+        console.log(temp)
         let daysResults = temp.sort((a,b)=>  a[0].gameDay < b[0].gameDay? 1: -1 );
         for (let i = 0; i < daysResults.length; i++) {
             if (daysResults[i].length === 1) {
@@ -65,7 +66,7 @@ const Results = (props) => {
                                             <div>{eachRes.awayTeam}</div>
                                         </div>
                                     </div>
-                                    <div className={classes.Score}>{eachRes.status === "Match Finished" ? eachRes.score : Date.now() > moment(eachRes.gameDate) ? "free pass!!!" : "-"}</div>
+                                    <div className={classes.Score}>{eachRes.status === "Match Finished" ? ""+eachRes.score.home +" - "+ eachRes.score.away : Date.now() > moment(eachRes.gameDate) ? "free pass!!!" : "-"}</div>
                                     <div >{findSelection(eachRes.homeGoals, eachRes.awayGoals, eachRes.status, eachRes.gameDate)}</div>
                                 </div>
                             })}

@@ -41,7 +41,7 @@ const mapstateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onFetchResults: (startDate)=> dispatch(actions.fetchResults(startDate)),
+        onFetchResults: (numberofResultsDisplayed)=> dispatch(actions.fetchResults(numberofResultsDisplayed)),
     }
 }
 export default connect(mapstateToProps, mapDispatchToProps)(ResultPage);
