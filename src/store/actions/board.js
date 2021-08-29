@@ -80,10 +80,11 @@ export const toggleIsShowReceipt = () => {
     }
 }
 
-export const setReceipt = (gameDay) => {
+export const setReceipt = (gameDay, endTime) => {
     return {
         type: actionTypes.SET_RECEIPT,
-        gameDay: gameDay
+        gameDay: gameDay,
+        endTime: endTime
     }
 }
 

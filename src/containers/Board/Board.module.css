@@ -51,11 +51,11 @@
     font-size: 1em;
 }
 
-.ConfrimePayments{
+.ConfrimPayments{
     padding: 0.0vw 0vw 0;
     width: 100%;
     font-weight: bold;
-    font-size: 2.2em;
+    margin-bottom: 20vw;
 }
 
 .Receipts{
@@ -81,7 +81,7 @@
         height: 10vh;
     }
 
-    .PayButton, .ConfrimePayments{
+    .PayButton, .ConfrimPayments{
         height: 8vh;
         padding-bottom: 20px;
         font-size: 60px;
@@ -133,7 +133,7 @@
         padding-bottom: 50px;     
     }
 
-    .ConfrimePayments{
+    .ConfrimPayments{
         height: 13vh;
     }
 

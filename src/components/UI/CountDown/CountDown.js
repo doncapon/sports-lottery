@@ -2,7 +2,6 @@ import React from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import Auxy from "../../../hoc/Auxy/Auxy";
 import classes from "./CountDown.module.css";
-import pin from '../../../assets/pin.png'
 import { Container, Row, Col } from 'react-bootstrap'
 
 import moment from 'moment';

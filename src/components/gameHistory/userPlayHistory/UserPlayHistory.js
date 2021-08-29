@@ -23,8 +23,7 @@ class UserPlayHistory extends Component {
 
         this.setMatchResults = this.setMatchResults.bind(this);
     }
-
-
+    
     componentWillUnmount() {
         firebase.database().ref("game-history").off();
         firebase.database().ref("match-results").off();
@@ -34,7 +33,6 @@ class UserPlayHistory extends Component {
         this.setState({ loading: false });
     }
     componentDidMount() {
-        // window.location.reload();
         if (!this.state.loading) {
             firebase.auth().onAuthStateChanged((user) => {
                 if (user && user.emailVerified) {
@@ -49,7 +47,7 @@ class UserPlayHistory extends Component {
                             Object.keys(grouped).map(grp =>
                                 myShow.push(false)
                             );
-                            this.setMatchResults(groupedArray)
+                            this.setMatchResults(groupedArray);
                             this.setState({ matchesPlayed: groupedArray });
                             this.setState({ showHistory: myShow });
                             this.setWinAmount();
@@ -63,21 +61,34 @@ class UserPlayHistory extends Component {
         }
         this.setState({ loading: true })
     }
-    setMatchResults = (matchesPlayed) => {
-
+    setMatchResults = (gamesPlayed) => {
+        let distinctGames = []
         let matchResults = [];
-        matchesPlayed.forEach((matches, i) => {
-            matches[0].games.forEach((match, k) => {
+        for(let i = 0 ; i < gamesPlayed.length; i++){
+            let found = distinctGames.some(match=>distinctGames.length === 0 || match.evaluationDate === gamesPlayed[i][0].evaluationDate);
+            if(found === false){
+                distinctGames.splice(distinctGames.length,
+                    distinctGames.length + 1, gamesPlayed[i][0]);
+            }
+        }
+        for(let k = 0 ; k < distinctGames.length; k++){
+            let matchResRef = firebase.database().ref("match-results");
+            matchResRef.once("value").then(snapshot => {
+              let keys = Object.keys(snapshot.val());
+              keys.forEach(key => {
+                let matchData = snapshot.val()[key];
+                if (matchData.gameDay.substr(0, 10) === distinctGames[k].evaluationDate)
+                  matchResults.splice(matchResults.length,
+                    matchResults.length + 1, matchData);
+              })
+            });
+        }
 
-                let matchResRef = firebase.database().ref("match-results").child(match.fixture_id);
-                matchResRef.once("value").then (snapshot => {
-                    let data = Object.assign({}, snapshot.val());
-                    matchResults.splice(matchResults.length,
-                        matchResults.length + 1, data)
-                });
-            })
-        })
-        this.setState({ matchResults: matchResults });
+        setTimeout(()=>{
+            this.setState({ matchResults: matchResults });
+
+        }, 1000)
+
     }
     setWinAmount = () => {
 

@@ -1,7 +1,7 @@
 import * as actionTypes from "../actions/actionTypes";
 import produce from 'immer';
 import _ from "lodash";
-import { uuid, dateInYYYYMMDD } from '../../shared/utility'
+import { uuid } from '../../shared/utility'
 import moment from 'moment';
 import firebase from '../../config/firebase/firebase';
 const initialStte = {
@@ -116,15 +116,23 @@ const setReceipt = (state, action) => {
 
                 });
             }
+            let gameDate;
+            firebase.database().ref("board").limitToLast(2).once("value").then(snapshot=>{
+                gameDate = Object.keys(snapshot.val())[0];
+            })
             slip.games = Object.assign([], slipGames);
-            let evaDate = dateInYYYYMMDD(draft.slips[i].gameDate);
-            slip.evaluationDate = evaDate;
-            slip.isEvaluated = false;
-            slip.endTime = moment(draft.gameDateRaw).add(3, 'hours').format("YYYY-MM-DDTHH:mm:SS+00:00")
-            let user = firebase.auth().currentUser;
+            setTimeout(()=>{
+                slip.evaluationDate = gameDate;
+                slip.endTime = moment(gameDate + "T"+action.endTime).add(2, 'hours').format("YYYY-MM-DDTHH:mm:SS+00:00")
+                
+            },2000);
+           let user = firebase.auth().currentUser;
             slip.userId = user.uid;
+            slip.isEvaluated = false;
             let historyRef = firebase.database().ref("game-history").child(user.uid).child(slip.gameNumber);
             historyRef.set(slip);
+            historyRef.off();
+            firebase.database().ref("board").off();
         }
     })
 }
