@@ -319,17 +319,15 @@ class Board extends Component {
 }
 
 togglePaymentButton = (paying, paid) => {
-  // firebase.auth().onAuthStateChanged((user) => {
-  //   if (user && user.emailVerified) {
-  //     this.props.onSetIsPaying(paying);
-  //     this.props.onSetIsPaid(paid);
-  //   } else {
-  //     this.setState({ showModalSignin: true })
-  //   }
-  //   this.scrollToBottom();
-  // })
-
- 
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user && user.emailVerified) {
+      this.props.onSetIsPaying(paying);
+      this.props.onSetIsPaid(paid);
+    } else {
+      this.setState({ showModalSignin: true })
+    }
+    this.scrollToBottom();
+  })
 }
 
 cancelLoginPopup = () => {
