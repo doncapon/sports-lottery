@@ -209,8 +209,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions.updateBoard(fixturesToPush, kickOffDate)),
     onConfigureBoard: (kickOffTime, endTime, kickOffDate) =>
       dispatch(actions.configureBoard(kickOffTime, endTime, kickOffDate)),
-    onSetCurrentResult: () =>
-      dispatch(actions.setCurrentResult()),
+    // onSetCurrentResult: (index) =>
+    //   dispatch(actions.setCurrentResult(index)),
     onDeleteAndResetAll: () => dispatch(actions.deleteAndResetAll()),
     onSetIsBoardSet: (isBoardSet) => dispatch(actions.setIsBoardSet(isBoardSet))
   }

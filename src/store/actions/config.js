@@ -81,14 +81,6 @@ export const configureBoard = (kickOffTime, endTime, kickOffDate) => {
                 endTime = (kickOffDate + "T" + endTime);
                 let wantedFixtures = gamePicker(response, startTime, endTime, [], "England", ["Premier League", "Championship", "FA Cup", "League One", "League Two"], 7);
 
-                // let fixtureAtTime = response.data.response.filter(
-                //     fixture => checkDateRange(fixture.fixture.date, startTime, endTime));
-
-                //     fixtureAtTime.forEach(fix =>{
-                //         console.log(fix.league.country+ " "+ fix.teams.home.name+ " league nname: "+ fix.league.name);
-
-                //     })
-
                 let fixturesToPush = [];
                 for (let i = 0; i < wantedFixtures.length; i++) {
                     fixturesToPush.splice(fixturesToPush.length, fixturesToPush.length + 1,
@@ -122,7 +114,6 @@ export const configureBoard = (kickOffTime, endTime, kickOffDate) => {
     };
 }
 
-
 export const fetchResults = (numberOfGames) => {
     return dispatch => {
         let matchRef = firebase.database().ref().child("match-results").orderByChild('gameDay')
@@ -153,10 +144,10 @@ export const fetchResults = (numberOfGames) => {
     }
 }
 
-export const setCurrentResult = () => {
+export const setCurrentResult = (resultDayIndex) => {
     return dispatch => {
         firebase.database().ref("board").limitToLast(2).on("value", snapshot => {
-            let date = Object.keys(snapshot.val())[0];
+            let date = Object.keys(snapshot.val())[resultDayIndex];
             let boardGame = snapshot.val();
             let gameData = boardGame[date];
             Object.keys(gameData).map(key => {
@@ -167,7 +158,6 @@ export const setCurrentResult = () => {
                         .then(response => {
                             let resultFixture = response.data.response[0];
                             let gameDay = moment(resultFixture.fixture.date).format("YYYY-MM-DD") + "T00:00:00+00:00";
-                            console.log(gameDay)
                             let returnResult = {
                                 status: resultFixture.fixture.status.long,
                                 fixtureId: resultFixture.fixture.id,

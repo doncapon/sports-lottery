@@ -49,9 +49,9 @@ class Settings extends Component {
             })
 
     }
-    handleSetResultss = () => {
-        this.props.onSetCurrentResult();
-    }
+    // handleSetResultss = () => {
+    //     this.props.onSetCurrentResult();
+    // }
 
     translateResult = (goalHome, goalAway, status) => {
         if (status === "Match Finished") {
@@ -386,8 +386,8 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(actions.updateBoard(fixturesToPush, kickOffDate)),
         // onConfigureBoard: ( kickOffTime, endTime, kickOffDate) =>
         //     dispatch(actions.configureBoard( kickOffTime,endTime, kickOffDate)),
-        onSetCurrentResult: () =>
-            dispatch(actions.setCurrentResult()),
+        // onSetCurrentResult: (index) =>
+        //     dispatch(actions.setCurrentResult(index)),
         // onSetIsBoardSet: (isBoardSet) => dispatch(actions.setIsBoardSet(isBoardSet))
     }
 }
