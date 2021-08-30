@@ -116,23 +116,19 @@ const setReceipt = (state, action) => {
 
                 });
             }
-            let gameDate;
-            firebase.database().ref("board").limitToLast(2).once("value").then(snapshot=>{
-                gameDate = Object.keys(snapshot.val())[0];
-            })
+            slip.evaluationDate = action.gameDate;
+            slip.endTime = moment(action.gameDate + "T" + action.endTime).add(2, 'hours').format("YYYY-MM-DDTHH:mm:SS+00:00")
             slip.games = Object.assign([], slipGames);
-            setTimeout(()=>{
-                slip.evaluationDate = gameDate;
-                slip.endTime = moment(gameDate + "T"+action.endTime).add(2, 'hours').format("YYYY-MM-DDTHH:mm:SS+00:00")
-                
-            },2000);
-           let user = firebase.auth().currentUser;
+
+            let user = firebase.auth().currentUser;
             slip.userId = user.uid;
             slip.isEvaluated = false;
             let historyRef = firebase.database().ref("game-history").child(user.uid).child(slip.gameNumber);
             historyRef.set(slip);
-            historyRef.off();
-            firebase.database().ref("board").off();
+            setTimeout(() => {
+                historyRef.off();
+                firebase.database().ref("board").off();
+            }, 5000)
         }
     })
 }
@@ -354,7 +350,7 @@ const EmptyEditingIndexSlip = (state, action) => {
         for (let i = 0; i < games.length; i++) {
             for (let k = 0; k < len; k++) {
                 games[i]["game_" + (i + 1)].sides.push(side);
-                games[i].amount = 0;                
+                games[i].amount = 0;
             }
             games[i]["game_" + (i + 1)].sides.splice(0, 3);
         }

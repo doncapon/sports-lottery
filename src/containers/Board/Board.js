@@ -52,13 +52,14 @@ class Board extends Component {
           if (snapshot.val() === null) {
             this.handlecConfigureBoard();
             this.setupJackpot(kickOffDate)
+            this.props.onSetCurrentResult(1);
             this.props.onDeleteAndResetAll();
           }
         });
       }
  if (moment().format("yyyy-MM-dd:hh:mm:ss") === (moment(/*this.state.endTime */ "2021-08-29T16:51:00+00:00").add(2, "hours").format("yyyy-MM-dd:hh:mm:ss"))) {
         setTimeout(()=>{
-          this.props.onSetCurrentResult();
+          this.props.onSetCurrentResult(0);
         }, 2000)
         setTimeout(()=>{
           this.handleUpdateBoard();
@@ -651,8 +652,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions.configureBoard(kickOffTime, endTime, kickOffDate)),
     onSetIsBoardSet: (isBoardSet) => dispatch(actions.setIsBoardSet(isBoardSet)),
 
-    onSetCurrentResult: () =>
-      dispatch(actions.setCurrentResult()),
+    onSetCurrentResult: (index) =>
+      dispatch(actions.setCurrentResult(index)),
     onUpdateBoard: (fixturesToPush, date) => dispatch(actions.updateBoard(fixturesToPush, date))
 
   };
