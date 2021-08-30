@@ -411,7 +411,6 @@ fillJackpotWithPreviousLosses = () => {
         jackpot: total
       })
     }, 3000);
-    console.log("henhen segun");
     firebase.database().ref("jackpots").off();
     firebase.database().ref("board").off();
     return null;
