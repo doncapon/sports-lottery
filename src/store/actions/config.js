@@ -109,7 +109,6 @@ export const configureBoard = (kickOffTime, endTime, kickOffDate) => {
                 dispatch(setIsBoardSet(true));
                 firebase.database().ref("board").off();
             }).catch(error => {
-                console.log(error);
             });
     };
 }
@@ -169,7 +168,6 @@ export const setCurrentResult = (resultDayIndex) => {
                                 gameDate: resultFixture.fixture.date,
                                 gameDay: gameDay
                             };
-                            console.log(returnResult);
                             let userRef = firebase.database().ref('match-results/' + resultFixture.fixture.id);
                             userRef.on('value', (snapshot) => {
                                 const resultData = snapshot.val();

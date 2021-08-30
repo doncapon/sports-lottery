@@ -14,8 +14,6 @@ export const fetchPredictionsAll = (fixture, gameIndex) => {
     return dispatch => {
         axios.get("/predictions/" , {params: {fixture: fixture}})
             .then(response => {
-                console.log(response.data.response)
-                console.log("I am here");
                 dispatch(fetchPredictions(response.data.response,
                     gameIndex));
             }).catch(error => {

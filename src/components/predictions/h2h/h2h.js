@@ -5,7 +5,6 @@ import classes from './h2h.module.css';
 
 const h2h =(props) =>{
     let head1 = props.head2Head.slice(props.head2Head.length- 6, props.head2Head.length);
-    console.log(head1)
     let head = head1.reverse().map((hh, i)=>{
        return  <div key = {hh.fixture.timestamp} className = {classes.Row}>
             <div className={classes.Others}>{moment(hh.fixture.timestamp * 1000).format("DD.MM.YYYY")}</div>
