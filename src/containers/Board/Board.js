@@ -513,15 +513,12 @@ render() {
               <div className={classes.PayButtons}>
                 <Button
                   disabled={this.props.totalPrice <= 0 || (this.props.isLoggedIn && this.state.funds < this.props.totalPrice)}
-                  variant="success"
+                  variant={this.props.purchaseAll? "success": "danger"}
                   className={classes.PayButton}
                   onClick={() => this.togglePaymentButton(true, false)}
 
                 >
-                  PAY
-                  {" "}
-
-                  {"₦" + addCommaToAmounts(this.props.totalPrice.toString(10))}
+                  {this.props.purchaseAll? "PAY ₦" + addCommaToAmounts(this.props.totalPrice.toString(10)) : "Incomplete Slips"}
 
                 </Button>
                 {(this.state.funds < this.props.totalPrice && this.props.isLoggedIn) ? <div>
@@ -544,11 +541,11 @@ render() {
             : this.props.isPaying ?
               <div> <Button
                 disabled={!this.props.purchaseAll}
-                variant={this.props.purchaseAll ? "success" : "outline-danger"}
+                variant={ "success"}
                 onClick={this.confirmPurchase}
                 className={classes.ConfrimPayments}
               >
-                {this.props.purchaseAll ? "CONFIRM ₦" + addCommaToAmounts(this.props.totalPrice.toString(10)) : "Fill/Remove Incomplete Slips"}
+                {"CONFIRM ₦" + addCommaToAmounts(this.props.totalPrice.toString(10)) }
               </Button>
 
               </div>
