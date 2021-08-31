@@ -518,7 +518,7 @@ render() {
                   onClick={() => this.togglePaymentButton(true, false)}
 
                 >
-                  {this.props.purchaseAll? "PAY ₦" + addCommaToAmounts(this.props.totalPrice.toString(10)) : "Incomplete Slips"}
+                  {this.props.purchaseAll? "PAY ₦" + addCommaToAmounts(this.props.totalPrice.toString(10)) : "Incomplete Slip(s)"}
 
                 </Button>
                 {(this.state.funds < this.props.totalPrice && this.props.isLoggedIn) ? <div>
