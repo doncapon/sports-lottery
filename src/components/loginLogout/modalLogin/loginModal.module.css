@@ -2,27 +2,40 @@
     display: none;
     width: 30vw;
 }
-
-.alertShown{
-    display: block;
-    width: 90vw;
-}
-
-.FormControl{
-    display: block;
-    text-align: left;
-}
-.Label{
-    width: 10vw;
+Form{
     margin: 0;
     padding: 0;
 }
-.Input{
+.alertShown{
+    display: block;
+    width: 100%;
+}
+
+.FormControl{
+    display: flex;
+    text-align: left;
+    width: 100%;
+    margin: 0;
+}
+.Label{
+    margin: 0;
+    padding: 0;
+    margin-right: 5px;
+    margin-top: 10px;
+    width: 25%;
+    font-size: 12px;
+}
+.Input, .Input2{
     margin-bottom: 20px;
+    width: 75%;
 }
 
 .Buttons{
     margin-top: 5vw;
+    margin-left: 45px;
+}
+.Cancel{
+    margin-right: 20px;
 }
 .Forgot{
 
@@ -36,43 +49,57 @@
     margin-right: 5px;
     text-align: left;
     margin-bottom: 20px;
+    margin-left: 40px;
 }
 .Forgot:hover{
     color: salmon;
 }
 /* medium screens */
 @media only screen and (min-width: 768px){
-    .Wrapper{
-        margin: 0px;
-        padding: 0px;
-    }
-    .Form{
-        margin: 0;
-        padding: 0;
-    }
+
     .alertShown{
-        width: 55vw;
+        font-size: 1.6em;
     }
-    .Label{
+    .Label {
         font-size: 25px;
         width: 20vw;
     }
+
     .FormControl{
         display: flex;
         font-size: 1.6em;
-        height: 5.5vh;
+        height: 7.5vh;
+        margin: 30px 0px;
     }
     .Input, .Input2{
-        width: 45vw;
-        height: 30px;
-        margin: 0px;
+        width: 55vw;
+        height: 90%;
+        margin-bottom:200px;
         padding: 0px;
+        
+        padding-left: 20px;
+        font-size: 30px;
     }
-    .Input2{
-        margin-bottom: 10px;
-    }
+
     .Buttons{
         margin-top: 1vh;
+        width: 100%;
+    }
+
+    Button {
+        margin: 0px;
+        height: 70px;
+        width:  30%;
+        font-size: 100%;
+        font-weight: bold;
+    }
+    .Forgot{
+        margin-left: 150px;
+        font-size: 30px;
+        width: 100%;
+    }
+    .Cancel {
+        margin-right: 50px;
     }
   
 }
@@ -80,17 +107,18 @@
 /* Large devices */
 @media only screen and (min-width: 968px){
 
-    .alertShown{
-        width: 35vw;
-    }
     h3{
         font-size: 50em;
     }
     .FormControl{
         display: flex;
         font-size: 1.2em;
-        height: 8.5vh;
-        padding-left: 5px;
+        height: 6.5vh;
+        padding-left: 25px;
+        width: 90%;
+        margin-left:0;  
+        margin-top: 0px;
+        margin-bottom: 30px;
     }
     .Label{
         font-size: 18px;
