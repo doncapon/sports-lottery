@@ -1,4 +1,4 @@
-import { Button } from 'react-bootstrap';
+import { Button, Form, FormControl } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import React, { useState } from 'react';
 import classes from './loginModal.module.css';
@@ -103,17 +103,16 @@ const LoginModal = (props) => {
             : null
         }
         <div>
-            <form onSubmit={(e) => HandleSubmit(e)} className={classes.Form}>
-                <h3>Login</h3>
+            <Form onSubmit={(e) => HandleSubmit(e)} className={classes.Form}>
+                <h1>Login</h1>
                 <div className={classes.FormControl}>
                     <div className={classes.Label}  >Email:</div>
-                    <input name="email" type="email" onChange={(e) => setEmail(e.target.value)}
+                    <FormControl name="email" type="email" onChange={(e) => setEmail(e.target.value)}
                         value={email} placeholder="email" className={classes.Input} />
-                    <br />
                 </div>
                 <div className={classes.FormControl}>
                     <div className={classes.Label}>Password:</div>
-                    <input name="password" type="password" onChange={(e) => setPassword(e.target.value)}
+                    <FormControl name="password" type="password" onChange={(e) => setPassword(e.target.value)}
                         value={password} placeholder="password" className={classes.Input2} />
                 </div>
                 {isNotVerified ? <div style={{ color: 'red' }}>{isNotVerified}</div> : null}
@@ -121,10 +120,10 @@ const LoginModal = (props) => {
                     <Button className={classes.Forgot} onClick={handleForgot} >forgot password?</Button>
                     : null}
                 <div className={classes.Buttons}>
-                    <Button onClick={HandleCancel} variant="outline-danger">Cancel</Button>
+                    <Button className={classes.Cancel} onClick={HandleCancel} variant="outline-danger">Cancel</Button>
                     <Button type="submit" variant="success">Login</Button>
                 </div>
-            </form>
+            </Form>
         </div>
     </div>);
 }
