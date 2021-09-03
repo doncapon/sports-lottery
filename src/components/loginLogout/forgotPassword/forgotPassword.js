@@ -57,7 +57,7 @@ const ForgotPassword = (props) => {
                 <h5>Request password!</h5>
                     <div className="formDiv" >
                         <div >
-                            <div className={classes.formText}>Enter your email: </div>
+                            <div className={classes.FormText}>Enter your email: </div>
                             <form onSubmit={(e) => handleSubmitEmail(e)} >
                                 <div className= {classes.EmailWrapper}>
                                     <label htmlFor="emailId">Email</label>

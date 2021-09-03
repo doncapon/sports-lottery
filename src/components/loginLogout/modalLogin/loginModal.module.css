@@ -86,7 +86,7 @@ Form{
         width: 100%;
     }
 
-    Button {
+    .SubmitButton, .Cancel, .Forgot {
         margin: 0px;
         height: 70px;
         width:  30%;
