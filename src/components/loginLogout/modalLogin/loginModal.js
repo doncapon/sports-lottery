@@ -121,7 +121,7 @@ const LoginModal = (props) => {
                     : null}
                 <div className={classes.Buttons}>
                     <Button className={classes.Cancel} onClick={HandleCancel} variant="outline-danger">Cancel</Button>
-                    <Button type="submit" variant="success">Login</Button>
+                    <Button className={classes.SubmitButton} type="submit" variant="success">Login</Button>
                 </div>
             </Form>
         </div>
