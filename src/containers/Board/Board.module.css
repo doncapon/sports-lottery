@@ -8,6 +8,7 @@
     overflow: hidden;
     padding-bottom: 30px;
    background: rgb(153, 182, 238);
+   height: 2000px;
 }
 .TopBoard {
     background: #eee;
@@ -41,22 +42,25 @@
     display: block;
 }
 
+.ConfrimPayments{
+    padding: 0.0vw 0vw 0;
+    width: 100%;
+    height: 50px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
 .PayButton{
         padding: 0;
         width: 100%;
+        height: 50px;
         font-weight: bold;
         font-size: 32px;
+        margin-bottom: 50px;
 }
 .PayAmount{
     font-size: 1em;
 }
 
-.ConfrimPayments{
-    padding: 0.0vw 0vw 0;
-    width: 100%;
-    font-weight: bold;
-    margin-bottom: 20vw;
-}
 
 .Receipts{
     margin-top : 10px;
@@ -66,7 +70,7 @@
 @media only screen and (min-width: 768px){
     .Board{
         padding-bottom: 20vh;
-
+        height: 2490px;
     }
     .TopBoard {
         height: 250px;
@@ -78,7 +82,8 @@
     .PayButtons{
         width: 100%;
         margin-bottom: 20px;
-        height: 10vh;
+        height: 100px;
+        padding: 15px;
     }
 
     .PayButton, .ConfrimPayments{
@@ -89,14 +94,42 @@
 
     }
 
+    .ConfrimPayments{
+        margin-top: 0px;
+        margin-bottom: 100px;
+    }
     .PayButton{
         padding: 0;
-        height: 10vh;        
+        height: 10vh;    
+        margin-bottom: 100px;    
     }
     
 
 }
 
+
+@media only screen and (min-width: 800px){
+    
+    .Board{
+        padding-bottom: 20vh;
+        height: 2400px;
+    }
+    .PayButtons{
+        height: 200px;
+        padding: 15px;
+    }
+    .PayButton, .ConfrimPayments{
+        height: 80px;
+        padding-bottom: 20px;
+        font-size: 60px;
+        margin-top: 20px;
+        margin-top: 0;
+
+    }
+    .TopBoard{
+        height: 260px;
+    }
+}
     
 
 
@@ -107,6 +140,7 @@
         width: 100% ;
         background: #eee;
         padding-bottom: 30vh;
+        height: 1350px;
     }
     .TopBoard {
         height: 220px;

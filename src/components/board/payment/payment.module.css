@@ -59,14 +59,18 @@
     .PaymentWrapper{
         font-size: 2em;
     }
+    .HeaderLeft{
+        margin-right: 50px;
+    }
     .HeaderRight, .TermHeaderRight{
         margin-left: 40vw;
 
     }
     
     .CancelButton{
-        height: 4vh;
+        height: 100px;
         margin-left: 15vw;
+        font-size: 30px;
     }
 
     .PaymentWrapperInner{
@@ -80,7 +84,7 @@
 }
 
 /* Larger screens */
-@media only screen and (min-width: 768px){
+@media only screen and (min-width: 960px){
     .PaymentWrapper{
         font-size: 1.6em;
     }
