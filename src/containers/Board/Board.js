@@ -509,7 +509,7 @@ render() {
         </div>
         <div className={classes.ButtonsAndReceipt}>
           {(!this.props.isPaying && !this.props.isPaid) ?
-            <div>
+            // <div>
               <div className={classes.PayButtons}>
                 <Button
                   disabled={this.props.totalPrice <= 0 || (this.props.isLoggedIn && this.state.funds < this.props.totalPrice)}
@@ -535,7 +535,7 @@ render() {
                     setIsPaid={this.props.onSetIsPaid} cancelLoginPopup={this.cancelLoginPopup}
                   />
                 </Modal>
-              </div>
+              {/* </div> */}
             </div>
 
             : this.props.isPaying ?

@@ -21,13 +21,30 @@
     .Modal {
         width: 550px;
         left: calc(50% - 250px);
+        
     }
 }
 
-@media (min-width: 760px) {
+@media (min-width: 768px) {
     .Modal {
         width: 600px;
         height: 60%;
         left: calc(50% - 300px);
+        top: 5%;
+    }
+}
+
+@media only screen and (min-width: 800px){
+    .Modal {
+        height: 90%;
+    }
+}
+
+@media only screen and (min-width: 968px){
+    .Modal {
+        width: 600px;
+        height: 65%;
+        left: calc(50% - 300px);
+        top: 10%;
     }
 }
