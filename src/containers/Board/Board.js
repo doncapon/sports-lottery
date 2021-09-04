@@ -75,8 +75,8 @@ class Board extends Component {
         setTimeout(() => {
           this.fillJackpotWithPreviousLosses();
         }, 15000)
+        console.log("I was called");
       }
-      console.log("I was called");
     }, 1000);
 
     if (!this.state.loading) {
