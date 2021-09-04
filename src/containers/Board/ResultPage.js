@@ -16,7 +16,7 @@ class ResultPage extends Component {
     render() {
         return  !this.props.loading? <Spinner /> : <div>
             <Results daysResults={this.props.currentResults} basePrice={this.props.basePrice}
-                isLoggedIn={this.props.isLoggedIn}
+                isLoggedIn={this.props.isLoggedIn} evaluationTime={this.props.evaluationTime}
             />
         </div>
     }
@@ -29,6 +29,7 @@ const mapstateToProps = (state) => {
         //Config
         basePrice: state.config.basePrice,
         loading: state.config.loading,
+        evaluationTime: state.config.evaluationTime,
         currentResults: state.config.currentResults,
         numberofResultsDisplayed: state.config.numberofResultsDisplayed,
         insertResult: state.config.insertResult,
