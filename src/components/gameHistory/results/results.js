@@ -36,6 +36,10 @@ const Results = (props) => {
         }
 
     }
+    const convertEndTime = (date)=>{
+        return new Date(moment(date).format("yyyy-MM-dd")+"T" +props.evaluationTime);
+    }
+    
     let resultsTrannsformed = recalculatedReults.map((results, k) => {
         return <div className={classes.ResultsAndShare} key={k}>
             {results.length >= 12 ? <div>
@@ -65,8 +69,8 @@ const Results = (props) => {
                                             <div>{eachRes.awayTeam}</div>
                                         </div>
                                     </div>
-                                    <div className={classes.Score}>{eachRes.status === "Match Finished" ? ""+eachRes.score.home +" - "+ eachRes.score.away : Date.now() > moment(eachRes.gameDate) ? "free pass!!!" : "-"}</div>
-                                    <div >{findSelection(eachRes.homeGoals, eachRes.awayGoals, eachRes.status, eachRes.gameDate)}</div>
+                                    <div className={classes.Score}>{eachRes.status === "Match Finished" ? ""+eachRes.score.home +" - "+ eachRes.score.away : Date.now() > convertEndTime(eachRes.gameDate) ? "free pass!!!" : "-"}</div>
+                                    <div >{findSelection(eachRes.homeGoals, eachRes.awayGoals, eachRes.status,convertEndTime(eachRes.gameDate))}</div>
                                 </div>
                             })}
                         </div>
