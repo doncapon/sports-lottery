@@ -192,7 +192,7 @@ export const setCurrentResult = (resultDayIndex) => {
         setTimeout(() => {
             firebase.database().ref("board").off();
             firebase.database().ref("match-results").off();
-        }, 5000)
+        }, 25000)
 
     }
 }

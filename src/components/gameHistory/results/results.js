@@ -19,7 +19,7 @@ const Results = (props) => {
         setRecaculted(gamesCalc);
 
     }, [props.daysResults])
-    const findSelection = (goalHome, goalAway, status, endDate) => {
+    const findSelection = (goalHome, goalAway, status, endDate, results) => {
         if (status === "Match Finished") {
             if (goalHome > goalAway) {
                 return "H";
@@ -29,17 +29,20 @@ const Results = (props) => {
                 return "D";
             }
         } else {
-            if (Date.now() > endDate)
+            if (Date.now() > endDate){
                 return "Free pass!!!";
-            else
-                return "-";
+            }
+            else{
+                    return "-";
+            }
         }
 
     }
+
     const convertEndTime = (date)=>{
         return new Date(moment(date).format("yyyy-MM-dd")+"T" +props.evaluationTime);
     }
-    
+
     let resultsTrannsformed = recalculatedReults.map((results, k) => {
         return <div className={classes.ResultsAndShare} key={k}>
             {results.length >= 12 ? <div>
@@ -69,7 +72,7 @@ const Results = (props) => {
                                             <div>{eachRes.awayTeam}</div>
                                         </div>
                                     </div>
-                                    <div className={classes.Score}>{eachRes.status === "Match Finished" ? ""+eachRes.score.home +" - "+ eachRes.score.away : Date.now() > convertEndTime(eachRes.gameDate) ? "free pass!!!" : "-"}</div>
+                                    <div className={classes.Score}>{eachRes.status === "Match Finished" ? ""+eachRes.score.home +" - "+ eachRes.score.away : Date.now() > convertEndTime(eachRes.gameDate) ? "free pass!!!" : eachRes.status}</div>
                                     <div >{findSelection(eachRes.homeGoals, eachRes.awayGoals, eachRes.status,convertEndTime(eachRes.gameDate))}</div>
                                 </div>
                             })}
@@ -79,7 +82,7 @@ const Results = (props) => {
                     <div className={classes.JackPotShare}>
                         <Jackpot basePrice={props.basePrice} gameDay=
                             {moment(results[0].gameDay).format("YYYY-MM-DD")}
-                            gamesLength={results.length}
+                            gamesLength={results.length} results={results}
 
                         />
                     </div>

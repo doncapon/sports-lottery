@@ -19,11 +19,27 @@ class UserPlayHistory extends Component {
             winAmount: [],
             loading: false,
             showHistory: [],
+            exactOne: false,
+            greaterThanOnePostponed: false,
         }
 
         this.setMatchResults = this.setMatchResults.bind(this);
+        this.isExactlyone = this.isExactlyone.bind(this);
     }
-    
+
+    findStatusNotFinishedCount = (results) => {
+        let count = 0;
+        for (let i = 0; i < results.length; i++) {
+            if (results[i].status !== "Match Finished");
+            count++;
+        }
+        
+        if (count > 1) {
+            return true;
+        } else {
+            return false
+        }
+    }
     componentWillUnmount() {
         firebase.database().ref("game-history").off();
         firebase.database().ref("match-results").off();
@@ -31,6 +47,7 @@ class UserPlayHistory extends Component {
         this.setState({ matchResults: [] });
         this.setState({ matchesPlayed: [] });
         this.setState({ loading: false });
+        this.setState({ exactOne: false })
     }
     componentDidMount() {
         if (!this.state.loading) {
@@ -64,27 +81,30 @@ class UserPlayHistory extends Component {
     setMatchResults = (gamesPlayed) => {
         let distinctGames = []
         let matchResults = [];
-        for(let i = 0 ; i < gamesPlayed.length; i++){
-            let found = distinctGames.some(match=>distinctGames.length === 0 || match.evaluationDate === gamesPlayed[i][0].evaluationDate);
-            if(found === false){
+        for (let i = 0; i < gamesPlayed.length; i++) {
+            let found = distinctGames.some(match => distinctGames.length === 0 || match.evaluationDate === gamesPlayed[i][0].evaluationDate);
+            if (found === false) {
                 distinctGames.splice(distinctGames.length,
                     distinctGames.length + 1, gamesPlayed[i][0]);
             }
         }
-        for(let k = 0 ; k < distinctGames.length; k++){
+        for (let k = 0; k < distinctGames.length; k++) {
             let matchResRef = firebase.database().ref("match-results");
             matchResRef.once("value").then(snapshot => {
-              let keys = Object.keys(snapshot.val());
-              keys.forEach(key => {
-                let matchData = snapshot.val()[key];
-                if (matchData.gameDay.substr(0, 10) === distinctGames[k].evaluationDate)
-                  matchResults.splice(matchResults.length,
-                    matchResults.length + 1, matchData);
-              })
+                let keys = Object.keys(snapshot.val());
+                keys.forEach(key => {
+                    let matchData = snapshot.val()[key];
+                    if (matchData.gameDay.substr(0, 10) === distinctGames[k].evaluationDate)
+                        matchResults.splice(matchResults.length,
+                            matchResults.length + 1, matchData);
+                })
             });
         }
 
-        setTimeout(()=>{
+
+        setTimeout(() => {
+            this.setState({ greaterThanOnePostponed: this.findStatusNotFinishedCount(matchResults) })
+            this.setState({ exactOne: this.isExactlyone(matchResults) })
             this.setState({ matchResults: matchResults });
 
         }, 1000)
@@ -133,7 +153,7 @@ class UserPlayHistory extends Component {
                     return "D";
                 }
             } else {
-                return "free pass";
+                return "-";
             }
 
         } else {
@@ -213,6 +233,20 @@ class UserPlayHistory extends Component {
             }
         });
     }
+
+    isExactlyone = (results) => {
+        let count = 0;
+        for (let i = 0; i < results.length; i++) {
+            if (results[i].status === "Match Postponed");
+            count++;
+        }
+        if (count === 1) {
+            return true;
+        } else {
+            return false
+        }
+    }
+
     getMatchResults = (matchResults, match) => {
         let finalMatches = [];
         for (let i = 0; i < match.games.length; i++) {
@@ -260,8 +294,8 @@ class UserPlayHistory extends Component {
                                                         </div>
                                                     </div>
                                                     <div className={classes.ScoreResult}>
-                                                        <div className={classes.Score}>{eachRes[0].status === "Match Finished" ? eachRes[0].score : Date.now() > moment(match[0].endTime) ? "free pass" : "-"}</div>
-                                                        <div >{this.translateResult(eachRes[0].homeGoals, eachRes[0].awayGoals, moment(match[0].endTime))}</div>
+                                                        <div className={classes.Score}>{eachRes[0].status === "Match Finished" ? eachRes[0].score.home + "-" + eachRes[0].score.away : Date.now() > moment(match[0].endTime) ? eachRes[0].status : "-"}</div>
+                                                        <div >{this.state.exactOne ? "free pass" : this.translateResult(eachRes[0].homeGoals, eachRes[0].awayGoals, moment(match[0].endTime))}</div>
                                                     </div>
                                                     <div className={classes.Selections}>
                                                         {match[0].games[i].selections.map((select, y) =>
@@ -275,7 +309,7 @@ class UserPlayHistory extends Component {
                                         </div>
                                         <div className={classes.AmountWon}>
                                             <div>Number of hits:  {match[0].isEvaluated ? match[0].hits : "-"}</div>
-                                            <div>Amount won: {this.calculateWins(match[0], match[0].hits)}</div>
+                                            <div>Amount won: {this.state.greaterThanOnePostponed ? "game nullified/voided - expect refund" : this.calculateWins(match[0], match[0].hits)}</div>
                                         </div>
                                     </div>
                                     <div className={classes.JackPotShare}>

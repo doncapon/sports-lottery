@@ -58,23 +58,22 @@ class Board extends Component {
           }
         });
       }
-      let endTimeUpperLimit = moment(this.props.evaluationTime).add(30, "seconds");
-      if (moment().format("yyyy-MM-dd:hh:mm:ss") === (moment(this.state.endTime /*"2021-08-29T16:51:00+00:00" */).add(2, "hours").format("yyyy-MM-dd:hh:mm:ss"))
-      && moment().isBefore(endTimeUpperLimit)) {
+      let endTime = kickOffDate + "T" + this.props.evaluationTime;
+      if (moment().format("yyyy-MM-dd:hh:mm:ss") === (moment(/*endTime*/ "2021-09-04T21:18:00+00:00").format("yyyy-MM-dd:hh:mm:ss"))) {
         setTimeout(() => {
           this.props.onSetCurrentResult(0);
-        }, 2000)
+        }, 25000)
         setTimeout(() => {
           this.handleUpdateBoard();
 
-        }, 5000)
+        }, 28000)
         setTimeout(() => {
           this.shareJackpot();
 
-        }, 10000)
+        }, 35000)
         setTimeout(() => {
           this.fillJackpotWithPreviousLosses();
-        }, 15000)
+        }, 40000)
         console.log("I was called");
       }
     }, 1000);
