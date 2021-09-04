@@ -58,6 +58,19 @@ class Jackpot extends Component {
       : " Nil ";
   };
 
+  findStatusNotFinishedCount = (results) => {
+    let count = 0;
+    for (let i = 0; i < results.length; i++) {
+      if (results[i].status !== "Match Finished");
+      count++;
+    }
+    if (count > 1) {
+      return true;
+    } else {
+      return false
+    }
+  }
+
   render() {
     return this.state.loading ? (
       this.state.jackpotData ? (
@@ -162,7 +175,7 @@ class Jackpot extends Component {
             </div>
             <div className={classes.Row}>
               <div className={classes.GameNumber1}>
-                {this.props.gamesLength === 12 ? "+1 postponed/nulled" : null}
+                {this.props.gamesLength === 12 || this.findStatusNotFinishedCount(this.props.results) ? ">1 postponed/nulled" : null}
               </div>
             </div>
           </div>
