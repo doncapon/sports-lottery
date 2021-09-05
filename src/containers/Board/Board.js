@@ -27,6 +27,7 @@ class Board extends Component {
     loading: false,
     eventDate: null,
     endTime: null,
+    gamesPostponedMore: false,
 
     tenWinners: 0,
     elevenWinners: 0,
@@ -71,10 +72,10 @@ class Board extends Component {
           this.shareJackpot();
 
         }, 35000)
-        setTimeout(() => {
-          this.fillJackpotWithPreviousLosses();
-        }, 40000)
-        console.log("I was called");
+        setTimeout(()=>{
+          this.refundUsersGamePostpond();
+        }, 4000);
+
       }
     }, 1000);
 
@@ -108,7 +109,73 @@ class Board extends Component {
   componentWillUnmount() {
     firebase.database().ref("jackpots").off();
     firebase.database().ref("board").off();
+    firebase.database().ref("dividends").off();
+    firebase.database().ref("users").off();
+  }
 
+
+  refundUsersGamePostpond = () => {
+    this.checkIfMoreThanOneGameIsPostponed()
+    setTimeout(() => {
+      if (this.state.gamesPostponedMore) {
+        this.refundHelper();
+      }else{
+        this.fillJackpotWithPreviousLosses();
+      }
+
+    }, 500)
+  }
+
+  refundHelper = () => {
+    firebase.database().ref("board").limitToLast(2).once("value").then(snapshot => {
+      let date = Object.keys(snapshot.val())[0];
+      firebase.database().ref("game-history").once("value").then(snapshot => {
+        let dataKeys = Object.keys(snapshot.val());
+
+        dataKeys.forEach(key => {
+          let data = snapshot.val()[key];
+          let innerKeys = Object.keys(data);
+          innerKeys.forEach(inKey =>{
+          let innerData = data[inKey];
+        if(data.postponed=== false){
+          if (innerData.evaluationDate === date) {
+            console.log(key)
+            let userRef = firebase.database().ref("users").child(key);
+            userRef.child('funds').transaction((funds) => {
+              return funds +innerData.slipPrice;
+            })
+
+            firebase.database().ref("dividends").child(date).child('dividend').transaction((dividend) => {
+              return dividend - innerData.slipPrice;
+            })
+            firebase.database().ref("users").off();
+
+          }
+        }
+          })
+
+          firebase.database().ref("board").child(date).update({ postponed: true })
+        })
+      });
+    });
+  }
+
+  checkIfMoreThanOneGameIsPostponed = () => {
+    firebase.database().ref("board").limitToLast(2).once("value").then(snapshot => {
+      let date = Object.keys(snapshot.val())[0];
+      firebase.database().ref("match-results").once("value").then(snapshot => {
+        let dataKeys = Object.keys(snapshot.val());
+        let count = 0;
+        dataKeys.forEach(key => {
+          let data = snapshot.val()[key];
+          if (data.status === "Match Postponed" && moment(data.gameDate).format("yyyy-MM-DD") === date) {
+            count++;
+          }
+        })
+        if (count > 1)
+          this.setState({ gamesPostponedMore: true })
+      })
+    })
   }
   calculaterWiinerAmount = () => {
     firebase.database().ref("board").limitToLast(2).on("value", snapshot => {
