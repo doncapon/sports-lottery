@@ -71,6 +71,15 @@ class Jackpot extends Component {
     }
   }
 
+  tooManyPostponed = (results) => {
+    let count = 0;
+    for (let i = 0; i < results.length; i++) {
+      if (results[i].status === "Match Postponed")
+        count++;
+    }
+    return count > 3;
+  }
+
   render() {
     return this.state.loading ? (
       this.state.jackpotData ? (
@@ -175,7 +184,9 @@ class Jackpot extends Component {
             </div>
             <div className={classes.Row}>
               <div className={classes.GameNumber1}>
-                {this.props.gamesLength === 12 || this.findStatusNotFinishedCount(this.props.results) ? ">1 postponed/nulled" : null}
+                {this.tooManyPostponed(this.props.daysResults) ? <div>More than 3 games postponed
+                  Hence, games for this week have been cancelled and refunded
+                </div> : null}
               </div>
             </div>
           </div>

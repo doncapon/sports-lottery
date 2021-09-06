@@ -45,7 +45,7 @@ const Results = (props) => {
 
     let resultsTrannsformed = recalculatedReults.map((results, k) => {
         return <div className={classes.ResultsAndShare} key={k}>
-            {results.length >= 12 ? <div>
+            {<div>
                 <div className={classes.ResultHead} >
                     <div className={classes.HeaderInner}>
                         <div>{moment(results[0].gameDay).format("dddd")}</div>{" "}
@@ -82,15 +82,13 @@ const Results = (props) => {
                     <div className={classes.JackPotShare}>
                         <Jackpot basePrice={props.basePrice} gameDay=
                             {moment(results[0].gameDay).format("YYYY-MM-DD")}
-                            gamesLength={results.length} results={results}
+                            gamesLength={results.length} results={results} daysResults = {props.daysResults[k]}
 
                         />
                     </div>
 
-                </div>
-            </div> : props.daysResults[k].length > 1 ? <div>Sorry too many games have been postponed
-            Hence, games for this week have been cancelled
-                </div> : null}
+                    </div>
+            </div>}
 
         </div>
     })

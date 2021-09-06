@@ -34,7 +34,7 @@ export const setEventDate = (eventDate) => {
 export const updateBoard = (fixturesToPush, kickOffDate) => {
     return dispatch => {
         fixturesToPush.forEach((fixture, index) => {
-                axios.get("fixtures", {params: { id: fixture}})
+            axios.get("fixtures", { params: { id: fixture } })
                 .then(response => {
                     firebase.database().ref("board").child(kickOffDate).child(index)
                         .update({ status: response.data.response[0].fixture.status.long });
@@ -91,7 +91,6 @@ export const configureBoard = (kickOffTime, endTime, kickOffDate) => {
                             homeTeam_id: wantedFixtures[i].teams.home.id, homeTeam: wantedFixtures[i].teams.home.name,
                             awayTeam_id: wantedFixtures[i].teams.away.id, awayTeam: wantedFixtures[i].teams.away.name,
                             event_date: startTime
-                            // end_time: moment(endTime).add(3, 'hours').format("YYYY-MM-DDTHH:mm:SS+00:00"),
                         })
                 }
                 let boardRef = firebase.database().ref("board").child(kickOffDate);
@@ -101,6 +100,7 @@ export const configureBoard = (kickOffTime, endTime, kickOffDate) => {
                     if (!data) {
                         firebase.database().ref("board").child(kickOffDate).update(fixturesToPush);
                         firebase.database().ref("board").child(kickOffDate).update({ isPaid: false });
+                        firebase.database().ref("board").child(kickOffDate).update({ postponed: false });
                         firebase.database().ref("board").child(kickOffDate).update({ dateKey: kickOffDate });
                         firebase.database().ref("board").off();
                         dispatch(setEventDate(fixturesToPush[0].event_date));
@@ -134,7 +134,7 @@ export const fetchResults = (numberOfGames) => {
             })
             let resoultModified = finalResults
             if (finalResults.length > 0) {
-                
+
                 dispatch(fetchWeeklyResults(resoultModified));
                 dispatch(stopResultInitialize());
             }
