@@ -123,6 +123,7 @@ const setReceipt = (state, action) => {
             let user = firebase.auth().currentUser;
             slip.userId = user.uid;
             slip.isEvaluated = false;
+            slip.postponed = false;
             let historyRef = firebase.database().ref("game-history").child(user.uid).child(slip.gameNumber);
             historyRef.set(slip);
             setTimeout(() => {

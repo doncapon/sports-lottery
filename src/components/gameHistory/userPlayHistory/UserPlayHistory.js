@@ -19,27 +19,14 @@ class UserPlayHistory extends Component {
             winAmount: [],
             loading: false,
             showHistory: [],
-            exactOne: false,
-            greaterThanOnePostponed: false,
+            exactOne: false
         }
 
         this.setMatchResults = this.setMatchResults.bind(this);
         this.isExactlyone = this.isExactlyone.bind(this);
+        this.setMatchResults = this.setMatchResults.bind(this)
     }
 
-    findStatusNotFinishedCount = (results) => {
-        let count = 0;
-        for (let i = 0; i < results.length; i++) {
-            if (results[i].status !== "Match Finished");
-            count++;
-        }
-        
-        if (count > 1) {
-            return true;
-        } else {
-            return false
-        }
-    }
     componentWillUnmount() {
         firebase.database().ref("game-history").off();
         firebase.database().ref("match-results").off();
@@ -101,9 +88,7 @@ class UserPlayHistory extends Component {
             });
         }
 
-
         setTimeout(() => {
-            this.setState({ greaterThanOnePostponed: this.findStatusNotFinishedCount(matchResults) })
             this.setState({ exactOne: this.isExactlyone(matchResults) })
             this.setState({ matchResults: matchResults });
 
@@ -188,10 +173,12 @@ class UserPlayHistory extends Component {
         } else if (matchHits === 13) {
             searchTerm = "thirteen";
         } else {
-            if (match.isEvaluated)
+            if (match.isEvaluated){
                 return "No wins";
-            else
+            }
+            else{
                 return "Not evaluated yet";
+            }
         }
 
         let potRef = firebase.database().ref("jackpot-win").child(match.evaluationDate).child(searchTerm);
@@ -240,11 +227,7 @@ class UserPlayHistory extends Component {
             if (results[i].status === "Match Postponed");
             count++;
         }
-        if (count === 1) {
-            return true;
-        } else {
-            return false
-        }
+        return count > 3;
     }
 
     getMatchResults = (matchResults, match) => {
@@ -264,7 +247,7 @@ class UserPlayHistory extends Component {
         let userPlayHistoryTrannsformed = this.state.loading && matchesPlayed[0] ?
             matchesPlayed.sort((a, b) => a[0]["datePlayed"] < b[0]["datePlayed"] ? 1 : -1).map((match, k) => {
                 let matchRes = this.getMatchResults(matchResults, match[0]);
-                return <div className={classes.userPlayHistoryAndShare} key={k}>
+                return matchRes[0].homeTeam !== "" ? <div className={classes.userPlayHistoryAndShare} key={k}>
                     <div className={classes.MainHeader} onClick={() => this.toggleShowHistory(k)} >
                         <div className={classes.DateHead}>Entry date : {moment(match[0].datePlayed).format("DD.MM.YYYY")}</div>
                         <div className={classes.PriceHead}>Price: {"₦" + addCommaToAmounts("" + match[0].slipPrice)}</div>
@@ -309,7 +292,8 @@ class UserPlayHistory extends Component {
                                         </div>
                                         <div className={classes.AmountWon}>
                                             <div>Number of hits:  {match[0].isEvaluated ? match[0].hits : "-"}</div>
-                                            <div>Amount won: {this.state.greaterThanOnePostponed ? "game nullified/voided - expect refund" : this.calculateWins(match[0], match[0].hits)}</div>
+                                            {console.log(match[0])}
+                                            <div>Amount won: {match[0].postponed === true ? "game nullified/voided - refunded" : this.calculateWins(match[0], match[0].hits)}</div>
                                         </div>
                                     </div>
                                     <div className={classes.JackPotShare}>
@@ -334,7 +318,7 @@ class UserPlayHistory extends Component {
                         </div>
                         : null}
 
-                </div>
+                </div> : <Spinner />
             })
             : <Spinner />
 
