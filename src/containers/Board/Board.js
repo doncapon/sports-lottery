@@ -146,7 +146,6 @@ class Board extends Component {
             let innerData = data[inKey];
             if (data.postponed === false) {
               if (innerData.evaluationDate === date) {
-                console.log(key)
                 let userRef = firebase.database().ref("users").child(key);
                 userRef.child('funds').transaction((funds) => {
                   return funds +innerData.slipPrice;
@@ -274,7 +273,6 @@ class Board extends Component {
       for (let i = 0; i < allNotFinished; i++) {
         sideWon++;
       }
-      console.log("here")
 
     }
     return sideWon;
@@ -356,7 +354,6 @@ class Board extends Component {
                 let hits
                 setTimeout(() => {
                   hits = this.calculateWins(matchesPlayed, matchRes);
-                  console.log(hits);
                 }, 500)
                 setTimeout(() => {
                   firebase.database().ref("game-history").child(matchesPlayed.userId)

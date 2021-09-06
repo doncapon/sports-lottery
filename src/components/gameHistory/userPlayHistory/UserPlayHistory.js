@@ -292,7 +292,6 @@ class UserPlayHistory extends Component {
                                         </div>
                                         <div className={classes.AmountWon}>
                                             <div>Number of hits:  {match[0].isEvaluated ? match[0].hits : "-"}</div>
-                                            {console.log(match[0])}
                                             <div>Amount won: {match[0].postponed === true ? "game nullified/voided - refunded" : this.calculateWins(match[0], match[0].hits)}</div>
                                         </div>
                                     </div>
