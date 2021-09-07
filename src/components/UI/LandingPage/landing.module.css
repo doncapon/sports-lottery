@@ -12,17 +12,54 @@
     text-shadow: none;
 }
 .wrapperLand {
-    height: 100vh;
+    height: 120vh;
 }
-@media (max-width: 500px) {
+.ball_img{
+    position: absolute;
+    right: 100px;
+    bottom: 0px;
+    right: -200px !important;
+}
+
+@media (min-width: 301px) {
     .wrapperLand {
         height: auto;
     }
     .ball_img {
-        right: -80px !important;
-        top: 1000px;
+        right: -90px !important;
+        top: 0px;
     }
-    /* .Jackpot {
-        padding-bottom: 40px;   
-    } */
+ 
 }
+
+
+
+@media (min-width: 600px) {
+    .ball_img {
+        right: -80px !important;
+    }
+ 
+}
+
+@media (min-width: 768px) {
+    .wrapperLand {
+        height: 85vh;
+    }
+    .ball_img {
+        right: -20px !important;
+        top: 150px;
+    }
+ 
+}
+
+@media (min-width: 960px) {
+    .wrapperLand {
+        height: 100vh;
+    }
+    .ball_img {
+        right: 0px !important;
+        top: 300px;
+    }
+ 
+}
+

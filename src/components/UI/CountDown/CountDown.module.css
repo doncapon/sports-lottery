@@ -6,13 +6,3 @@
 .dimensions {
   font-weight: 700;
 }
-@media (max-width: 500px) {
-  .pin {
-     right: 100px !important;
-  }
-}
-@media (min-width: 700px) and (max-width: 800px) {
-  .pin {
-     right: 10px !important;
-  }
-}

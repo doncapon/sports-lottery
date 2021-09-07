@@ -179,7 +179,7 @@ class Landing extends Component {
             src={ball}
             width="200px"
             alt="ball"
-            style={{ position: "absolute", right: "100px", bottom: "40px" }}
+          
           />
         </Container>
         <Footer />
