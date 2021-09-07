@@ -8,7 +8,7 @@
     overflow: hidden;
     padding-bottom: 30px;
    background: rgb(153, 182, 238);
-   height: 2000px;
+   height: auto;
 }
 .TopBoard {
     background: #eee;
@@ -70,7 +70,6 @@
 @media only screen and (min-width: 768px){
     .Board{
         padding-bottom: 20vh;
-        height: 2490px;
     }
     .TopBoard {
         height: 250px;
@@ -112,7 +111,6 @@
     
     .Board{
         padding-bottom: 20vh;
-        height: 2400px;
     }
     .PayButtons{
         height: 200px;
@@ -140,7 +138,6 @@
         width: 100% ;
         background: #eee;
         padding-bottom: 30vh;
-        height: 1350px;
     }
     .TopBoard {
         height: 220px;
