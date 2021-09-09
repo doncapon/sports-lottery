@@ -22,7 +22,6 @@ class UserPlayHistory extends Component {
         }
 
         this.setMatchResults = this.setMatchResults.bind(this);
-        this.setMatchResults = this.setMatchResults.bind(this)
     }
 
     componentWillUnmount() {
@@ -53,10 +52,7 @@ class UserPlayHistory extends Component {
                             this.setState({ showHistory: myShow });
                             this.setWinAmount();
                         });
-                } else {
-
                 }
-
             })
 
         }
@@ -72,6 +68,7 @@ class UserPlayHistory extends Component {
                     distinctGames.length + 1, gamesPlayed[i][0]);
             }
         }
+
         for (let k = 0; k < distinctGames.length; k++) {
             let matchResRef = firebase.database().ref("match-results");
             matchResRef.once("value").then(snapshot => {
@@ -87,8 +84,7 @@ class UserPlayHistory extends Component {
 
         setTimeout(() => {
             this.setState({ matchResults: matchResults });
-
-        }, 1000)
+        }, 2000)
 
     }
     setWinAmount = () => {
@@ -169,10 +165,10 @@ class UserPlayHistory extends Component {
         } else if (matchHits === 13) {
             searchTerm = "thirteen";
         } else {
-            if (match.isEvaluated){
+            if (match.isEvaluated) {
                 return "No wins";
             }
-            else{
+            else {
                 return "Not evaluated yet";
             }
         }
@@ -220,7 +216,7 @@ class UserPlayHistory extends Component {
     getMatchResults = (matchResults, match) => {
         let finalMatches = [];
         for (let i = 0; i < match.games.length; i++) {
-            let res = matchResults.filter(res => res.fixtureId === match.games[i].fixture_id);
+            let res = _.filter(matchResults,res => res.fixtureId === match.games[i].fixture_id);
             finalMatches.splice(finalMatches.length, finalMatches.length + 1, res);
         }
         return finalMatches;
@@ -231,10 +227,10 @@ class UserPlayHistory extends Component {
 
         let matchesPlayed = [...this.state.matchesPlayed];
         let matchResults = [...this.state.matchResults];
-        let userPlayHistoryTrannsformed = this.state.loading && matchesPlayed[0] ?
+        let userPlayHistoryTrannsformed = this.state.loading && matchesPlayed[0] && matchResults.length>0 ?
             matchesPlayed.sort((a, b) => a[0]["datePlayed"] < b[0]["datePlayed"] ? 1 : -1).map((match, k) => {
                 let matchRes = this.getMatchResults(matchResults, match[0]);
-                return matchRes[0].homeTeam !== "" ? <div className={classes.userPlayHistoryAndShare} key={k}>
+                return matchRes[0].homeTeam !== "" && matchRes[0].length>0 ? <div className={classes.userPlayHistoryAndShare} key={k}>
                     <div className={classes.MainHeader} onClick={() => this.toggleShowHistory(k)} >
                         <div className={classes.DateHead}>Entry date : {moment(match[0].datePlayed).format("DD.MM.YYYY")}</div>
                         <div className={classes.PriceHead}>Price: {"₦" + addCommaToAmounts("" + match[0].slipPrice)}</div>
@@ -249,6 +245,7 @@ class UserPlayHistory extends Component {
                                 matchRes.length > 0 ? <div className={classes.userPlayHistory}>
                                     <div className={classes.ResultBody} >
                                         <div className={classes.BodyHeader}>
+                                        {/* {console.log(matchRes)} */}
                                             <div className={classes.Head1}>Match</div>
                                             <div className={classes.Head}>Score</div>
                                             <div className={classes.Head2}>Your Selections</div>
