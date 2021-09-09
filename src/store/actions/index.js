@@ -1,4 +1,5 @@
 export {
+     setVersion,
      setBoard,
      resetReduxBoard,
      toggleSelectedTile,

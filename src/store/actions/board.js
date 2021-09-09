@@ -1,6 +1,13 @@
 import * as actionTypes from './actionTypes';
 import firebase from '../../config/firebase/firebase';
 
+export const setVersion = (version) => {
+    return {
+        type: actionTypes.SET_VERSION,
+        version: version
+    }
+}
+
 export const generateSlip = (amount, slipIndex, basePrice) => {
     return dispatch => {
         dispatch(EmptyEditingISlip2());
@@ -31,7 +38,7 @@ export const setBoard = (basePrice) => {
                 Object.keys(returned).map(key => {
                     let fixt = returned[key];
                     Object.keys(fixt).map(key2 => {
-                        if (key2 !== "isPaid" && key2 !== "dateKey" && key2 !=="postponed")
+                        if (key2 !== "isPaid" && key2 !== "dateKey" && key2 !== "postponed")
                             wantedFixtures.push(fixt[key2]);
                         return null;
                     });
