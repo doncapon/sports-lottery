@@ -37,6 +37,12 @@ class Landing extends Component {
           }
         });
       }
+      let version = process.env.REACT_APP_VERSION;
+      if (this.props.version !== version) {
+        window.localStorage.removeItem("persist:root")
+        this.props.onSetVersion(version);
+        window.location.reload();
+      }
     }, 1000);
 
     if (!this.state.loading) {
@@ -160,7 +166,7 @@ class Landing extends Component {
           style={{ position: "relative" }}
         >
           <div>
-          {this.state.jackpot >= 0 && this.state.jackpot != null ? (
+            {this.state.jackpot >= 0 && this.state.jackpot != null ? (
               <div className={classes.Jackpot}>
                 <div className={classes.JapotText}>Jackpot: </div>
                 {this.state.isGamesAvailable
@@ -172,14 +178,14 @@ class Landing extends Component {
             {this.state.loading && this.state.gameDateRaw ? (
               <CountDown gamedate={this.state.gameDateRaw} />
             ) : null}
-       
+
           </div>
           <img
             className={classes.ball_img}
             src={ball}
             width="200px"
             alt="ball"
-          
+
           />
         </Container>
         <Footer />
@@ -199,12 +205,14 @@ const mapStateToProps = (state) => {
     elevenPercent: state.config.elevenPercent,
     tenPercent: state.config.tenPercent,
     endTime: state.config.endTime,
+
+    version: state.board.version,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-
+    onSetVersion: (version) => dispatch(actions.setVersion(version)),
     onUpdateBoard: (fixturesToPush, kickOffDate) =>
       dispatch(actions.updateBoard(fixturesToPush, kickOffDate)),
     onConfigureBoard: (kickOffTime, endTime, kickOffDate) =>
