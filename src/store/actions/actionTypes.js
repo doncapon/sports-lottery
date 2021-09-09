@@ -54,7 +54,7 @@ export const STOP_RESULT_INITIALIZE = 'STOP_RESULT_INITIALIZE';
 export const SETUP_WINNERS = 'SETUP_WINNERS';
 export const FETCH_RESULTS = 'FETCH_RESULTS';
 export const SET_EVENTDATE = 'SET_EVENTDATE';
-
+export const SET_VERSION="SET_VERSION";
 
 
 //login

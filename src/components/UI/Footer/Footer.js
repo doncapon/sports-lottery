@@ -7,7 +7,7 @@ const Footer = (props) => {
         <Auxy >
             <div className={classes.footer}>
                 <Container>
-                    <p className='text-white text-center pt-2'>&copy; 2021 BetSoka</p>
+                    <p className='text-white text-center pt-2'>&copy; 2021 BetSoka {" - "} <i>version: {process.env.REACT_APP_VERSION}</i></p>
                 </Container>
             </div>
         </Auxy>

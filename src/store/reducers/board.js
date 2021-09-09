@@ -48,7 +48,13 @@ const initialStte = {
     isToWallet: true,
 
     showFunds: true,
+    version: ""
 };
+const setVersion= (state, action)=>{
+    return produce(state, draft => {
+        draft.version = action.version;
+    });
+}
 
 const setIsToWallet = (state, action) => {
     return produce(state, draft => {
@@ -637,6 +643,8 @@ const setPurchaseAll = (state, action) => {
 
 const reducer = (state = initialStte, action) => {
     switch (action.type) {
+        case actionTypes.SET_VERSION:
+            return setVersion(state, action);
         case actionTypes.RESET_BOARD:
             return resetReduxBoard(state, action);
         case actionTypes.SET_BOARD_LOADING:

@@ -79,10 +79,13 @@ class Board extends Component {
         setTimeout(() => {
           this.refundUsersGamePostponed();
         }, 42000);
-
-
-
-
+      }
+        let version = process.env.REACT_APP_VERSION;
+        console.log(this.props.version)
+      if(this.props.version !== version){
+        window.localStorage.removeItem("persist:root")
+        this.props.onSetVersion(version);
+          window.location.reload();
       }
     }, 1000);
 
@@ -658,6 +661,7 @@ const mapstateToProps = (state) => {
     elevenPercent: state.config.elevenPercent,
     tenPercent: state.config.tenPercent,
 
+    version: state.board.version,
     gameDate: state.board.gameDate,
     evaluationDate: state.board.evaluationDate,
     gameDateRaw: state.board.gameDateRaw,
@@ -683,6 +687,7 @@ const mapstateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
+    onSetVersion: (version)=> dispatch(actions.setVersion(version)),
     onSetFunds: (funds) => dispatch(actions.setFunds(funds)),
     onSetBoard: (basePrice) =>
       dispatch(actions.setBoard(basePrice)),
