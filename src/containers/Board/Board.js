@@ -81,7 +81,6 @@ class Board extends Component {
         }, 42000);
       }
         let version = process.env.REACT_APP_VERSION;
-        console.log(this.props.version)
       if(this.props.version !== version){
         window.localStorage.removeItem("persist:root")
         this.props.onSetVersion(version);
