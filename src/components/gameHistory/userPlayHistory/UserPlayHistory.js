@@ -18,12 +18,10 @@ class UserPlayHistory extends Component {
             matchResults: [],
             winAmount: [],
             loading: false,
-            showHistory: [],
-            exactOne: false
+            showHistory: []
         }
 
         this.setMatchResults = this.setMatchResults.bind(this);
-        this.isExactlyone = this.isExactlyone.bind(this);
         this.setMatchResults = this.setMatchResults.bind(this)
     }
 
@@ -34,7 +32,6 @@ class UserPlayHistory extends Component {
         this.setState({ matchResults: [] });
         this.setState({ matchesPlayed: [] });
         this.setState({ loading: false });
-        this.setState({ exactOne: false })
     }
     componentDidMount() {
         if (!this.state.loading) {
@@ -89,7 +86,6 @@ class UserPlayHistory extends Component {
         }
 
         setTimeout(() => {
-            this.setState({ exactOne: this.isExactlyone(matchResults) })
             this.setState({ matchResults: matchResults });
 
         }, 1000)
@@ -221,15 +217,6 @@ class UserPlayHistory extends Component {
         });
     }
 
-    isExactlyone = (results) => {
-        let count = 0;
-        for (let i = 0; i < results.length; i++) {
-            if (results[i].status === "Match Postponed");
-            count++;
-        }
-        return count > 3;
-    }
-
     getMatchResults = (matchResults, match) => {
         let finalMatches = [];
         for (let i = 0; i < match.games.length; i++) {
@@ -278,7 +265,7 @@ class UserPlayHistory extends Component {
                                                     </div>
                                                     <div className={classes.ScoreResult}>
                                                         <div className={classes.Score}>{eachRes[0].status === "Match Finished" ? eachRes[0].score.home + "-" + eachRes[0].score.away : Date.now() > moment(match[0].endTime) ? eachRes[0].status : "-"}</div>
-                                                        <div >{this.state.exactOne ? "free pass" : this.translateResult(eachRes[0].homeGoals, eachRes[0].awayGoals, moment(match[0].endTime))}</div>
+                                                        <div >{this.translateResult(eachRes[0].homeGoals, eachRes[0].awayGoals, moment(match[0].endTime))}</div>
                                                     </div>
                                                     <div className={classes.Selections}>
                                                         {match[0].games[i].selections.map((select, y) =>
