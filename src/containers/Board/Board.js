@@ -79,8 +79,7 @@ class Board extends Component {
 
       //End Evaluation
       let endTime = kickOffDate + "T" + this.props.evaluationTime;
-      if (moment().format("yyyy-MM-DD:hh:mm:ss") === (moment(/*endTime*/ "2021-09-11T20:27:00+00:00").format("yyyy-MM-DD:hh:mm:ss"))) {
-        console.log(endTime);
+      if (moment().format("yyyy-MM-DD:hh:mm:ss") === (moment(endTime /*"2021-09-11T20:27:00+00:00"*/).format("yyyy-MM-DD:hh:mm:ss"))) {
         setTimeout(() => {
           this.props.onSetCurrentResult(0);
         }, 25000)
@@ -436,7 +435,7 @@ class Board extends Component {
 
   confirmPurchase = () => {
     this.ExecutePurchase();
-    this.props.onSetReceipt(this.state.eventDate, this.props.endTime);
+    this.props.onSetReceipt(this.state.eventDate, this.props.evaluationTime);
     this.togglePaymentButton(false, true)
   }
   ExecutePurchase = () => {
