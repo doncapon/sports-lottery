@@ -8,6 +8,9 @@
     float: left;
 
 }
+.Complete{
+    clear:both;
+}
 
 .Betslip:nth-child(){
     display: block;

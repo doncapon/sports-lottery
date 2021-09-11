@@ -114,7 +114,7 @@ const Betslips = React.memo(
               <div className={classes.BetItems} onClick={() => setEditIndex(ind)}>
                 <BetItems key={ind} games={slip[slip.id].games} />
               </div>
-              <div>
+              <div className={classes.Complete}>
                 {slip.purchasable?<div style={{color: 'green'}}>complete</div>: <div style={{color: 'red'}}>incomplete</div>}
               </div>
               <div className={classes.Buttons}>
