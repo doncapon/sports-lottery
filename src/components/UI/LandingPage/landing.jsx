@@ -19,6 +19,7 @@ class Landing extends Component {
       gameDateRaw: null,
       jackpot: null,
       isGamesAvailable: true,
+      isResetTime: false,
       total: 0
     };
   }

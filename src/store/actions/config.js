@@ -75,12 +75,10 @@ export const configureBoard = (kickOffTime, endTime, kickOffDate) => {
             params: {
                 date: kickOffDate
             }
-        })
-            .then(response => {
+        }).then(response => {
                 let startTime = (kickOffDate + "T" + kickOffTime);
                 endTime = (kickOffDate + "T" + endTime);
                 let wantedFixtures = gamePicker(response, startTime, endTime, [], "England", ["Premier League", "Championship", "FA Cup", "League One", "League Two"], 7);
-
                 let fixturesToPush = [];
                 for (let i = 0; i < wantedFixtures.length; i++) {
                     fixturesToPush.splice(fixturesToPush.length, fixturesToPush.length + 1,

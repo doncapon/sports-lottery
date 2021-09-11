@@ -50,7 +50,7 @@ const initialStte = {
     showFunds: true,
     version: ""
 };
-const setVersion= (state, action)=>{
+const setVersion = (state, action) => {
     return produce(state, draft => {
         draft.version = action.version;
     });
