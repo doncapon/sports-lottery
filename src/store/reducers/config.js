@@ -6,7 +6,7 @@ const initialState = {
     hourToNextDay: 11,   //24 - kick-off time
     kickOffTime: '13:00:00+00:00',
     endTime: '18:00:00+00:00',
-    evaluationTime: '28:00:00+00:00',
+    evaluationTime: '20:00:00+00:00',
     eventDate: null,
 
     thirteenPercent: 0.5,

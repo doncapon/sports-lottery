@@ -119,11 +119,10 @@ const setReceipt = (state, action) => {
                 slipGames.splice(slipGames.length, slipGames.length + 1, {
                     fixture_id: draft.slips[i]["slip_" + (i + 1)].games[k].fixture_id,
                     selections: draft.slips[i]["slip_" + (i + 1)].games[k]["game_" + (k + 1)].sides,
-
                 });
             }
             slip.evaluationDate = action.gameDate;
-            slip.endTime = moment(action.gameDate + "T" + action.endTime).add(2, 'hours').format("YYYY-MM-DDTHH:mm:SS+00:00")
+            slip.endTime = moment(action.gameDate + "T" + action.endTime).format("YYYY-MM-DDTHH:mm:SS+00:00")
             slip.games = Object.assign([], slipGames);
 
             let user = firebase.auth().currentUser;
