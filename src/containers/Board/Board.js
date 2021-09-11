@@ -24,6 +24,7 @@ class Board extends Component {
     showModalSignin: false,
     funds: 0,
     isGamesAvailable: true,
+    isResetTime: false,
     loading: false,
     eventDate: null,
     endTime: null,
@@ -48,24 +49,38 @@ class Board extends Component {
       kickOffDate = getNextPlayDate(this.props.daysOffset,
         this.props.hourToNextDay);
       let gameTime = kickOffDate + "T" + this.props.kickOffTime;
-      let gameTimeUpperLimit = moment(gameTime).add(30, "seconds");
-      if (moment(new Date()).isSameOrAfter(moment(gameTime /*"2021-09-04T17:14:00+00:00"*/)) && moment().isBefore(gameTimeUpperLimit /*"2021-09-04T17:15:00+00:00"*/)) {
+
+      if (moment().format("yyyy-MM-DD:hh:mm:ss") === moment(gameTime /*"2021-09-11T16:51:00+00:00"*/).format("yyyy-MM-DD:hh:mm:ss")) {
+        firebase.database().ref("resetter").set({ isReset: true });
+        let versionBeta = process.env.REACT_APP_VERSION + ".Beta";
+        if (this.props.version !== versionBeta) {
+          window.localStorage.removeItem("persist:root")
+          window.location.reload();
+        }
+
         firebase.database().ref("board").child(kickOffDate).on("value", snapshot => {
           if (snapshot.val() === null) {
             this.handlecConfigureBoard();
             this.setupJackpot(kickOffDate)
             setTimeout(() => {
               this.props.onSetCurrentResult(1);
-            }, 15000);
-            setTimeout(() => {
-              this.props.onDeleteAndResetAll();
-            }, 20000)
+            }, 250000);
           }
-
         });
+
+        setTimeout(() => {
+          firebase.database().ref("resetter").set({ isReset: false });
+          let versionBeta = process.env.REACT_APP_VERSION + ".Beta";
+          if (this.props.version !== versionBeta) {
+            window.localStorage.removeItem("persist:root")
+            window.location.reload();
+          }
+        }, 300000)
       }
+
+      //End Evaluation
       let endTime = kickOffDate + "T" + this.props.evaluationTime;
-      if (moment().format("yyyy-MM-dd:hh:mm:ss") === (moment(endTime /*" "2021-09-04T21:18:00+00:00").format("yyyy-MM-dd:hh:mm:ss"*/))) {
+      if (moment().format("yyyy-MM-dd:hh:mm:ss") === (moment(endTime /*"2021-09-04T21:18:00+00:00"*/).format("yyyy-MM-dd:hh:mm:ss"))) {
         setTimeout(() => {
           this.props.onSetCurrentResult(0);
         }, 25000)
@@ -80,11 +95,11 @@ class Board extends Component {
           this.refundUsersGamePostponed();
         }, 42000);
       }
-        let version = process.env.REACT_APP_VERSION;
-      if(this.props.version !== version){
+      let version = process.env.REACT_APP_VERSION;
+      if (this.props.version !== version) {
         window.localStorage.removeItem("persist:root")
         this.props.onSetVersion(version);
-          window.location.reload();
+        window.location.reload();
       }
     }, 1000);
 
@@ -109,6 +124,11 @@ class Board extends Component {
             this.setState({ isGamesAvailable: false })
           }
           this.setState({ eventDate: key + "T" + this.props.kickOffTime })
+        });
+
+      firebase.database().ref("resetter").child("isReset").once("value")
+        .then(snapshot => {
+          this.setState({ isResetTime: snapshot.val() })
         });
 
     }
@@ -150,14 +170,14 @@ class Board extends Component {
               if (innerData.evaluationDate === date) {
                 let userRef = firebase.database().ref("users").child(key);
                 userRef.child('funds').transaction((funds) => {
-                  return funds +innerData.slipPrice;
+                  return funds + innerData.slipPrice;
                 })
 
                 firebase.database().ref("dividends").child(date).child('dividend').transaction((dividend) => {
                   return dividend - innerData.slipPrice;
                 })
-                
-                  firebase.database().ref("game-history").child(key).child(inKey).update({postponed: true})
+
+                firebase.database().ref("game-history").child(key).child(inKey).update({ postponed: true })
                 firebase.database().ref("users").off();
 
               }
@@ -335,69 +355,70 @@ class Board extends Component {
       let boardRef = firebase.database().ref("board").child(gameDate);
 
       setTimeout(() => {
-        // if (!dataBoard.isPaid) {
-        matchesPlayedRef.once("value").then(snapshot => {
-          let data = snapshot.val();
-          Object.keys(data).map(keys => {
-            let matches = data[keys];
-            return Object.keys(matches).map(key => {
-              let matchesPlayed = matches[key];
-              let endDate = moment(new Date(gameDate + "T" + this.props.kickOffTime));
-              let tempDate = new Date(gameDate + "T" + this.props.kickOffTime);
+        if (!dataBoard.isPaid) {
+          matchesPlayedRef.once("value").then(snapshot => {
+            let data = snapshot.val();
+            Object.keys(data).map(keys => {
+              let matches = data[keys];
+              return Object.keys(matches).map(key => {
+                let matchesPlayed = matches[key];
+                let endDate = moment(new Date(gameDate + "T" + this.props.kickOffTime));
+                let tempDate = new Date(gameDate + "T" + this.props.kickOffTime);
 
-              tempDate.setDate(tempDate.getDate() - 7)
-              let startDate = moment(tempDate);
-              let matchDate = moment(new Date(matchesPlayed.datePlayed));
-              if (matchesPlayed.evaluationDate === gameDate) {
-                // if (matchDate.isSameOrBefore(endDate)
-                //   && matchDate.isSameOrAfter(startDate)) {
-                // if (!matchesPlayed.isEvaluated) {
-                let matchRes = this.setMatchResults(gameDate);
-                let hits
-                setTimeout(() => {
-                  hits = this.calculateWins(matchesPlayed, matchRes);
-                }, 500)
-                setTimeout(() => {
-                  firebase.database().ref("game-history").child(matchesPlayed.userId)
-                    .child(matchesPlayed.gameNumber)
-                    .update({ hits: hits });
-                  if (hits === 10) {
-                    this.setState({ tenWinners: this.state.tenWinners + 1 });
-                  } else if (hits === 11) {
-                    this.setState({ elevenWinners: this.state.elevenWinners + 1 });
-                  } else if (hits === 12) {
-                    this.setState({ twelveWinners: this.state.twelveWinners + 1 });
-                  } else if (hits === 13) {
-                    this.setState({ thirteenWinners: this.state.thirteenWinners + 1 });
+                tempDate.setDate(tempDate.getDate() - 7)
+                let startDate = moment(tempDate);
+                let matchDate = moment(new Date(matchesPlayed.datePlayed));
+                if (matchesPlayed.evaluationDate === gameDate) {
+                  if (matchDate.isSameOrBefore(endDate)
+                    && matchDate.isSameOrAfter(startDate)) {
+                    if (!matchesPlayed.isEvaluated) {
+                      let matchRes = this.setMatchResults(gameDate);
+                      let hits
+                      setTimeout(() => {
+                        hits = this.calculateWins(matchesPlayed, matchRes);
+                      }, 500)
+                      setTimeout(() => {
+                        firebase.database().ref("game-history").child(matchesPlayed.userId)
+                          .child(matchesPlayed.gameNumber)
+                          .update({ hits: hits });
+                        if (hits === 10) {
+                          this.setState({ tenWinners: this.state.tenWinners + 1 });
+                        } else if (hits === 11) {
+                          this.setState({ elevenWinners: this.state.elevenWinners + 1 });
+                        } else if (hits === 12) {
+                          this.setState({ twelveWinners: this.state.twelveWinners + 1 });
+                        } else if (hits === 13) {
+                          this.setState({ thirteenWinners: this.state.thirteenWinners + 1 });
+                        }
+                        firebase.database().ref("game-history").child(matchesPlayed.userId)
+                          .child(matchesPlayed.gameNumber).update({ isEvaluated: true })
+                        firebase.database().ref("jackpots").child(matchesPlayed.evaluationDate).update({ tenUser: this.state.tenWinners })
+                        firebase.database().ref("jackpots").child(matchesPlayed.evaluationDate).update({ elevenUser: this.state.elevenWinners })
+                        firebase.database().ref("jackpots").child(matchesPlayed.evaluationDate).update({ twelveUser: this.state.twelveWinners })
+                        firebase.database().ref("jackpots").child(matchesPlayed.evaluationDate).update({ thirteenUser: this.state.thirteenWinners })
+                      }, 2000);
+                    }
                   }
-                  firebase.database().ref("game-history").child(matchesPlayed.userId)
-                    .child(matchesPlayed.gameNumber).update({ isEvaluated: true })
-                  firebase.database().ref("jackpots").child(matchesPlayed.evaluationDate).update({ tenUser: this.state.tenWinners })
-                  firebase.database().ref("jackpots").child(matchesPlayed.evaluationDate).update({ elevenUser: this.state.elevenWinners })
-                  firebase.database().ref("jackpots").child(matchesPlayed.evaluationDate).update({ twelveUser: this.state.twelveWinners })
-                  firebase.database().ref("jackpots").child(matchesPlayed.evaluationDate).update({ thirteenUser: this.state.thirteenWinners })
-                }, 2000)
-              }
-              // }
-              // }
-              return null;
-            })
+                }
+                return null;
+              })
+            });
+
+            setTimeout(() => {
+              firebase.database().ref("jackpots").off();
+              firebase.database().ref("match-results").off();
+              firebase.database().ref("game-history").off();
+
+            }, 2000)
           });
           setTimeout(() => {
-            firebase.database().ref("jackpots").off();
-            firebase.database().ref("match-results").off();
-            firebase.database().ref("game-history").off();
+            this.calculaterWiinerAmount();
+            this.setState({ disable: false });
+          }, 30000); //Subject to change with huge data possible to 1 hour
 
-          }, 2000)
-        });
-        setTimeout(() => {
-          this.calculaterWiinerAmount();
-          this.setState({ disable: false });
-        }, 30000); //Subject to change with huge data possible to 1 hour
-
-        boardRef.update({ isPaid: true })
-        firebase.database().ref("board").off();
-        // }
+          boardRef.update({ isPaid: true })
+          firebase.database().ref("board").off();
+        }
       }, 2000)
     });
 
@@ -528,124 +549,118 @@ class Board extends Component {
   }
 
   render() {
-    return (this.props.loading ? (
-      // this.state.isGamesAvailable? 
-      <div className={classes.Board}>
-        <div className={classes.BoardLeft}>
-          <div className={classes.TopBoard} >
-            <TopBoard
-              isStarted={this.props.isStarted}
-              clicked={this.props.onEmptyEditingISlip}
-              generateSlip={this.props.ongenerateSlip}
-              editIndex={this.props.editIndex}
-              basePrice={this.props.basePrice}
-            />
-          </div>
-          <div className={classes.PlayRow}>
-            <PlayRow
-              loading={this.props.loading}
-              fetchPredictionsAll={this.props.onFetchPredictionsAll}
-              predictions={this.props.predictions}
-              toggleSelectedTile={this.props.ontoggleSelectedTile}
-              slips={this.props.slips}
-              basePrice={this.props.basePrice}
-              checkPurchasable={this.props.onIsPurchasing}
-              setPurchaseAll={this.props.onSetPurchaseAll}
-              playingGames={this.props.playingGames}
-              editIndex={this.props.editIndex}
-              CalculateOverAllPrice={this.props.onCalculateOverAllPrice}
-              toggleShowHistory={this.props.onToggleShowHistory}
-            />
-          </div>
+    return (this.props.loading && this.state.isGamesAvailable && !this.state.isResetTime ? <div className={classes.Board}>
+      <div className={classes.BoardLeft}>
+        <div className={classes.TopBoard} >
+          <TopBoard
+            isStarted={this.props.isStarted}
+            clicked={this.props.onEmptyEditingISlip}
+            generateSlip={this.props.ongenerateSlip}
+            editIndex={this.props.editIndex}
+            basePrice={this.props.basePrice}
+          />
         </div>
-        <div className={classes.BoardRight}>
-          <div className={classes.Betslip}>
-            <Betslips
-              slips={this.props.slips}
-              setAdding={this.props.onSetAdding}
-              setRemoving={this.props.onSetRemoving}
-              setPurchaseAll={this.props.onSetPurchaseAll}
-              checkPurchasable={this.props.onCheckPurchasable}
-              setTotalPrice={this.props.onSetTotalPrice}
-              deleteAndResetAll={this.props.onDeleteAndResetAll}
-              addEmptySlip={this.props.onAddEmptySlip}
-              removeSlipSingle={this.props.onRemoveRowFromBetSlip}
-              purchaseAll={this.props.purchaseAll}
-              setEditIndex={this.props.onSetEditIndex}
-              addBetSlip={this.props.ononCopyBetslip}
-              editIndex={this.props.editIndex}
-              funds={this.state.funds}
-              totalPrice={this.props.totalPrice}
-              basePrice={this.props.basePrice}
-            />
-          </div>
-          <div className={classes.Payment} >
-            {(this.props.isPaying || this.props.isPaid) ?
-              <Payment totalPrice={this.props.totalPrice} toggleshowShowReceipt={this.props.onToggleIsShowReceipt}
-                isPaid={this.props.isPaid} closePayment={this.togglePaymentButton} isShowReceipt={this.props.isShowReceipt}
-                gamesCount={this.props.slips.length} setIsPaying={this.props.onSetIsPaying}
-                receipts={this.props.receipts}
-              />
-              : null}
-            <div style={{ float: "left", clear: "both" }}
-              ref={(el) => { this.messagesEnd = el; }}>
-            </div>
-          </div>
-          <div className={classes.ButtonsAndReceipt}>
-            {(!this.props.isPaying && !this.props.isPaid) ?
-              <div className={classes.PayButtons}>
-                <Button
-                  disabled={this.props.totalPrice <= 0 || (this.props.isLoggedIn && this.state.funds < this.props.totalPrice)}
-                  variant={this.props.purchaseAll ? "success" : "danger"}
-                  className={classes.PayButton}
-                  onClick={() => this.togglePaymentButton(true, false)}
-
-                >
-                  {this.props.purchaseAll ? "PAY ₦" + addCommaToAmounts(this.props.totalPrice.toString(10)) : "Incomplete Slip(s)"}
-
-                </Button>
-                {(this.state.funds < this.props.totalPrice && this.props.isLoggedIn) ? <div>
-                  <div style={{
-                    color: 'red', textAlign: 'center', background:
-                      'grey', padding: '10px 0', marginBottom: '10px'
-                  }}>Sorry, you do not have enough funds to make the purchase</div>
-                  <div><Button className={classes.TransferButton}
-                    onClick={() => (this.props.history.push("/transfers"))}> <ArrowRight style={{ fontWeight: 'bolder' }} size="20" /> GO TO FUNDS TRANSFER</Button></div>
-                </div> : null}
-                <Modal show={this.state.showModalSignin} modalClosed={this.cancelLoginPopup}>
-                  <LoginModal setLoggedInUser={this.props.onSetLoggedInUser}
-                    setIsPaying={this.props.onSetIsPaying} setIsLoggedIn={this.props.onSetIsLoggedIn}
-                    setIsPaid={this.props.onSetIsPaid} cancelLoginPopup={this.cancelLoginPopup}
-                  />
-                </Modal>
-              </div>
-
-              : this.props.isPaying ?
-                <div> <Button
-                  disabled={!this.props.purchaseAll}
-                  variant={"success"}
-                  onClick={this.confirmPurchase}
-                  className={classes.ConfrimPayments}
-                >
-                  {"CONFIRM ₦" + addCommaToAmounts(this.props.totalPrice.toString(10))}
-                </Button>
-
-                </div>
-                : this.props.isShowReceipt ?
-                  <div className={classes.Receipts}>
-                    <Receipts receipts={this.props.receipts}
-                      basePrice={this.props.basePrice} gameDate={this.props.gameDate} />
-                  </div>
-                  : null}
-          </div>
-
+        <div className={classes.PlayRow}>
+          <PlayRow
+            loading={this.props.loading}
+            fetchPredictionsAll={this.props.onFetchPredictionsAll}
+            predictions={this.props.predictions}
+            toggleSelectedTile={this.props.ontoggleSelectedTile}
+            slips={this.props.slips}
+            basePrice={this.props.basePrice}
+            checkPurchasable={this.props.onIsPurchasing}
+            setPurchaseAll={this.props.onSetPurchaseAll}
+            playingGames={this.props.playingGames}
+            editIndex={this.props.editIndex}
+            CalculateOverAllPrice={this.props.onCalculateOverAllPrice}
+            toggleShowHistory={this.props.onToggleShowHistory}
+          />
         </div>
       </div>
-      // : <div style={{background: 'skyblue', paddingLeft: '10vw'}}>Sorry there are no games available for this week</div>
-    )
-      : <div><Spinner /></div>
+      <div className={classes.BoardRight}>
+        <div className={classes.Betslip}>
+          <Betslips
+            slips={this.props.slips}
+            setAdding={this.props.onSetAdding}
+            setRemoving={this.props.onSetRemoving}
+            setPurchaseAll={this.props.onSetPurchaseAll}
+            checkPurchasable={this.props.onCheckPurchasable}
+            setTotalPrice={this.props.onSetTotalPrice}
+            deleteAndResetAll={this.props.onDeleteAndResetAll}
+            addEmptySlip={this.props.onAddEmptySlip}
+            removeSlipSingle={this.props.onRemoveRowFromBetSlip}
+            purchaseAll={this.props.purchaseAll}
+            setEditIndex={this.props.onSetEditIndex}
+            addBetSlip={this.props.ononCopyBetslip}
+            editIndex={this.props.editIndex}
+            funds={this.state.funds}
+            totalPrice={this.props.totalPrice}
+            basePrice={this.props.basePrice}
+          />
+        </div>
+        <div className={classes.Payment} >
+          {(this.props.isPaying || this.props.isPaid) ?
+            <Payment totalPrice={this.props.totalPrice} toggleshowShowReceipt={this.props.onToggleIsShowReceipt}
+              isPaid={this.props.isPaid} closePayment={this.togglePaymentButton} isShowReceipt={this.props.isShowReceipt}
+              gamesCount={this.props.slips.length} setIsPaying={this.props.onSetIsPaying}
+              receipts={this.props.receipts}
+            />
+            : null}
+          <div style={{ float: "left", clear: "both" }}
+            ref={(el) => { this.messagesEnd = el; }}>
+          </div>
+        </div>
+        <div className={classes.ButtonsAndReceipt}>
+          {(!this.props.isPaying && !this.props.isPaid) ?
+            <div className={classes.PayButtons}>
+              <Button
+                disabled={this.props.totalPrice <= 0 || (this.props.isLoggedIn && this.state.funds < this.props.totalPrice)}
+                variant={this.props.purchaseAll ? "success" : "danger"}
+                className={classes.PayButton}
+                onClick={() => this.togglePaymentButton(true, false)}
 
-    );
+              >
+                {this.props.purchaseAll ? "PAY ₦" + addCommaToAmounts(this.props.totalPrice.toString(10)) : "Incomplete Slip(s)"}
+
+              </Button>
+              {(this.state.funds < this.props.totalPrice && this.props.isLoggedIn) ? <div>
+                <div style={{
+                  color: 'red', textAlign: 'center', background:
+                    'grey', padding: '10px 0', marginBottom: '10px'
+                }}>Sorry, you do not have enough funds to make the purchase</div>
+                <div><Button className={classes.TransferButton}
+                  onClick={() => (this.props.history.push("/transfers"))}> <ArrowRight style={{ fontWeight: 'bolder' }} size="20" /> GO TO FUNDS TRANSFER</Button></div>
+              </div> : null}
+              <Modal show={this.state.showModalSignin} modalClosed={this.cancelLoginPopup}>
+                <LoginModal setLoggedInUser={this.props.onSetLoggedInUser}
+                  setIsPaying={this.props.onSetIsPaying} setIsLoggedIn={this.props.onSetIsLoggedIn}
+                  setIsPaid={this.props.onSetIsPaid} cancelLoginPopup={this.cancelLoginPopup}
+                />
+              </Modal>
+            </div>
+
+            : this.props.isPaying ?
+              <div> <Button
+                disabled={!this.props.purchaseAll}
+                variant={"success"}
+                onClick={this.confirmPurchase}
+                className={classes.ConfrimPayments}
+              >
+                {"CONFIRM ₦" + addCommaToAmounts(this.props.totalPrice.toString(10))}
+              </Button>
+
+              </div>
+              : this.props.isShowReceipt ?
+                <div className={classes.Receipts}>
+                  <Receipts receipts={this.props.receipts}
+                    basePrice={this.props.basePrice} gameDate={this.props.gameDate} />
+                </div>
+                : null}
+        </div>
+
+      </div>
+    </div> : !this.state.isGamesAvailable ? <div style={{ background: 'skyblue', paddingLeft: '10vw' }} >Sorry there are no games available for this week</div>
+      : this.state.isResetTime ? <div style={{ background: 'skyblue', paddingLeft: '10vw' }} >Configuration is in progress...</div> : <Spinner />)
   }
 }
 const mapstateToProps = (state) => {
@@ -686,7 +701,7 @@ const mapstateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    onSetVersion: (version)=> dispatch(actions.setVersion(version)),
+    onSetVersion: (version) => dispatch(actions.setVersion(version)),
     onSetFunds: (funds) => dispatch(actions.setFunds(funds)),
     onSetBoard: (basePrice) =>
       dispatch(actions.setBoard(basePrice)),

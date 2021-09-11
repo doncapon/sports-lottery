@@ -55,6 +55,7 @@ export const SETUP_WINNERS = 'SETUP_WINNERS';
 export const FETCH_RESULTS = 'FETCH_RESULTS';
 export const SET_EVENTDATE = 'SET_EVENTDATE';
 export const SET_VERSION="SET_VERSION";
+export const IS_RESET="IS_RESET";
 
 
 //login

@@ -34,7 +34,7 @@ const payment = (props) => {
                 </div>
             </div>
             : <div >
-                <div className={classes.TermHeaderLeft} > You have been changed   </div>
+                <div className={classes.TermHeaderLeft} > You have been charged   </div>
                 <div className={classes.TermHeaderRight} style={{ color: 'green' }}>
                 {"₦"+addCommaToAmounts(props.totalPrice.toString(10))}
 
