@@ -27,7 +27,6 @@ class Board extends Component {
     isResetTime: false,
     loading: false,
     eventDate: null,
-    endTime: null,
     gamesPostponedMore: false,
 
     tenWinners: 0,
@@ -107,12 +106,6 @@ class Board extends Component {
       setTimeout(() => {
         this.setState({ funds: this.props.user.funds });
       }, 1000);
-
-      firebase.database().ref("board").limitToLast(2).on("value", snapshot => {
-        let endDate = Object.keys(snapshot.val())[0];
-        let endTime = endDate + "T" + this.props.endTime;
-        this.setState({ endTime: endTime })
-      });
 
       firebase.database().ref("board").orderByChild("dateKey").limitToLast(1).once("value")
         .then(snapshot => {
