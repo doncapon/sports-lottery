@@ -20,7 +20,7 @@
 
 .SingleTile:hover {
     cursor: pointer;
-    background-color: #0275d8;
+    /* background-color: #0275d8; */
 }
 
 .Selected {
@@ -48,5 +48,9 @@
 
     .SingleTile {
         font-size: 2.6vh;
+    }
+
+    .SingleTile:hover {
+        background-color: #0275d8;
     }
 }

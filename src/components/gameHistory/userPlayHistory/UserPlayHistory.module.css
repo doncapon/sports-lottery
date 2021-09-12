@@ -24,7 +24,16 @@
 .BodyMain>div:nth-child(even) {
     background: #c3eafa;
 }
-
+.FilterByWrap{
+    margin-left: 40px;
+    margin-top: 10px;
+    height: 30px;
+}
+.FilterBy{
+    height: 25px;
+    padding-left: 10px;
+    width: 250px;
+}
 .DateHead {
     width: 25vw;
     margin-left: 5vw;
@@ -251,6 +260,22 @@
     .NoGames h3{
         font-size: 5vw
     }
+
+    .FilterByWrap{
+        margin-left: 0px;
+        margin-top: 30px;
+        height: 60px;
+    }
+    .FilterBy{
+        height: 60px;
+        padding-left: 10px;
+        width: 500px;
+        font-size: 30px;
+    }
+    .FilterByWrapInner{
+        margin: 0px 100px;
+        padding:0;
+    }
 }
 
 
@@ -341,7 +366,15 @@
     .NoGames h3{
         font-size: 3vw
     }
-
+    
+    .FilterByWrap{
+        height: 50px;
+    }
+    .FilterBy{
+        height: 40px;
+        font-size: 20px;
+        width: 400px;
+    }
  
 
 }
