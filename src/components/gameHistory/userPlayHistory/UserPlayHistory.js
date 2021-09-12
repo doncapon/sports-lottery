@@ -18,7 +18,8 @@ class UserPlayHistory extends Component {
             matchResults: [],
             winAmount: [],
             loading: false,
-            showHistory: []
+            showHistory: [],
+            gameNumber: ''
         }
 
         this.setMatchResults = this.setMatchResults.bind(this);
@@ -191,6 +192,17 @@ class UserPlayHistory extends Component {
             this.setState({ matchesPlayed: matchesTransformed });
         }
     }
+
+    handleFilterByGame=(e)=>{
+        e.preventDefault();
+        let value = e.target.value;
+        this.setState({gameNumber: value})
+        let matchesPlayed = [...this.state.matchesPlayed];
+        console.log(value)
+        let matcheFiltered = matchesPlayed.filter(match => match[0].gameNumber.includes(value.trim()));
+        this.setState({ matchesPlayed: matcheFiltered });
+
+    }
     handleWinsOnly = () => {
         this.rseetShowHistory();
         let matchesPlayed = [...this.state.matchesPlayed];
@@ -211,6 +223,12 @@ class UserPlayHistory extends Component {
                 });
             }
         });
+    }
+
+    keydown =(e)=>{
+        if(e.keyCode === 8){
+            window.location.reload();
+        }
     }
 
     getMatchResults = (matchResults, match) => {
@@ -245,7 +263,6 @@ class UserPlayHistory extends Component {
                                 matchRes.length > 0 ? <div className={classes.userPlayHistory}>
                                     <div className={classes.ResultBody} >
                                         <div className={classes.BodyHeader}>
-                                        {/* {console.log(matchRes)} */}
                                             <div className={classes.Head1}>Match</div>
                                             <div className={classes.Head}>Score</div>
                                             <div className={classes.Head2}>Your Selections</div>
@@ -314,6 +331,11 @@ class UserPlayHistory extends Component {
                         </div>
                         <div className={classes.Buttons} ><input className={classes.AllButton} type="button" value="All" onClick={this.handleAll} />
                             <input className={classes.WinsButton} type="button" value="Wins only" onClick={this.handleWinsOnly} />
+                        </div>
+                    </div>
+                    <div className={classes.FilterByWrap}>
+                        <div className={classes.FilterByWrapInner} >
+                            <input onKeyDown= {this.keydown} className={classes.FilterBy} onChange={this.handleFilterByGame} type="text" placeholder="filter by game number" value={this.state.gameNumber}/>
                         </div>
                     </div>
                     <div className={classes.OrderByWrap}>
