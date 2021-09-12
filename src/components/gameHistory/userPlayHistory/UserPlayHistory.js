@@ -193,10 +193,10 @@ class UserPlayHistory extends Component {
         }
     }
 
-    handleFilterByGame=(e)=>{
+    handleFilterByGame = (e) => {
         e.preventDefault();
         let value = e.target.value;
-        this.setState({gameNumber: value})
+        this.setState({ gameNumber: value })
         let matchesPlayed = [...this.state.matchesPlayed];
         console.log(value)
         let matcheFiltered = matchesPlayed.filter(match => match[0].gameNumber.includes(value.trim()));
@@ -225,8 +225,8 @@ class UserPlayHistory extends Component {
         });
     }
 
-    keydown =(e)=>{
-        if(e.keyCode === 8){
+    keydown = (e) => {
+        if (e.keyCode === 8) {
             window.location.reload();
         }
     }
@@ -234,21 +234,26 @@ class UserPlayHistory extends Component {
     getMatchResults = (matchResults, match) => {
         let finalMatches = [];
         for (let i = 0; i < match.games.length; i++) {
-            let res = _.filter(matchResults,res => res.fixtureId === match.games[i].fixture_id);
+            let res = _.filter(matchResults, res => res.fixtureId === match.games[i].fixture_id);
             finalMatches.splice(finalMatches.length, finalMatches.length + 1, res);
         }
         return finalMatches;
     }
+
+    handleNoGames = () => {
+        this.props.history.push("/play")
+    }
+
     render() {
         if (!this.props.isLoggedIn)
             this.props.history.push("/");
 
         let matchesPlayed = [...this.state.matchesPlayed];
         let matchResults = [...this.state.matchResults];
-        let userPlayHistoryTrannsformed = this.state.loading && matchesPlayed[0] && matchResults.length>0 ?
+        let userPlayHistoryTrannsformed = this.state.loading && matchesPlayed[0] && matchResults.length > 0 ?
             matchesPlayed.sort((a, b) => a[0]["datePlayed"] < b[0]["datePlayed"] ? 1 : -1).map((match, k) => {
                 let matchRes = this.getMatchResults(matchResults, match[0]);
-                return matchRes[0].homeTeam !== "" && matchRes[0].length>0 ? <div className={classes.userPlayHistoryAndShare} key={k}>
+                return matchRes[0].homeTeam !== "" && matchRes[0].length > 0 ? <div className={classes.userPlayHistoryAndShare} key={k}>
                     <div className={classes.MainHeader} onClick={() => this.toggleShowHistory(k)} >
                         <div className={classes.DateHead}>Entry date : {moment(match[0].datePlayed).format("DD.MM.YYYY")}</div>
                         <div className={classes.PriceHead}>Price: {"₦" + addCommaToAmounts("" + match[0].slipPrice)}</div>
@@ -320,7 +325,7 @@ class UserPlayHistory extends Component {
 
                 </div> : <Spinner />
             })
-            : <Spinner />
+            : <div className={classes.GamesNotPlayed}><p>No Games found or played yet</p><Button className={classes.NoGameButton} onClick={this.handleNoGames}>PLAY</Button></div>
 
         return (<div className={classes.userPlayHistoryWrapper}>
             <div className={classes.OrderByHeader}>
@@ -335,7 +340,7 @@ class UserPlayHistory extends Component {
                     </div>
                     <div className={classes.FilterByWrap}>
                         <div className={classes.FilterByWrapInner} >
-                            <input onKeyDown= {this.keydown} className={classes.FilterBy} onChange={this.handleFilterByGame} type="text" placeholder="filter by game number" value={this.state.gameNumber}/>
+                            <input onKeyDown={this.keydown} className={classes.FilterBy} onChange={this.handleFilterByGame} type="text" placeholder="filter by game number" value={this.state.gameNumber} />
                         </div>
                     </div>
                     <div className={classes.OrderByWrap}>
