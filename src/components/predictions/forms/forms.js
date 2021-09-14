@@ -76,7 +76,7 @@ const forms = (props) => {
             </div>
             <div className="row">
               <div style={{ fontWeight: 'bolder' }} className="col-8">concd_avg</div>
-              <div className="col-4">{last5Home.goals.against.avevrage}</div>
+              <div className="col-4">{last5Home.goals.against.average}</div>
             </div>
           </div>
           {/* All matches home */}

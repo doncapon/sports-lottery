@@ -30,8 +30,9 @@ const Stats = (props) => {
     let head2Head = pred.h2h;
     let home = pred.teams.home;
     let away = pred.teams.away;
-    let homeForm = home.league.form.slice( home.league.form.length-5,  home.league.form.length);
-    let awayForm = away.league.form.slice(away.league.form.length-5,  away.league.form.length);
+    let homeForm = home.league.form.slice( 0,  5);
+    let awayForm = away.league.form.slice(0, 5);
+    let advice = pred.predictions.advice;
 
     if (selectedLink === 1) {
       showedObject = (
@@ -52,6 +53,7 @@ const Stats = (props) => {
             home={winPercent.home}
             draw={winPercent.draw}
             away={winPercent.away}
+            advice={advice}
           />
         </div>
       );

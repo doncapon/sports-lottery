@@ -19,7 +19,6 @@ class Navs extends Component {
       setTimeout(() => {
         if (firebase.auth().onAuthStateChanged(user => {
           if (user && user.emailVerified) {
-            console.log(user)
             if (this.props.user.funds <= 0) {
               this.props.setIsPaying(false);
               this.props.setIsPaid(false);
