@@ -331,9 +331,6 @@ class UserPlayHistory extends Component {
             <div className={classes.OrderByHeader}>
                 <form>
                     <div className={classes.WinsOnly}>
-                        <div className={classes.View}>
-                            VIEW
-                        </div>
                         <div className={classes.Buttons} ><input className={classes.AllButton} type="button" value="All" onClick={this.handleAll} />
                             <input className={classes.WinsButton} type="button" value="Wins only" onClick={this.handleWinsOnly} />
                         </div>

@@ -73,15 +73,15 @@ const Login = (props) => {
         }
         <Form inline onSubmit={(e) => HandleSubmit(e)}>
             <FormControl type="email" onChange={(e) => setEmail(e.target.value)}
-                value={email} placeholder="email" className="mr-sm-2" />
+                value={email} placeholder="Email" className="mr-sm-2" />
             <FormControl type="password" onChange={(e) => setPassword(e.target.value)}
-                value={password} placeholder="password" className="mr-sm-2" />
+                value={password} placeholder="Password" className="mr-sm-2" />
             {props.forgotPassword ?
                 <Button className={classes.Forgot} onClick={handleForgot} >forgot password?</Button>
                 : null}
             <Button type="submit" variant="outline-light">Login</Button>
 
-            <Button onClick={HandleSignup} variant="outline-light">SignUp</Button>
+            <Button onClick={HandleSignup} variant="outline-light">Sign Up</Button>
         </Form>
     </div>);
 }
