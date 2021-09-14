@@ -8,7 +8,7 @@
         font-size: .8em;
 }
 
-.Others, .Score{
+.Others, .Score, .Others1{
     margin-left: 5%;
 
 }
@@ -31,5 +31,17 @@
     }
     .H2hHeading{
         margin-left: 4vw;
+    }
+
+}
+
+/* midum sized screns */
+@media only screen and (min-width: 960px){
+
+    .H2hHeading{
+        margin-left: 4vw;
+    }
+    .Others{
+        padding-left:4vw;
     }
 }
