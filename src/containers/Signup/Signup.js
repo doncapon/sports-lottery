@@ -340,7 +340,7 @@ class Signup extends Component {
                             <input type="text" name="name"
                                 value={this.state.name}
                                 onChange={this.handleChange}
-                                placeholder="Your name.."
+                                placeholder="Your name"
                                 className={classes.Text} />
                             {nameErr &&
                                 <div className={classes.ErrorText}>{nameErr}</div>
@@ -352,7 +352,7 @@ class Signup extends Component {
                             <input type="text" name="surname"
                                 value={this.state.surname}
                                 onChange={this.handleChange}
-                                placeholder="Your Surame.."
+                                placeholder="Your Surname"
                                 className={classes.Text} />
                             {surnameErr &&
                                 <div className={classes.ErrorText}>{surnameErr}</div>
@@ -365,7 +365,7 @@ class Signup extends Component {
                             <input type="text" name="emailId"
                                 value={this.state.emailId}
                                 onChange={this.handleChange}
-                                placeholder="Your email id.."
+                                placeholder="Your email id"
                                 className={classes.Text} />
                             {emailIdErr &&
                                 <div className={classes.ErrorText}>{emailIdErr}</div>
@@ -378,7 +378,7 @@ class Signup extends Component {
                                 onChange={this.handleChange}
                                 value={this.state.phoneNumber}
                                 size="11" maxLength="11"
-                                placeholder="Your phone number.."
+                                placeholder="Your phone number"
                                 className={classes.Text} />
                             {phoneNumberErr &&
                                 <div className={classes.ErrorText}>{phoneNumberErr}</div>
@@ -405,7 +405,7 @@ class Signup extends Component {
                             <input type={this.state.passwordType} name="password"
                                 value={this.state.password}
                                 onChange={this.handleChange}
-                                placeholder="Password..."
+                                placeholder="Password"
                                 className={classes.Password} />
                             {passwordErr &&
                                 <div className={classes.ErrorText}>{passwordErr}</div>
