@@ -15,18 +15,21 @@
         padding: 0 0.2vw;
         margin-left: 0.2vw;
         color: white;
+        height: 30px;
     }
     .LossForm{
         background-color: red;
         padding: 0 0.4vw;
         margin-left: 0.2vw;
         color: white;
+        height: 30px;
     }
     .DrawForm{
         background-color: grey;
         padding: 0 0.4vw;
         margin-left: 0.2vw;
         color: white;
+        height: 30px;
     }
 
 /* medium sizes */
@@ -51,6 +54,11 @@
         width: 50vw;;
         float: left;
         text-align: left;
+    }
+
+    .DrawForm, .LossForm, .WinForm{
+        height: 50px;
+        font-size: 30px;
     }
 
 }
