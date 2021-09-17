@@ -105,7 +105,7 @@ class Jackpot extends Component {
                 </div>
                 {"\xa0\xa0"}
                 <div className={classes.Greyed}>
-                  {this.state.jackpotData.thirteenUser ? "winner(s)" : "-"}
+                  {"winner(s)"}
                 </div>
               </div>
               <div className={classes.Pot}>
@@ -128,7 +128,7 @@ class Jackpot extends Component {
                 </div>
                 {"\xa0\xa0"}
                 <div className={classes.Greyed}>
-                  {this.state.jackpotData.twelveUser ? "winner(s)" : "-"}
+                  {"winner(s)"}
                 </div>
               </div>
               <div className={classes.Pot}>
@@ -151,7 +151,7 @@ class Jackpot extends Component {
                 </div>
                 {"\xa0\xa0"}
                 <div className={classes.Greyed}>
-                  {this.state.jackpotData.elevenUser ? "winner(s)" : "-"}
+                  {"winner(s)"}
                 </div>
               </div>
               <div className={classes.Pot}>
@@ -174,7 +174,7 @@ class Jackpot extends Component {
                 </div>
                 {"\xa0\xa0"}
                 <div className={classes.Greyed}>
-                  {this.state.jackpotData.tenUser ? "winner(s)" : "-"}{" "}
+                  {"winner(s)"}
                 </div>
               </div>
               <div className={classes.Pot}>

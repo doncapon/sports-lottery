@@ -51,9 +51,11 @@ class Board extends Component {
 
       if (moment().format("yyyy-MM-DD:hh:mm:ss") === moment(gameTime /*"2021-09-11T16:51:00+00:00"*/).format("yyyy-MM-DD:hh:mm:ss")) {
         firebase.database().ref("resetter").set({ isReset: true });
+
         let versionBeta = process.env.REACT_APP_VERSION + ".Beta";
         if (this.props.version !== versionBeta) {
-          window.localStorage.removeItem("persist:root")
+          window.localStorage.removeItem("persist:root");
+          this.clearCacheData();
           window.location.reload();
         }
 
@@ -72,6 +74,7 @@ class Board extends Component {
           let versionBeta = process.env.REACT_APP_VERSION + ".Beta";
           if (this.props.version !== versionBeta) {
             window.localStorage.removeItem("persist:root")
+            this.clearCacheData();
             window.location.reload();
           }
         }, 300000)
@@ -99,6 +102,8 @@ class Board extends Component {
         window.localStorage.removeItem("persist:root")
         this.props.onSetVersion(version);
         window.location.reload();
+        this.clearCacheData();
+
       }
     }, 1000);
 
@@ -127,6 +132,14 @@ class Board extends Component {
     }
     this.setState({ loading: true });
   }
+
+  clearCacheData = () => {
+    caches.keys().then((names) => {
+      names.forEach((name) => {
+        caches.delete(name);
+      });
+    });
+  };
 
   componentWillUnmount() {
     firebase.database().ref("jackpots").off();

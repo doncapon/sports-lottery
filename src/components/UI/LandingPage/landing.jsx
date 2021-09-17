@@ -23,6 +23,7 @@ class Landing extends Component {
       total: 0
     };
   }
+
   componentDidMount() {
     setInterval(() => {
       let kickOffDate;
@@ -40,6 +41,7 @@ class Landing extends Component {
       }
       let version = process.env.REACT_APP_VERSION;
       if (this.props.version !== version) {
+        this.clearCacheData();
         window.localStorage.removeItem("persist:root")
         this.props.onSetVersion(version);
         window.location.reload();
@@ -83,6 +85,13 @@ class Landing extends Component {
 
 
   }
+  clearCacheData = () => {
+    caches.keys().then((names) => {
+      names.forEach((name) => {
+        caches.delete(name);
+      });
+    });
+  };
 
   handlecConfigureBoard = () => {
     this.props.onSetIsBoardSet(false);
