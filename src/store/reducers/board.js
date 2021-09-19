@@ -46,6 +46,7 @@ const initialStte = {
     gameDate: null,
     gameDateRaw: null,
     isToWallet: true,
+    isConfiguring: false,
 
     showFunds: true,
     version: ""
@@ -615,6 +616,12 @@ const sideIsValid = (sides) => {
     return allValid;
 }
 
+const setIsConfiguring =(state, action)=>{
+    return produce(state, draft=>{
+        draft.isConfiguring = action.isConfiguring;
+    });
+}
+
 const setPurchaseAll = (state, action) => {
     return produce(state, draft => {
         let purchase = true;
@@ -640,8 +647,11 @@ const setPurchaseAll = (state, action) => {
 }
 
 
+
 const reducer = (state = initialStte, action) => {
     switch (action.type) {
+        case actionTypes.SET_IS_CONFIGURING:
+            return setIsConfiguring(state, action);
         case actionTypes.SET_VERSION:
             return setVersion(state, action);
         case actionTypes.RESET_BOARD:

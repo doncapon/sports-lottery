@@ -26,6 +26,7 @@ export {
      setIsToWallet,
      toggleReceiptShowHistory,
      setBoardLoading,
+     setIsConfiguring,
 } from './board';
 
 export {
