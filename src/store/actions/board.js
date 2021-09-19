@@ -8,6 +8,13 @@ export const setVersion = (version) => {
     }
 }
 
+export const setIsConfiguring = (isConfigure)=>{
+    return{
+        type: actionTypes.SET_IS_CONFIGURING,
+        isConfiguring: isConfigure
+    }
+}
+
 export const generateSlip = (amount, slipIndex, basePrice) => {
     return dispatch => {
         dispatch(EmptyEditingISlip2());
