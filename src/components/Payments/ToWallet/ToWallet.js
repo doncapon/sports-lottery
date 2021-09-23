@@ -55,9 +55,9 @@ class ToWallet extends Component {
                 formIsValid = false;
                 amountErr = "Minimum amount is 500 Naira";
             }
-            if (amount > 50000 && formIsValid) {
+            if (amount > 500000 && formIsValid) {
                 formIsValid = false;
-                amountErr = "Maximum amount is 50000 Naira";
+                amountErr = "Maximum amount is 500,000 Naira";
             }
             if (amount % 1 !== 0 && formIsValid) {
                 amountErr = "No decimals allowed, remove dot(.)";
