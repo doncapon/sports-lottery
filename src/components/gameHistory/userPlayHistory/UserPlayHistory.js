@@ -198,7 +198,6 @@ class UserPlayHistory extends Component {
         let value = e.target.value;
         this.setState({ gameNumber: value })
         let matchesPlayed = [...this.state.matchesPlayed];
-        console.log(value)
         let matcheFiltered = matchesPlayed.filter(match => match[0].gameNumber.includes(value.trim()));
         this.setState({ matchesPlayed: matcheFiltered });
 

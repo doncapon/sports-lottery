@@ -123,7 +123,7 @@ const setReceipt = (state, action) => {
                 });
             }
             slip.evaluationDate = action.gameDate;
-            slip.endTime = moment(action.gameDate + "T" + action.endTime).format("YYYY-MM-DDTHH:mm:SS+00:00")
+            slip.endTime =action.endTime;
             slip.games = Object.assign([], slipGames);
 
             let user = firebase.auth().currentUser;

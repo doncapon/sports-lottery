@@ -2,6 +2,8 @@ import classes from "./results.module.css";
 import React, { useLayoutEffect, useState } from "react";
 import moment from 'moment';
 import Jackpot from "../jackpot/jackpot";
+import firebase from "../../../config/firebase/firebase";
+
 
 const Results = (props) => {
     const [recalculatedReults, setRecaculted] = useState([]);
@@ -40,7 +42,10 @@ const Results = (props) => {
     }
 
     const convertEndTime = (date)=>{
-        return new Date(moment(date).format("yyyy-MM-dd")+"T" +props.evaluationTime);
+        date = moment(date).format("yyyy-MM-DD")
+        firebase.database().ref("board").child(date).once("value").then(snapshot=>{
+            return snapshot.val().evaluationTime;
+        });
     }
 
     let resultsTrannsformed = recalculatedReults.map((results, k) => {
