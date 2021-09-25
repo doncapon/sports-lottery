@@ -100,7 +100,6 @@ class PlayRow extends Component {
             </div>
           </div>
           {(game.showHistory && this.props.predictions !== null) ? <div className="">
-              {console.log(this.props.predictions)}
               <Stats predictions={this.props.predictions.filter((pred, i) => {
                 return pred.gameIndex === k
               })}

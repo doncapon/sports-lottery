@@ -80,6 +80,7 @@ export const configureBoard = (kickOffTime, endTime, kickOffDate) => {
                 endTime = (kickOffDate + "T" + endTime);
                 let wantedFixtures = gamePicker(response, startTime, endTime, [], "England", ["Premier League", "Championship", "FA Cup", "League One", "League Two"], 7);
                 let fixturesToPush = [];
+                let evaluationTime = "";
                 for (let i = 0; i < wantedFixtures.length; i++) {
                     fixturesToPush.splice(fixturesToPush.length, fixturesToPush.length + 1,
                         {
@@ -90,16 +91,21 @@ export const configureBoard = (kickOffTime, endTime, kickOffDate) => {
                             awayTeam_id: wantedFixtures[i].teams.away.id, awayTeam: wantedFixtures[i].teams.away.name,
                             event_date: startTime
                         })
+                        if(wantedFixtures[i].fixture.date >= evaluationTime){
+                            evaluationTime= wantedFixtures[i].fixture.date;
+                        }
                 }
                 let boardRef = firebase.database().ref("board").child(kickOffDate);
                 let data;
+                evaluationTime = moment(evaluationTime).add(2, "hours").format("YYYY-MM-DDTHH:mm:SS+00:00");
                 boardRef.on("value", snapshot => {
                     data = snapshot.val();
                     if (!data) {
                         firebase.database().ref("board").child(kickOffDate).update(fixturesToPush);
                         firebase.database().ref("board").child(kickOffDate).update({ isPaid: false });
                         firebase.database().ref("board").child(kickOffDate).update({ postponed: false });
-                        firebase.database().ref("board").child(kickOffDate).update({ dateKey: kickOffDate });
+                        firebase.database().ref("board").child(kickOffDate).update({ dateKey: kickOffDate});
+                        firebase.database().ref("board").child(kickOffDate).update({ evaluationTime: evaluationTime});
                         firebase.database().ref("board").off();
                         dispatch(setEventDate(fixturesToPush[0].event_date));
                     }

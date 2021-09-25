@@ -103,10 +103,11 @@ const setReceipt2 = (gameDay, endTime, gameDate) => {
     }
 }
 
-export const setReceipt = (gameDay, endTime) => {
+export const setReceipt = (gameDay) => {
     return dispatch => {
         firebase.database().ref("board").limitToLast(2).once("value").then(snapshot => {
             let gameDate = Object.keys(snapshot.val())[1];
+            let endTime = snapshot.val()[gameDate].evaluationTime;
             dispatch(setReceipt2(gameDay, endTime, gameDate))
         })
     }

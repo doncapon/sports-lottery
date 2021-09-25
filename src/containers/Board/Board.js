@@ -100,7 +100,7 @@ class Board extends Component {
 
   confirmPurchase = () => {
     this.ExecutePurchase();
-    this.props.onSetReceipt(this.state.eventDate, this.props.evaluationTime);
+    this.props.onSetReceipt(this.state.eventDate);
     this.togglePaymentButton(false, true)
   }
   ExecutePurchase = () => {
@@ -250,7 +250,6 @@ const mapstateToProps = (state) => {
     hourToNextDay: state.config.hourToNextDay,
     daysOffset: state.config.daysOffset,
     kickOffTime: state.config.kickOffTime,
-    evaluationTime: state.config.evaluationTime,
     endTime: state.config.endTime,
     thirteenPercent: state.config.thirteenPercent,
     twelvePercent: state.config.twelvePercent,
@@ -290,7 +289,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions.setBoard(basePrice)),
     onResetReduxBoard: () => dispatch(actions.resetReduxBoard()),
     onToggleIsShowReceipt: () => dispatch(actions.toggleIsShowReceipt()),
-    onSetReceipt: (gameDay, endTime) => dispatch(actions.setReceipt(gameDay, endTime)),
+    onSetReceipt: (gameDay) => dispatch(actions.setReceipt(gameDay)),
     ontoggleSelectedTile: (slipIndex, gameIndex, sideIndex, side) =>
       dispatch(
         actions.toggleSelectedTile(slipIndex, gameIndex, sideIndex, side)

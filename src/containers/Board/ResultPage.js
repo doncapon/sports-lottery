@@ -29,7 +29,6 @@ const mapstateToProps = (state) => {
         //Config
         basePrice: state.config.basePrice,
         loading: state.config.loading,
-        evaluationTime: state.config.evaluationTime,
         currentResults: state.config.currentResults,
         numberofResultsDisplayed: state.config.numberofResultsDisplayed,
         insertResult: state.config.insertResult,
