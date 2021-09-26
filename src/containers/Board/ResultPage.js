@@ -16,7 +16,7 @@ class ResultPage extends Component {
     render() {
         return  !this.props.loading? <Spinner /> : <div>
             <Results daysResults={this.props.currentResults} basePrice={this.props.basePrice}
-                isLoggedIn={this.props.isLoggedIn} evaluationTime={this.props.evaluationTime}
+                isLoggedIn={this.props.isLoggedIn}
             />
         </div>
     }

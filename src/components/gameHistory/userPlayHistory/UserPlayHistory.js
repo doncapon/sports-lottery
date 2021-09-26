@@ -322,7 +322,7 @@ class UserPlayHistory extends Component {
                         </div>
                         : null}
 
-                </div> : <Spinner />
+                </div> : null
             })
             : <div className={classes.GamesNotPlayed}><p>No Games found or played yet</p><Button className={classes.NoGameButton} onClick={this.handleNoGames}>PLAY</Button></div>
 
