@@ -43,7 +43,6 @@ class Landing extends Component {
 
       if (moment().format("yyyy-MM-DD:hh:mm:ss") === moment(gameTime /*"2021-09-25T19:01:00+00:00"*/).format("yyyy-MM-DD:hh:mm:ss")) {
         setTimeout(() => {
-          this.props.onSetIsConfiguring(true);
           this.props.onSetCurrentResult(0);
           firebase.database().ref("board").child(kickOffDate).on("value", snapshot => {
             if (snapshot.val() === null) {
@@ -57,9 +56,6 @@ class Landing extends Component {
           });
 
         }, 29000);
-        setTimeout(() => {
-          this.props.onSetIsConfiguring(false);
-        }, 30000)
       }
 
       let endTime = null;
@@ -131,8 +127,6 @@ class Landing extends Component {
       this.interval = setInterval(() => this.getJackpot(), 30 * 60 * 1000);
       this.interval2 = setInterval(() => window.location.reload(), 15 * 60 * 1000);
     }, 2000);
-
-
   }
 
 
@@ -681,7 +675,6 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions.setCurrentResult(index)),
     onDeleteAndResetAll: () => dispatch(actions.deleteAndResetAll()),
     onSetIsBoardSet: (isBoardSet) => dispatch(actions.setIsBoardSet(isBoardSet)),
-    onSetIsConfiguring: (val) => dispatch(actions.setIsConfiguring(val))
   }
 }
 

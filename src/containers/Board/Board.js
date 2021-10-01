@@ -16,6 +16,7 @@ import { addCommaToAmounts, dateInYYYYMMDD, getNextPlayDate } from '../../shared
 import firebase from '../../config/firebase/firebase';
 import Modal from "../../components/UI/Modal/Modal";
 import LoginModal from '../../components/loginLogout/modalLogin/loginModal';
+import moment from "moment";
 
 class Board extends Component {
 
@@ -44,6 +45,16 @@ class Board extends Component {
         window.location.reload();
         this.clearCacheData();
       }
+      let kickOffDate;
+      kickOffDate = getNextPlayDate(this.props.daysOffset,
+        this.props.hourToNextDay);
+      let gameTime = kickOffDate + "T" + this.props.kickOffTime;
+
+      if (moment().isSameOrAfter(moment(gameTime)) && moment().isSameOrBefore(moment(gameTime).add(5, "minutes"))) {
+        this.props.onSetIsConfiguring(true)
+      } else {
+        this.props.onSetIsConfiguring(false)
+      }
     }, 1000);
 
     if (!this.state.loading) {
@@ -54,10 +65,12 @@ class Board extends Component {
       firebase.database().ref("board").orderByChild("dateKey").limitToLast(1).once("value")
         .then(snapshot => {
           let key = Object.keys(snapshot.val())[0];
+
           let kickOffDate;
           kickOffDate = getNextPlayDate(this.props.daysOffset,
             this.props.hourToNextDay);
-          if (new Date(key + "T" + this.props.kickOffTime) < new Date(kickOffDate)) {
+          if (new Date(key + "T" + this.props.kickOffTime) <new Date(kickOffDate)) {
+
             this.setState({ isGamesAvailable: false })
           }
           this.setState({ eventDate: key + "T" + this.props.kickOffTime })
@@ -131,7 +144,7 @@ class Board extends Component {
   }
 
   render() {
-    return (this.props.loading && this.state.isGamesAvailable && !this.props.isConfiguring ? <div className={classes.Board}>
+    return (this.state.loading && this.state.isGamesAvailable && !this.state.isConfiguring ? <div className={classes.Board}>
       <div className={classes.BoardLeft}>
         <div className={classes.TopBoard} >
           <TopBoard
@@ -327,7 +340,8 @@ const mapDispatchToProps = (dispatch) => {
     onSetLoggedInUser: (username, password) => dispatch(actions.setLoggedInUser(username, password)),
     onSetIsBoardSet: (isBoardSet) => dispatch(actions.setIsBoardSet(isBoardSet)),
 
-    onUpdateBoard: (fixturesToPush, date) => dispatch(actions.updateBoard(fixturesToPush, date))
+    onUpdateBoard: (fixturesToPush, date) => dispatch(actions.updateBoard(fixturesToPush, date)),
+    onSetIsConfiguring: (val) => dispatch(actions.setIsConfiguring(val))
 
   };
 };
