@@ -8,8 +8,8 @@ export const setVersion = (version) => {
     }
 }
 
-export const setIsConfiguring = (isConfigure)=>{
-    return{
+export const setIsConfiguring = (isConfigure) => {
+    return {
         type: actionTypes.SET_IS_CONFIGURING,
         isConfiguring: isConfigure
     }
@@ -45,7 +45,7 @@ export const setBoard = (basePrice) => {
                 Object.keys(returned).map(key => {
                     let fixt = returned[key];
                     Object.keys(fixt).map(key2 => {
-                        if (key2 !== "isPaid" && key2 !== "dateKey" && key2 !== "postponed")
+                        if (key2 !== "isPaid" && key2 !== "dateKey" && key2 !== "postponed" && key2 !== "evaluationTime")
                             wantedFixtures.push(fixt[key2]);
                         return null;
                     });
