@@ -144,7 +144,7 @@ class Board extends Component {
   }
 
   render() {
-    return (this.state.loading && this.state.isGamesAvailable && !this.state.isConfiguring ? <div className={classes.Board}>
+    return (this.props.loading && this.state.isGamesAvailable && !this.state.isConfiguring ? <div className={classes.Board}>
       <div className={classes.BoardLeft}>
         <div className={classes.TopBoard} >
           <TopBoard
@@ -342,7 +342,6 @@ const mapDispatchToProps = (dispatch) => {
 
     onUpdateBoard: (fixturesToPush, date) => dispatch(actions.updateBoard(fixturesToPush, date)),
     onSetIsConfiguring: (val) => dispatch(actions.setIsConfiguring(val))
-
   };
 };
 

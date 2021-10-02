@@ -37,7 +37,6 @@ export const generateSlip2 = (amount, basePrice) => {
 
 export const setBoard = (basePrice) => {
     return dispatch => {
-
         firebase.database().ref("board").orderByChild("dateKey").limitToLast(1)
             .once("value").then(snapshot => {
                 let returned = Object.assign([], snapshot.val());
@@ -49,8 +48,9 @@ export const setBoard = (basePrice) => {
                             wantedFixtures.push(fixt[key2]);
                         return null;
                     });
-                    if (wantedFixtures.length === 13)
+                    if (wantedFixtures.length === 13){
                         dispatch(initializeBoard(wantedFixtures, basePrice));
+                    }
                     return null;
                 })
             });
