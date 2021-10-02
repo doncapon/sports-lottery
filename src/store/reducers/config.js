@@ -3,7 +3,7 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
     daysOffset: 0,
-    hourToNextDay: 11,   //24 - kick-off time
+    hourToNextDay: 10,   //24 - kick-off time
     kickOffTime: '13:00:00+00:00',
     endTime: '18:00:00+00:00',
     eventDate: null,
