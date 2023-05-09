@@ -40,7 +40,6 @@ class Landing extends Component {
       kickOffDate = getNextPlayDate(this.props.daysOffset,
         this.props.hourToNextDay);
       let gameTime = kickOffDate + "T" + this.props.kickOffTime;
-
       if (moment().format("yyyy-MM-DD:hh:mm:ss") === moment(gameTime /*"2021-09-25T19:01:00+00:00"*/).format("yyyy-MM-DD:hh:mm:ss")) {
         setTimeout(() => {
           this.props.onSetCurrentResult(0);
